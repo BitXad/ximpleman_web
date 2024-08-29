@@ -59,6 +59,7 @@ div {
                         <select  name="parametro_tipoimpresora"  class="form-control" id="parametro_tipoimpresora" >
                             <option value="FACTURADORA">FACTURADORA</option>
                             <option value="NORMAL" <?php if($parametro['parametro_tipoimpresora']=='NORMAL'){ ?> selected <?php } ?> >CARTA/MEDIA CARTA</option>
+                            <option value="OFICIO" <?php if($parametro['parametro_tipoimpresora']=='OFICIO'){ ?> selected <?php } ?> >OFICIO/MEDIO OFICIO</option>
                         </select>
                     </div>
                 </div>

@@ -157,7 +157,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <center>            
             <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-default btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov.</small></a>
             <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-default btn-foursquarexs" title="Buscar Proveedores"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov.</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-default btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
+            <a href="#" data-toggle="modal" data-target="#modalproducto" id="boton_nuevoprod"  class="btn btn-default btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
        
         </center>  
 
@@ -1675,14 +1675,14 @@ $("#texto2").change(function(){
                         </div>
                         
                         <div class="col-md-3"  disabled="true">
-                                <label for="costoant_ant" class="control-label">Costo</label>
+                                <label for="costoant_ant" class="control-label">Ultimo Costo</label>
                                 <div class="form-group">
                                     <input type="number" name="costo_anterior" value="0.00" class="form-control" id="costo_anterior" disabled="true"/>
                                 </div>
                         </div>
                         
                         <div class="col-md-3"  disabled="true">
-                                <label for="precioant_ant" class="control-label">Precio</label>
+                                <label for="precioant_ant" class="control-label">Precio de Venta</label>
                                 <div class="form-group">
                                     <input type="number" name="precio_anterior" value="0.00" class="form-control" id="precio_anterior" disabled="true"/>
                                 </div>
@@ -1703,19 +1703,29 @@ $("#texto2").change(function(){
                         <div class="col-md-4">
                                 <label for="costo_nuevo_id" class="control-label">Costo Nuevo</label>
                                 <div class="form-group">
-                                        <input type="number" name="costo_nuevo" value="0.00" class="form-control" id="costo_nuevo" />
+                                        <input type="number" name="costo_nuevo" value="0.00" class="form-control" id="costo_nuevo" style="background: yellow;"/>
                                 </div>
                         </div>
                         <div class="col-md-4">
                                 <label for="precio_nuevo_id" class="control-label">Precio Nuevo</label>
                                 <div class="form-group">
-                                        <input type="number" name="precio_nuevo" value="0.00" class="form-control" id="precio_nuevo" />
+                                        <input type="number" name="precio_nuevo" value="0.00" class="form-control" id="precio_nuevo"  style="background: yellow;"/>
                                 </div>
                         </div>
                         <div class="col-md-4">
                                 <label for="cantidad_compra_id" class="control-label">Cantidad Compra (Cajas)</label>
                                 <div class="form-group">
                                         <input type="number" name="cantidad_compra" value="1" class="form-control" id="cantidad_compra" />
+                                </div>
+                        </div>
+
+                        <div class="col-md-4">
+                                <label for="tipo_unidad_id" class="control-label">Unidad</label>
+                                <div class="form-group">
+                                    <select  type="number" name="tipo_unidad" value="1" class="form-control" id="tipo_unidad" />
+                                        <option value="1">CAJA</option>
+                                        <option value="2">UNIDAD</option>
+                                    </select>
                                 </div>
                         </div>
                         
@@ -1736,3 +1746,175 @@ $("#texto2").change(function(){
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CALCULAR PRECIOS --------------------------->
 <!------------------------------------------------------------------------------->
+
+<!----------------- Inicio registrar precio de venta ---------------------------------------------->
+<div hidden>
+    
+<button type="button" id="boton_modal_actualizarprecio" class="btn btn-default" data-toggle="modal" data-target="#modal_actualizarprecio" >
+  Launch demo modal
+</button>
+</div>
+<!----------------- Actualizar precio de venta ---------------------------------------------->
+
+<div class="modal fade" id="modal_actualizarprecio" tabindex="-1" role="dialog" aria-labelledby="modalactualizaprecio" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>ACTUALIZAR PRECIOS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+                            
+       
+                                            
+                                        <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
+                                        
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio Costo:</label>
+                                            
+                                            <input type="text" id="modificarprecios_producto_id" value="0.00" hidden />
+                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                            
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
+                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Cod. Barra:</label>                                            
+                                            <input type="text" id="modificarprecios_producto_codigo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                            
+                                        <div class="col-md-6">
+                                             <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked>Actualizar precios de las sucursales 
+                                        </div>
+                            
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-success" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="boton_cancelar_precio" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                                        
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- Inicio registrar precio de venta ---------------------------------------------->
+<div hidden>
+    
+<button type="button" id="boton_modal_actualizarprecio" class="btn btn-default" data-toggle="modal" data-target="#modal_actualizarprecio" >
+  Launch demo modal
+</button>
+</div>
+<!----------------- Actualizar precio de venta ---------------------------------------------->
+
+<div class="modal fade" id="modal_actualizarprecio" tabindex="-1" role="dialog" aria-labelledby="modalactualizaprecio" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>ACTUALIZAR PRECIOS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+                            
+       
+                                            
+                                        <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
+                                        
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio Costo:</label>
+                                            
+                                            <input type="text" id="modificarprecios_producto_id" value="0.00" hidden />
+                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                            
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
+                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Cod. Barra:</label>                                            
+                                            <input type="text" id="modificarprecios_producto_codigo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                            
+                                        <div class="col-md-6">
+                                             <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked>Actualizar precios de las sucursales 
+                                        </div>
+                            
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-success" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="boton_cancelar_precio" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                                        
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal precio de venta---------------------------------------------->

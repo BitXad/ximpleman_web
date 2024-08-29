@@ -536,8 +536,12 @@ border-bottom : 1px solid #aaa;
                                     <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
                                         echo $d['detallefact_preferencia']; }
                                     ?>
-                                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
-                                        echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                                    <?php 
+                                        if($factura[0]['docsec_codigoclasificador']!=16){ // SI es diferente de hoteles
+                                            
+                                            if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                                            echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                                        }
                                     ?>
                                 
                                 

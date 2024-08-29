@@ -76,7 +76,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Ubicación</th>
+                            <th>Ubicaci贸n</th>
                             <th>Fecha inicio</th>
                             <th>Fecha fin</th>
                             <th width ="100px">Sobrante</th>
@@ -94,8 +94,15 @@
                         <tr>
                             <td><?= $i+1; ?></td>
                             <td><?= $control['ubicacion_nombre']; ?></td>
-                            <td class="text-center"><?= date("d-m-Y", strtotime($control['controlu_fecha_inicio'])); ?><br><?= $control['controlu_hora_inicio'] ?></td>
-                            <td class="text-center"><?= date("d-m-Y", strtotime($control['controlu_fecha_fin'])); ?><br><?= $control['controlu_hora_fin'] ?></td>
+                            <td class="text-center">
+                                <?= !empty($control['controlu_fecha_inicio']) ? date("d-m-Y", strtotime($control['controlu_fecha_inicio'])) : 'Fecha no disponible'; ?><br>
+                                <?= !empty($control['controlu_hora_inicio']) ? $control['controlu_hora_inicio'] : 'Hora no disponible'; ?>
+                            </td>
+                            <td class="text-center">
+                                <?= !empty($control['controlu_fecha_fin']) ? date("d-m-Y", strtotime($control['controlu_fecha_fin'])) : 'Fecha no disponible'; ?><br>
+                                <?= !empty($control['controlu_hora_fin']) ? $control['controlu_hora_fin'] : 'Hora no disponible'; ?>
+                            </td>
+
                             <?php foreach ($ubicacion_productos as $ubicacion_producto) {?>
                                 <?php if ($control['controlu_id'] == $ubicacion_producto['controlu_id']) {?>
                                     <td class="text-center"><?= ($control['controlu_id'] == $ubicacion_producto['controlu_id']) ? $ubicacion_producto['sobrante_total']: "" ?></td>

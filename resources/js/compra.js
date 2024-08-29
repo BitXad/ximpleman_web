@@ -1625,8 +1625,7 @@ function tablaresultados(opcion)
                 $("#encontrados").val("- 0 -");
                var registros =  JSON.parse(respuesta);
                 
-               if (registros != null){
-                   
+               if (registros != null){                   
                    
                     var cont = 0;
                     var cant_total = 0;
@@ -1652,7 +1651,7 @@ function tablaresultados(opcion)
                         html += "<input id='compra_id'  name='compra_id' type='text' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_iddetalle'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
                         html += "<input id='descripcion'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
-                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
+                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costoultimo"]+"'>";
                         html += "<input id='moneda_id"+registros[i]["producto_id"]+"'  name='moneda_id"+registros[i]["producto_id"]+"' type='text' class='form-control' value='"+registros[i]["moneda_id"]+"'>";
                         //html += "<input id='producto_codigue'  name='producto_codigo' type='hidden' class='form-control' value='"+registros[i]["producto_codigo"]+"'>";
                         //html += "<input id='producto_unidade'  name='producto_unidad' type='hidden' class='form-control' value='"+registros[i]["producto_unidad"]+"'>";
@@ -1664,11 +1663,6 @@ function tablaresultados(opcion)
                         html += "<br><span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>SALDO: "+Number(registros[i]["existencia"]).toFixed(decimales)+"</span>";
 //                        html += " <span class='btn btn-danger btn-xs' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'><i class='fa fa-book'></i> </span>";
 
-                       
-                        html += " <span data-toggle='modal' data-target='#modalhistorial' class='btn btn-xs btn-success' onclick='mostrar_historial("+registros[i].producto_id+")' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'>";
-                        html += "<i class='fa fa-book'></i>";
-                        html += "</span>";
-                        
                         
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow; padding-top:2px; padding-buttom:3px;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
@@ -1724,7 +1718,14 @@ function tablaresultados(opcion)
                         
                         html += "   </select>";
                         
-                        html += "    <button type='button' id='boton_precios"+registros[i]["producto_id"]+"' class='btn btn-default btn-xs' data-toggle='modal' data-target='#modalprecios' onclick='cargar_precios("+registros[i]["producto_id"]+",1)'><fa class='fa fa-money'></fa> </button>";
+                       
+                        html += " <span data-toggle='modal' data-target='#modalhistorial' class='btn btn-xs btn-default' onclick='mostrar_historial("+registros[i].producto_id+")' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'>";
+                        html += "<i class='fa fa-book'></i>";
+                        html += "</span>";
+                                                
+                        html += "    <button type='button' style='font-size:10px; id='button"+registros[i]["producto_id"]+"' class='btn btn-default btn-xs' onclick='modificar_precios("+registros[i]["producto_id"]+")' title='Actualizar precios y codigos del producto'><fa class='fa fa-money'></fa> </button>";
+                        html += "    <button type='button' style='font-size:10px; id='boton_precios"+registros[i]["producto_id"]+"' class='btn btn-default btn-xs' onclick='replicar_producto("+registros[i]["producto_id"]+",1)' title='Replicar producto nuevo'><fa class='fa fa-copy'></fa> </button>";
+                        html += "    <button type='button' style='font-size:10px; id='boton_precios"+registros[i]["producto_id"]+"' class='btn btn-default btn-xs' data-toggle='modal' data-target='#modalprecios' onclick='cargar_precios("+registros[i]["producto_id"]+",1)' title='Calculadora de precios'><fa class='fa fa-calculator'></fa> </button>";
                         
                         html += "   <br>";
                         if (esMobil()){
@@ -2431,12 +2432,155 @@ function registrar_precios(){
     let cantidad_unidades = document.getElementById("cantidad_unidades").value;
     let precio_nuevo = document.getElementById("precio_nuevo").value;
     let cantidad_compra = document.getElementById("cantidad_compra").value;
+    let tipo_unidad = document.getElementById("tipo_unidad").value;
+    let cantidad = 0;
     
+    if(tipo_unidad==1){
+            cantidad = cantidad_compra * cantidad_unidades;
+    }else{
+            cantidad = cantidad_compra;
+        
+    }
+        
     $("#producto_preciodetalle"+producto_id).val(precio_nuevo);
     $("#producto_costodetalle"+producto_id).val(costo_nuevo);
-    $("#cantidaddetalle"+producto_id).val(cantidad_compra * cantidad_unidades);
+    $("#cantidaddetalle"+producto_id).val(cantidad);
+    
     $("#botonaniadir"+producto_id).click();
     
     
+}
+
+function replicar_producto(producto_id){
+    
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url+"venta/get_producto_id";
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{producto_id:producto_id}, 
+                async: false,
+                success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    //alert(JSON.stringify(res));
+                    producto = res;
+                    
+                    //alert( JSON.stringify(producto));
+                    $("#producto_nombre").val(producto["producto_nombre"]);
+                    $("#producto_marca").val(producto["producto_marca"]);
+                    $("#producto_codigobarra").val(producto["producto_codigobarra"]);
+                    $("#producto_codigo").val(producto["producto_codigo"]);
+                    $("#cod_product_sin").val(producto["producto_codigosin"]);
+                    $("#categoria_id").val(producto["categoria_id"]);
+                    $("#subcategoria_prod").val(producto["subcategoria_prod"]);
+                    $("#texto1").val(producto["producto_ultimocosto"]); //No se porque le pusieron texto1 al id del costo
+                    $("#texto2").val(producto["producto_precio"]);
+                    $("#producto_unidad").val(producto["producto_unidad"]);
+                    $("#cantidad").val(1);
+                    $("#producto_unidadfactor").val(producto["producto_unidadfactor"]);
+                    $("#producto_codigofactor").val(producto["producto_codigofactor"]);
+                    $("#producto_factor").val(producto["producto_factor"]);
+                    $("#producto_preciofactor").val(producto["producto_preciofactor"]);
+                    $("#producto_industria").val(producto["producto_industria"]);
+                    $("#producto_comision").val(producto["producto_comision"]);
+                    
+                    $("#boton_nuevoprod").click();
+                },
+                error:function(respuesta){
+
+                  producto = null;
+                }
+         }); 
+    return producto;     
+}
+
+function get_producto(producto_id){
+    
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url+"venta/get_producto_id";
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{producto_id:producto_id}, 
+                async: false,
+                success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    //alert(JSON.stringify(res));
+                    producto = res;
+                },
+                error:function(respuesta){
+
+                  producto = null;
+                }
+         }); 
+    return producto;     
+}
+
+
+function modificar_precios(producto_id){
+    
+    
+    
+    var decimales = document.getElementById('decimales').value; 
+    
+    //$("#modificarprecios_producto").val(producto.producto_nombre);
+    
+    var producto = get_producto(producto_id);
+    
+    $("#modificarprecios_producto").val(producto.producto_nombre);
+    $("#filtrar").val(producto.producto_nombre);
+    $("#modificarprecios_producto_id").val(producto.producto_id);
+    $("#modificarprecios_producto_costo").val(Number(producto.producto_costo).toFixed(decimales));
+    $("#modificarprecios_producto_precio").val(Number(producto.producto_precio).toFixed(decimales));
+    $("#modificarprecios_producto_codigo").val(producto.producto_codigobarra);
+    $("#boton_modal_actualizarprecio").click();
+    
+    //focus_cambio_rapido();
+    
+}
+
+function focus_cambio_rapido(){
+    
+        $('#modal_actualizarprecio').on('shown.bs.modal', function() {
+        $('#modificarprecios_producto_costo').focus();
+        $('#modificarprecios_producto_costo').select();
+    });
+}
+
+/* elimina un detalle de factura aux */
+function actualizar_precio(){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/modificar_precios";
+    var producto_id = document.getElementById("modificarprecios_producto_id").value;
+    var producto_costo = document.getElementById("modificarprecios_producto_costo").value;
+    var producto_precio = document.getElementById("modificarprecios_producto_precio").value;
+    var producto_codigo = document.getElementById("modificarprecios_producto_codigo").value;
+    var actualizarpreciossucursales = $('#actualizarpreciossucursales').is(':checked');
+    
+    //alert(actualizarpreciossucursales);
+    
+
+    
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo}, 
+            success:function(resultado){
+ 
+                tablaresultados(1);
+//                var registros =  JSON.parse(resultado);
+//                if (registros != null){
+//                    cargar_factura2(venta_id);
+//                }
+
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
     
 }

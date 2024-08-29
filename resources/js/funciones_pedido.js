@@ -1712,9 +1712,9 @@ function tablaresultados(opcion)
                     html = "";
                     
                     if(! esMobil()) { //si no es dispositivo mobil
-                        html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
+                        html += "                <table class='table  table-condensed table-striped table-responsive' id='mitabla'>";
                     }else{
-                        html += "                <table class='table  table-condensed table-striped' style='max-width: 3cm;' id='mitabla' >";
+                        html += "                <table class='table  table-condensed table-striped table-responsive' style='max-width: 3cm;' id='mitabla' >";
                     }
                     
                    html += "                <tr style='background-color: black; '>";
@@ -2010,7 +2010,7 @@ function tablaresultados(opcion)
                         if(esMobil()){
                          
                         html += "</td>"; //tabla movil extra                        
-                        html += "<td style='padding: 0;'>"; //tabla movil extra                        
+                        html += "<td style='padding: 0;' class='table-responsive'>"; //tabla movil extra                        
                         html += mimagen; //tabla movil extra                        
                         
                         html += "</td>"; //tabla movil extra                        

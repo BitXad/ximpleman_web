@@ -169,6 +169,13 @@ class Factura extends CI_Controller{
             
         //**************** inicio contenido ***************
             //$parametros = $this->Parametro_model->get_parametros();
+        
+        $venta_id = $this->input->post("venta_id"); 
+        $numeroDocumento = $this->input->post("numeroDocumento");
+        $razon = $this->input->post("razon");
+        $monto_factura = $this->input->post("monto_factura");
+        $tipoDocumento = $this->input->post("tipoDocumento");
+            
         $parametros = $this->parametros;
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -1930,8 +1937,12 @@ class Factura extends CI_Controller{
                         if ($this->parametros['parametro_comprobante']==2) $this->factura_recibo_boucher($venta_id,1);
                         
                     }
-                    else
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="NORMAL")
                         $this->recibo_carta($venta_id);
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="OFICIO")
+                        $this->recibo_mediooficio($venta_id,1);
                     
                 }elseif($this->parametros['parametro_notaentrega']==2){
                     
@@ -2279,7 +2290,8 @@ class Factura extends CI_Controller{
                                  que su factura fue ANULADA.</p>
                                 <h3>Datos de la factura</h3>
                                 <p>FACTURA Nº: ".$factura_numero."
-                                <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."</p>
+                                <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."
+                                <br>COD. AUTORIZACION:</p>
                                 {$cuf}
                                 <p>¡Gracias por su preferencia!</p>
                             </td>

@@ -5,6 +5,21 @@
 <link href="<?php // echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitablagris.css'); ?>" rel="stylesheet">
 
+<style>
+    /* Estilo por defecto para pantallas grandes (computadoras) */
+    .table-responsive-scroll {
+        max-height: 800px;
+        overflow-y: auto;
+    }
+
+    /* Estilo para pantallas pequeñas (teléfonos móviles) */
+    @media (max-width: 768px) {
+        .table-responsive-scroll {
+            max-height: 300px;
+        }
+    }
+</style>
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -232,128 +247,52 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
     </center>
 </div>
     
-<!--
-<div class="box-header">
-    <center>
-        <font size='4' face='Arial'><b><?php echo $empresa[0]["empresa_nombre"]; ?></b></font>
-        <br><font size='2' face='Arial'>Mesas: <?php echo sizeof($mesa); ?></font>
-        <div class="box-tools no-print">
-            <a href="<?php echo site_url('mesa/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Mesa</a> 
-        </div>
-        
-    </center>
-    <div class="row">
-    <div class="col-md-12">
-        <div class="col-md-4">
-            ------------------- parametro de buscador -------------------
-            
-                <select id="select_categoria" class="form-control">
-                    
-                    <option value="0">-- TODAS --</option>
-                    <?php foreach ($categorias as $c){ ?>
-                            <option value="<?php echo $c["categoriamesa_nombre"]; ?>"><?php echo $c["categoriamesa_nombre"]; ?></option>
-                    <?php } ?>
-                    
-                </select>
-            
-            ------------------- fin parametro de buscador -------------------
-        </div>
-        
-        <div class="col-md-8">
-            ------------------- parametro de buscador -------------------
-                      <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                        <input id="filtrarmesa" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
-                      </div>
-                ------------------- fin parametro de buscador -------------------
-        </div>
-    </div>
-    </div>
-    
-</div>-->
-
        
             
     <div class="container-fluid" style="height: 100%; background-image: url(<?php echo base_url("resources/images/sistema/fondo.jpg"); ?>); background-repeat: no-repeat;background-size: cover; ">
         
     <div class="col-md-<?=$espacio_mesas; ?>" style="height: 100%; background-color: rgba(255, 0, 0, 0);">
         <div class="row" style="height: 100%; background-color: rgba(255, 0, 0, 0);">
-            <div class="box-body table-responsive">
+            
+            <div class="box-body table-responsive table-responsive-scroll">
+                <center>
+                    
+                <?php foreach ($mesa as $m): ?>
                     <?php
-                        $cont = 0;
-                        $descipcion = 0;
-                        $estilo = "padding:0; border:0;";
-                        
-                        foreach($mesa as $m){
-                            
-                                    if(!is_null($m["mesa_descripcion"])){
-                                    
-                                            if($m["mesa_descripcion"]!="-"){
-                                                $descripcion =  $m["mesa_descripcion"];
-                                            }else{ 
-                                                $descripcion = "";
-                                            }
-                                            
-//                                    }else{ $descripcion="";} ?>
-                
-                
-                            <!--<div class="col-md-2">-->
-                              
-                                
-                                
-                                <?php if($m["estado_id"]==38){ ?>
-                            
-                                <button class="btn btn-default btn-sq-lg" style="border-bottom: #002166 dashed 2px; width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
-                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <!---- <br><span class="btn btn-success btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
-                                    <br>
-            
-                                </button>
-                            
-                            
-                                <?php } ?>
-                                
-                                <?php if($m["estado_id"]==39){ ?>
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
-                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"  id="imagen<?=$m["mesa_id"] ?>" />
-                                    <!---- <br><span class="btn btn-danger btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
-                                    <br>
-            
-                                </button>
-                                
-                                <?php } ?>
-                                <?php if($m["estado_id"]==40){ ?>
-                                
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
-                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <!---- <br><span class="btn btn-default btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
-                                    <br>
-                                </button>
-                                
-                                <?php } ?>
+                        $descripcion = ($m["mesa_descripcion"] && $m["mesa_descripcion"] != "-") ? $m["mesa_descripcion"] : "";
+                        $buttonClasses = "btn btn-default btn-sq-lg w-100 h-auto";
+                        $buttonStyle = "font-size: {$tamanio_fuente}; background-color: transparent;";
+                        $iconPath = "";
+                        $onClickFunction = "";
 
-                                
-                                <?php if($m["estado_id"]==41){ ?>
-                                <button class="btn btn-default btn-sq-lg"  style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
-                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <!---- <br><span class="btn btn-github btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
-                                    <br>
-                                </button>
-                                
-                                <?php } ?>
-                                
-          
-                                
-                                
-                            <!--</div>-->
-                
-                    <?php  } ?>
-                    <?php  } ?>
+                        switch ($m["estado_id"]) {
+                            case 38:
+                                $iconPath = base_url("resources/images/mesas/".$m["mesa_iconolibre"]);
+                                $onClickFunction = "modal_mesa({$m["mesa_id"]})";
+                                $buttonStyle .= " border-bottom: #002166 dashed 2px;";
+                                break;
+                            case 39:
+                                $iconPath = base_url("resources/images/mesas/".$m["mesa_iconoocupada"]);
+                                $onClickFunction = "mostrar_pedido({$m["mesa_id"]})";
+                                break;
+                            case 40:
+                                $iconPath = base_url("resources/images/mesas/".$m["mesa_iconoreservada"]);
+                                $onClickFunction = "modal_mesa({$m["mesa_id"]})";
+                                break;
+                            case 41:
+                                $iconPath = base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]);
+                                $onClickFunction = "modal_mesa({$m["mesa_id"]})";
+                                break;
+                        }
+                    ?>
 
-                                
+                    <button class="<?= $buttonClasses ?>" style="<?= $buttonStyle ?>" onclick="<?= $onClickFunction ?>" id="mesa<?= $m["mesa_id"] ?>">
+                        <img src="<?= $iconPath ?>" width="<?= $ancho_imagen ?>" height="<?= $alto_imagen ?>" id="imagen<?= $m["mesa_id"] ?>" />
+                        <br>
+                        <span><?= "<b>".$m["mesa_nombre"]."</b>". ($descripcion ? "<br>{$descripcion}" : "") ?></span>
+                    </button>
+                <?php endforeach; ?>
+                </center>
             </div>
         </div>
     </div>
@@ -649,7 +588,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
         </div>
         <!-------------------- FIN CATEGORIAS--------------------------------->
 
-                <div class="box">
+                <div class="box table-responsive">
                     
                     <div class="box-body  table-responsive scrollable-div" id="tablaresultados" >  
                         <!------------------ aqui van los resultados de la busqueda --------------->
@@ -708,7 +647,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
 
           
                     <div class="col-md-6">
-                        <label for="detalleped_cantidad" class="control-label">Mesa Disponoble</label>
+                        <label for="detalleped_cantidad" class="control-label">Mesa Disponible</label>
                         <div class="
                              form-group">
                                     <select id="select_mesadisponible" class="form-control">
@@ -750,34 +689,3 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
     </div>
   </div>
 </div>
-
-
-<!--  <style>
-    /* Estilo para el botón */
-    .boton-con-imagen {
-      position: relative;
-      display: inline-block;
-      padding: 10px 20px; /* Ajusta según sea necesario */
-      background: url('<?php echo base_url("resources/images/mesas/libre.png"); ?>') center/cover; /* Especifica la ruta de tu imagen y el estilo de fondo */
-      color: #fff; /* Color del texto */
-      font-size: 16px; /* Tamaño de fuente del texto */
-      text-align: center;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Estilo para el texto del botón */
-    .texto-boton {
-      position: relative;
-      z-index: 2; /* Coloca el texto sobre la imagen */
-    }
-  </style>
-</head>
-<body>
-
-   Botón con imagen y texto 
-  <button class="boton-con-imagen">
-    <span class="texto-boton">Texto del botón</span>
-  </button>
-
-</body>-->

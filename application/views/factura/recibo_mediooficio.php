@@ -318,13 +318,13 @@ border-bottom : 1px solid #aaa;
         $complemento = $lineas - $cont;
         while($t<=$complemento){ ?>
             <tr>
-                <td align="right" style="padding: 0; border: 1px solid black; color: white;">-</td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
-                <td align="right" style="padding: 0; border: 1px solid black;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; color: white; font-size: 8px;">-</td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
+                <td align="right" style="padding: 0; border: 1px solid black; font-size: 8px;"></td>                
             </tr>
 
     <?php $t++; } ?>
@@ -491,6 +491,38 @@ border-bottom : 1px solid #aaa;
 </table>
 </div>
 
+<div class="row no-print">
+<div class="col-md-12">
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="<?php echo base_url("factura/recibo_mediooficio/".$venta[0]['venta_id']."/1"); ?>" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+            </li>
+            
+           <?php for($i=1;$i<=$paginas;$i++){ ?>
+            
+            <li class="page-item <?php echo ($pagina_actual==$i)?"active":""; ?>"><a class="page-link" href="<?php echo base_url("factura/recibo_mediooficio/".$venta[0]['venta_id']."/".$i); ?>"><?php echo $i; ?></a></li>
+            
+           <?php } ?>
+            
+<!--            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+            
+            
+            <li class="page-item">
+                <a class="page-link" href="<?php echo base_url("factura/recibo_mediooficio/".$venta[0]['venta_id']."/".$paginas); ?>" aria-label="Próximo">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Próximo</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</div>
 
 <?php 
 $opc = $parametro[0]['parametro_cerrarventanas'];

@@ -4349,12 +4349,72 @@ function ventas_por_fecha()
     
 }
 
+
+
+//Obtener los datos de una factura
+//Revisar este metodo
+function get_factura(venta_id){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/get_factura";
+
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{venta_id:venta_id}, 
+            async: false,
+            success:function(respuesta){
+
+                var res = JSON.parse(respuesta);
+                //alert(JSON.stringify(res));
+                factura = res;
+
+            },
+            error:function(respuesta){
+
+              factura = null;
+
+            }
+     }); 
+    return factura;
+}
+
+//Obtener los datos de una factura
+
+function get_venta(venta_id){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/get_venta";
+
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{venta_id:venta_id}, 
+            async: false,
+            success:function(respuesta){
+
+                var res = JSON.parse(respuesta);
+                //alert(JSON.stringify(res));
+                factura = res;
+
+            },
+            error:function(respuesta){
+
+              factura = null;
+
+            }
+     }); 
+    return factura;
+}
+
+
 //************* inicio  funciones  para emitir factura **************
 
-function cargar_factura(factura){
+function cargar_factura(venta_id){
+    
+    var factura = get_venta(venta_id);
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"detalle_venta/get_detalle_insertar";
-    var venta_id = factura.venta_id;
+   
+    
     $.ajax({url: controlador,
             type: "POST",
             data:{venta_id:venta_id}, 
@@ -4851,12 +4911,15 @@ function seleccionar_factura(factura_id){
 }
 
 function registrar_factura(venta_id){
+    
     var base_url = document.getElementById("base_url").value;
     var numeroDocumento   = document.getElementById("generar_nit").value;
     let tipoDocumento = $('#doc_identidad').val();
     var razon = document.getElementById("generar_razon").value;
     var monto_factura = document.getElementById("generar_monto").value;
-    var controlador = base_url+"venta/generar_factura_detalle_aux";
+//    var controlador = base_url+"venta/generar_factura_detalle_aux";
+    var controlador = base_url+"venta/factura_posventa";
+    
     $.ajax({url: controlador,
             type: "POST",
             data:{
@@ -5177,7 +5240,8 @@ function tabla_ventas(filtro)
                         if(generar_factura == 1){
                             if(dosificado == 1){
                                 if(v[i]['venta_total'] > 0){
-                                    html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
+                                    html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+v[i]['venta_id']+");'><span class='fa fa-modx'></span></button> ";
+                                   // html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
                                 }
                             }
                         }
@@ -6486,7 +6550,7 @@ function cargar_factura2(venta_id){
                         html += "<tr style='border-top-style: solid; border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
                         html += "<td align='center' style='padding: 0;'>";
                         html += "<font style='size:7px; font-family: arial'>";
-                        html += registros[i]['detallefact_cantidad'];
+                        html += Number(registros[i]['detallefact_cantidad']).toFixed(decimales);
                         html += "</font>";
                         html += "</td>";
                         html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";

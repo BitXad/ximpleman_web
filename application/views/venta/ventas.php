@@ -3781,7 +3781,7 @@ $(document).ready(function() {
 <div class="modal fade" id="modalexcel" tabindex="-1" role="dialog" aria-labelledby="modalexcel" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
             <div class="modal-header" style="background: #3399cc">
-                <b style="color: white;">VENTAS MASICAS: CARGAR ARCHIVO EXCEL</b>
+                <b style="color: white;">VENTAS MASIVAS: CARGAR ARCHIVO EXCEL</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

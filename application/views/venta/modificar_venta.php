@@ -241,7 +241,12 @@ window.onkeydown = compruebaTecla;
                     
                 </script>
                 
- 
+ <?php 
+$verificar_cantidades = 1;
+$compra_rapida = 1;
+$actualizar_precios = 1;
+
+?>
 
 <!--------------------- CABECERA -------------------------->
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
@@ -315,6 +320,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
 <input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
+<input type="text" id="verificar_cantidades" value="<?php echo $verificar_cantidades; ?>" hidden>
+<input type="text" id="compra_rapida" value="<?php echo $compra_rapida; ?>" hidden>
+<input type="text" id="actualizar_precios" value="<?php echo $actualizar_precios; ?>" hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
 <?php

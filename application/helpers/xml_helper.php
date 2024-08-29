@@ -443,40 +443,36 @@ $salto_linea='
                                 
                             }
                         }
-//
-//                        // Mostrar los valores obtenidos
-//                        echo "Especialidad: $especialidad\n";
-//                        echo "Detalle de Especialidad: $especialidadDetalle\n";
-//                        echo "Número de Quirófano/Sala: $nroQuirofanoSalaOperaciones\n";
-//                        echo "Especialidad del Médico: $especialidadMedico\n";
-//                        echo "Nombre del Médico: $nombreApellidoMedico\n";
-//                        echo "NIT del Médico: $nitDocumentoMedico\n";
-//                        echo "Número de Matrícula del Médico: $nroMatriculaMedico\n";
-//                        echo "Número de Factura del Médico: $nroFacturaMedico\n";
-//                    
-                    
+                        
                     //***************************************************************
                     //***************************************************************
             
             
             if($cantidadHuespedes!='') $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>'.$cantidadHuespedes.'</cantidadHuespedes>';
-            else $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>'.$cantidadHuespedes.'</cantidadHuespedes>';
+            else $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes xsi:nil="true"></cantidadHuespedes>';
             
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones>'.$cantidadHabitaciones.'</cantidadHabitaciones>';
+            
+            if($cantidadHabitaciones!='') $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones>'.$cantidadHabitaciones.'</cantidadHabitaciones>';
+            else $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones xsi:nil="true"></cantidadHabitaciones>';
 
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores>'.$cantidadMayores.'</cantidadMayores>';
+            if($cantidadMayores!='') $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores>'.$cantidadMayores.'</cantidadMayores>';
+            else $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores xsi:nil="true"></cantidadMayores>';
 
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores>'.$cantidadMenores.'</cantidadMenores>';
+            if($cantidadMenores!='') $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores>'.$cantidadMenores.'</cantidadMenores>';
+            else $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores xsi:nil="true"></cantidadMenores>';
             
             
             
             $fechaPartes = explode("/", $fechaIngresoHospedaje);
-            $fecha =  $fechaPartes[0]. '-' . $fechaPartes[1] . '-' . $fechaPartes[2];
+            $fecha =  $fechaPartes[2]. '-' . $fechaPartes[1] . '-' . $fechaPartes[0];
              
             $hora = $horaIngresoHospedaje.":00.01";
             
-            $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>'.$fecha.'T'.$hora.'</fechaIngresoHospedaje>';
+            if($fechaIngresoHospedaje!='' && $horaIngresoHospedaje!='') $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>'.$fecha.'T'.$hora.'</fechaIngresoHospedaje>';
+            else $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>'.$factura_original['factura_fechahora'].'</fechaIngresoHospedaje>';
+            
         }
+        
         
         
         if ($documento_sector == 2){ //2-Alquiler Bienes Inmuebles
@@ -855,19 +851,19 @@ $salto_linea='
                     if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones>'.$nroQuirofanoSalaOperaciones.'</nroQuirofanoSalaOperaciones>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones xsi:nil="true"></nroQuirofanoSalaOperaciones>';}
                     
-                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>'.$especialidadMedico.'</especialidadMedico>';
+                    if($especialidadMedico!=''){ $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>'.$especialidadMedico.'</especialidadMedico>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <especialidadMedico xsi:nil="true"></especialidadMedico>';}
                     
-                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>'.$nombreApellidoMedico.'</nombreApellidoMedico>';
+                    if($nombreApellidoMedico!=''){ $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>'.$nombreApellidoMedico.'</nombreApellidoMedico>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico xsi:nil="true"></nombreApellidoMedico>';}
                     
-                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>'.$nitDocumentoMedico.'</nitDocumentoMedico>';
+                    if($nitDocumentoMedico!=''){ $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>'.$nitDocumentoMedico.'</nitDocumentoMedico>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico xsi:nil="true"></nitDocumentoMedico>';}
                     
-                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>'.$nroMatriculaMedico.'</nroMatriculaMedico>';
+                    if($nroMatriculaMedico!=''){ $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>'.$nroMatriculaMedico.'</nroMatriculaMedico>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico xsi:nil="true"></nroMatriculaMedico>';} 
                     
-                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>'.$nroFacturaMedico.'</nroFacturaMedico>';
+                    if($nroFacturaMedico!=''){ $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>'.$nroFacturaMedico.'</nroFacturaMedico>';
                     }else{ $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico xsi:nil="true"></nroFacturaMedico>';}
                     
                 }
@@ -900,7 +896,10 @@ $salto_linea='
                 
                 if($documento_sector == 16){ //16 Hoteles
                     
-                    $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
+                    if($df['detallefact_preferencia']!=null && $df['detallefact_preferencia']!='null' )
+                        $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes>'.$df['detallefact_preferencia'].'</detalleHuespedes>';
+                    else
+                        $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
                 }
                 
                 if($documento_sector == 24){ //24 Nota debito credito
