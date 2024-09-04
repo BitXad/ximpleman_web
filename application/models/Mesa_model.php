@@ -58,6 +58,19 @@ class Mesa_model extends CI_Model
 
         return $mesa;
     }
+    function get_categoria_mesa($categoria_mesa)
+    {
+        $sql = "select * from mesa where categoriamesa_id = {$categoria_mesa}";
+        $mesa = $this->db->query($sql)->result_array();
+        return $mesa;
+    }
+    
+    function get_mesa_id($mesa_id)
+    {
+        $sql = "select * from mesa where mesa_id = {$mesa_id}";
+        $mesa = $this->db->query($sql)->row_array();
+        return $mesa;
+    }
         
     /*
      * function to add new mesa

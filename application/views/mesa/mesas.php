@@ -127,7 +127,7 @@ function cerrar_ventana(){
 
 @font-face {
   font-family: "Edwardian"; /* El nombre que le das a la fuente */
-  src: url(<?php  echo base_url("resources/fonts/edwardian.ttf"); ?>); /* La ruta del archivo de la fuente */
+  src: url(<?php  echo base_url("resources/fonts/Arial.ttf"); ?>); /* edwardian.ttf La ruta del archivo de la fuente */
 }
 
 /* Aplica la fuente Edwardian al botón */
@@ -241,10 +241,26 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
 ?>
 
 <div class="box-header" style="background: black; color: white; padding: 0px;">
-    <center>        
+    
+    
+    <center>      
         <?php $cad = $empresa[0]["empresa_nombre"]; ?>
-        <titulo style="font-size: 40px;"><?php echo strtolower($cad); ?></titulo>
+        <titulo style="font-size: 20px;"><?php echo ($cad); ?></titulo>
     </center>
+
+
+    <?php if(is_array($categoria_mesas)){?>
+    <select id="categoria_mesa" class="btn-warning form-control" onchange="seleccionar_categoria()">
+
+                <option value="0">-- TODOS --</option>
+            <?php foreach ($categoria_mesas as $m){?>
+
+                <option value="<?php echo $m["categoriamesa_id"]; ?>" <?php echo ($categoria_mesa == $m["categoriamesa_id"])?"selected":""; ?>><?php echo $m["categoriamesa_nombre"];  ?></option>
+
+            <?php } ?>
+        </select>
+    <?php } ?>
+    
 </div>
     
        
@@ -291,7 +307,9 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                         <br>
                         <span><?= "<b>".$m["mesa_nombre"]."</b>". ($descripcion ? "<br>{$descripcion}" : "") ?></span>
                     </button>
+                    
                 <?php endforeach; ?>
+                    
                 </center>
             </div>
         </div>
@@ -689,3 +707,4 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
     </div>
   </div>
 </div>
+

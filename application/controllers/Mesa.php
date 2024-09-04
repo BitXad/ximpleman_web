@@ -67,6 +67,7 @@ class Mesa extends CI_Controller{
             $punto_venta = $this->session_data['puntoventa_codigo'];  
 
             $data['sistema'] = $this->sistema;
+            $data['categoria_mesas'] = $this->Mesa_model->get_all_categorias();
             $data['mesa'] = $this->Mesa_model->get_all_mesa();
 
             $data['_view'] = 'mesa/index';
@@ -156,7 +157,8 @@ class Mesa extends CI_Controller{
      /*
      * Vista para mostrar mesas
      */
-    function mesas()
+    
+    function mesas($categoria_mesa = null)
     {
         
         
@@ -164,7 +166,6 @@ class Mesa extends CI_Controller{
         
                 $data['usuario_id'] = $this->session_data['usuario_id'];
                 $data['sistema'] = $this->sistema;
-                $data['mesa'] = $this->Mesa_model->get_all_mesa();
                 $data['categorias'] = $this->Mesa_model->get_all_categorias();
                 $data['all_estado'] = $this->Estado_model->get_tipo_estado(10); //estados basicos de tipo 1
                 $data['parametro'] = $this->parametros;
@@ -186,7 +187,17 @@ class Mesa extends CI_Controller{
                 $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
 
                 $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-
+                $data['categoria_mesas'] = $this->Mesa_model->get_all_categorias();
+                
+                if ($categoria_mesa>0){
+                    $data['mesa'] = $this->Mesa_model->get_categoria_mesa($categoria_mesa);
+                    $data['categoria_mesa'] = $categoria_mesa;
+                    
+                }    
+                else{
+                    $data['mesa'] = $this->Mesa_model->get_all_mesa();
+                    $data['categoria_mesa'] = 0;
+                }
                 $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
                 $data['promociones'] = $this->Promocion_model->get_promociones();
 
@@ -315,6 +326,24 @@ class Mesa extends CI_Controller{
             echo json_encode($resultado);      
 
             
+
+        }
+
+
+    }
+
+    /*
+    * mostra detalle mesa
+    */
+    function get_mesa_id(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $mesa_id = $this->input->post("mesa_id");
+           
+            $resultado = $this->Mesa_model->get_mesa_id($mesa_id);
+                        
+            echo json_encode($resultado);
 
         }
 
@@ -574,6 +603,27 @@ class Mesa extends CI_Controller{
         }
 
 
+    }
+    
+
+    public function cargarMesasPorCategoria() {
+        $categoriaId = $this->input->post('categoriamesa_id');
+
+        // Obtener las mesas según la categoría seleccionada
+        $mesas = $this->tu_modelo->obtenerMesasPorCategoria($categoriaId);
+
+        // Generar el HTML para las mesas (puedes hacer esto con una vista parcial)
+        //$html = $this->load->view('ruta/a/tu/vista/mesas', ['mesas' => $mesas], true);
+
+        //echo $html;
+        
+        
+        $sql = "select * from mesa where categoria_mesa = {$categoriaId}";
+        $this->Venta_model->ejecutar($sql);
+        $html = $this->load->view('mesa/index', ['mesas' => $mesas], true);
+        echo $html;
+        
+        
     }
     
 }

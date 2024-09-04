@@ -1,9 +1,37 @@
+
+
+function get_mesa(mesa_id){
+    
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url+"mesa/get_mesa_id";
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{mesa_id:mesa_id}, 
+                async: false,
+                success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    //alert(JSON.stringify(res));
+                    mesa = res;
+                },
+                error:function(respuesta){
+
+                  mesa = null;
+                }
+         }); 
+    return mesa;     
+}
+
 function modal_mesa(mesa_id){
     
     var base_url = document.getElementById('base_url').value;    
     
     let ultimamesa_id = document.getElementById("ultimamesa_id").value;
     
+    let mesa = get_mesa(mesa_id);
+    
+    //alert(mesa["mesa_iconoocupada"]);
     
     if(ultimamesa_id != mesa_id){
         
@@ -17,7 +45,7 @@ function modal_mesa(mesa_id){
         
         var boton = document.getElementById('mesa'+mesa_id);
         var imagen = document.getElementById('imagen'+mesa_id);
-        imagen.src = base_url+"resources/images/mesas/ocupada"+mesa_id+".png";
+        imagen.src = base_url+"resources/images/mesas/"+mesa["mesa_iconoocupada"];
         
         boton.onclick = function(){ mostrar_pedido(mesa_id); };
         //boton.addEventListener('click',mostrar_pedido(mesa_id));
@@ -1279,4 +1307,26 @@ function pasaraventas(pedido_id,cliente_id)
                 alert("ADVERTENCIA: Ocurrio un error, vuelva a realizar la operación por favor...!!");
         }
     }); 
+}
+
+function seleccionar_categoria()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"pedido/pasaraventas/"+pedido_id+"/"+cliente_id;
+    var categoria_mesa = document.getElementById('categoria_mesa').value;
+   
+   //alert(controlador);
+   
+    $.ajax({
+        data:{},
+        success:function(respuesta){     
+            
+            window.location.href = base_url+"mesa/mesas/"+categoria_mesa;
+            //$("#pedido_id").val(pedido_id);
+        },
+        error: function(respuesta){
+                alert("ADVERTENCIA: Ocurrio un error, vuelva a realizar la operación por favor...!!");
+        }
+    }); 
+    
 }
