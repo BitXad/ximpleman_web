@@ -143,6 +143,7 @@ class Detalle_venta extends CI_Controller{
         $estado = $this->input->post('estado');
         $destino = $this->input->post('destino');
         $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
+        //$data['datos'] = $this->Detalle_venta_model->ventas_cocina_dia($estado);
         $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
        
         echo json_encode($data);
@@ -256,6 +257,7 @@ class Detalle_venta extends CI_Controller{
             $this->db->query($sql);
            return true;
     }
+    
     function restablecer($venta_id)
     {
             $sql="UPDATE venta SET entrega_id=1, venta_fechaentrega='0000-00-00', venta_horaentrega='00:00:00' WHERE venta_id=".$venta_id." ";

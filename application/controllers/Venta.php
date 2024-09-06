@@ -9858,5 +9858,255 @@ function anular_venta($venta_id){
     }
     
     
+    public function registrar_pensionado(){
+    
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+ 
+            
+        //**************** inicio contenido ***************   
+            //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
+            //$factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+            //for($numero = 1;$numero <= 1;$numero++){ //borrar el for, mantener su contenido
+                $data['sistema'] = $this->sistema;
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $porcentaje = 0;
+                // $factura_id = 0;
+                
+                $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
+                $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
+                $cuota_inicial = $this->input->post('cuota_inicial'); // recuperamos la consulta sql enviada mediante JS
+                $venta_subtotal = $this->input->post('venta_subtotal'); // recuperamos la consulta sql enviada mediante JS
+                $venta_total = $this->input->post('venta_total'); // recuperamos la consulta sql enviada mediante JS
+                $credito_interes = $this->input->post('credito_interes'); // interes por ventas
+                $pedido_id = $this->input->post('pedido_id'); // interes por ventas
+                $numero_doc_identidad = $this->input->post('nit'); // nit del cliente
+                $razon = $this->input->post('razon'); // nit del cliente
+                $fecha_venta  = $this->input->post('venta_fecha'); // fecha de la venta
+                $hora_venta = $this->input->post('venta_hora'); // hora de la venta
+                $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
+                $venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
+                $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
+                $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
+                $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
+                $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
+                $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
+                $facturado = $this->input->post('facturado'); // si la venta es facturada
+                $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
+                $codigo_excepcion = $this->input->post('codigo_excepcion');
+                $venta_detalletransaccion = $this->input->post('venta_detalletransaccion');
+                $venta_giftcard = $this->input->post('venta_giftcard');
+                $venta_ice = $this->input->post('venta_ice');
+                $forma_id = $this->input->post('forma_id');
+                $factura_complementoci = $this->input->post('factura_complementoci');
+                $basededatos = $this->input->post('select_almacen'); //Selecciona la base de datos del almacen
+                $factura_idcreditodebito = $this->input->post('factura_idcreditodebito'); //para factura de credito debito
+                
+                $fecha_cafc = $this->input->post('fecha_cafc');
+                $hora_cafc = $this->input->post('hora_cafc');
+                $numfact_cafc = $this->input->post('numfact_cafc');
+                $codigo_cafc = $this->input->post('codigo_cafc');
+                $registroeventos_codigo = $this->input->post('registroeventos_codigo');
+                $modalidad    = $this->input->post('dosificacion_modalidad');
+                $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
+                $venta_glosa    = $this->input->post('venta_glosa');
+                $cliente_id    = $this->input->post('cliente_id');
+                $factura_servicio    = $this->input->post('factura_servicio');
+                $factura_glosa    = $venta_glosa;
+                
+                //  DATOS  ADICIONALES FACTURA
+                //********************************************************
+                
+                //$datos_placa    = $this->input->post('datos_placa');
+                //$datos_embase    = $this->input->post('datos_embase');
+                //$datos_codigopais    = $this->input->post('datos_codigopais');
+                //$datos_autorizacionsc    = $this->input->post('datos_autorizacionsc');
+                
+                //********************************************************
+                
+                
+                $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
+                
+                //****************** contador de transacicones mensuales
+                $venta_numerotransmes = 0;
+                
+                $venta_numeroventa = 0;
+                if($this->parametros["parametro_contarventas"]==1){// Si contador de transacciones esta activada                   
+                    $venta_numeroventa = $this->numero_venta();
+                }
+                
+                if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
+                    
+                    //Verificar si es el mes correcto
+                    $numeroMes = date("n");
+                    
+                    if($numeroMes != $dosificacion[0]["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
+                        
+                        $SQLcontador = "update dosificacion d set
+                                        d.dosificacion_numerotransmes = (SELECT COUNT(*) AS cantidad_ventas FROM venta
+                                        WHERE MONTH(venta_fecha) = MONTH(CURRENT_DATE()) AND YEAR(venta_fecha) = YEAR(CURRENT_DATE()))
+                                        ,d.dosificacion_mesactual = MONTH({$now})";
+                        
+                        $contador_mes = $this->Venta_model->Consultar($SQLcontador);
+                        $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                        
+                        
+                    }
+                    
+                    $venta_numerotransmes = $dosificacion[0]["dosificacion_numerotransmes"]+1;
+                        
+                    
+                }
+                    
+                    
+                //****************** fin contador de transacicones mensuales
+               
+                if($dosificacion[0]["docsec_codigoclasificador"] == 23){
+                    //$cliente_nombre = "'S/N'";
+                    $razon = "S/N";
+                    $tipo_doc_identidad = 5;
+                    $numero_doc_identidad = 0;
+                }
+                
+                //echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
+                //Modificar la excepcion en caso de ser fuera de linea
+                
+                if($parametro_tipoemision == 2){ //1 en liena * 2 fuera de liena   
+                    
+                    if($tipo_doc_identidad == 5){ //5 si es NIT
+                        $codigo_excepcion = 1;
+                    }
+                    else{
+                        $codigo_excepcion = 0; 
+                    }
+                }
+                
+                
+                //******** ACTUALIZAR LA TABLA detalle_Venta_aux
+                
+                $sql = "update detalle_venta_aux set
+                        detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
+                        where usuario_id = ".$usuario_id;               
+                $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                
+                
+                //******** REGISTRA LA TABLA VENTA
+                $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+                $sql = "insert into pensionado(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
+                       "estado_id,pensionado_fecha,pensionado_hora,pensionado_subtotal,pensionado_descuentoparcial,pensionado_descuento,pensionado_total,".
+                       "pensionado_efectivo,pensionado_cambio,pensionado_glosa,pensionado_comision,pensionado_tipocambio,detalleserv_id,".
+                       "pensionado_tipodoc, tiposerv_id, entrega_id,pensionado_numeromesa, usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
+                       "pensionado_ice, pensionado_giftcard, pensionado_detalletransaccion,pensionado_numeroventa,pensionado_numerotransmes) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes})";
+                $pension_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                
+
+                //contabilidar las ventas
+//                if ($this->parametros['parametro_contarventas']==1){
+//                    
+//                    $actualizarventa = "update parametros set parametro_numeroventa = parametro_numeroventa + 1 where parametro_id = ".$this->parametros['parametro_id'];
+//                    $this->Venta_model->ejecutar($actualizarventa);
+//                    
+//                }
+//                
+                
+                //contabilidar las ventas
+//                if ($this->parametros['parametro_contarventasmes']==1){
+//                    
+//                    $actualizarventa = "update dosificacion set dosificacion_numerotransmes = dosificacion_numerotransmes + 1";
+//                    $this->Venta_model->ejecutar($actualizarventa);
+//                    
+//                }
+                
+                
+                   
+                $sql =  "insert into detalle_pension
+                (producto_id,
+                  pension_id,
+                  moneda_id,
+                  detallepen_codigo,
+                  detallepen_cantidad,
+                  detallepen_unidad,
+                  detallepen_costo,
+                  detallepen_precio,
+                  detallepen_subtotal,
+                  detallepen_descuentoparcial,
+                  detallepen_descuento,
+                  detallepen_total,
+                  detallepen_caracteristicas,
+                  detallepen_preferencia,
+                  detallepen_comision,
+                  detallepen_tipocambio,
+                  detallepen_envase,
+                  detallepen_nombreenvase,
+                  detallepen_costoenvase,
+                  detallepen_precioenvase,
+                  detallepen_cantidadenvase,
+                  detallepen_garantiaenvase,
+                  detallepen_devueltoenvase,
+                  detallepen_fechadevolucion,
+                  detallepen_horadevolucion,
+                  detallepen_montodevolucion,
+                  detallepen_prestamoenvase,
+                  detallepen_fechavenc,
+                  usuario_id,
+                  factura_id,
+                  clasificador_id,
+                  detallepen_unidadfactor,
+                  preferencia_id,
+                  detallepen_tc
+                )
+        
+                (SELECT 
+                  producto_id,
+                  ".$pension_id." as venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuentoparcial,
+                  detalleven_descuento,
+                  /*detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),*/
+                  /*detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad),*/
+                  detalleven_total,
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                    detalleven_envase,
+                    detalleven_nombreenvase,
+                    detalleven_costoenvase,
+                    detalleven_precioenvase,
+                    detalleven_cantidadenvase,
+                    detalleven_garantiaenvase,
+                    detalleven_devueltoenvase,
+                    detalleven_fechadevolucion,
+                    detalleven_horadevolucion,
+                    detalleven_montodevolucion,
+                    detalleven_prestamoenvase,
+                    detalleven_fechavenc,
+                    usuario_id,
+                    0 as factura_id,
+                    clasificador_id,
+                    detalleven_unidadfactor,
+                    preferencia_id,
+                    detalleven_tc
+                    
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
+                
+                //$sqldetalle = $sql;
+                //echo $sql;
+                $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+                
+                
+    }
+    
+    
     
 }

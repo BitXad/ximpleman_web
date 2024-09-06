@@ -277,15 +277,17 @@ class Mesa extends CI_Controller{
             $pedido_longitud = 0; 
             $regusuario_id = $usuario_id; 
             $mesa_id = $this->input->post("mesa_id"); 
+            $entrega_id = 1; 
+            $entrega_usuarioid = 0; 
             
             
             //Registramos el pedido/comanda
             $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
             pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
             pedido_fechaentrega, pedido_horaentrega, pedido_latitud, 
-            pedido_longitud, regusuario_id, mesa_id) value({$usuario_id}, {$estado_id}, {$cliente_id}, {$tipotrans_id}, {$pedido_fecha},
+            pedido_longitud, regusuario_id, mesa_id, entrega_id, entrega_usuarioid) value({$usuario_id}, {$estado_id}, {$cliente_id}, {$tipotrans_id}, {$pedido_fecha},
             {$pedido_subtotal}, {$pedido_descuento}, {$pedido_total}, '{$pedido_glosa}', date({$now}),time({$now}), {$pedido_latitud},
-            {$pedido_longitud}, {$regusuario_id}, {$mesa_id})";            
+            {$pedido_longitud}, {$regusuario_id}, {$mesa_id}, {$entrega_id}, {$entrega_usuarioid})";            
             $pedido_id = $this->Venta_model->ejecutar($sql);
             
             //cambiamos de estado la mesas

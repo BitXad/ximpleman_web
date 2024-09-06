@@ -338,6 +338,7 @@ $actualizar_precios = 1;
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 <input type="text" id="cliente_valido" value="1" hidden>
 <input type="text" id="credito_id" value="0" name="credito_id" hidden>
+<input type="text" id="pensionado" value="0" name="pensionado" hidden>
 
 <input type="text" id="parametro_anchobuscador" value="<?php echo $parametro['parametro_anchobuscador']; ?>" name="parametro_anchobuscador"  hidden>
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
@@ -1526,6 +1527,16 @@ $actualizar_precios = 1;
             </button>
             <?php } ?>
 
+            <?php if ($parametro["parametro_modulorestaurante"]==1){  ?>
+                
+                <a href="#" data-toggle="modal" data-target="#modalpensionado" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_asignarinventario"]!=1)?"display:none":"" ?>">
+                    <i class="fa fa-cutlery fa-4x"></i>
+                    <br><br>Registrar<br>Pensionado
+                </a>
+
+            <?php } ?>
+                
+                
             <?php if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 
 <!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
@@ -1538,6 +1549,9 @@ $actualizar_precios = 1;
             </a>
 
             <?php } ?>
+                
+                
+                
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_resumenventas"]!=1)?"display:none":"" ?>">
                     <i class="fa fa-list-alt fa-4x"></i><br><br>
@@ -3822,6 +3836,65 @@ $(document).ready(function() {
                 
                 <?php echo form_close(); ?>
             
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL PENSIONADO ------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_pensionado" class="btn btn-default" data-toggle="modal" data-target="#modalpensionado" >
+      Pensionado
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalpensionado" tabindex="-1" role="dialog" aria-labelledby="modalpensionado" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">REGISTRAR: PENSIONADO</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+    
+                
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <center>
+                                
+
+                                <h4 style="font-weight: bold;">Esta a punto de registrar un pensionado.  ¿Desea continuar?</h4>
+                                    
+                                
+<!--                                <h4 style="font-weight: bold;">Seleccione el archivo con las ventas (.xlsx):</h4>
+                                    <input type="file" class="btn btn-facebook btn-lg"  name="archivo_excel" accept=".xlsx, .xls">
+                                <br><br>-->
+
+
+                            </center>
+                        </div>
+
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-success btn-block" value="Registrar Pensionado" onclick="registrar_pensionado()"><fa class="fa fa-cutlery"></fa> Registrar Pensionado</button>
+                            <button type="button" class="btn btn-danger btn-block" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+                
+
             </div>
     </div>
 </div>

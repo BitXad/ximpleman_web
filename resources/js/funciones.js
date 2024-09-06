@@ -3553,8 +3553,8 @@ function cerrar_ventas(){
 
 }
 
-function registrarcliente()
-{
+function registrarcliente(){
+    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/registrarcliente';
     var cliente_id = document.getElementById('cliente_id').value;
@@ -3791,11 +3791,18 @@ function actualizar_numerofactura(){
     
 }
 
-
-function registrarventa(cliente_id)
-{
+function registrarventa(cliente_id){
+    
+    
     var base_url = document.getElementById('base_url').value;
+    
+    
     var controlador = base_url+"venta/registrarventa";    
+    
+    var pensionado = document.getElementById('pensionado').value; 
+    
+    if (pensionado==1)
+        controlador = base_url+"venta/registrar_pensionado";    
     
     var forma_id = document.getElementById('forma_pago').value; 
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
@@ -8990,6 +8997,12 @@ function buscar_nombre(){
     $("#razon_social").focus();
 }
 
+function registrar_pensionado(){
+
+    $("#pensionado").val(1);
+    
+    finalizarventa_sin();
+}
 
 function borrar_datos_cliente(){
     
@@ -9009,6 +9022,7 @@ function borrar_datos_cliente(){
     seleccionar_documento(1); // CI
     seleccionar_servicio(1); // CI
     
+    $("#pensionado").val(0);
     $("#razon_social").val(razon_social);
     $("#cliente_nombre").val(razon_social);
     $("#cliente_codigo").val(nit);

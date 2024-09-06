@@ -61,6 +61,68 @@ function ventas_dia($estado)
 
         return $detalle_venta;
   }
+  
+function ventas_cocina_dia($estado)
+  {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        $sql = "(
+            SELECT
+                
+                v.venta_id,
+                c.cliente_razon,
+                c.cliente_nombre,
+                u.usuario_nombre,
+                m.mesa_nombre,
+                v.venta_numeroventa,
+                v.venta_hora,
+                ts.tiposerv_descripcion,
+                v.entrega_id
+            FROM
+                venta v            
+            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
+            LEFT JOIN entrega e on v.entrega_id = e.entrega_id
+            LEFT JOIN cliente c on v.cliente_id = c.cliente_id
+            LEFT JOIN tipo_servicio ts on v.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN usuario u on u.usuario_id = v.usuario_id
+
+            WHERE
+            v.venta_fecha = date({$now})
+            and v.entrega_id=".$estado."
+            ORDER BY v.venta_id  )
+
+            union
+            
+            (SELECT
+                    p.pedido_id as venta_id,
+                c.cliente_razon,
+                c.cliente_nombre,
+                u.usuario_nombre,
+                m.mesa_nombre,
+                0 as venta_numeroventa,
+                time(p.pedido_fecha) as venta_hora,
+                'EN MESA' as tiposerv_descripcion,
+                p.entrega_id
+
+
+            FROM
+                pedido p            
+            LEFT JOIN mesa m on m.mesa_id = p.mesa_id
+            LEFT JOIN entrega e on p.entrega_id = e.entrega_id
+            LEFT JOIN cliente c on p.cliente_id = c.cliente_id
+            LEFT JOIN usuario u on u.usuario_id = p.usuario_id
+
+            WHERE
+            date(p.pedido_fecha) = date({$now})
+            and p.entrega_id= ".$estado."
+            ORDER BY p.pedido_id )
+
+            
+        ";
+        echo $sql;
+        $detalle_venta = $this->db->query($sql)->result_array();
+
+        return $detalle_venta;
+  }
 
   function ventas_dist($filtro)
   {
