@@ -369,8 +369,19 @@
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
                         </li>
                         
+                        <li>
+                            <a href="<?php echo site_url('pensionados/despachos');?>"><i class="fa fa-list-ol"></i> Consumo del dia</a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('pensionados');?>"><i class="fa fa-list-ol"></i> Registrar Consumo</a>
+                        </li>
+                        
                         
                         <?php
+                        }
+                        if(! isset($tipousuario_id)){
+                            $tipousuario_id = 0;
                         }
                         
                         if($tipousuario_id==1){

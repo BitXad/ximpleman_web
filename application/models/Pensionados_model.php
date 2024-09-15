@@ -6,9 +6,14 @@
  
 class Pensionados_model extends CI_Model
 {
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
+        
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }
     }
     
     /*
@@ -119,6 +124,15 @@ class Pensionados_model extends CI_Model
     }
     
     /*
+     * Consultar
+     */
+    function consultar($sql)
+    {
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
+    
+    /*
      * promociones
      */
     function get_all_pensionados()
@@ -126,11 +140,135 @@ class Pensionados_model extends CI_Model
         $sql =  "SELECT *
                 FROM pensionado p, cliente c, forma_pago f, tipo_transaccion t, estado e
                 where
+                p.estado_id = 1 and
                 p.cliente_id = c.cliente_id and
                 p.forma_id = f.forma_id and
                 p.tipotrans_id = t.tipotrans_id and
                 p.estado_id = e.estado_id";
         return $this->db->query($sql)->result_array(); 
     }
+    
+    function get_all_detallepensionados()
+    {
+        $sql =  "SELECT  d.*, pr.producto_nombre, pr.producto_unidad, pr.producto_precio, pr.producto_codigobarra  
+                FROM detalle_pensionado d, pensionado p, producto pr
+                WHERE p.pensionado_id = d.pensionado_id AND d.producto_id = pr.producto_id";
+        return $this->db->query($sql)->result_array(); 
+    }
+    
+    function get_despachos_dia()
+    {
+        $sql =  "SELECT cl.cliente_nombre, cl.cliente_ci, c.*, e.estado_descripcion from consumo c, pensionado p, cliente cl, estado e
+                where c.consumo_fecha = date(now()) and c.pensionado_id=p.pensionado_id and p.cliente_id = cl.cliente_id and c.estado_id = e.estado_id";
+        return $this->db->query($sql)->result_array(); 
+    }
+    
+    function generar_orden($pensionado_id){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        /*
+         * estado_id	estado_descripcion	estado_tipo	estado_color
+        28	EN PROCESO	3	ffff00
+        16	CREDITO	3	1fc4ae
+        7	ENTREGADO	3	3e98f9
+        6	TERMINADO	3	a781ee
+        5	PENDIENTE	3	ffea00
+        4	ANULADO	3	666666
+         * 
+         */
+       
+        //1. Registrar consumo
+        
+        
+        $consumo_fecha = "date(now())";
+        $consumo_hora = "time(now())";
+        $consumo_total = 0;
+        $tiposerv_id = 1;
+        $estado_id = 1;
+        
+        $sql = "(select if(count(*)>0,count(*) + 1,1) as cantidad from consumo where consumo_fecha = date(now()))";
+        $resultado = $this->db->query($sql)->row_array();
+        $consumo_numero = $resultado["cantidad"];
+        
+        $sql = "insert into consumo(consumo_fecha, consumo_hora, consumo_total, pensionado_id, tiposerv_id, estado_id,usuario_id,consumo_numeromesa,consumo_numero) 
+                value({$consumo_fecha}, {$consumo_hora}, {$consumo_total}, {$pensionado_id}, {$tiposerv_id}, {$estado_id},{$usuario_id},1,{$consumo_numero})";
+        $this->db->query($sql);
+        $consumo_id = $this->db->insert_id();
+        
+        
+        $sql =  "insert into detalle_consumo(pensionado_id, estado_id, producto_id, detallecons_cantidad, detallepen_id, cliente_id,detallecons_caracteristicas, detallecons_preferencia, consumo_id, detallecons_precio, detallecons_total, detallecons_saldoanterior) 
+                SELECT
+                    {$pensionado_id}
+                    ,5 as estado_id
+                    ,pr.producto_id
+                    ,1 as consumo_cantidad
+                    ,d.detallepen_id
+                    ,p.cliente_id
+                    ,'' as detallepen_caracteristicas
+                    ,'' as detallepen_preferencia
+                    ,{$consumo_id}
+                    ,detallepen_precio                    
+                    ,detallepen_precio
+                    ,detallepen_cantidad - detallepen_consumido
+                    
+
+                FROM
+                  detalle_pensionado d,
+                  producto pr,
+                  pensionado p
+                WHERE
+                  p.pensionado_id = {$pensionado_id} and 
+                  p.pensionado_id = d.pensionado_id and  
+                  d.producto_id = pr.producto_id and 
+                  d.detallepen_cantidad > d.detallepen_consumido";
+        
+        $this->db->query($sql);
+        
+        $sql = "select c.*, t.cliente_nombre, t.cliente_codigo
+                from consumo c, pensionado p, cliente t
+                where 
+                c.consumo_id = {$consumo_id} and
+                c.pensionado_id = p.pensionado_id and
+                p.cliente_id = t.cliente_id";
+
+        $consumo =  $this->db->query($sql)->result_array();
+        
+//        $sql = "SELECT *, t.producto_nombre, t.producto_codigobarra FROM detalle_consumo pc, detalle_pensionado p, producto t
+//                where
+//                pc.pensionado_id = {$pensionado_id} and                    
+//                pc.producto_id = p.producto_id and
+        $sql = "select d.*, p.producto_nombre, p.producto_codigobarra from detalle_consumo d, producto p
+                where 
+                d.consumo_id = {$consumo_id} and
+                d.producto_id = p.producto_id";
+                
+        $detalle_consumo =  $this->db->query($sql)->result_array();
+        
+        $resultado = array("consumo"=>$consumo,"detalle_consumo"=>$detalle_consumo);
+        
+        return $resultado;
+
+    }
+    
+    function get_consumo($consumo_id)
+    {
+        $sql =  "SELECT cl.cliente_nombre, cl.cliente_ci, cl.cliente_razon, c.*, e.estado_descripcion, ts.* , u.usuario_nombre 
+                from consumo c, pensionado p, cliente cl, estado e, tipo_servicio ts, usuario u
+                where c.pensionado_id=p.pensionado_id and p.cliente_id = cl.cliente_id and c.estado_id = e.estado_id and u.usuario_id = c.usuario_id 
+                and c.tiposerv_id = ts.tiposerv_id and c.consumo_id = {$consumo_id}";
+                //echo $sql;
+        return $this->db->query($sql)->result_array(); 
+    }
+    
+    function get_detalle_consumo($consumo_id)
+    {
+        $sql =  "select dc.*, p.producto_nombre, p.`producto_codigo`, p.producto_codigobarra
+                from detalle_consumo dc, producto p, estado e 
+                where 
+                dc.consumo_id = {$consumo_id} and dc.producto_id = p.producto_id and dc.estado_id = e.estado_id";
+        return $this->db->query($sql)->result_array(); 
+    }
+    
     
 }

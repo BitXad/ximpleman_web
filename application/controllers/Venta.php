@@ -9998,31 +9998,12 @@ function anular_venta($venta_id){
                        "pensionado_efectivo,pensionado_cambio,pensionado_glosa,pensionado_comision,pensionado_tipocambio,detalleserv_id,".
                        "pensionado_tipodoc, tiposerv_id, entrega_id,pensionado_numeromesa, usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
                        "pensionado_ice, pensionado_giftcard, pensionado_detalletransaccion,pensionado_numeroventa,pensionado_numerotransmes) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes})";
-                $pension_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
-                
-
-                //contabilidar las ventas
-//                if ($this->parametros['parametro_contarventas']==1){
-//                    
-//                    $actualizarventa = "update parametros set parametro_numeroventa = parametro_numeroventa + 1 where parametro_id = ".$this->parametros['parametro_id'];
-//                    $this->Venta_model->ejecutar($actualizarventa);
-//                    
-//                }
-//                
-                
-                //contabilidar las ventas
-//                if ($this->parametros['parametro_contarventasmes']==1){
-//                    
-//                    $actualizarventa = "update dosificacion set dosificacion_numerotransmes = dosificacion_numerotransmes + 1";
-//                    $this->Venta_model->ejecutar($actualizarventa);
-//                    
-//                }
-                
+                $pensionado_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
                    
-                $sql =  "insert into detalle_pension
+                $sql =  "insert into detalle_pensionado
                 (producto_id,
-                  pension_id,
+                  pensionado_id,
                   moneda_id,
                   detallepen_codigo,
                   detallepen_cantidad,
@@ -10054,12 +10035,13 @@ function anular_venta($venta_id){
                   clasificador_id,
                   detallepen_unidadfactor,
                   preferencia_id,
-                  detallepen_tc
+                  detallepen_tc,
+                  detallepen_consumido
                 )
         
                 (SELECT 
                   producto_id,
-                  ".$pension_id." as venta_id,
+                  ".$pensionado_id." as venta_id,
                   moneda_id,
                   detalleven_codigo,
                   detalleven_cantidad,
@@ -10093,7 +10075,8 @@ function anular_venta($venta_id){
                     clasificador_id,
                     detalleven_unidadfactor,
                     preferencia_id,
-                    detalleven_tc
+                    detalleven_tc,
+                    0 as consumido
                     
                 FROM
                   detalle_venta_aux

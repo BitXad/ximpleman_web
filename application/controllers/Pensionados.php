@@ -15,6 +15,9 @@ class Pensionados extends CI_Controller{
         parent::__construct();
         $this->load->model('Pensionados_model');
         $this->load->model('Parametro_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Mesa_model');
+        $this->load->model('Tipo_servicio_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -54,11 +57,36 @@ class Pensionados extends CI_Controller{
 //            $config['base_url'] = site_url('promocion/index?');
 //            $config['total_rows'] = $this->Pensionados_model->get_all_promocion_count();
             $this->pagination->initialize($config);
-
+            
+            $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+            $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
             $data['parametro'] = $this->parametros;
             $data['pensionados'] = $this->Pensionados_model->get_all_pensionados();
+            $data['detalle'] = $this->Pensionados_model->get_all_detallepensionados();
             $data['page_title'] = "Pensionados";
             $data['_view'] = 'pensionados/index';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    function despachos()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+
+            $config = $this->config->item('pagination');
+//            $config['base_url'] = site_url('promocion/index?');
+//            $config['total_rows'] = $this->Pensionados_model->get_all_promocion_count();
+            $this->pagination->initialize($config);
+
+            $data['parametro'] = $this->parametros;
+            $data['despachos'] = $this->Pensionados_model->get_despachos_dia();
+            //$data['detalle'] = $this->Pensionados_model->get_all_detallepensionados();
+            $data['page_title'] = "Despachos";
+            $data['_view'] = 'pensionados/despachos';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -242,28 +270,183 @@ class Pensionados extends CI_Controller{
     /*
      * registrar producto al detalle
      */
-    function modificar_detallepromocion()
+    function generar_orden()
     {
         $data['sistema'] = $this->sistema;
-        if($this->acceso(155)){
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('detallepromo_cantidad','Cantidad','trim|numeric|required', array('required' => 'Este Campo no debe ser vacio'));
-            $this->form_validation->set_rules('detallepromo_precio','Precio','trim|numeric|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())     
-            {
-                $detallepromo_id = $this->input->post("detallepromo_id");
-                $params = array(
-                    'detallepromo_cantidad' => $this->input->post('detallepromo_cantidad'),
-                    'detallepromo_precio' => $this->input->post('detallepromo_precio'),
-                );
-                $this->load->model('Detalle_promocion_model');
-                $this->Detalle_promocion_model->update_detalle_promocion($detallepromo_id, $params);
-                echo json_encode("ok");
-            }else{
-                echo json_encode("no");
-            }
+        
+        if($this->input->is_ajax_request()){
             
+            $pensionado_id = $this->input->post("pensionado_id");
+            $this->load->model('Pensionados_model');
+            $resultado = $this->Pensionados_model->generar_orden($pensionado_id);
+            
+            echo json_encode($resultado);
+
         }
     }
+    
+    function actualizar_cantidad()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $cantidad = $this->input->post("cantidad");
+            $detallecons_id = $this->input->post("detallecons_id");
+            
+            $sql = "update detalle_consumo 
+                    set 
+                    detallecons_cantidad = detallecons_cantidad + {$cantidad},
+                    detallecons_total = detallecons_cantidad * detallecons_precio
+                        
+                    where detallecons_id = {$detallecons_id}";
+            
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            $sql = "select * from detalle_consumo where detallecons_id = {$detallecons_id}";
+            $resultado = $this->Pensionados_model->Consultar($sql);
+            
+            
+            echo json_encode($resultado);
+
+        }
+    }
+    
+    function guardar_preferencias()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $preferencias = $this->input->post("preferencias");
+            $detallecons_id = $this->input->post("detallecons_id");
+            
+            $sql = "update detalle_consumo 
+                    set 
+                    detallecons_preferencia ='{$preferencias}'                        
+                    where detallecons_id = {$detallecons_id}";
+            
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            $sql = "select * from detalle_consumo where detallecons_id = {$detallecons_id}";
+            $resultado = $this->Pensionados_model->Consultar($sql);
+            
+            
+            echo json_encode($resultado);
+
+        }
+    }
+    
+    function eliminar_detalle()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $detallecons_id = $this->input->post("detallecons_id");
+            
+            $sql = "delete from detalle_consumo where detallecons_id = {$detallecons_id}";            
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            echo json_encode(true);
+
+        }
+    }
+    
+    function anular_consumo()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $consumo_id = $this->input->post("consumo_id");
+            
+            $sql = "update detalle_consumo set 
+                    detallecons_cantidad = 0
+                    where consumo_id = {$consumo_id}";            
+            $this->Pensionados_model->Ejecutar($sql);
+
+            $sql = "update consumo set 
+                    consumo_total = 0,
+                    estado_id = 3
+                    where consumo_id = {$consumo_id}";            
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            echo json_encode(true);
+
+        }
+    }
+    
+
+    function comanda_boucher($consumo_id)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        
+        $data['consumo'] = $this->Pensionados_model->get_consumo($consumo_id);
+        $data['detalle_consumo'] = $this->Pensionados_model->get_detalle_consumo($consumo_id);
+
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicios();        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'pensionados/comanda_boucher';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        }
+    } 
+    
+
+    function finalizar_registro()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->input->is_ajax_request()){
+        //**************** inicio contenido ***************           
+    
+            $consumo_id = $this->input->post("consumo_id");
+            $consumo_numeromesa = $this->input->post("consumo_numeromesa");
+            $tiposerv_id = $this->input->post("tiposerv_id");
+            $pensionado_id = $this->input->post("pensionado_id");
+
+            $sql = "update consumo set 
+                    consumo_numeromesa = {$consumo_numeromesa}, 
+                    tiposerv_id = {$tiposerv_id},
+                    estado_id = 1
+                    where consumo_id = {$consumo_id}" ;
+
+            $this->Pensionados_model->Ejecutar($sql);
+
+            //actualizar consumidos
+            
+            $sql = "update detalle_pensionado d
+                    join (
+                        select s.detallepen_id, sum(s.detallecons_cantidad) as cantidad
+                        from detalle_consumo s
+                        group by s.detallepen_id
+                    ) as sc on d.detallepen_id = sc.detallepen_id
+                    set d.detallepen_consumido = sc.cantidad
+                    where d.pensionado_id = {$pensionado_id};" ;
+
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            
+            
+            echo json_encode(array("consumo"=>$consumo_id));
+        		
+        //**************** fin contenido ***************
+        }
+    } 
     
 }
