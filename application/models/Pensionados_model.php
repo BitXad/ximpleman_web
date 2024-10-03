@@ -156,6 +156,13 @@ class Pensionados_model extends CI_Model
         return $this->db->query($sql)->result_array(); 
     }
     
+    
+    function get_all_productos($categoria_id)
+    {
+        $sql =  "select * from inventario where categoria_id = {$categoria_id}";
+        return $this->db->query($sql)->result_array(); 
+    }
+    
     function get_despachos_dia()
     {
         $sql =  "SELECT cl.cliente_nombre, cl.cliente_ci, c.*, e.estado_descripcion from consumo c, pensionado p, cliente cl, estado e
@@ -180,7 +187,7 @@ class Pensionados_model extends CI_Model
        
         //1. Registrar consumo
         
-        
+        $categoria_id = 16; //categoria de productos pensionados
         $consumo_fecha = "date(now())";
         $consumo_hora = "time(now())";
         $consumo_total = 0;
@@ -196,7 +203,7 @@ class Pensionados_model extends CI_Model
         $this->db->query($sql);
         $consumo_id = $this->db->insert_id();
         
-        
+        /*
         $sql =  "insert into detalle_consumo(pensionado_id, estado_id, producto_id, detallecons_cantidad, detallepen_id, cliente_id,detallecons_caracteristicas, detallecons_preferencia, consumo_id, detallecons_precio, detallecons_total, detallecons_saldoanterior) 
                 SELECT
                     {$pensionado_id}
@@ -223,10 +230,10 @@ class Pensionados_model extends CI_Model
                   d.producto_id = pr.producto_id and 
                   d.detallepen_cantidad > d.detallepen_consumido";
         
-        $this->db->query($sql);
+        $this->db->query($sql);*/
         
-        $sql = "select c.*, t.cliente_nombre, t.cliente_codigo
-                from consumo c, pensionado p, cliente t
+        $sql = "select c.*, t.cliente_nombre, t.cliente_codigo, p.saldo
+                from consumo c, conspensionados p, cliente t
                 where 
                 c.consumo_id = {$consumo_id} and
                 c.pensionado_id = p.pensionado_id and
@@ -234,10 +241,6 @@ class Pensionados_model extends CI_Model
 
         $consumo =  $this->db->query($sql)->result_array();
         
-//        $sql = "SELECT *, t.producto_nombre, t.producto_codigobarra FROM detalle_consumo pc, detalle_pensionado p, producto t
-//                where
-//                pc.pensionado_id = {$pensionado_id} and                    
-//                pc.producto_id = p.producto_id and
         $sql = "select d.*, p.producto_nombre, p.producto_codigobarra from detalle_consumo d, producto p
                 where 
                 d.consumo_id = {$consumo_id} and
@@ -245,9 +248,12 @@ class Pensionados_model extends CI_Model
                 
         $detalle_consumo =  $this->db->query($sql)->result_array();
         
-        $resultado = array("consumo"=>$consumo,"detalle_consumo"=>$detalle_consumo);
+        $sql =  "select * from inventario where categoria_id = {$categoria_id}";
+        $productos_pensionados =  $this->db->query($sql)->result_array(); 
         
-        return $resultado;
+        $arreglo = array("consumo"=>$consumo,"detalle_consumo"=>$detalle_consumo,"productos_pensionados"=>$productos_pensionados);
+        
+        return $arreglo;
 
     }
     
@@ -263,7 +269,7 @@ class Pensionados_model extends CI_Model
     
     function get_detalle_consumo($consumo_id)
     {
-        $sql =  "select dc.*, p.producto_nombre, p.`producto_codigo`, p.producto_codigobarra
+        $sql =  "select dc.*, dc.producto_codigobarra as producto_codigo, p.producto_codigobarra
                 from detalle_consumo dc, producto p, estado e 
                 where 
                 dc.consumo_id = {$consumo_id} and dc.producto_id = p.producto_id and dc.estado_id = e.estado_id";
@@ -271,4 +277,48 @@ class Pensionados_model extends CI_Model
     }
     
     
+    function registrar_item($pensionado_id, $cantidadproducto, $producto_id, $consumo_id)
+    {
+        
+        $sql =  "insert into detalle_consumo(pensionado_id, estado_id, producto_id, producto_nombre, producto_codigobarra, detallecons_cantidad, detallepen_id, cliente_id,detallecons_caracteristicas, detallecons_preferencia, consumo_id, detallecons_precio, detallecons_total, detallecons_saldoanterior) 
+                SELECT
+                    {$pensionado_id} as pensionado_id
+                    ,5 as estado_id
+                    ,pr.producto_id
+                    ,pr.producto_nombre
+                    ,pr.producto_codigobarra                    
+                    ,{$cantidadproducto} as consumo_cantidad
+                    ,d.detallepen_id
+                    ,p.cliente_id
+                    ,' ' as detallepen_caracteristicas
+                    ,' ' as detallepen_preferencia
+                    ,{$consumo_id} as consumo_id
+                    ,d.detallepen_precio                    
+                    ,d.detallepen_precio
+                    ,d.detallepen_cantidad - d.detallepen_consumido
+                    
+
+                FROM
+                  detalle_pensionado d,
+                  inventario pr,
+                  pensionado p
+                WHERE
+                  p.pensionado_id = {$pensionado_id} and 
+                  d.pensionado_id = {$pensionado_id} and 
+                  pr.producto_id = {$producto_id}";
+        //echo $sql;
+        $this->db->query($sql);
+        
+        return true; 
+    }
+    
+    function verificar_cantidad($cantidad, $pensionado_id)
+    {
+        
+        $sql =  "select * from conspensionados where saldo>={$cantidad} and pensionado_id = {$pensionado_id}";        
+        return $this->db->query($sql)->result_array(); 
+    }
+    
+    
 }
+

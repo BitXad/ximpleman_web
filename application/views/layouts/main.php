@@ -370,7 +370,7 @@
                         </li>
                         
                         <li>
-                            <a href="<?php echo site_url('pensionados/despachos');?>"><i class="fa fa-list-ol"></i> Consumo del dia</a>
+                            <a href="<?php echo site_url('pensionados/despachos');?>"><i class="fa fa-hamburger"></i> Consumo del dia</a>
                         </li>
 
                         <li>
@@ -388,7 +388,7 @@
                         ?>
                         
                         <li>
-                            <a href="<?php echo site_url('reportes/reporteingresos');?>"><i class="fa fa-list-ol"></i> Reporte de ingresos</a>
+                            <a href="<?php echo site_url('reportes/reporteingresos');?>"><i class="fa fa-money"></i> Reporte de ingresos</a>
                         </li>
                         
                         <?php } ?>

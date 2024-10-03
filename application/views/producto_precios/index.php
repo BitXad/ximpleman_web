@@ -134,6 +134,7 @@
         });
     });
 </script>
+
 <style type="text/css" media="print">
     /* Ocultar botones y controles específicos al imprimir */
     .dataTables_wrapper .dt-buttons,

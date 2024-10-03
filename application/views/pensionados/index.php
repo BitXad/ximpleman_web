@@ -215,7 +215,7 @@
                         <div class="modal-footer" style="text-align: center">
 
                             <button type="button" class="btn btn-success btn-block" value="Finalizar Registro" onclick="finalizar_registro()"  data-dismiss="modal"><fa class="fa fa-cutlery"></fa> Registrar Pensionado</button>
-                            <button type="button" class="btn btn-danger btn-block" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                            <button type="button" class="btn btn-danger btn-block" id="boton_cerrar_ventatemporal" onclick="anular_registro()"><fa class="fa fa-times"></fa> Cancelar</button>
                         </div>                
             </div>
     </div>

@@ -50,6 +50,8 @@ class Pensionados extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
+            
+            $categoria_id = 1; //Categoria de productos pensionados
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -278,6 +280,7 @@ class Pensionados extends CI_Controller{
             
             $pensionado_id = $this->input->post("pensionado_id");
             $this->load->model('Pensionados_model');
+            //$data['productos_pensionados'] = $this->Pensionados_model->get_all_productos($categoria_id);
             $resultado = $this->Pensionados_model->generar_orden($pensionado_id);
             
             echo json_encode($resultado);
@@ -448,5 +451,84 @@ class Pensionados extends CI_Controller{
         //**************** fin contenido ***************
         }
     } 
+    
+    
+    function anular_registro()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->input->is_ajax_request()){
+        //**************** inicio contenido ***************           
+    
+            $consumo_id = $this->input->post("consumo_id");
+
+
+            $sql = "delete from detalle_consumo where consumo_id = {$consumo_id}" ;
+            $this->Pensionados_model->Ejecutar($sql);
+
+            //actualizar consumidos
+            
+            $sql = "delete from consumo where consumo_id = {$consumo_id}" ;
+            $this->Pensionados_model->Ejecutar($sql);
+            
+            echo json_encode(true);
+        		
+        //**************** fin contenido ***************
+        }
+    } 
+    
+    function registrar_item()
+    {
+        
+        if($this->input->is_ajax_request()){
+            
+            $pensionado_id = $this->input->post("pensionado_id");
+            $cantidadproducto = $this->input->post("cantidadproducto");
+            $producto_id = $this->input->post("producto_id");
+            $consumo_id = $this->input->post("consumo_id");
+            
+            $this->Pensionados_model->registrar_item($pensionado_id, $cantidadproducto, $producto_id, $consumo_id);
+            
+            echo json_encode(true);
+
+        }
+    }
+    
+    /*
+     * buscar detalle de pensionado
+     */
+    function mostrar_tabla()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $consumo_id = $this->input->post("consumo_id");
+            
+            //$data['productos_pensionados'] = $this->Pensionados_model->get_all_productos($categoria_id);
+            $resultado = $this->Pensionados_model->get_detalle_consumo($consumo_id);
+            
+            echo json_encode($resultado);
+
+        }
+    }    
+    
+    /*
+     * buscar detalle de pensionado
+     */
+    function verificar_cantidad()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $pensionado_id = $this->input->post("pensionado_id");
+            $cantidad = $this->input->post("cantidad");
+            
+            $resultado = $this->Pensionados_model->verificar_cantidad($cantidad, $pensionado_id);
+            
+            echo json_encode(sizeof($resultado)>=1);
+
+        }
+    }    
     
 }

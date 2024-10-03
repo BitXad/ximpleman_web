@@ -443,6 +443,8 @@ class Factura extends CI_Controller{
         $parametros = $this->parametros;
         $data['tipo'] = $tipo;
         
+       
+        
         if(sizeof($factura)>=1){
             
             if (isset($factura[0]['datos_id'])){            
@@ -460,6 +462,7 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
+        
         
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             // Antiguo
@@ -514,6 +517,16 @@ class Factura extends CI_Controller{
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 12){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+            
+            if($dosificacion['docsec_codigoclasificador'] == 16){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+            
+            if($dosificacion['docsec_codigoclasificador'] == 22){ // FACTURA SECTOR EDUCATIVO
                 $data['_view'] = 'factura/factura_bouchern';
             }
             

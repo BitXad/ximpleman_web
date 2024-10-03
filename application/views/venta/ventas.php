@@ -320,7 +320,7 @@ $actualizar_precios = 1;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" > <!-- mostrar para etapas de certificacion     -->
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden> <!-- mostrar para etapas de certificacion     -->
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -338,7 +338,6 @@ $actualizar_precios = 1;
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 <input type="text" id="cliente_valido" value="1" hidden>
 <input type="text" id="credito_id" value="0" name="credito_id" hidden>
-<input type="text" id="pensionado" value="0" name="pensionado" hidden>
 
 <input type="text" id="parametro_anchobuscador" value="<?php echo $parametro['parametro_anchobuscador']; ?>" name="parametro_anchobuscador"  hidden>
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
@@ -672,6 +671,20 @@ $actualizar_precios = 1;
                 <fa class="fa fa-cubes"></fa>
             </button>
         
+            <?php if($parametro['parametro_modulorestaurante']==1){ ?>
+            
+            <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">
+                    <option value="0">- PENSIONADO -</option>
+                    <option value="1">REGISTRAR PENSIONADO</option>
+                </select>            
+            
+            <?php } else{?>
+                <input type="text" id="pensionado" value="0" name="pensionado" hidden>
+            <?php } ?>
+               
+            
+            
+            
             <?php if($dosificacion[0]['docsec_codigoclasificador'] == 13){ ?>
             
                 <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios" >
@@ -1529,9 +1542,10 @@ $actualizar_precios = 1;
 
             <?php if ($parametro["parametro_modulorestaurante"]==1){  ?>
                 
-                <a href="#" data-toggle="modal" data-target="#modalpensionado" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_asignarinventario"]!=1)?"display:none":"" ?>">
+                <!--<a href="#" data-toggle="modal" data-target="#modalpensionado" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; ">-->
+                <a href="<?php echo base_url("pensionados"); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; ">
                     <i class="fa fa-cutlery fa-4x"></i>
-                    <br><br>Registrar<br>Pensionado
+                    <br><br>Consumo<br>Pensionado
                 </a>
 
             <?php } ?>
@@ -1728,14 +1742,13 @@ $actualizar_precios = 1;
 					<span aria-hidden="true">&times;</span>
 				</button>
                             
-                        <div class="container">
+                            <div class="row">
+                                <!--<div class="container">-->
                             
-                                <center>
-                                <div class="row">
                                     <div class="col-md-12">
                                         
                                     
-                                    <div class="col-md-2" style="padding: 0;">
+                                    <div class="col-md-3" style="padding: 0;">
 <!--                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
@@ -1753,9 +1766,8 @@ $actualizar_precios = 1;
                                          </select>
                                     </div>
                                     
-                                    <div class="col-md-2" style="padding: 0;">
-                                        <center>
-                                            
+                                    <div class="col-md-3" style="padding: 0;">
+
                                         <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
                                         <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
                                             <?php
@@ -1764,11 +1776,10 @@ $actualizar_precios = 1;
                                             <?php } ?>
  
                                          </select>
-                                        
-                                        </center>
+                                    
                                     </div>
                                     
-                                    <div class="col-md-2" style="padding: 0; display: none;" id="div_sucursales">
+                                    <div class="col-md-3" style="padding: 0; display: none;" id="div_sucursales">
                                         <center>
                                             
                                         <h5 class="modal-title" id="myModalLabel"><b>SUCURSALES</b></h5>                                        
@@ -1791,36 +1802,16 @@ $actualizar_precios = 1;
                                         </center>
                                     </div>
                                         
-                                    <div class="col-md-12" style="display: block;"></div>
-                                    <div class="col-md-6" id="glosa_banco" style="display: none;">
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <label for="glosa_compra">Numero Tarjeta</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="venta_detalletransaccion" value="0" onkeyup="ofuscar_tarjeta()">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label for="banco">Banco</label>
-                                                <div class="form-group">
-                                                    <select name="banco" id="banco" class="form-control">
-                                                        <?php foreach($bancos as $banco){ 
-                                                            extract($banco);
-                                                            $selected = ($banco_id == $compra['banco_id']) ? ' selected="selected"' : "";
-                                                            echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
-                                                        } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!--<div class="col-md-12" style="display: block;"></div>-->
+                                  
+                                    
                                     <?php 
                                             $ocultar = "none";
                                         if ($parametro["parametro_modulorestaurante"]==1){    
                                             $ocultar = "block";
                                             
                                     } ?>   
-                                    <div class="col-md-2" style="padding: 0; display: <?php echo $ocultar; ?>">
+                                    <div class="col-md-3" style="padding: 0; display: <?php echo $ocultar; ?>">
                                         <span>
                                         <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
                                         <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
@@ -1831,6 +1822,24 @@ $actualizar_precios = 1;
                                             <?php } ?>
  
                                          </select>
+<!--                                        <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
+                                                
+                                                    <option value="0">- MESAS -</option>
+                                            <?php 
+                                            
+                                                foreach($mesas as $mesa ){ ?>
+                                                    <option value="<?php echo $mesa["mesa_id"]; ?>"><?php echo $mesa["mesa_nombre"]; ?></option>
+                                            
+                                            <?php } ?>
+ 
+                                         </select>-->
+                                        
+                                    </span>
+                                    </div>
+                                    
+                                    <div class="col-md-3" style="padding: 0; display: <?php echo $ocultar; ?>">
+                                        <span>
+                                        <h5 class="modal-title" id="myModalLabel"><b>MESA</b></h5>
                                         <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
                                                 
                                                     <option value="0">- MESAS -</option>
@@ -1846,12 +1855,46 @@ $actualizar_precios = 1;
                                     </span>
                                     </div>
                                     
+                                    
+                                                                        <div class="col-md-6" id="glosa_banco" style="display: none;">
+                                        
+                                        <div class="row">
+                                            
+                                            <div class="col-md-6">
+                                                
+                                                <label for="glosa_compra">NUM. TARJETA</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="btn-default btn-xs" id="venta_detalletransaccion" value="0" onkeyup="ofuscar_tarjeta()" style="width: 120px;">
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                
+                                                <label for="banco">BANCO</label>
+                                                <div class="form-group">
+                                                    <select name="banco" id="banco" class="btn-default btn-xs" style="width: 120px;">
+                                                        <?php foreach($bancos as $banco){ 
+                                                            extract($banco);
+                                                            $selected = ($banco_id == $compra['banco_id']) ? ' selected="selected"' : "";
+                                                            echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
                                 </div>                                    
                                                                                              
+                            <!--</div>-->
 			</div>
-			</div>
+                </div>
+  
                             
-			<div class="modal-body">
+            <div class="modal-body">
                             
 <!----------- tabla detalle cuenta ----------------------------------->
 
@@ -2529,7 +2572,7 @@ $actualizar_precios = 1;
                             
        
                                             
-                                        <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
+                                        <input type="text" id="modificarprecios_producto" value="modificarprecios_producto" class="form-control btn btn-xs btn-default" style="font-size: 10pt;">
                                         
                                         <div class="col-md-3">
                                             <label for="usuario_idx" class="control-label">Precio Costo:</label>

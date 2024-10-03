@@ -738,6 +738,7 @@ class Venta extends CI_Controller{
                 $venta_glosa    = $this->input->post('venta_glosa');
                 $cliente_id    = $this->input->post('cliente_id');
                 $factura_servicio    = $this->input->post('factura_servicio');
+                $registrar_pensionado    = $this->input->post('pensionado');
                 $factura_glosa    = $venta_glosa;
                 
                 //  DATOS  ADICIONALES FACTURA
@@ -815,6 +816,114 @@ class Venta extends CI_Controller{
                         detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
                         where usuario_id = ".$usuario_id;               
                 $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                
+
+                //***********************************************
+                //   INICIO REGISTRO PENSIONADO
+                //***********************************************
+                
+                
+                //******** REGISTRA LA TABLA VENTA
+                
+                if($registrar_pensionado==1){
+                    
+                    $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+                    $sql = "insert into pensionado(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
+                           "estado_id,pensionado_fecha,pensionado_hora,pensionado_subtotal,pensionado_descuentoparcial,pensionado_descuento,pensionado_total,".
+                           "pensionado_efectivo,pensionado_cambio,pensionado_glosa,pensionado_comision,pensionado_tipocambio,detalleserv_id,".
+                           "pensionado_tipodoc, tiposerv_id, entrega_id,pensionado_numeromesa, usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
+                           "pensionado_ice, pensionado_giftcard, pensionado_detalletransaccion,pensionado_numeroventa,pensionado_numerotransmes) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes})";
+                    $pensionado_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+
+
+                    $sql =  "insert into detalle_pensionado
+                    (producto_id,
+                      pensionado_id,
+                      moneda_id,
+                      detallepen_codigo,
+                      detallepen_cantidad,
+                      detallepen_unidad,
+                      detallepen_costo,
+                      detallepen_precio,
+                      detallepen_subtotal,
+                      detallepen_descuentoparcial,
+                      detallepen_descuento,
+                      detallepen_total,
+                      detallepen_caracteristicas,
+                      detallepen_preferencia,
+                      detallepen_comision,
+                      detallepen_tipocambio,
+                      detallepen_envase,
+                      detallepen_nombreenvase,
+                      detallepen_costoenvase,
+                      detallepen_precioenvase,
+                      detallepen_cantidadenvase,
+                      detallepen_garantiaenvase,
+                      detallepen_devueltoenvase,
+                      detallepen_fechadevolucion,
+                      detallepen_horadevolucion,
+                      detallepen_montodevolucion,
+                      detallepen_prestamoenvase,
+                      detallepen_fechavenc,
+                      usuario_id,
+                      factura_id,
+                      clasificador_id,
+                      detallepen_unidadfactor,
+                      preferencia_id,
+                      detallepen_tc,
+                      detallepen_consumido
+                    )
+
+                    (SELECT 
+                      producto_id,
+                      ".$pensionado_id." as venta_id,
+                      moneda_id,
+                      detalleven_codigo,
+                      detalleven_cantidad,
+                      detalleven_unidad,
+                      detalleven_costo,
+                      detalleven_precio,
+                      detalleven_subtotal,
+                      detalleven_descuentoparcial,
+                      detalleven_descuento,
+
+                      detalleven_total,
+                      detalleven_caracteristicas,
+                      detalleven_preferencia,
+                      detalleven_comision,
+                      detalleven_tipocambio,
+                        detalleven_envase,
+                        detalleven_nombreenvase,
+                        detalleven_costoenvase,
+                        detalleven_precioenvase,
+                        detalleven_cantidadenvase,
+                        detalleven_garantiaenvase,
+                        detalleven_devueltoenvase,
+                        detalleven_fechadevolucion,
+                        detalleven_horadevolucion,
+                        detalleven_montodevolucion,
+                        detalleven_prestamoenvase,
+                        detalleven_fechavenc,
+                        usuario_id,
+                        0 as factura_id,
+                        clasificador_id,
+                        detalleven_unidadfactor,
+                        preferencia_id,
+                        detalleven_tc,
+                        0 as consumido
+
+                    FROM
+                      detalle_venta_aux
+                    WHERE 
+                      usuario_id=".$usuario_id.")";
+
+                    $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta                
+
+                }
+
+                //***********************************************
+                //   FIN REGISTRO PENSIONADO
+                //***********************************************
                 
                 
                 //******** REGISTRA LA TABLA VENTA
@@ -5938,40 +6047,36 @@ function anular_venta($venta_id){
             $producto_costo = $this->input->post('producto_costo');
             $producto_precio = $this->input->post('producto_precio');
             $producto_codigo = $this->input->post('producto_codigo');
+            $producto_nombre = $this->input->post('producto_nombre');            
             $actualizarpreciossucursales = $this->input->post('actualizarpreciossucursales');
             
             $sql = "update producto set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
-                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}'
+                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}' , producto_nombre = '{$producto_nombre}' 
                      where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql);
             
             $sql = "update inventario set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
-                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}'
+                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}', producto_nombre = '{$producto_nombre}' 
                      where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql);
             
-            //********************** ACTUALIZAR EN SUCURSALES *********
-            
+            //********************** ACTUALIZAR EN SUCURSALES *********            
             if($actualizarpreciossucursales){
                 
                 $params[0] = array(
                     'producto_id' => $producto_id,
                     'producto_costo' => $producto_costo,
                     'producto_precio' => $producto_precio,
+                    'producto_nombre' => $producto_nombre,
                 );
                 
                 $this->actualizar_precios_sucursales($params);
                 
             }
-            
             //*********************************************************
-            
-            
             echo json_encode("true");
             
-        }else{                 
-            show_404();
-        }              
+        }else{ show_404(); }              
     }
     
     function clasificador_producto(){

@@ -3792,18 +3792,10 @@ function actualizar_numerofactura(){
 }
 
 function registrarventa(cliente_id){
-    
-    
-    var base_url = document.getElementById('base_url').value;
-    
-    
-    var controlador = base_url+"venta/registrarventa";    
-    
+        
+    var base_url = document.getElementById('base_url').value;   
+    var controlador = base_url+"venta/registrarventa";        
     var pensionado = document.getElementById('pensionado').value; 
-    
-    if (pensionado==1)
-        controlador = base_url+"venta/registrar_pensionado";    
-    
     var forma_id = document.getElementById('forma_pago').value; 
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
     var usuario_id = document.getElementById('usuario_id').value; 
@@ -3889,6 +3881,8 @@ function registrarventa(cliente_id){
     let cliente_nombre = document.getElementById('cliente_nombre').value;
     let cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;
     //alert(cliente_nombre+" *** "+ cliente_nombrenegocio);
+    
+   // alert(pensionado);
     
     if (registroeventos_codigo>0){
         
@@ -3992,7 +3986,7 @@ function registrarventa(cliente_id){
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
                 datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
-                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4108,7 +4102,7 @@ function registrarventa(cliente_id){
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
                 datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
-                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -6304,6 +6298,7 @@ function actualizar_precio(){
     var producto_costo = document.getElementById("modificarprecios_producto_costo").value;
     var producto_precio = document.getElementById("modificarprecios_producto_precio").value;
     var producto_codigo = document.getElementById("modificarprecios_producto_codigo").value;
+    var producto_nombre = document.getElementById("modificarprecios_producto").value;
     var actualizarpreciossucursales = $('#actualizarpreciossucursales').is(':checked');
     
     //alert(actualizarpreciossucursales);
@@ -6312,7 +6307,7 @@ function actualizar_precio(){
     
     $.ajax({url: controlador,
             type: "POST",
-            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo}, 
+            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo, producto_nombre:producto_nombre}, 
             success:function(resultado){
  
                 tablaresultados(1);
@@ -7737,8 +7732,6 @@ function ofuscar_tarjeta(){
 // verificarComunicacion -> obtenciond e codigos
 function finalizarventa_sin(){
     
-    
-    
     var boton_presionado = document.getElementById('boton_presionado').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/verificarcomunicacion';
@@ -8999,9 +8992,8 @@ function buscar_nombre(){
 
 function registrar_pensionado(){
 
-    $("#pensionado").val(1);
-    
-    finalizarventa_sin();
+        $("#boton_finventa").click();
+ 
 }
 
 function borrar_datos_cliente(){
