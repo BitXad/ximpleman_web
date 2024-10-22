@@ -1050,7 +1050,7 @@ function buscar_compras()
     
             
     if (opcion == 6) {
-        //alert("llega aqui...!");
+        //alert("llega aqui...!"); Para buscar compras perdidas
         mostrar_ocultar_buscador("ocultar");
         filtro = " and NOT EXISTS (SELECT 1 FROM detalle_compra dc WHERE dc.compra_id = c.compra_id) ";
     }  //Compras proveedor / codigo

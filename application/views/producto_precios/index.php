@@ -44,6 +44,7 @@
                             <th>Ultimo<br>Costo <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Codigo</th>
                             <th>Precio<br><?php echo $lamoneda['moneda_descripcion'] ?></th>
+                            <th>Precio<br>Actualizado <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor1 <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor2 <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor3 <?php echo $lamoneda['moneda_descripcion'] ?></th>
@@ -63,11 +64,12 @@
                             <td style="text-align: right;"><?php echo number_format($t['producto_costo'],$decimales,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($t['producto_ultimocosto'],$decimales,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($t['producto_precio'],$decimales,".",","); ?></td>
-                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor'],$decimales,".",","); ?></td>
-                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor1'],$decimales,".",","); ?></td>
-                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor2'],$decimales,".",","); ?></td>
-                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor3'],$decimales,".",","); ?></td>
-                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor4'],$decimales,".",","); ?></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><b><?php echo $t['producto_precioactualizado']; ?></b></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor'],$decimales,".",","); ?></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor1'],$decimales,".",","); ?></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor2'],$decimales,".",","); ?></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor3'],$decimales,".",","); ?></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor4'],$decimales,".",","); ?></td>
 <!--                            <td class="no-print">
                                 <a href="<?php echo site_url('tipo_cliente/edit/'.$t['producto_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                             </td>-->
@@ -195,12 +197,33 @@
                                 </div>
                         </div>
                         
-                        <div class="col-md-4">
-                                <label for="moneda_razon" class="control-label">Razón de Conversión </label>
+                        <div class="col-md-3">
+                                <label for="moneda_razon" class="control-label">Razón de Conv.</label>
                                 <div class="form-group">
                                     <input type="text" name="moneda_razon" value="0.00" class="form-control" id="moneda_razon" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled="true"/>
                                         <!--<span class="text-danger"><?php echo form_error('moneda_razon');?></span>-->
                                 </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+
+                            <label for="razon social" class="control-label" >Monto</label>
+                            <div class="input-group">
+
+                                <input type="text" name="razon_social" class="form-control" <?php //echo $estilos_facturacion; ?> "  id="razon_social" value="0" />
+                                
+                                <!--- div class="input-group-addon" style="pading:0px;">
+                                    <select>
+                                        <option value="1">Bs</option>
+                                        <option value="2">%</option>
+                                    </select>
+                                   
+                                </div--->
+                                <div style="border-color: #008d4c; background: #3498db !important; color: white" class="btn btn-success input-group-addon" onclick="cambiar_tipomoneda()" title="Establecer el tipo de moneda o  porcentaje"><span class="fa" aria-hidden="true" id="span_tipo_moneda">%</span></div>
+             
+
+                            </div>
+
                         </div>
                         
                         <div class="col-md-4">

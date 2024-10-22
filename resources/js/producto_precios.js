@@ -57,6 +57,7 @@ function actualizar_precios(){
     let tc = document.getElementById('moneda_tc').value;
     let tc_nuevo = document.getElementById('moneda_tc_nuevo').value;    
     let razon = tc_nuevo / tc ;
+    var tipo_moneda = document.getElementById("span_tipo_moneda");
     
     
     alert(operacion +' *** '+afectar+' *** '+redondear)
@@ -73,7 +74,7 @@ function actualizar_precios(){
                         $.ajax({
                             url: controlador,
                             type: "POST",
-                            data: {},
+                            data: {operacion:operacion,afectar:afectar,redondear:redondear, razon:razon, tipo_moneda:tipo_moneda},
                             success: function(respuesta) {
                                 let res = JSON.parse(respuesta);
 
@@ -99,4 +100,16 @@ function actualizar_precios(){
     
     }
     
+}
+
+
+function cambiar_tipomoneda() {
+    var span = document.getElementById("span_tipo_moneda");
+    
+    // Cambia el valor del span según una condición o de manera fija
+    if (span.innerHTML === "%") {
+        span.innerHTML = "Bs";  // Cambia a "$"
+    } else {
+        span.innerHTML = "%";  // Cambia a "%"
+    }
 }

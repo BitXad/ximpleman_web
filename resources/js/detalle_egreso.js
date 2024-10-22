@@ -109,6 +109,7 @@ function borrar_egreso(posicion){
 }
 
 function add_egreso(edit){
+    
     if(verificar_form()){
         let controlador = (edit == 0 ? `${base_url}egreso/add_egresos`:`${base_url}egreso/edit_egresos`);
         let egreso_nombre = $('#egreso_nombre').val();
@@ -119,12 +120,13 @@ function add_egreso(edit){
         let egreso_concepto = $('#egreso_concepto').val();
         let egreso_glosa = $('#egreso_glosa').val();
         let egreso_monreg =  $('#egreso_moneda').val();
-        let egreso_numero = $('#egreso_numero') .val();
-        let egreso_fecha = $('#egreso_fecha') .val();
+        let egreso_numero = $('#egreso_numero').val();
+        let egreso_fecha = $('#egreso_fecha').val();
         console.log(egreso_glosa)
         let usuario_id = $('#usuario_id').val();
         let banco_id = $('#banco_id').val();
         let egreso_id = edit;
+        
         $.ajax({
             url: controlador,
             type: 'POST',

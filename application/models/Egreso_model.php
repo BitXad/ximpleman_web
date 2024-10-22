@@ -111,8 +111,10 @@ class Egreso_model extends CI_Model
     
     function update_egreso($egreso_id,$params)
     {
+        //var_dump($params);
         $this->db->where('egreso_id',$egreso_id);
         $response = $this->db->update('egresos',$params);
+        
         if($response)
         {
             return "egreso updated successfully";

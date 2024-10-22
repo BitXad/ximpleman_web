@@ -162,41 +162,56 @@ class Egreso extends CI_Controller{
     function edit($egreso_id)
     {   
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(61)){
-            $data['page_title'] = "Egreso";
+            
+            $data['page_title'] = "Modificar Egreso";
+            
             $usuario_id = $this->session_data['usuario_id'];
+            //echo $usuario_id;
             // check if the egreso exists before tryegr to edit it
             $data['egreso'] = $this->Egreso_model->get_egreso($egreso_id);
+            $data['usuario_id'] = $usuario_id;
+           
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $parametro = $this->Parametro_model->get_all_parametro();
             $data['parametro'] = $parametro;
             $this->load->model('Moneda_model');
             $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
             $data['all_moneda'] = $all_moneda;
+            
             if(isset($data['egreso']['egreso_id']))
             {
+                
                 if(isset($_POST) && count($_POST) > 0)     
                 {
                     $egreso_monto  = $this->input->post('egreso_monto');
                     $egreso_moneda = $this->input->post('egreso_moneda');
                     $egreso_tc     = $all_moneda[1]["moneda_tc"];
                     $total_final = 0;
+                    
                     if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                        
                         $lamoneda = $all_moneda[0]["moneda_descripcion"];
                         if($egreso_moneda != "Bs"){
                             $total_final += $egreso_monto*$all_moneda[1]["moneda_tc"];
-                        }else{
+                            
+                    }else{
                             $total_final += $egreso_monto;
                         }
                     }else{ // Si no se multiplica
+                        
                         $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                        
                         if($egreso_moneda != "Bs"){
                             $total_final += $egreso_monto;
                         }else{
                             $total_final += $egreso_monto/$all_moneda[1]["moneda_tc"];
                         }
                     }
+                    
                     if($this->session_data['tipousuario_id'] == 1){
+                        
                         $params = array(
                             'usuario_id' => $this->input->post('usuario_id'),
                             'egreso_categoria' => $this->input->post('egreso_categoria'),
@@ -210,6 +225,8 @@ class Egreso extends CI_Controller{
                             'egreso_glosa' => $this->input->post('egreso_glosa'),
                         );
                     }else{
+                        
+                        
                     $params = array(
                         'usuario_id' => $usuario_id,
                         'egreso_categoria' => $this->input->post('egreso_categoria'),
@@ -220,14 +237,15 @@ class Egreso extends CI_Controller{
                         'egreso_concepto' => $this->input->post('egreso_concepto'),
                         'forma_id' => $this->input->post('forma_pago'),
                         'egreso_glosa' => $this->input->post('egreso_glosa'),
-                        //'egreso_fecha' => $this->input->post('egreso_fecha'),		
+                        'egreso_fecha' => $this->input->post('egreso_fecha'),		
                     );
                 }
                 
                 $this->Egreso_model->update_egreso($egreso_id,$params);            
                 redirect('egreso/index');
+                
             }else{
-	
+                // Modificar Egresos
                 $this->load->model('Categoria_egreso_model');
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
@@ -240,7 +258,7 @@ class Egreso extends CI_Controller{
             }
         }
         else
-            show_error('The egreso you are tryegr to edit does not exist.');
+            show_error('The egreso you are try to edit does not exist.');
         }
     }
 

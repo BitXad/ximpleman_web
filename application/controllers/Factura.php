@@ -170,7 +170,7 @@ class Factura extends CI_Controller{
         //**************** inicio contenido ***************
             //$parametros = $this->Parametro_model->get_parametros();
         
-        $venta_id = $this->input->post("venta_id"); 
+        //$venta_id = $this->input->post("venta_id"); 
         $numeroDocumento = $this->input->post("numeroDocumento");
         $razon = $this->input->post("razon");
         $monto_factura = $this->input->post("monto_factura");

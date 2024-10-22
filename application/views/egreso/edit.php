@@ -93,6 +93,8 @@
                                         </select>
                                     </div>
                                 </div>
+                               
+                                
                                 <?php  if ($tipousuario_id==1) { ?>
                                 <div class="col-md-3">
                                     <label for="egreso_fecha" class="control-label">Fecha</label>
@@ -108,14 +110,20 @@
                                             <?php 
                                             foreach($all_usuario as $usuario)
                                             {
-                                              $selected = ($usuario['usuario_id'] == $egreso['usuario_id']) ? ' selected="selected"' : "";
+                                              $selected = ($egreso['usuario_id'] == $usuario['usuario_id']) ? ' selected="selected"' : "";
                                               echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
                                             } 
                                             ?>
                                         </select>
                                     </div>
                                 </div>
+                                <?php }else{ ?>
+                                    
+                                    <input type="hidden" value="<?php echo $usuario_id; ?>"  id="usuario_id"/>
+                                    
                                 <?php } ?>
+                                
+                                
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-success" onclick="add_egreso(<?= $egreso['egreso_id'] ?>)">
                                         <i class="fa fa-check"></i> Guardar

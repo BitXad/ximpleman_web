@@ -621,7 +621,7 @@ $actualizar_precios = 1;
             ?>
             <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
             <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
-            <?php if($parametro["parametro_tiposistema"] != 1){ ?>
+            <?php if($parametro["parametro_tiposistema"] != 1){ //si es electronica o computarizada en linea?>
                     <?php
                     if($parametro["parametro_tipoemision"] == 1){?>
                 
@@ -653,8 +653,7 @@ $actualizar_precios = 1;
                 <?php
                 }  ?>
             
-            <?php if ($parametro["parametro_tiposistema"]!=1){
-                ?>
+            <?php if ($parametro["parametro_tiposistema"]!=1){ //si es electronica o computarizada en linea ?>
                 
                 <select class="btn btn-default btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
                     <option value="0">- SIN CONTINGENCIA -</option>
@@ -671,17 +670,7 @@ $actualizar_precios = 1;
                 <fa class="fa fa-cubes"></fa>
             </button>
         
-            <?php if($parametro['parametro_modulorestaurante']==1){ ?>
-            
-            <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">
-                    <option value="0">- PENSIONADO -</option>
-                    <option value="1">REGISTRAR PENSIONADO</option>
-                </select>            
-            
-            <?php } else{?>
-                <input type="text" id="pensionado" value="0" name="pensionado" hidden>
-            <?php } ?>
-               
+
             
             
             
@@ -700,7 +689,19 @@ $actualizar_precios = 1;
             <?php    }  ?>
 
             
+             <?php if($parametro['parametro_modulorestaurante']==1){ ?>
             
+                <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">
+                    <option value="0">- PENSIONADO -</option>
+                    <option value="1">REGISTRAR PENSIONADO</option>
+                </select>            
+            
+            <?php } else{?>
+            
+              <input type="text" id="pensionado" value="0" name="pensionado" hidden>
+                
+            <?php } ?>
+                          
          
         </h4>
      

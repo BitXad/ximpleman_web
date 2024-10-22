@@ -192,17 +192,79 @@ class Producto_precios extends CI_Controller{
             
             $sql = "INSERT INTO producto_precios 
                     (producto_id, producto_nombre, producto_codigobarra, producto_costo, producto_precio, producto_tipocambio, 
-                    producto_preciofactor, producto_preciofactor1, producto_preciofactor2, 
+                    producto_precioactualizado, producto_preciofactor, producto_preciofactor1, producto_preciofactor2, 
                     producto_preciofactor3, producto_preciofactor4, producto_ultimocosto, 
                     producto_costoenvase, producto_precioenvase)
+                    
                     SELECT p.producto_id, p.producto_nombre, p.producto_codigobarra, p.producto_costo, p.producto_precio, 
-                    p.producto_tipocambio, p.producto_preciofactor, p.producto_preciofactor1, 
+                    p.producto_tipocambio, p.producto_precio, p.producto_preciofactor, p.producto_preciofactor1, 
                     p.producto_preciofactor2, p.producto_preciofactor3, p.producto_preciofactor4, 
                     p.producto_ultimocosto, p.producto_costoenvase, p.producto_precioenvase
                     FROM producto p";
             $this->Venta_model->Ejecutar($sql);
 
            
+            echo json_encode(true);
+        }
+        else
+        {                 
+            show_404();
+        }
+           
+    }
+    
+    
+    function actualizar_precios()
+    { 
+        $data['sistema'] = $this->sistema;
+        if($this->input->is_ajax_request()){
+            
+            $operacion = $this->input->post("operacion");
+            $afectar = $this->input->post("afectar");
+            $redondear = $this->input->post("redondear");
+            $razon = $this->input->post("razon");
+            
+            $decimales = 16;
+            
+            if($operacion==1){//actualizacion de valor
+           
+                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales})";
+                
+            }
+            
+            if($operacion==2){//MOdificar el precio
+                
+                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales})";
+                
+            }
+            
+            if($operacion==3){//incrementar al precio
+                
+                
+            }
+            
+           
+            $this->Venta_model->Ejecutar($sql);
+            
+
+            if($redondear==1){ //CONVERTIR LOS DECIMALES EN 0.50 CTVS
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado)";
+            }
+            
+            if($redondear==2){//REDONDEAR AL SUPERIOR
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+1,producto_precioactualizado)";
+            }
+            
+            if($redondear==3){//REDONDEAR AL INFERIOR
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0),producto_precioactualizado)";
+            }
+
+            if($redondear==4){//TRUNCAR (SIN DECIMALES, SOLO ENTEROS)
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado)";
+            }
+            
+            $this->Venta_model->Ejecutar($sql);
+            
             echo json_encode(true);
         }
         else
