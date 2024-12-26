@@ -174,8 +174,12 @@ function tabladeudas(filtro) //Deudas por pagar
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr style='"+color+"'>"; 
                         html += "<td style'"+color+"'>"+(i+1)+"</td>";
-                        html += "<td style'"+color+"' ><font size='3' face='Arial'><b>"+registros[i]['proveedor_nombre']+"</b></font> <small> ["+registros[i]['proveedor_id']+"]</small></td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
+                        html += "<td style'"+color+"' ><font size='3' face='Arial'><b>"+registros[i]['proveedor_nombre']+"</b></font> <small> ["+registros[i]['proveedor_id']+"]</small>";
+                        if (registros[i]['compra_glosa']!=""){ 
+                            html += "<br>"+registros[i]['compra_glosa']; 
+                        }
+                        html += "</td>";
+                        html += "<td style='text    -align: center'>"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>00"+registros[i]['compra_id']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
                                                 

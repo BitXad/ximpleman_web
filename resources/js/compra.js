@@ -1423,6 +1423,10 @@ function fechadecompra(filtro)
                         html += "<td style='background: #"+registros[i]["estado_color"]+"'>"+(i+1)+"</td>";
                         html += "<td style='background: #"+registros[i]["estado_color"]+"'><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><font size='1'>["+registros[i]["proveedor_id"]+"]</font><br>";
                         
+                        if (registros[i]['compra_glosa']!=""){ 
+                            html += registros[i]['compra_glosa']+"<br>"; 
+                        }
+                        
                         if (registros[i]["tipotrans_nombre"]=='CREDITO') {
                         html += "<span class='btn-facebook btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>";
                         } else {

@@ -684,12 +684,16 @@ function tablaresultados(opcion)
 
 
                         html += "<b>"+registros[i]["producto_nombre"]+"("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(decimales)+"</span>";
+//                        html += "<br>"+registros[i]["producto_nombre"]+"("+registros[i]["producto_codigo"]+")</b> ";
+                        
+
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo(this,"+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1' id='"+registros[i]["producto_precio"]+"' >";
                         precio_unidad = registros[i]["producto_precio"];
                         html += "           "+registros[i]["producto_unidad"]+" Bs : "+Number(precio_unidad).toFixed(decimales)+"";
                         html += "       </option>";
-                        
+  
+                                
                         if(registros[i]["producto_factor"]>0){
                             precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
@@ -736,8 +740,23 @@ function tablaresultados(opcion)
                         
                         
                         
-                        html += "   </select><br>";
+                        html += "   </select>";
+                        
+                                              
+                        html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
+                            
+                                if (registros[i]["producto_principioact"]!=null){
+                                    html += "<br><b>PRINCIPIO ACT.:</b> ";
+                                    html += registros[i]["producto_principioact"];                                    
+                                }
 
+                                if (registros[i]["producto_accionterap"]!=null){
+                                    html += "<br><b>ACCION TERAP.:</b> ";
+                                    html += registros[i]["producto_accionterap"];                                    
+                                }
+
+//                        
+//                        
 //                        
 //                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 //

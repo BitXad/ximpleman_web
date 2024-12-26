@@ -7,12 +7,12 @@
     function cambiarcodproducto(){
         var estetime = new Date();
         var anio = estetime.getFullYear();
-        anio = anio -2000;
+        var anio = anio -2000;
         var mes = parseInt(estetime.getMonth())+1;
         if(mes>0&&mes<10){
             mes = "0"+mes;
         }
-        var dia = parseInt(estetime.getDate());
+        var dia = estetime.getDay();
         if(dia>0&&dia<10){
             dia = "0"+dia;
         }

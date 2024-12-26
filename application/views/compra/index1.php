@@ -282,6 +282,9 @@
               <td style='background: #<?php echo $c['estado_color']; ?>'><?php echo $cont ?></td>
               <!--<td><?php //echo $p['compra_id']; ?></td>-->
               <td style='background: #<?php echo $c['estado_color']; ?>'><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
+                 
+                  <?php  if ($c['compra_glosa']!=""){ echo $c['compra_glosa']."<br>"; }?>
+
                 <?php
                 if($c['tipotrans_nombre']=='CREDITO'){
                     

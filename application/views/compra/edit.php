@@ -1373,6 +1373,7 @@ $("#texto2").change(function(){
         var mes = parseInt(estetime.getMonth())+1;
         if(mes>0&&mes<10){
             mes = "0"+mes;
+            
         }
         var dia = estetime.getDay();
         if(dia>0&&dia<10){

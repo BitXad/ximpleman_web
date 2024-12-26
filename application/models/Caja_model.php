@@ -180,6 +180,18 @@ class Caja_model extends CI_Model
         ")->row_array();
         return $caja;
     }
+    
+    function get_caja_por_id($caja_id)
+    {
+        $caja = $this->db->query("
+            select c.*,u.* from caja c
+            left join usuario u on c.usuario_id = u.usuario_id
+            where 
+            c.usuario_id = u.usuario_id and
+            c.caja_id = {$caja_id}
+        ")->row_array();
+        return $caja;
+    }
     /*
      * Get caja by  fecha_desde, fecha_hasta, usuario_id
      */

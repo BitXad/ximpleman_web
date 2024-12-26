@@ -647,7 +647,7 @@
                           </small>
                         <div class="progress progress-xs">   
                             
-                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo $user['total_ventas']/$ventas[0]['total_ventas']*100;?>%"></div>
+                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo ($ventas[0]['total_ventas']>0)? $user['total_ventas']/$ventas[0]['total_ventas']*100:0;?>%"></div>
                         </div>
                       </td>
                       <td style="padding: 0;"><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($user['total_ventas'],2,'.',',');?></span></td>
@@ -735,7 +735,7 @@
                       <td>
                         <div class="progress progress-xs">             
                             
-                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo $ventas['venta_dia']/$total_dia*100;?>%"></div>
+                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo ($total_dia>0)? $ventas['venta_dia']/$total_dia*100:0;?>%"></div>
                         </div>
                       </td>
                       <td><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($ventas['venta_dia'],2,'.',',');?></span></td>

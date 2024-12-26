@@ -3281,16 +3281,29 @@ function edit($venta_id){
                 }
 
             }else{
+                
+                $credito_id = 0;
+                $sql = "select * from credito where venta_id = {$venta_id}";  
+                $credito = $this->Venta_model->consultar($sql);
+                    
+                if (sizeof($credito)>0){
+                        $credito_id = $credito[0]['credito_id']; 
+                }
+                else{ 
+                        $credito_id = 0;
+                }
+                
                 if($credito_id>0){ //si la transaccion era a credito eliminar el credito
-                    $sql = "delete from cuota where credito_id=".$credito_id;
-                    $this->Venta_model->ejecutar($sql);
+                    $sql = "delete from cuota where credito_id = ".$credito_id;
+                    $this->Venta_model->ejecutar("delete from cuota where credito_id = ".$credito_id);
 
-                    $sql = "delete from credito where credito_id=".$credito_id;
+                    $sql = "delete from credito where credito_id = ".$credito_id;
                     $this->Venta_model->ejecutar($sql);                
                 }
+                
+                
             }
-            
-            echo json_encode("");
+
         }
     }
     
@@ -5151,6 +5164,7 @@ function anular_venta($venta_id){
    
    /* genera factura desde el index de ventas  */
     function generar_factura_detalle_aux(){
+        
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
@@ -5510,339 +5524,662 @@ function anular_venta($venta_id){
             $razon_social = $this->input->post('razon');
             
             $monto_factura = $this->input->post('monto_factura');
-            
-            $numero_factura = $dosificacion["dosificacion_numfact"]+1;
-            $estado_id = 1;
-            $fecha_venta = date('Y-m-d');
-            $factura_fechaventa = $fecha_venta;
-            $factura_fecha = "date({$now})";
-            $factura_hora = "time({$now})";
-            $factura_subtotal = $venta[0]["venta_subtotal"];//$monto_factura;
-            $tipotrans_id = $venta[0]["tipotrans_id"]; //tipo de transaccion
-            $forma_id = $venta[0]["forma_id"];//Forma de pago
-            $factura_ice = 0;
-            $factura_exento = 0;
-            $factura_descuentoparcial = $venta[0]["venta_descuentoparcial"];
-            $factura_descuento = $venta[0]["venta_descuento"];
-            $factura_total = $venta[0]["venta_total"]; //$monto_factura;
-            $factura_numero = $numero_factura;
-            $factura_autorizacion = $dosificacion["dosificacion_autorizacion"];
-            $factura_llave = $dosificacion["dosificacion_llave"];
-            $factura_fechalimite = $dosificacion["dosificacion_fechalimite"];
-            $factura_leyenda1 = $dosificacion["dosificacion_leyenda1"];
-            $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
-            $factura_leyenda3 = $dosificacion["dosificacion_leyenda3"];
-            $factura_leyenda4 = $dosificacion["dosificacion_leyenda4"];
-            $factura_leyenda5 = $dosificacion["dosificacion_leyenda5"];
-            $factura_nit = $nit_factura;
-            $factura_razonsocial = $razon_social;
-            $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
-            $factura_sucursal = $dosificacion["dosificacion_sucursal"];
-            $factura_sfc = $dosificacion["dosificacion_sfc"];
-            $factura_actividad = $dosificacion["dosificacion_actividad"];
-            $factura_clientecodigo = $venta[0]["cliente_codigo"];
-            $codigo_excepcion = 0;
-            
-            // PARA NUEVA FACTURACION
-            //if($this->parametros['parametro_tiposistema'] != 1){
-            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
-            $this->load->model('PuntoVenta_model');
-            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
-            
-            $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
-            $factura_tokendelegado   = $dosificacion['dosificacion_tokendelegado'];
-            $factura_ambiente        = $dosificacion['dosificacion_ambiente'];
-            $factura_cuis            = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis'];
-            $factura_cufd            = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
-            $factura_modalidad       = $dosificacion['dosificacion_modalidad'];
-            $factura_codsistema      = $dosificacion['dosificacion_codsistema'];
-            $factura_puntoventa      = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
-            $factura_sectoreconomico = $dosificacion['dosificacion_sectoreconomico'];
-            $factura_ruta            = $dosificacion['dosificacion_ruta'];
-            $factura_tamanio         = $tamanio_hoja;
-            $tipoDocumentoIdentidad  = $this->input->post('tipoDocumento');
-            $documentoSector = $dosificacion['docsec_codigoclasificador'];
-
-            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-
-            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
-            $factura_codigocliente = $cliente_codigo;
-            
-            
-                
-                /*$cliente_codigo = $this->Cliente_model->get_codigo_cliente($nit_factura, $razon_social);
-                $factura_tokendelegado   = $dosificacion['dosificacion_tokendelegado'];
-                $factura_ambiente        = $dosificacion['dosificacion_ambiente'];
-                $factura_cuis            = $punto_venta['cuis_codigo']; //$dosificacion[0]['dosificacion_cuis'];
-                $factura_cufd            = $punto_venta['cufd_codigo']; //$dosificacion[0]['dosificacion_cufd'];
-                $factura_modalidad       = $dosificacion['dosificacion_modalidad'];
-                $factura_codsistema      = $dosificacion['dosificacion_codsistema'];
-                $factura_puntoventa      = $dosificacion['dosificacion_puntoventa'];
-                $factura_sectoreconomico = $dosificacion['dosificacion_sectoreconomico'];
-                $factura_ruta            = $dosificacion['dosificacion_ruta'];
-                $factura_tamanio         = $tamanio_hoja;
-                $tipoDocumentoIdentidad  = $this->input->post('tipoDocumento');
-                $documentoSector = $dosificacion['docsec_codigoclasificador'];
-                $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-                $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
-                
-                var_dump($dosificacion['dosificacion_cufd']);
-                $factura_clientecodigo = $cliente_codigo;*/
-                            
-                //$fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
-            
-                //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
-                /*$anio = date("Y", strtotime($factura_fecha_hora));
-                $mes  = date("m", strtotime($factura_fecha_hora));
-                $dia  = date("d", strtotime($factura_fecha_hora));
-                $hora = date("H", strtotime($factura_fecha_hora));
-                $min  = date("i", strtotime($factura_fecha_hora));
-                $seg  = date("s", strtotime($factura_fecha_hora));
-                $miliseg1  = date(substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
-                $miliseg = str_replace(".", "", $miliseg1);
-                echo $miliseg."WW";
-                $fecha_hora = "$anio$mes$dia$hora$min$seg$miliseg";*/
-                
-                //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
-                $cadFechahora = str_replace("-", "", $factura_fecha_hora);
-                $cadFechahora = str_replace("T", "", $cadFechahora);
-                $cadFechahora = str_replace(":", "", $cadFechahora);
-                $cadFechahora = str_replace(".", "", $cadFechahora);
-                //echo $cadFechahora."QWE";
-                //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
-                $tipo_emision = $this->parametros['parametro_tipoemision']; //Especifica si es linea o fuera de linea
-                $tipo_factura = $dosificacion['tipofac_codigo'];
-                $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
-                $pos = $dosificacion['dosificacion_puntoventa'];
-                /*
-                echo "Fecha que se guarda :".$factura_fecha_hora."<br>";
-                echo "Fecha hora para cuf :".$fecha_hora."<br>";
-                echo "Nit :".$factura_nitemisor."<br>";
-                echo "fecha hora :".$fecha_hora."<br>";
-                echo "Sucursal :".$factura_sucursal."<br>";
-                echo "Modalidad :".$factura_modalidad."<br>";
-                echo "tipo Emision :".$tipo_emision."<br>";
-                echo "Tipo Factura :".$tipo_factura."<br>";
-                echo "Tipo Doc Sector :".$tipo_documento_sector."<br>";
-                echo "Factura numero :".$factura_numero."<br>";
-                echo "Pos :".$pos."<br>";
-                echo "Cod Control :".$facturaCufdCodControl['cufd_codigocontrol']."<br><br><br><br>";
-                */
-                // LLAMANDO AL HELPER
-                $factura_cuf = generarCuf(trim($factura_nitemisor),
-                                        trim($cadFechahora),
-                                        trim($factura_sucursal),
-                                        trim($factura_modalidad),
-                                        trim($tipo_emision),
-                                        trim($tipo_factura),
-                                        trim($tipo_documento_sector),
-                                        trim($factura_numero),
-                                        trim($pos),
-                                        trim($facturaCufdCodControl['cufd_codigocontrol']));
-                
-        
-                $fecha_hora = $factura_fecha_hora;
-            //}
-            // PARA NUEVA FACTURACION
-            $factura_efectivo = $factura_total;
-            $factura_cambio = 0;
-            
-            $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
-            
-            $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
-            $this->Venta_model->ejecutar($sql);
-            
-            
-            if($this->parametros['parametro_tiposistema'] == 1){ //1 = istema de facturacion computarizado
-                // antiguo sistema de facturacion
-                $sql = "insert into factura(estado_id, factura_fechaventa, 
-                        factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuentoparcial,factura_descuento, factura_total, 
-                        factura_numero, factura_autorizacion, factura_llave, 
-                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
-                        factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4, forma_id) value(".
-                        $estado_id.",'".$factura_fechaventa."',".
-                        $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
-                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".    
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
-                        $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
-                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".$factura_leyenda2."',".$forma_id.")";
-            }else{
-                
-                        $leyendas = $this->Venta_model->consultar("select * from leyenda");
-                        $valor = rand(0,7);
-                        $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
-                   
-                        if ($tipo_emision==2){    
-                          $factura_leyenda3 =  $factura_leyenda5;
-                          $factura_cafc = $dosificacion['dosificacion_ruta'];
-                        }else{
-                            $factura_cafc = "";
-                        }
-                        
-                // nuevo sistema de facturacion
-                $sql = "insert into factura(estado_id,forma_id, factura_fechaventa, 
-                        factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
-                        factura_numero, factura_autorizacion, factura_llave, 
-                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
-                        factura_efectivo, factura_cambio, tipotrans_id, factura_tokendelegado,
-                        factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
-                        factura_codsistema, factura_puntoventa, factura_sectoreconomico,
-                        factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                        docsec_codigoclasificador, factura_codigocliente, factura_leyenda3, factura_leyenda4, factura_excepcion, factura_cafc) value(".
-                        $estado_id.",".$forma_id.",'".$factura_fechaventa."',".
-                        $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
-                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
-                        $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
-                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_tokendelegado."','".
-                        $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
-                        $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                        $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector,'$factura_clientecodigo'".
-                        ",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",'".$factura_cafc."')";
-            }
-
-
-            $factura_id = $this->Venta_model->ejecutar($sql);
-            
-            $this->load->model('Detalle_factura_aux_model');
-            $all_detalle_factura_aux = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
-            
-            foreach($all_detalle_factura_aux as $detalle_fact){
-                
-                $params = array(
-                    'producto_id' => $detalle_fact['producto_id'],
-                    'venta_id' => $detalle_fact['venta_id'],
-                    'factura_id' => $factura_id,
-                    'detallefact_cantidad' => $detalle_fact['detallefact_cantidad'],
-                    'detallefact_codigo' => $detalle_fact['detallefact_codigo'],
-                    'detallefact_unidad' => $detalle_fact['detallefact_unidad'],
-                    'detallefact_descripcion' => $detalle_fact['detallefact_descripcion'],
-                    'detallefact_precio' => $detalle_fact['detallefact_precio'],
-                    'detallefact_subtotal' => $detalle_fact['detallefact_subtotal'],
-                    'detallefact_descuentoparcial' => $detalle_fact['detallefact_descuentoparcial'],
-                    'detallefact_descuento' => $detalle_fact['detallefact_descuento'],
-                    'detallefact_total' => $detalle_fact['detallefact_total'],
-                    'detallefact_preferencia' => $detalle_fact['detallefact_preferencia'],
-                    'detallefact_caracteristicas' => $detalle_fact['detallefact_caracteristicas'],
-                    'usuario_id' => $usuario_id,
-                );
-                $detallefact_id = $this->Detalle_factura_aux_model->add_detalle_factura_aux($params);
-                
-            }
-                        
-            $this->Detalle_factura_aux_model->delete_detalleventa_factura_aux($venta_id);
-            
-            if($venta_id>0){
-                $sql = "update venta set venta_tipodoc = 1 where venta_id = ".$venta_id;
-                $this->Venta_model->ejecutar($sql);
-            }                   
-                       
-                        
-                if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado SFV (computarizado en linea o electronico)
-                // el parametro uno es para computarizada en linea ojo
-                $computarizada_enlinea = $dosificacion["dosificacion_modalidad"];// 1 para electronica y 2 para computarizada
-                $docsec_codigoclasificador = $dosificacion["docsec_codigoclasificador"]; // 1->compra venta/23->prevalorada.....
-                $factura = $this->Factura_model->get_factura_id($factura_id);
-                $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
-                $empresa = $this->Empresa_model->get_empresa(1);
-
-                $base_url = explode('/', base_url());
-
-                //********************** GENERANDO ARCHIVO XML ****************
-                $dosificacion_documentosector = $dosificacion["dosificacion_documentosector"];
-                
-                var_dump($dosificacion_documentosector); // ." *** ".." *** ".." *** ".." *** ".." *** ".$dosificacion_documentosector;
-                
-                $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $docsec_codigoclasificador, $dosificacion_documentosector);
-                //********************** GENERANDO ARCHIVO XML ****************    
-
-                $base_url = explode('/', base_url());
-                //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-                $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-                $xsd = $this->nombre_archivo.".xsd";
-                $valXSD = new ValidacionXSD();
-                
-                if(!$valXSD->validar("$directorio_factura".$this->nombre_archivo.$factura[0]['factura_id'].".xml",$directorio_factura.$xsd)){
-                    // echo "No ingreso";
-                    print $valXSD->mostrarError();
+            $venta_descuentoparcial = $this->input->post('venta_descuentoparcial');
+            $venta_descuento = $this->input->post('venta_descuento');
+            $venta_total = $this->input->post('venta_total');
+                                
+                    $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
+                    // PARA NUEVO SISTEMA DE FACTURACION
+                    //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
                     
-                }else{
-                    // COMPRESION XML EN GZIP
-                    $datos = implode("", file($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml"));
-                    $gzdata = gzencode($datos, 9);
-                    $fp = fopen($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
-                    // $xml_gzip = fopen($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "r");
-                    fwrite($fp, $gzdata);
-                    fclose($fp);
-                    
-                    
-                    if($tipo_emision == 2){
-                        $p = new PharData($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].'.tar');
-                        $p[$this->nombre_archivo.$factura[0]['factura_id'].'.xml'] = $datos;
-                        $p1 = $p->compress(Phar::GZ);
+                    $tamanio_hoja = 2;                    
+                    if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+                        $tamanio_hoja = 1;
                     }
-                    
-                    $handle = fopen($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
-                    $contents = fread($handle, filesize($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip"));
-                    fclose($handle);
+                    // PARA NUEVO SISTEMA DE FACTURACION
+                        
+                        $estado_id = 1;
+                        $fecha_venta = $venta[0]["venta_fecha"];
+                        $hora_venta = $venta[0]["venta_hora"];
+                        $venta_subtotal = $venta[0]["venta_subtotal"];
+                        $venta_efectivo = $venta[0]["venta_efectivo"];
+                        $venta_cambio = $venta[0]["venta_cambio"];
+                        $venta_ice = $venta[0]["venta_ice"];
+                        $venta_giftcard = $venta[0]["venta_giftcard"];
+                        $venta_detalletransaccion = $venta[0]["venta_detalletransaccion"];
+                        $forma_id = $venta[0]["forma_id"];
+                        $codigo_excepcion = 0;
+                        $factura_complementoci = "";
+                        $factura_glosa = $venta[0]["venta_glosa"];
+                        $factura_idcreditodebito = 0;
 
-                    
-                    $xml_comprimido = hash_file('sha256',$directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip");
+                        
+                        
+                        $numero_doc_identidad = $tipoDocumento;
+                        
+                        $factura_fechaventa    = $fecha_venta;
+                        $factura_fecha         = "date({$now})";
+                        $factura_hora          =  $hora_venta; //"time(no_w())";
+                        $factura_subtotal = $venta_subtotal;
+                        $factura_nit           = $numero_doc_identidad;
+                        $factura_razonsocial   = $razon;
+                        $factura_ice           = 0;
+                        $factura_exento        = 0;
+                        $factura_descuentoparcial     = $venta[0]["venta_descuentoparcial"];
+                        $factura_descuento     = $venta[0]["venta_descuento"];
+                        $factura_total         = $venta[0]["venta_total"];
+                        $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
+                        $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
+                        $factura_llave         = $dosificacion[0]['dosificacion_llave'];
+                        $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
+                        
+                        if ($this->parametros["parametro_tiposistema"]==1)
+                            $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $numero_doc_identidad,$factura_fechaventa, $factura_total);
+                        else
+                            $factura_codigocontrol = "-"; 
+                                
+                        $factura_leyenda1      = $dosificacion[0]['dosificacion_leyenda1'];
+                        $factura_leyenda2      = $dosificacion[0]['dosificacion_leyenda2'];
+                        $factura_leyenda3      = $dosificacion[0]['dosificacion_leyenda3'];
+                        $factura_leyenda4      = $dosificacion[0]['dosificacion_leyenda4'];
+                        $factura_leyenda5      = $dosificacion[0]['dosificacion_leyenda5'];
+                        $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
+                        $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
+                        $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
+                        $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
+                        $factura_enviada = 0;// 0 = falso
+                        
+                        
+                        
+                            if ($this->parametros["parametro_comprobante"]==2){ //si es factura trcha
+                                
+                                if ($this->parametros['parametro_contarventas']==1){
 
-                    $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                    $wsdl = $dosificacion['dosificacion_factura'];
-                    $token = $dosificacion['dosificacion_tokendelegado'];
-                    $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-                    
-                    if($comunicacion){
-                        $enviada = $this->mandarFactura($contents, $xml_comprimido);
-                        //var_dump($enviada->transaccion);
-                        //var_dump($enviada);
-                        if($enviada->transaccion){
-                            $params = array(
-                                'factura_codigodescripcion' => $enviada->codigoDescripcion,
-                                'factura_codigoestado'    => $enviada->codigoEstado,
-                                'factura_codigorecepcion' => $enviada->codigoRecepcion,
-                                'factura_transaccion'    => $enviada->transaccion,
-                            );
-                            $this->Factura_model->update_factura($factura_id, $params);
-                        }else{
-                            $cad = $enviada->mensajesList;
-                            //var_dump($cad);
-//                            $mensajecadena = "";
-//                            foreach ($cad as $c) {
-//                                $mensajecadena .= $c.";";
-//                            }
-//                            
-                            $mensajecadena = "";
-                            foreach ($cad as $c) {
-                                $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
+                                $actualizarventa = "update parametros set parametro_numeroventa = ".$factura_numero." where parametro_id = ".$this->parametros['parametro_id'];
+                                $this->Venta_model->ejecutar($actualizarventa);
+
+                                }
                             }
-                            $params = array(
-                                'factura_codigodescripcion' => $enviada->codigoDescripcion,
-                                'factura_codigoestado' => $enviada->codigoEstado,
-                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
-                                'factura_transaccion'  => $enviada->transaccion,
-                            );
-                            $this->Factura_model->update_factura($factura_id, $params);
-                        }
-                    }
-                    
-                }
-            }
+                        
+                        if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
+                            // facturacion nueva
+                            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                            $this->load->model('PuntoVenta_model');
+                            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                            
+                            $factura_nit = $nit_factura;
+                            $factura_razonsocial = $razon_social;
+                                    
+                            $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
+                            $factura_tokendelegado   = $dosificacion[0]['dosificacion_tokendelegado'];
+                            $factura_ambiente        = $dosificacion[0]['dosificacion_ambiente'];
+                            $factura_cuis            = $punto_venta['cuis_codigo']; //$dosificacion[0]['dosificacion_cuis'];
+                            $factura_cufd            = $punto_venta['cufd_codigo']; //$dosificacion[0]['dosificacion_cufd'];
+                            $factura_modalidad       = $dosificacion[0]['dosificacion_modalidad'];
+                            $factura_codsistema      = $dosificacion[0]['dosificacion_codsistema'];
+                            $factura_puntoventa      = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
+                            $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
+                            $factura_ruta            = $dosificacion[0]['dosificacion_ruta'];
+                            $factura_tamanio         = $tamanio_hoja;
+                            $tipoDocumentoIdentidad  =  $tipoDocumento; //$this->input->post('tipo_doc_identidad');
+                            $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
+                            
+                            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                            
+                            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
+                            $factura_codigocliente = $cliente_codigo;
         
-            echo json_encode($factura_id);
-        //**************** fin contenido ***************
+                            $registroeventos_codigo = 0; //sin eventos
+    
+                            if($registroeventos_codigo>0){ //Si es una factura transcrita con CAFC cambia los parametros para generar la factura
+                                
+                                $factura_fecha = "'".$fecha_cafc."'";
+                                $factura_hora = $hora_cafc;
+                                $factura_numero = $numfact_cafc;
+                                $factura_cafc = $codigo_cafc;                                    
+                                
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                
+                                $tipo_emision = 2;   
+                                $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
+                                $cufd_codigocontrol =  $eventos[0]["registroeventos_codigocontrol"];
+                                $factura_cufd = $eventos[0]["registroeventos_cufd"];
+                                $elregistroeventos_id = $eventos[0]["registroeventos_id"];
+                                
+                            }else{
+                                $factura_cafc = "";
+                                $tipo_emision = $this->parametros['parametro_tipoemision'];
+                                $cufd_codigocontrol =  trim($facturaCufdCodControl['cufd_codigocontrol']);
+                                $elregistroeventos_id = 0;
+                            }
+                            
+                            $cadFechahora = str_replace("-", "", $factura_fecha_hora);
+                            $cadFechahora = str_replace("T", "", $cadFechahora);
+                            $cadFechahora = str_replace(":", "", $cadFechahora);
+                            $cadFechahora = str_replace(".", "", $cadFechahora);
+                            $tipo_factura = $dosificacion[0]['tipofac_codigo'];
+                            $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
+                            $pos = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
+
+                                                        
+
+                            // LLAMANDO AL HELPER
+                            $factura_cuf = generarCuf(trim($factura_nitemisor),
+                                                    trim($cadFechahora),
+                                                    trim($factura_sucursal),
+                                                    trim($factura_modalidad),
+                                                    trim($tipo_emision),
+                                                    trim($tipo_factura),
+                                                    trim($tipo_documento_sector),
+                                                    trim($factura_numero),
+                                                    trim($pos),
+                                                    trim($cufd_codigocontrol));
+        
+                            $fecha_hora = $factura_fecha_hora;
+                            
+                        }
+                        // PARA NUEVA FACTURACION
+                    
+                    
+                    //$factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
+                    
+                    //********** INICIO ACTUALIZAR NUMERO DE FACTURA
+//                        $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+//                        $this->Venta_model->ejecutar($sql);
+                        
+                    //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
+                        
+                        if($this->parametros['parametro_tiposistema'] == 1){
+                            
+                            $codigo_actividadcaeb = $factura_actividad;
+                            $la_actividad = $this->Actividad_model->get_descripcioncaeb($codigo_actividadcaeb);
+                            
+                            // sistema de facturacion antiguo
+                                $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                                factura_fecha, factura_hora, factura_subtotal, 
+                                factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
+                                factura_numero, factura_autorizacion, factura_llave, 
+                                factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                                factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
+                                factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
+                                factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion,
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_glosa, factura_idcreditodebito) value(".
+                                $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                                $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                                $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
+                                $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                                $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_sfc."','".$la_actividad['actividad_descripcion']."',".$usuario_id.",".$tipo_transaccion.",".
+                                $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_glosa."',".$factura_idcreditodebito.")";
+                        
+                                
+                        }else{
+                            
+                                //Sistema de facturacion nuevo
+                                $leyendas = $this->Venta_model->consultar("select * from leyenda order by leyenda_codigoactividad");
+                                $valor = rand(0,7);
+                                $valor = ($valor>=7)?6:$valor;
+                                
+                                $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                        
+                                $registroeventos_id = 0;
+                                if ($tipo_emision == 2){ //1 en linea, 2 fuera de linea 3 masiva    
+                                    $factura_leyenda3 =  $factura_leyenda5;
+                                    //$factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
+                                    $registroeventos_id = $this->registroeventos_id;
+                                    if($elregistroeventos_id > 0){
+                                        $registroeventos_id = $elregistroeventos_id;
+                                    }
+
+                                }
+                                
+                                $tipo_transaccion = 1;
+                                
+                                
+                            // nuevo sistema de facturacion                                
+                            $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                                factura_fecha, factura_hora, factura_subtotal, 
+                                factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
+                                factura_numero, factura_autorizacion, factura_llave, 
+                                factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                                factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal,
+                                factura_sfc, factura_actividad, usuario_id, tipotrans_id,
+                                factura_efectivo, factura_cambio, factura_tokendelegado,
+                                factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
+                                factura_codsistema, factura_puntoventa, factura_sectoreconomico,
+                                factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
+                                docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id, factura_glosa, factura_idcreditodebito) value(".
+                                $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                                $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                                $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
+                                $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                                $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                                $venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
+                                $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
+                                $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
+                                $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
+                                $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.",'".$factura_glosa."',".$factura_idcreditodebito.")";
+                                    
+                        }
+                        $factura_id = $this->Venta_model->ejecutar($sql);
+                    
+                        $sql =  "insert into detalle_factura(
+                        producto_id,
+                        venta_id,
+                        factura_id,
+                        detallefact_codigo,
+                        detallefact_unidad,
+                        detallefact_cantidad,            
+                        detallefact_descripcion,
+                        detallefact_precio,
+                        detallefact_subtotal,
+                        detallefact_descuentoparcial,
+                        detallefact_descuento,
+                        detallefact_total,                
+                        detallefact_preferencia,
+                        detallefact_caracteristicas,
+                        detallefact_unidadfactor)
+        
+                        (SELECT 
+                            producto_id,
+                            ".$venta_id." as venta_id,          
+                            ".$factura_id." as factura_id,
+                            detalleven_codigo,
+                            detalleven_unidad,
+                            detalleven_cantidad,
+                            producto_nombre,          
+                            detalleven_precio,
+                            detalleven_subtotal,
+                            detalleven_descuentoparcial,
+                            detalleven_descuento,
+                            detalleven_total,
+                            detalleven_preferencia,
+                            detalleven_caracteristicas,
+                            detalleven_unidadfactor
+        
+                        FROM
+                            detalle_venta_aux
+                        WHERE 
+                            usuario_id=".$usuario_id.")";
+                        
+                        $this->Factura_model->ejecutar($sql);   
+                        
+                        
+                        //  REGISTRO DE DATO DE FACTURA
+                        //*******************************************
+                        if($dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
+                            
+                            $datos_periodofacturado = $this->input->post('datos_mes')."/".$this->input->post('datos_anio');
+                                    
+                            if($dosificacion[0]['docsec_codigoclasificador'] == 11){
+                                
+                                $params = array(
+
+                                    'cliente_id' => $cliente_id,
+                                    'datos_periodofacturado' => $this->input->post('cliente_nombrenegocio'),
+                                    'datos_beneficiarioley1886' => $this->input->post('cliente_nombre'),
+
+                                );
+                                
+                            }else{
+
+                                $params = array(
+                                    'datos_codigopais' => $this->input->post('datos_codigopais'),
+                                    'datos_autorizacionsc' => $this->input->post('datos_autorizacionsc'),
+                                    'datos_placa' => $this->input->post('datos_placa'),
+                                    'datos_embase' => $this->input->post('datos_embase'),
+                                    'cliente_id' => $cliente_id,
+                                    'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                    'datos_periodofacturado' => $datos_periodofacturado,                                
+                                    'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                    'datos_beneficiarioley1886' => $this->input->post('datos_beneficiarioley1886'),
+                                    'datos_montodescuentoley1886' => $this->input->post('datos_montodescuentoley1886'),
+                                    'datos_montodescuentotarifadignidad' => $this->input->post('datos_montodescuentotarifadignidad'),
+                                    'datos_medidor' => $this->input->post('datos_medidor'),
+                                    'datos_mes' => $this->input->post('datos_mes'),
+                                    'datos_anio' => $this->input->post('datos_anio'),
+                                    'datos_tasaalumbrado' => $this->input->post('datos_tasaalumbrado'),
+                                    'datos_tasaaseo' => $this->input->post('datos_tasaaseo'),
+                                    'datos_detalleajustenosujetoiva' => $this->input->post('datos_detalleajustenosujetoiva'),
+                                    'datos_ajutesnosujetoiva' => $this->input->post('datos_ajutesnosujetoiva'),
+                                    'datos_detalleajustesujetoiva' => $this->input->post('datos_detalleajustesujetoiva'),
+                                    'datos_ajustesujetoiva' => $this->input->post('datos_ajustesujetoiva'),
+                                    'datos_detalleotrospagosnosujetoiva' => $this->input->post('datos_detalleotrospagosnosujetoiva'),
+                                    'datos_otrospagosnosujetoiva' => $this->input->post('datos_otrospagosnosujetoiva'),
+                                    'datos_detalleotrastasas' => $this->input->post('datos_detalleotrastasas'),
+                                    'datos_otrastasas' => $this->input->post('datos_otrastasas'),
+                                    //'parametro_comprobante' => $this->input->post('parametro_comprobante'),
+                                );
+
+                            }
+
+                            //var_dump($params);
+                            //
+                            // Insertamos el arreglo de datos en la tabla factura_datos
+                            $datos_id = $this->Factura_datos_model->add_factura_datos($params);
+                            
+                            $params = array(
+                                'datos_id' => $datos_id,
+                            );
+                            
+                            $this->Factura_model->update_factura($factura_id, $params);
+                            
+                            if($dosificacion[0]['docsec_codigoclasificador'] == 13){
+                                
+                                /*$total = $this->input->post('datos_sujetoivasubtotal') + $this->input->post('datos_aseosubtotal') +
+                                        $this->input->post('datos_alumbradosubtotal') + $this->input->post('datos_tasassubtotal') +
+                                        $this->input->post('datos_pagossubtotal');*/
+                                
+                                // Calculando los totales para añadirlos a la factura
+                                $totalajustes = $this->input->post('datos_ajustesujetoiva');
+                                $tasas = floatval($this->input->post('datos_tasaaseo')) + floatval($this->input->post('datos_tasaalumbrado')) + floatval($this->input->post('datos_otrastasas')) + floatval($this->input->post('datos_otrospagosnosujetoiva'));
+                                
+                                $sql = "update factura set
+                                        factura_subtotal = factura_subtotal + {$totalajustes} + {$tasas}
+                                        ,factura_total = factura_total + {$totalajustes}
+                                        ,factura_efectivo = factura_efectivo + {$totalajustes}
+                                        ,factura_cambio = factura_cambio + {$totalajustes}
+                                        where factura_id = {$factura_id}";
+                                        
+                                $this->Venta_model->ejecutar($sql);
+                                
+                            }
+                            
+                        }
+                        //*******************************************
+                        
+                        $nombre_archivo = $this->nombre_archivo;
+                        
+                        
+                        if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado SFV (computarizado en linea o electronico)
+                        // el parametro uno es para computarizada en linea ojo
+                        $computarizada_enlinea = $dosificacion[0]["dosificacion_modalidad"];// 1 para electronica y 2 para computarizada
+                        $docsec_codigoclasificador = $dosificacion[0]["docsec_codigoclasificador"]; // 1->compra venta/23->prevalorada.....
+                        $factura = $this->Factura_model->get_factura_id($factura_id);
+                        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+                        $empresa = $this->Empresa_model->get_empresa(1);
+                        
+                        $base_url = explode('/', base_url());
+                        
+                        //********************** GENERANDO ARCHIVO XML ****************
+                        $dosificacion_documentosector = $dosificacion[0]["dosificacion_documentosector"];
+                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $docsec_codigoclasificador, $dosificacion_documentosector);
+                        //********************** GENERANDO ARCHIVO XML ****************    
+                        
+                        $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                        $directorio_esquema = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/esquemas/';
+                        $xsd = $nombre_archivo.".xsd";
+                        $valXSD = new ValidacionXSD();
+                        
+                        $es_valido = $valXSD->validar($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml",$directorio_esquema.$xsd);
+
+                        if(!$es_valido){
+                                //echo "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
+                                $error = "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
+                                $error = str_replace("'", "", $error);
+                                
+                                $res = array("mensajesList" => json_encode($error));
+             
+                                
+                                $params = array(
+                                    'factura_transaccion'    => 0,
+                                    'factura_mensajeslist' => $error, //$valXSD->mostrarError(),
+                                    'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+                                );
+                                    
+                                $this->Factura_model->update_factura($factura_id, $params);
+                                
+                                echo json_encode($res);
+                                
+                        }else{
+                            
+                                // COMPRESION XML EN GZIP
+                                $datos = implode("", file($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml"));
+                                $gzdata = gzencode($datos, 9);
+                                $fp = fopen($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
+                               
+                                fwrite($fp, $gzdata);
+                                fclose($fp); 
+
+                                //Copiar el archivo .tar al directorio con id del usuario en curso
+
+                                $path = $directorio_factura."envio".$usuario_id;
+                                //echo $path;
+                                if (!file_exists($path)) {
+                                    mkdir($path, 0777, true);
+                                }
+
+                                
+                            if($tipo_emision == 2){ // Si es emision fuera de linea
+                                
+                                    $p = new PharData($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].'.tar');
+                                    $p[$nombre_archivo.$factura[0]['factura_id'].'.xml'] = $datos;
+                                    $p1 = $p->compress(Phar::GZ);
+
+                                    $origen = $directorio_factura.$nombre_archivo.$factura[0]['factura_id'].'.tar';
+                                    $destino = $directorio_factura.'envio'.$usuario_id.'/'.$nombre_archivo.$factura[0]['factura_id'].'.tar';
+                                    copy($origen, $destino);
+                                    
+                                
+                            }
+                            //fin para borrar
+                            
+                            $handle = fopen($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
+                            $contents = fread($handle, filesize($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip"));
+                            fclose($handle);
+                            $content = base64_encode($contents);
+                            $b= unpack("C*",$contents);
+        
+                            $xml_comprimido = hash_file('sha256',$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip");
+                            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                            //$wsdl = $dosificacion['dosificacion_factura'];
+                            //$token = $dosificacion['dosificacion_tokendelegado'];
+//                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+//                            
+//                            if($comunicacion){
+                            
+                            if( $this->parametros["parametro_tipoemision"] == 1) //Si la emision de la factura es de tipo 1 ONLINE
+                            {
+  
+                                $enviada = $this->mandarFactura($contents, $xml_comprimido);
+                                //var_dump($enviada);
+                                if($enviada->transaccion){ // Si la factura fue enviada
+                                    
+                                    
+                                    $params = array(
+                                        'factura_codigodescripcion' => $enviada->codigoDescripcion,
+                                        'factura_codigoestado'    => $enviada->codigoEstado,
+                                        'factura_codigorecepcion' => $enviada->codigoRecepcion,
+                                        'factura_transaccion'    => $enviada->transaccion,
+                                        'factura_enviada' => true,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+                                    );
+                                    $this->Factura_model->update_factura($factura_id, $params);
+                                    
+                                    //SI TODO SALE BIEN HASTA AQUI ACTUALIZA EN NUMERO DE FACTURA
+                                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                                    $this->Venta_model->ejecutar($sql);
+                                    $res  = array("mensajesList" => $enviada);
+                                    
+                                    //************************************
+                                    // Si es factura externa se debe dar de baja esa factura
+                                    //************************************
+                                    $factura_servicio = 0; // Revisar de donde viene esta factura
+
+                                        if ($factura_servicio>0){
+                                            
+                                            $sql = "update factura_servicios set factura_id = {$factura_id} where num_fact = {$factura_servicio}";
+                                            $this->Venta_model->ejecutar($sql);
+
+                                        }
+                                    //*************************************
+                                    
+                                    
+                                    
+                                    echo json_encode($res);
+                                    
+                                }else{
+                                    
+                                    $cad = $enviada->mensajesList;
+                                    //var_dump($enviada);
+                                    //var_dump($cad);
+                                    
+                                    $mensajecadena = json_encode($enviada->mensajesList);
+                                    
+                                $codigo = "";
+//                                
+
+                                        if (is_array($cad)){
+
+                                            for ($i=0; $i<sizeof($cad); $i++)
+                                                $codigo = $codigo." ".$cad[0]->codigo;
+
+                                        }else{
+                                            $codigo = $cad->codigo;
+                                        }    
+                                        
+                                        
+                                            $params = array(
+                                                'factura_codigodescripcion' => $codigo, //$cad->codigo,
+                                                'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
+                                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
+                                                'factura_transaccion'  => $enviada->transaccion,
+                                                'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+                                            );
+
+                                            $this->Factura_model->update_factura($factura_id, $params);
+
+                                           echo json_encode($enviada);
+
+                                
+                                    
+//                                            $params = array(
+//                                                'factura_codigodescripcion' => $cad->codigo,
+//                                                'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
+//                                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
+//                                                'factura_transaccion'  => $enviada->transaccion,
+//                                                'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+//                                            );
+//
+//                                            $this->Factura_model->update_factura($factura_id, $params);
+//
+//                                           echo json_encode($enviada);
+                                    
+                               
+                                
+                            }
+                                /*
+                                $sql = "update dosificacion set
+                                        dosificacion_numfact = dosificacion_numfact - (select count(*) as cantidad from factura where factura_id = ".$factura_id." and factura_codigodescripcion <> 'VALIDADA')
+                                        where dosificacion_id = 1";
+                                echo $sql;
+                                $this->Venta_model->ejecutar($sql);*/
+                                
+                            }else{ //Si la emision de la factura es de tipo 2 OFFLINE
+                                //var_dump($registroeventos_codigo."QQWW");
+                                //$registroeventos_codigo <= 0 no e s con CAFC e incrementa num. factura
+                                if ($registroeventos_codigo <= 0){ 
+                                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                                    $this->Venta_model->ejecutar($sql);
+                                }
+                                $res = array("mensajesList" => "FACTURA EMITIDA FUERA DE LINEA...!!");
+                                    echo json_encode($res);
+                            }
+                            
+                            $this->pdf_generar($factura_id);
+                            
+                            //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+                            $email = $this->input->post('cliente_email'); 
+                            
+                            if($email !=""){ // Si el cliente tiene email
+                                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+                            }
+                                //}
+                            // ******************************
+                            //}
+//                            }else{
+//                                echo json_encode("false");
+//                            }
+                            
+                        }
+                        
+                        $mandar_enuno = $this->input->post('mandar_enuno');
+                        // si esta destiqueado ingresa aqui!; manda factura por factura!......
+                        if($mandar_enuno == 1){
+                            //Funcion en eventos con cafc
+                            if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                                
+                                $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
+                                $this->Venta_model->ejecutar($sqlx);
+
+                                $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
+
+                                sleep(1);
+                                if ($codigo_recepcion>0){
+                                    $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
+                                }
+                            }
+                        }elseif($mandar_enuno == 1){
+                            //Funcion en eventos con cafc
+                            if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                                $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
+                                $this->Venta_model->ejecutar($sqlx);
+                            }
+                        }
+                        // Fin Funcion en eventos con cafc
+                        
+                    }else{ // para tipo sistema == 1 Facturación Computarizada SFV
+                        //********** INICIO ACTUALIZAR NUMERO DE FACTURA
+                        $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                        $this->Venta_model->ejecutar($sql);
+                        echo json_encode("");
+                        //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
+                    }
+                    // $this->ultimaventa(1);
+                }
+                
+                if($orden_id > 0){
+                    
+                    $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
+                    $this->Venta_model->ejecutar($sql);
+                    $proceso_fechaproceso = "{$now}";
+                    $contador = 1;
+                    $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
+                    $detalle_orden = $this->db->query($detalle)->result_array();
+                    
+                    foreach ($detalle_orden as $det) {
+                    
+                        $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
+                        $primid = $this->Venta_model->ejecutar($prisql); 
+
+                        for ($contador = 18; $contador<=23; $contador++){
+
+
+                            $estado = $contador;
+                            $estado_id = 24;
+
+                            $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
+                                    $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
+                            $id = $this->Venta_model->ejecutar($sql);              
+
+                        }  
+                    }
+
+                }   
+                if($facturado=="false" && $tipo_transaccion == 2){
+                    echo json_encode("");
+                }
+                
+            //} //Fin del for de N facturas
+            
+
         }
-    }
+    
     
     function array_to_xml($array_to_xml, &$xml) {
         foreach($array_to_xml as $key => $value) {

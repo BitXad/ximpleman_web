@@ -4921,6 +4921,8 @@ function registrar_factura(venta_id){
 //    var controlador = base_url+"venta/generar_factura_detalle_aux";
     var controlador = base_url+"venta/factura_posventa";
     
+    //alert(monto_factura);
+    
     $.ajax({url: controlador,
             type: "POST",
             data:{
@@ -4931,13 +4933,16 @@ function registrar_factura(venta_id){
                 tipoDocumento:tipoDocumento,
             }, 
             success:function(respuesta){      
-                resultado = JSON.parse(respuesta);
-                var factura_id = resultado;
+                let resultado = JSON.parse(respuesta);
+                //var factura_id = resultado;
                 //alert(factura_id);
                 //alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
-                window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
+                //window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
+                alert(JSON.stringify(resultado));
+                
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
+                
             },
             error:function(resultado){
                 alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
@@ -5087,12 +5092,12 @@ function tabla_ventas(filtro)
                     
                     if(v[i]['factura_enviada'] == 1){
                         
-                        html += "<span style='padding:0; font-size:14px; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" ENVIADA</small></b></span> ";
+                        html += "<span style='padding:0; font-size:14px; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" ENVIADA<sub>["+v[i]['factura_id']+"]</sub></small></b></span> ";
                     
                     }else{
     
                         if(v[i]['factura_enviada'] == 2){
-                            html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" VALIDADA </small></b></span> ";
+                            html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" VALIDADA<sub>["+v[i]['factura_id']+"]</sub></small></b></span> ";
                         }else{
                         
                                 if (paquete==null ){
@@ -5103,7 +5108,7 @@ function tabla_ventas(filtro)
                                         if (v[i]['venta_tipodoc']==1){
                                             
                                             html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0; font-size:14px;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
-                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO ENVIADA</small> </button>";                           
+                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO ENVIADA<sub>["+v[i]['factura_id']+"]</sub></small> </button>";                           
                                         
                                         }
 //                                        else{

@@ -255,6 +255,8 @@ function tabla_inventario(){
 //                    html += "	<th>Imagen</th>";
                     html += "	<th>Descripción</th>";
                     html += "	<th>Código</th>";
+                    html += "	<th>Marca</th>";
+                    html += "	<th>Industria</th>";
                     html += "	<th>Categoría</th>";                    
                     html += "	<th>Unidad</th>";
                     html += "	<th>Costo ("+nombre_moneda+")</th>";
@@ -311,6 +313,8 @@ function tabla_inventario(){
                         html += "             	<td "+margen+"><a style='margin-right: 10px;'>"+(i+1)+"</a></td>";
                         html += "             	<td  style='padding:0; text-align: left;'><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
                         html += "             	<td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_marca"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_industria"]+"</center></font> </td>";
                         html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
                         html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
@@ -2156,6 +2160,8 @@ function generarexcel(){
                             row += 'N°' + ',';
                             row += 'DESCRIPCION' + ',';
                             row += 'CODIGO' + ',';
+                            row += 'MARCA' + ',';
+                            row += 'INDUSTRIA' + ',';
                             row += 'CATEGORIA' + ',';
                             row += 'UNIDAD' + ',';
                             row += 'COSTO(' +nombre_moneda+ '),';
@@ -2183,6 +2189,8 @@ function generarexcel(){
                             row += 'i+1,';
                             row += '"' +factura[i]["producto_nombre"]+ '",';
                             row += '"' +factura[i]["producto_codigo"]+ '",';
+                            row += '"' +factura[i]["producto_marca"]+ '",';
+                            row += '"' +factura[i]["producto_industria"]+ '",';
                             row += '"' +factura[i]["categoria_nombre"]+ '",';
                             row += '"' +factura[i]["producto_unidad"]+ '",';
                             row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';

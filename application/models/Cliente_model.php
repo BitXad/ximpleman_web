@@ -672,7 +672,12 @@ class Cliente_model extends CI_Model
                       c.cliente_nit   = '".$cliente_nit."' and 
                       c.cliente_razon = '".$cliente_razon."'";
         $cliente = $this->db->query($sql)->row_array();
-        return $cliente['codigocliente'];
+        
+        if (isset($cliente) && is_array($cliente) && isset($cliente['codigocliente'])) {
+            return $cliente['codigocliente'];
+        } else {
+            return random_int(1000000000, 9999999999); // Número aleatorio dentro de un rango manejable
+        }
     }
     
 }
