@@ -640,7 +640,16 @@ function tablaproductos(){
 
 /////////////////// Descripcion
                         html += "<td "+color+"><b style='font-size:"+tamanio_fuente+"'>"+registros[i]["productonombre"];
-                       
+
+                        if (parseFloat(Number(registros[i]["producto_costo"]).toFixed(2)) >= parseFloat(Number(registros[i]["producto_precio"]).toFixed(2))) {
+                            html += "<br><span class='btn btn-danger btn-xs' title='ADVERTENCIA: El precio de COSTO es MAYOR O IGUAL AL PRECIO DE VENTA...!'><fa class='fa fa-exclamation-triangle'></fa> CONFLICTO DE PRECIOS</span>";
+                        }
+
+
+                        //productos no homologados
+                        if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 ))
+                                html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-danger btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'><fa class='fa fa-exclamation-triangle'></fa> PRODUCTO SIN HOMOLOGAR </a>";
+                            
                        //html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
@@ -2951,6 +2960,12 @@ function tablaresultados(opcion)
                         //html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ registros[i]["producto_nombre"]+"</b></font>";
                         html += "<td  style='padding:0; line-height:10pt;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";
 
+                        if (parseFloat(Number(registros[i]["producto_costo"]).toFixed(2)) >= parseFloat(Number(registros[i]["producto_precio"]).toFixed(2))) {
+                            html += "<br><span class='btn btn-danger btn-xs' title='ADVERTENCIA: El precio de COSTO es MAYOR O IGUAL AL PRECIO DE VENTA...!'><fa class='fa fa-exclamation-triangle'></fa> CONFLICTO DE PRECIOS</span>";
+                        }
+
+
+                            
                         //productos no homologados
                         if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 ))
                                 html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'> Sin homologar </a>";

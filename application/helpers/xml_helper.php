@@ -190,10 +190,15 @@
         
         //echo "Directorio: ".$directorio."<br> Documento sector: ".$dosificacion_documentosector."<br> factura: ".$factura['factura_id'];
 
+
         
-        if ($documento_sector != 23 ){ //23 factura prevalorada
-            $razonSocial = str_replace("&","&amp;",$factura['factura_razonsocial']);
-        }else{
+        $razonSocial = htmlspecialchars($factura['factura_razonsocial'], ENT_XML1, 'UTF-8');
+        //echo $razonSocial;
+        //$razonSocial = str_replace("&","&amp;",$razonSocial);
+
+        //var_dump($razonSocial);
+        
+        if ($documento_sector == 23 ){ //23 factura prevalorada
             $razonSocial = "S/N";
         }
         
