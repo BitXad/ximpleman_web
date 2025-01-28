@@ -317,6 +317,8 @@ function index($a = null)
                     'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
                     'cliente_clave' => $la_contraseña,
                     'cdi_codigoclasificador' => $this->input->post('doc_clasificador'),
+                    'cliente_liquidopagable' => $this->input->post('cliente_liquidopagable'),
+                    'cliente_montocredito' => $this->input->post('cliente_montocredito')
                 );
             
                 $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -489,7 +491,11 @@ function index($a = null)
                         'sab' => $sab,
                         'dom' => $dom,
                         'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
-                        'cdi_codigoclasificador' => $this->input->post('cdi_codigoclasificador')
+                        'cdi_codigoclasificador' => $this->input->post('cdi_codigoclasificador'),
+                        'cliente_liquidopagable' => $this->input->post('cliente_liquidopagable'),
+                        'cliente_montocredito' => $this->input->post('cliente_montocredito'),
+                        'cliente_liquidopagable' => $this->input->post('cliente_liquidopagable'),
+                        'cliente_montocredito' => $this->input->post('cliente_montocredito')    
                     );
 
                     $this->Cliente_model->update_cliente($cliente_id,$params);            

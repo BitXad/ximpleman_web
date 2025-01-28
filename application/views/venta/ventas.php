@@ -688,7 +688,12 @@ $actualizar_precios = 1;
 
             <?php    }  ?>
 
-            
+            <div id="mensajes">
+            <?php if (isset($cliente[0]['cliente_liquidopagable'])){ ?>
+                    Liquido pagable Bs: 345, Monto credito Bs: 452
+            <?php } ?>
+            </div>
+                    
              <?php if($parametro['parametro_modulorestaurante']==1){ ?>
             
                 <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">

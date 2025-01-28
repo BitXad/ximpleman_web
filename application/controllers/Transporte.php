@@ -6,7 +6,7 @@ class Transporte extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-//        $this->load->model('Transporte_model');
+        $this->load->model('Vehiculo_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -32,12 +32,28 @@ class Transporte extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+            $vehiculo_id = 1;
 //        if($this->acceso(24)){
             $data['page_title'] = "Transporte";
-            
+            $result = $this->Vehiculo_model->get_by_id($vehiculo_id);            
+            $data['vehiculo'] = $result;
             //$data['ayudas'] = $this->Transporte_model->get_ultimos_videos();
 
             $data['_view'] = 'transporte/index';
+            $this->load->view('layouts/main',$data);
+//        }
+    }
+    
+    function menu_principal()
+    {
+        $data['sistema'] = $this->sistema;
+//        if($this->acceso(24)){
+            $data['page_title'] = "Transporte";
+
+            
+            //$data['ayudas'] = $this->Transporte_model->get_ultimos_videos();
+            
+            $data['_view'] = 'transporte/menu_principal';
             $this->load->view('layouts/main',$data);
 //        }
     }

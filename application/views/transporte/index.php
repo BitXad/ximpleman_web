@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa de Asientos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+ <!--Styles for datatables--> 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+ <!--JQuery include--> 
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+ <!--Javascrips for datatables--> 
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> 
+ <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> 
   <style>
     .seat-btn {
       width: 50px;
@@ -48,180 +59,193 @@
   </style>
 </head>
 <body>
+    
   <div class="container my-4">
     <h2 class="text-center">Venta de Boletos</h2>
     <div class="row">
       <!-- Mapa de Asientos -->
       <div class="col-md-6">
-        <div class="text-center mb-3">
-          <button class="seat-btn driver">Cond</button>
-          <button class="seat-btn assistant">Ayd</button>
-        </div>
-        <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">1</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">2</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn reserved">3</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn occupied">4</button>
-            </div>
+          <!---------------------- INICIO FLOTA ---------------------------------->
+          <div class="container">
+       
+              <table>
+                  <tr>
+                      <td colpan="3"><button class="btn btn-warning"><img  src="<?php echo base_url("resources/images/transporte/conductor.png"); ?>" width="35px;" height="35px;"></button></td>
+                      <td colpan="2"><button class="seat-btn assistant"></button></td>
+                  </tr>
+                  
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td style="width: 1cm;"></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  <tr>
+                    <td><button class="seat-btn available">11</button></td>
+                    <td><button class="seat-btn available">12</button></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">14</button></td>
+                    <td><button class="seat-btn available">15</button></td>
+                  </tr>
+                  
+              </table>
+              
+     
           </div>
-        </div>
           
-        <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn occupied">4</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">5</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn reserved">6</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn occupied">7</button>
-            </div>
-          </div>
-        </div>
+          
+          
+          <!---------------------- FIN FLOTA ---------------------------------->
 
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">8</button>
+          
+      </div>
+      
+      
+      
+      <div class="col-md-6">
+          
+        <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Datos del vehiculo</h4>
             </div>
-            <div class="col-3">
-              <button class="seat-btn available">9</button>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="fw-bold">Propietario:</label>
+                        <p><?php //echo $vehiculo["vehiculo_apellidospropietario"]." ".$vehiculo["vehiculo_nombrespropietario"]; ?> </p>
+                        
+                        <img src="<?php echo base_url("resources/images/transporte/".$vehiculo["vehiculo_imagen"]); ?>" width="400" height="250"> <!-- comment -->
+                        
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Propietario:</label>
+                        <p><?php echo $vehiculo["vehiculo_apellidospropietario"]." ".$vehiculo["vehiculo_nombrespropietario"]; ?> </p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Placa:</label>
+                        <p><?php echo $vehiculo["vehiculo_placa"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Marca:</label>
+                        <p><?php echo $vehiculo["vehiculo_marca"]; ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Modelo:</label>
+                        <p><?php echo $vehiculo["vehiculo_modelo"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Clase:</label>
+                        <p><?php echo $vehiculo["vehiculo_clase"]; ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Año de Fabricación:</label>
+                        <p><?php echo $vehiculo["vehiculo_aniofabricacion"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Color:</label>
+                        <p><?php echo $vehiculo["vehiculo_color"]; ?></p>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="fw-bold">Combustible:</label>
+                        <p><?php echo $vehiculo["vehiculo_tipocombustible"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Número de Motor:</label>
+                        <p><?php echo $vehiculo["vehiculo_numeromotor"]; ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Serie:</label>
+                        <p><?php echo $vehiculo["vehiculo_serie"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Capacidad de Pasajeros:</label>
+                        <p><?php echo $vehiculo["vehiculo_pasajeros"]; ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Tipo de Servicio:</label>
+                        <p><?php echo $vehiculo["vehiculo_tiposervicio"]; ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="fw-bold">Fecha Tarjeta de Circulación:</label>
+                        <p><?php echo $vehiculo["vehiculo_fechatarjeta"]; ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold">Tarjeta de Circulación:</label>
+                        <p><?php echo $vehiculo["vehiculo_tarjetacirculacion"]; ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-              <button class="seat-btn available">10</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn occupied">11</button>
-            </div>
-          </div>
         </div>
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">12</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">13</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">14</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">15</button>
-            </div>
-          </div>
-        </div>
-          
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">16</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">17</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">18</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">19</button>
-            </div>
-          </div>
-        </div>
-          
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">20</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">21</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">22</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">23</button>
-            </div>
-          </div>
-        </div>
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">24</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">25</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">26</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">27</button>
-            </div>
-          </div>
-        </div>
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">28</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">29</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">30</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">31</button>
-            </div>
-          </div>
-        </div>
-          
-          <div class="d-flex justify-content-center flex-wrap">
-          <!-- Fila de asientos -->
-          <div class="row">
-            <div class="col-3">
-              <button class="seat-btn available">32</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">33</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">34</button>
-            </div>
-            <div class="col-3">
-              <button class="seat-btn available">35</button>
-            </div>
-          </div>
-        </div>
-          
-          
+    </div>
       </div>
 
       <!-- Detalle del Bus -->
@@ -290,3 +314,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+

@@ -103,12 +103,45 @@ function toggle(source) {
                             </div>
                     </div>
                     <div class="col-md-4">
-                            <label for="cliente_foto" class="control-label">Foto</label>
-                            <div class="form-group">
-                                    <input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
-                                    <input type="hidden" name="cliente_foto1" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto1" />
-                            </div>
+                        <label for="cliente_foto" class="control-label">Foto</label>
+                        <div class="form-group">
+                            <input type="file" name="cliente_foto" 
+                                   value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" 
+                                   class="btn btn-success btn-sm form-control" 
+                                   id="cliente_foto" 
+                                   accept="image/png, image/jpeg, image/jpg, image/gif" 
+                                   onchange="mostrarVistaPrevia(event)" />
+                            <input type="hidden" name="cliente_foto1" 
+                                   value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" 
+                                   class="form-control" id="cliente_foto1" />
+                        </div>
+                        <!-- Contenedor para la vista previa -->
+                        <div id="vista_previa_container">
+                            <img id="vista_previa" src="<?php echo base_url('uploads/' . $cliente['cliente_foto']); ?>" 
+                                 alt="Vista previa" style="max-width: 100%; max-height: 200px; display: <?php echo isset($cliente['cliente_foto']) ? 'block' : 'none'; ?>" />
+                        </div>
                     </div>
+
+                    <script>
+                    function mostrarVistaPrevia(event) {
+                        const input = event.target;
+                        const vistaPrevia = document.getElementById('vista_previa');
+
+                        if (input.files && input.files[0]) {
+                            const reader = new FileReader();
+
+                            reader.onload = function(e) {
+                                vistaPrevia.src = e.target.result;
+                                vistaPrevia.style.display = 'block'; // Muestra la imagen
+                            };
+
+                            reader.readAsDataURL(input.files[0]); // Lee la imagen como base64
+                        } else {
+                            vistaPrevia.src = '';
+                            vistaPrevia.style.display = 'none'; // Oculta la imagen si no hay archivo seleccionado
+                        }
+                    }
+                    </script>
                     <div class="col-md-2">
                             <label for="cliente_aniversario" class="control-label">Aniversario</label>
                             <div class="form-group">
@@ -387,6 +420,19 @@ function toggle(source) {
                         </div>
                     </div>
                     <div class="col-md-2">
+                        <label for="cliente_liquidopagable" class="control-label">Liquido Pagable</label>
+                        <div class="form-group">
+                            <input type="number" min="0" step="0.0000000001" name="cliente_liquidopagable" value="<?php echo ($this->input->post('cliente_liquidopagable') ? $this->input->post('cliente_liquidopagable') : $cliente['cliente_liquidopagable']); ?>" class="form-control" id="cliente_liquidopagable" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cliente_montocredito" class="control-label">Monto Credito</label>
+                        <div class="form-group">
+                            <input type="number" min="0" step="0.0000000001" name="cliente_montocredito" value="<?php echo ($this->input->post('cliente_montocredito') ? $this->input->post('cliente_montocredito') : $cliente['cliente_montocredito']); ?>" class="form-control" id="cliente_montocredito" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
                             <label for="estado_id" class="control-label">Estado</label>
                             <div class="form-group">
                                     <select name="estado_id" class="form-control">
@@ -403,6 +449,7 @@ function toggle(source) {
                             </div>
                     </div>
                 </div>
+                
             </div>
             <div class="box-footer">
             	<button type="submit" class="btn btn-success">

@@ -360,6 +360,20 @@ function buscarcliente(){
                     $("#tipo_doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
                     $("#cliente_valido").val(1);
                     
+                    //if (registros[0]["cliente_email"])
+                    
+                    if (registros[0]["cliente_montocredito"] != null && registros[0]["cliente_montocredito"] >=0){
+                        
+                        html = "<div id='mensajes'>";
+                        html += "<span class='btn btn-info btn-xs' style='font-size:10pt;'>";
+                        html += "<b>LIQ. PAGABLE Bs: </b>"+Number(registros[0]["cliente_liquidopagable"]).toFixed(2) ;
+                        html += " ** " ;
+                        html += "<b>MONTO MAX. CREDITO Bs: </b>"+Number(registros[0]["cliente_montocredito"]).toFixed(2) ;
+                        html += "</span>";
+                        html += "</div>";
+                        $("#mensajes").html(html);
+                    }
+                    
 
                     document.getElementById("codigoexcepcion").checked = (registros[0]["cliente_excepcion"] == 1); 
                     
@@ -481,6 +495,11 @@ function buscarcliente(){
                         document.getElementById('loader_documento').style.display = 'none';
                         $('#razon_social').focus();
                     }                    
+                    
+                    html = "<div id='mensajes'>";
+                    html += "</div>";
+                    $("#mensajes").html(html);
+                    
                 }
                 //document.getElementById('loader_documento').style.display = 'none';
             },
@@ -490,6 +509,9 @@ function buscarcliente(){
                 
                 $("#cliente_id").val(0);
                 document.getElementById('loader_documento').style.display = 'none';   
+                
+
+                
             }                
     }); 
 

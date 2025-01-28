@@ -375,6 +375,18 @@ function toggle(source) {
                             </div>
                     </div>
                     <div class="col-md-2">
+                        <label for="cliente_liquidopagable" class="control-label">Liquido Pagable</label>
+                        <div class="form-group">
+                            <input type="number" min="0" step="0.0000000001" name="cliente_liquidopagable" value="<?php echo ($this->input->post('cliente_liquidopagable') ? $this->input->post('cliente_liquidopagable') : '0'); ?>" class="form-control" id="cliente_liquidopagable" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cliente_montocredito" class="control-label">Monto Credito</label>
+                        <div class="form-group">
+                            <input type="number" min="0" step="0.0000000001" name="cliente_montocredito" value="<?php echo ($this->input->post('cliente_montocredito') ? $this->input->post('cliente_montocredito') : '0'); ?>" class="form-control" id="cliente_montocredito" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <label for="cliente_ordenvisita" class="control-label">Orden Visita</label>
                         <div class="form-group">
                             <input type="number" min="0" name="cliente_ordenvisita" value="<?php echo ($this->input->post('cliente_ordenvisita') ? $this->input->post('cliente_ordenvisita') : '0'); ?>" class="form-control" id="cliente_ordenvisita" />
