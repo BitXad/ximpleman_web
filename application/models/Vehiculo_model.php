@@ -28,4 +28,20 @@ class Vehiculo_model extends CI_Model {
     public function delete($id) {
         $this->db->delete($this->table, ['vehiculo_id' => $id]);
     }
+
+    public function consultar($sql) {
+        
+        return $this->db->query($sql)->result_array();
+        
+    }
+
+    public function get_viajes() {
+        
+        $sql = "select * from viaje v, ruta r
+                where 
+                v.viaje_fechasalida >= date(now()) and
+                v.ruta_id = r.ruta_id";
+        return $this->db->query($sql)->result_array();
+        
+    }
 }

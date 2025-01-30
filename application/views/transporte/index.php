@@ -16,6 +16,9 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> 
  <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> 
+ <script src="<?php echo base_url('resources/js/transporte.js'); ?>" type="text/javascript"></script>
+ 
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden><!-- comment -->
   <style>
     .seat-btn {
       width: 50px;
@@ -59,91 +62,134 @@
   </style>
 </head>
 <body>
-    
+
+<div class="container mt-3">
+        <div class="card p-3 shadow-sm">
+            <!--<h6 class="fw-bold">DATOS DEL CLIENTE</h6>-->
+            <div class="row g-2 align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label">VIAJES PROGRAMADOS</label>
+                
+                    
+                    <select class="form-select" onchange="cargar_asientos();">
+                        
+                        <option selected value="0">- SELECCIONAR VIAJE -</option>
+                        <?php foreach($viajes as $viaje){ ?>
+                            <option value="<?php echo $viaje["viaje_id"]  ?>"><?php echo $viaje["ruta_nombre"]." => ".$viaje["viaje_fechasalida"]." - ".$viaje["viaje_horasalida"] ?></option>
+                        <?php } ?>
+                        
+                        
+                    </select>
+                    
+                </div>
+                
+<!--                <div class="col-md-2">
+                    <label class="form-label">NÚMERO DE DOCUMENTO</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="1234">
+                        <button class="btn btn-success"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">RAZÓN SOCIAL</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-secondary text-white" value="SIN NOMBRE" readonly>
+                        <button class="btn btn-warning"><i class="bi bi-lock-fill"></i></button>
+                        <button class="btn btn-success"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>-->
+<!--                <div class="col-md-2">
+                    <label class="form-label">CELULAR</label>
+                    <input type="text" class="form-control" disabled>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">CORREO ELECTRÓNICO</label>
+                    <input type="email" class="form-control" value="info@kinetixdigitalme" readonly>
+                </div>-->
+            </div>
+<!--            <div class="row mt-3">
+                <div class="col-md-12 d-flex align-items-center">
+                    <input type="checkbox" checked> <span class="ms-2">Más información</span>
+                    <input type="checkbox" class="ms-3"> <span class="ms-2">Agrupar</span>
+                    <input type="checkbox" class="ms-3"> <span class="ms-2">Búsqueda por serie</span>
+                    <button class="btn btn-danger ms-3">EN LÍNEA</button>
+                    <select class="form-select w-auto ms-2">
+                        <option>- SIN CONTINGENCIA -</option>
+                    </select>
+                    <button class="btn btn-secondary ms-2"><i class="bi bi-gear"></i></button>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>    
+          
+          
+<button class="btn btn-info btn-xs" onclick="cargar_vehiculo()"> <fa class="fa fa-bus"></fa> cargar asientos</button>
+          
   <div class="container my-4">
     <h2 class="text-center">Venta de Boletos</h2>
     <div class="row">
       <!-- Mapa de Asientos -->
       <div class="col-md-6">
           <!---------------------- INICIO FLOTA ---------------------------------->
-          <div class="container">
-       
-              <table>
-                  <tr>
-                      <td colpan="3"><button class="btn btn-warning"><img  src="<?php echo base_url("resources/images/transporte/conductor.png"); ?>" width="35px;" height="35px;"></button></td>
-                      <td colpan="2"><button class="seat-btn assistant"></button></td>
-                  </tr>
-                  
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td style="width: 1cm;"></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  <tr>
-                    <td><button class="seat-btn available">11</button></td>
-                    <td><button class="seat-btn available">12</button></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">14</button></td>
-                    <td><button class="seat-btn available">15</button></td>
-                  </tr>
-                  
-              </table>
-              
-     
-          </div>
+          <?php 
+$filas = 10;
+$columnas = 5;
+?>
+          
+<div class="container" >
+    <table class="border" style="border-color: black; background-color: lightgray; ">
+        <tr>
+            <!--<td colspan="<?php echo $columnas; ?>">-->
+            <td>
+                <button class="btn btn-info" style="font-size: 9px;">
+                    <img src="<?php echo base_url("resources/images/transporte/conductor.png"); ?>" width="30px;" height="30px;">
+                    <br>conduc.
+                </button>
+            </td>
+            <td></td>
+            <td></td>
+            
+            <td><button class="btn btn-default" style="font-size: 9px;">
+                    <img src="<?php echo base_url("resources/images/transporte/libre.png"); ?>" width="30px;" height="30px;">
+                <br>Relevo
+                </button>
+            </td>
+            
+            <td><button class="btn btn-default" style="font-size: 9px;">
+                    <img src="<?php echo base_url("resources/images/transporte/libre.png"); ?>" width="30px;" height="30px;">
+                <br>Ayudante
+                </button>
+            </td>
+        </tr>
+        
+        <?php for ($i = 0; $i < $filas; $i++): ?>
+            <tr>
+                <?php for ($j = 0; $j < $columnas; $j++): ?>
+                    <?php if ($j == 2): ?>
+                        <td style="width: 1cm;"></td>
+                    <?php else: ?>
+                        <td>
+<!--                            <button class="seat-btn available">
+                                
+                                <?php // echo ($i + 1) . ($j + 1); ?>
+                            
+                            </button>-->
+                            <div id="<?php echo "boton".($j).($i); ?>">
+                                   <?php // echo "boton" . ($j) . ($i); ?> 
+                            </div>
+    
+
+                        </td>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </tr>
+        <?php endfor; ?>
+        
+    </table>
+</div>
+
           
           
           
@@ -156,7 +202,7 @@
       
       <div class="col-md-6">
           
-        <div class="container mt-4">
+
         <div class="card">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0">Datos del vehiculo</h4>
@@ -164,7 +210,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="fw-bold">Propietario:</label>
+                        <label class="fw-bold">Imagen:</label>
                         <p><?php //echo $vehiculo["vehiculo_apellidospropietario"]." ".$vehiculo["vehiculo_nombrespropietario"]; ?> </p>
                         
                         <img src="<?php echo base_url("resources/images/transporte/".$vehiculo["vehiculo_imagen"]); ?>" width="400" height="250"> <!-- comment -->
@@ -245,11 +291,40 @@
                 </div>
             </div>
         </div>
-    </div>
+
       </div>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- Button trigger modal -->
+<div hidden>
+
+    <button type="button_modal" id="button_modal" class="btn btn-primary" data-toggle="modal" data-target="#modalpasaje">
+      venta pasajes
+    </button>    
+    
+</div>
+    
+
+<!-- Modal -->
+<div class="modal fade" id="modalpasaje" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Venta de pasaje</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+        
+      <div class="modal-body">
+          
       <!-- Detalle del Bus -->
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header bg-primary text-white">
             Detalle de Bus Cochabamba - La Paz
@@ -311,8 +386,13 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
-
+          
+          
+      </div>
+<!--      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>-->
+    </div>
+  </div>
+</div>

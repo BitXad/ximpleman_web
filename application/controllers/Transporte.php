@@ -7,6 +7,7 @@ class Transporte extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Vehiculo_model');
+        $this->load->model('Viaje_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -35,6 +36,10 @@ class Transporte extends CI_Controller{
             $vehiculo_id = 1;
 //        if($this->acceso(24)){
             $data['page_title'] = "Transporte";
+            
+            $viajes = $this->Vehiculo_model->get_viajes(); //viajes de la fecha para adelante
+            $data['viajes'] = $viajes;
+            
             $result = $this->Vehiculo_model->get_by_id($vehiculo_id);            
             $data['vehiculo'] = $result;
             //$data['ayudas'] = $this->Transporte_model->get_ultimos_videos();

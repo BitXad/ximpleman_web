@@ -36,4 +36,14 @@ class Vehiculo extends CI_Controller {
         $this->Vehiculo_model->delete($id);
         redirect('vehiculo');
     }
+
+    public function get_asientos() {
+        
+        $vehiculo_id = $this->input->post("vehiculo_id");
+        $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+        $resultado = $this->Vehiculo_model->consultar($sql);
+        
+        echo json_encode($resultado);
+        
+    }
 }
