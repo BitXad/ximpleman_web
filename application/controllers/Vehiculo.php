@@ -39,8 +39,17 @@ class Vehiculo extends CI_Controller {
 
     public function get_asientos() {
         
-        $vehiculo_id = $this->input->post("vehiculo_id");
-        $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+        $viaje_id = $this->input->post("viaje_id");
+        
+       // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+        $sql = "select h.*,a.* from 
+                viaje v, vehiculo h, asientos a, pasaje p
+                where
+                v.viaje_id = {$viaje_id} and
+                v.vehiculo_id = h.vehiculo_id and
+                h.vehiculo_id = a.vehiculo_id  and
+                a.asiento_id = p.asiento_id ";
+        
         $resultado = $this->Vehiculo_model->consultar($sql);
         
         echo json_encode($resultado);

@@ -1,7 +1,7 @@
 
-function cargar_vehiculo(){
+function cargar_vehiculo(viaje_id){
     
-    let vehiculo_id = 1; //SOlo para efectos de prueba
+//    let vehiculo_id = 1; //SOlo para efectos de prueba
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'vehiculo/get_asientos/';
@@ -9,7 +9,7 @@ function cargar_vehiculo(){
 
     $.ajax({url: controlador,
             type:"POST",
-            data:{vehiculo_id:vehiculo_id},
+            data:{viaje_id:viaje_id},
             success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);
@@ -44,5 +44,13 @@ function cargar_vehiculo(){
 function registrar_pasaje(asiento_id){
     //alert("fadsfdas");
     $("#button_modal").click();
+    
+}
+
+
+function cargar_datosviaje(){
+    let viaje_id = document.getElementById('select_viaje').value;
+    
+    cargar_vehiculo(viaje_id);
     
 }

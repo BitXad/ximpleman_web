@@ -68,67 +68,31 @@
             <!--<h6 class="fw-bold">DATOS DEL CLIENTE</h6>-->
             <div class="row g-2 align-items-center">
                 <div class="col-md-3">
-                    <label class="form-label">VIAJES PROGRAMADOS</label>
+                    <label class="form-label"> <fa class="fa fa-bus"></fa> VIAJES PROGRAMADOS</label>
                 
                     
-                    <select class="form-select" onchange="cargar_asientos();">
+                    <select class="form-select" onchange="cargar_datosviaje();" id="select_viaje">
                         
                         <option selected value="0">- SELECCIONAR VIAJE -</option>
                         <?php foreach($viajes as $viaje){ ?>
-                            <option value="<?php echo $viaje["viaje_id"]  ?>"><?php echo $viaje["ruta_nombre"]." => ".$viaje["viaje_fechasalida"]." - ".$viaje["viaje_horasalida"] ?></option>
+                            <option value="<?php echo $viaje["viaje_id"];  ?>"><?php echo $viaje["ruta_nombre"]." => ".$viaje["viaje_fechasalida"]." - ".$viaje["viaje_horasalida"] ?></option>
                         <?php } ?>
                         
                         
                     </select>
                     
                 </div>
-                
-<!--                <div class="col-md-2">
-                    <label class="form-label">NÚMERO DE DOCUMENTO</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" value="1234">
-                        <button class="btn btn-success"><i class="bi bi-search"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">RAZÓN SOCIAL</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-secondary text-white" value="SIN NOMBRE" readonly>
-                        <button class="btn btn-warning"><i class="bi bi-lock-fill"></i></button>
-                        <button class="btn btn-success"><i class="bi bi-search"></i></button>
-                    </div>
-                </div>-->
-<!--                <div class="col-md-2">
-                    <label class="form-label">CELULAR</label>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">CORREO ELECTRÓNICO</label>
-                    <input type="email" class="form-control" value="info@kinetixdigitalme" readonly>
-                </div>-->
-            </div>
-<!--            <div class="row mt-3">
-                <div class="col-md-12 d-flex align-items-center">
-                    <input type="checkbox" checked> <span class="ms-2">Más información</span>
-                    <input type="checkbox" class="ms-3"> <span class="ms-2">Agrupar</span>
-                    <input type="checkbox" class="ms-3"> <span class="ms-2">Búsqueda por serie</span>
-                    <button class="btn btn-danger ms-3">EN LÍNEA</button>
-                    <select class="form-select w-auto ms-2">
-                        <option>- SIN CONTINGENCIA -</option>
-                    </select>
-                    <button class="btn btn-secondary ms-2"><i class="bi bi-gear"></i></button>
-                </div>
-            </div>-->
+
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>    
           
           
-<button class="btn btn-info btn-xs" onclick="cargar_vehiculo()"> <fa class="fa fa-bus"></fa> cargar asientos</button>
+<!--<button class="btn btn-info btn-xs" onclick="cargar_vehiculo()"> <fa class="fa fa-bus"></fa> cargar asientos</button>-->
           
   <div class="container my-4">
-    <h2 class="text-center">Venta de Boletos</h2>
+    <!--<h2 class="text-center">Venta de Boletos</h2>-->
     <div class="row">
       <!-- Mapa de Asientos -->
       <div class="col-md-6">
