@@ -129,6 +129,7 @@
                                 <td class="no-print">
                                     <a href="${base_url}control_ubicacion/index/${control['controli_id']}" class="btn btn-primary btn-xs" title="Realizar Control de inventario"><i class="fa fa-sign-in" aria-hidden="true"></i> Inventario</a>
                                     <a href="${base_url}control_inventario/edit/${control['controli_id']}" class="btn btn-info btn-xs" title="Editar Control de inventario"><span class="fa fa-pencil"></span></a>
+                                    <a href="${base_url}control_inventario/reporte/${control['controli_id']}" class="btn btn-success btn-xs" title="Imprimir reporte" target='_blank'><span class="fa fa-print"></span></a>
                                     <button class="btn btn-danger btn-xs" title="Borrar Control de inventario" onclick=(delete_inventario(${control['controli_id']}))><span class="fa fa-trash"></span></button>
                                 </td>
                             </tr>`;

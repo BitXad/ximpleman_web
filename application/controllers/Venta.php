@@ -5500,7 +5500,7 @@ function anular_venta($venta_id){
             $monto_factura = $this->input->post("monto_factura");
             $tipoDocumento = $this->input->post("tipoDocumento");
 
-            
+            //echo $venta_id." *** ".$numeroDocumento." *** ".$razon." *** ".$monto_factura;
             // PARA NUEVA FACTURACION
             //$parametro = $this->Parametro_model->get_parametros(); Se cambio por $parametros, variable global
             
@@ -5518,6 +5518,7 @@ function anular_venta($venta_id){
 
             //RECUPERAR DATOS DE LA VENTA PARA INGRESAR A FACTURA
             $sql = "select * from venta v, cliente c where v.cliente_id = c.cliente_id and v.venta_id = ".$venta_id;
+            
             $venta = $this->Venta_model->consultar($sql);
             
             $nit_factura = $this->input->post('numeroDocumento');
@@ -5528,6 +5529,8 @@ function anular_venta($venta_id){
             $venta_descuento = $this->input->post('venta_descuento');
             $venta_total = $this->input->post('venta_total');
                                 
+            //echo $monto_factura." *** ".$venta_descuentoparcial." *** ".$venta_descuento." *** ".$venta_total;
+            
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
                     //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
@@ -5552,10 +5555,12 @@ function anular_venta($venta_id){
                         $factura_complementoci = "";
                         $factura_glosa = $venta[0]["venta_glosa"];
                         $factura_idcreditodebito = 0;
+                        $tipo_transaccion = $venta[0]["tipotrans_id"];
+                        $tipoDocumentoIdentidad = $tipoDocumento;
 
                         
                         
-                        $numero_doc_identidad = $tipoDocumento;
+                        $numero_doc_identidad = $nit_factura;
                         
                         $factura_fechaventa    = $fecha_venta;
                         $factura_fecha         = "date({$now})";
@@ -5591,7 +5596,7 @@ function anular_venta($venta_id){
                         
                         
                         
-                            if ($this->parametros["parametro_comprobante"]==2){ //si es factura trcha
+                         /*   if ($this->parametros["parametro_comprobante"]==2){ //si es factura trcha
                                 
                                 if ($this->parametros['parametro_contarventas']==1){
 
@@ -5600,7 +5605,7 @@ function anular_venta($venta_id){
 
                                 }
                             }
-                        
+                        */
                         if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
                             $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
@@ -5623,6 +5628,7 @@ function anular_venta($venta_id){
                             $factura_tamanio         = $tamanio_hoja;
                             $tipoDocumentoIdentidad  =  $tipoDocumento; //$this->input->post('tipo_doc_identidad');
                             $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
+  
                             
                             $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                             
@@ -5662,7 +5668,17 @@ function anular_venta($venta_id){
                             $pos = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
 
                                                         
-
+//                            var_dump(trim($factura_nitemisor)." *** ".
+//                                                    trim($cadFechahora)." *** ".
+//                                                    trim($factura_sucursal)." *** ".
+//                                                    trim($factura_modalidad)." *** ".
+//                                                    trim($tipo_emision)." *** ".
+//                                                    trim($tipo_factura)." *** ".
+//                                                    trim($tipo_documento_sector)." *** ".
+//                                                    trim($factura_numero)." *** ".
+//                                                    trim($pos)." *** ".
+//                                                    trim($cufd_codigocontrol));
+                            
                             // LLAMANDO AL HELPER
                             $factura_cuf = generarCuf(trim($factura_nitemisor),
                                                     trim($cadFechahora),
@@ -5735,8 +5751,7 @@ function anular_venta($venta_id){
 
                                 }
                                 
-                                $tipo_transaccion = 1;
-                                
+                              
                                 
                             // nuevo sistema de facturacion                                
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -5787,27 +5802,27 @@ function anular_venta($venta_id){
                         detallefact_unidadfactor)
         
                         (SELECT 
-                            producto_id,
+                            d.producto_id,
                             ".$venta_id." as venta_id,          
                             ".$factura_id." as factura_id,
-                            detalleven_codigo,
-                            detalleven_unidad,
-                            detalleven_cantidad,
-                            producto_nombre,          
-                            detalleven_precio,
-                            detalleven_subtotal,
-                            detalleven_descuentoparcial,
-                            detalleven_descuento,
-                            detalleven_total,
-                            detalleven_preferencia,
-                            detalleven_caracteristicas,
-                            detalleven_unidadfactor
+                            d.detalleven_codigo,
+                            d.detalleven_unidad,
+                            d.detalleven_cantidad,
+                            p.producto_nombre,          
+                            d.detalleven_precio,
+                            d.detalleven_subtotal,
+                            d.detalleven_descuentoparcial,
+                            d.detalleven_descuento,
+                            d.detalleven_total,
+                            d.detalleven_preferencia,
+                            d.detalleven_caracteristicas,
+                            d.detalleven_unidadfactor
         
                         FROM
-                            detalle_venta_aux
+                            detalle_venta d, producto p
                         WHERE 
-                            usuario_id=".$usuario_id.")";
-                        
+                            d.venta_id=".$venta_id." and d.producto_id = p.producto_id)";
+                        //echo $sql;
                         $this->Factura_model->ejecutar($sql);   
                         
                         
@@ -5904,7 +5919,7 @@ function anular_venta($venta_id){
                         $factura = $this->Factura_model->get_factura_id($factura_id);
                         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                         $empresa = $this->Empresa_model->get_empresa(1);
-                        
+                        //var_dump($detalle_factura);
                         $base_url = explode('/', base_url());
                         
                         //********************** GENERANDO ARCHIVO XML ****************
@@ -5919,6 +5934,8 @@ function anular_venta($venta_id){
                         
                         $es_valido = $valXSD->validar($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml",$directorio_esquema.$xsd);
 
+                        //echo $directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml"."  **** ".$directorio_esquema.$xsd;
+                        
                         if(!$es_valido){
                                 //echo "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
                                 $error = "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
@@ -6018,6 +6035,8 @@ function anular_venta($venta_id){
 
                                         }
                                     //*************************************
+                                    $sql = "update venta set venta_tipodoc = 1 where venta_id = {$venta_id}";
+                                    $this->Venta_model->ejecutar($sql);
                                     
                                     
                                     
@@ -6054,6 +6073,11 @@ function anular_venta($venta_id){
 
                                             $this->Factura_model->update_factura($factura_id, $params);
 
+                                            //Sino fue enviada la factura debemos desligarla de la venta
+                                            $sql = "update factura set venta_id = 0 where factura_id = {$factura_id}";
+                                            $this->Venta_model->ejecutar($sql);
+                                            
+                                            
                                            echo json_encode($enviada);
 
                                 
@@ -6122,7 +6146,7 @@ function anular_venta($venta_id){
                                 sleep(1);
                                 if ($codigo_recepcion>0){
                                     $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
-                                }
+                                    }
                             }
                         }elseif($mandar_enuno == 1){
                             //Funcion en eventos con cafc
@@ -6143,6 +6167,7 @@ function anular_venta($venta_id){
                     // $this->ultimaventa(1);
                 }
                 
+                $orden_id = 0; // hay que revisar de donde viene
                 if($orden_id > 0){
                     
                     $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
@@ -6171,15 +6196,14 @@ function anular_venta($venta_id){
                     }
 
                 }   
-                if($facturado=="false" && $tipo_transaccion == 2){
+                /*if($facturado=="false" && $tipo_transaccion == 2){
                     echo json_encode("");
-                }
+                }*/
                 
             //} //Fin del for de N facturas
             
 
-        }
-    
+        }    
     
     function array_to_xml($array_to_xml, &$xml) {
         foreach($array_to_xml as $key => $value) {
@@ -10531,6 +10555,203 @@ function anular_venta($venta_id){
                 
                 
     }
+    
+    public function finalizar_venta_pasaje(){
+        
+        $pasaje_id = $this->input->post('pasaje_id');
+        $viaje_id = $this->input->post('viaje_id');
+//        $viaje_precio = $this->input->post('viaje_precio');
+//        $nombre = $this->input->post('nombre');
+//        $select_documento = $this->input->post('select_documento');
+//        $total_bs = $this->input->post('total_bs');
+//        $descuento_bs = $this->input->post('descuento_bs');
+//        $total_final_bs = $this->input->post('total_final_bs');
+//        $efectivo_bs = $this->input->post('efectivo_bs');
+//        $cambio_bs = $this->input->post('cambio_bs');
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
+        $forma_id = $this->input->post('forma_pago'); //
+        $tipotrans_id = 1; //$this->input->post('tipotrans_id');
+        $usuario_id = $this->session_data['usuario_id'];
+        $cliente_id = $this->input->post('cliente_id');
+        $moneda_id = 1;
+        $estado_id = 1;
+        $venta_fecha = "date({$now})";
+        $venta_hora = "time({$now})";;
+        $venta_subtotal = $this->input->post('total_bs');
+        $venta_descuentoparcial = 0;
+        $venta_descuento = $this->input->post('descuento_bs');
+        $venta_total = $this->input->post('total_final_bs');
+        $venta_efectivo = $this->input->post('efectivo_bs');
+        $venta_cambio = $this->input->post('cambio_bs');
+        $venta_glosa = $this->input->post('glosa');
+        $acuenta = $this->input->post('acuenta');
+        $venta_comision = 0;
+        $venta_tipocambio = 1;
+        $detalleserv_id = 0;
+        $venta_tipodoc = $this->input->post('venta_tipodoc'); //Si 1 es facturado * si es 0 No facturado
+        $tiposerv_id = 0;
+        $entrega_id = 0;
+        $venta_fechaentrega = 'NULL';
+        $venta_horaentrega = 'NULL';
+        
+        $operacion = $this->input->post('operacion');
+        
+        
+        //****************** contador de transacicones mensuales
+        $venta_numeroventa = 0;
+        $venta_numeromesa = 0;
+        $venta_numerotransmes = 0;
+        
+        if($this->parametros["parametro_contarventas"]==1){// Si contador de transacciones esta activada                   
+                    $venta_numeroventa = $this->numero_venta();
+                }
+                
+                if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
+                    
+                    //Verificar si es el mes correcto
+                    $numeroMes = date("n");
+                    
+                    if($numeroMes != $dosificacion[0]["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
+                        
+                        $SQLcontador = "update dosificacion d set
+                                        d.dosificacion_numerotransmes = (SELECT COUNT(*) AS cantidad_ventas FROM venta
+                                        WHERE MONTH(venta_fecha) = MONTH(CURRENT_DATE()) AND YEAR(venta_fecha) = YEAR(CURRENT_DATE()))
+                                        ,d.dosificacion_mesactual = MONTH({$now})";
+                        
+                        $contador_mes = $this->Venta_model->Consultar($SQLcontador);
+                        $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                        
+                        
+                    }
+                    
+                    $venta_numerotransmes = $dosificacion[0]["dosificacion_numerotransmes"]+1;
+                        
+                    
+                }
+                    
+                    
+                //****************** fin contador de transacicones mensuales        
+        
+        $entrega_usuarioid = 0;
+        $entrega_estadoid = 0;
+        $usuarioprev_id = 0;
+        $pedido_id = 0;
+        $orden_id = 0;
+        $banco_id = 0;
+        $venta_ice = 0;
+        $venta_giftcard = 0;
+        $venta_detalletransaccion = 0;
+            
+        if($operacion==1){ //Si operacion es venta            
+            $venta_acuentareserva = 0;
+        }else{
+            if ($acuenta>0)
+                $venta_acuentareserva = $acuenta;
+            else
+                $venta_acuentareserva = 0;
+            
+        }
+                    
+        //$venta_numerotransmes = ;
+
+            $sql = "insert into venta_pasaje(
+                    forma_id, tipotrans_id, usuario_id, cliente_id, moneda_id, estado_id, venta_fecha, venta_hora, 
+                    venta_subtotal, venta_descuentoparcial, venta_descuento, venta_total, venta_efectivo, venta_cambio, 
+                    venta_glosa, venta_comision, venta_tipocambio, detalleserv_id, venta_tipodoc, tiposerv_id, 
+                    entrega_id, venta_fechaentrega, venta_horaentrega, venta_numeroventa, venta_numeromesa, 
+                    entrega_usuarioid, entrega_estadoid, usuarioprev_id, pedido_id, orden_id, banco_id, 
+                    venta_ice, venta_giftcard, venta_detalletransaccion, venta_numerotransmes, viaje_id, venta_acuentareserva)
+
+                    value({$forma_id},{$tipotrans_id},{$usuario_id},{$cliente_id},{$moneda_id},
+                    {$estado_id},{$venta_fecha},{$venta_hora},{$venta_subtotal},{$venta_descuentoparcial},
+                    {$venta_descuento},{$venta_total},{$venta_efectivo},{$venta_cambio},'{$venta_glosa}',
+                    {$venta_comision},{$venta_tipocambio},{$detalleserv_id},{$venta_tipodoc},{$tiposerv_id},{$entrega_id},
+                    {$venta_fechaentrega},{$venta_horaentrega},{$venta_numeroventa},{$venta_numeromesa},{$entrega_usuarioid},
+                    {$entrega_estadoid},{$usuarioprev_id},{$pedido_id},{$orden_id},{$banco_id},
+                    {$venta_ice},{$venta_giftcard},{$venta_detalletransaccion},{$venta_numerotransmes},{$viaje_id},{$venta_acuentareserva})";
+
+            //echo $sql;
+        
+        if($operacion==1){ //Si operacion es venta
+            
+            $venta_id = $this->Venta_model->ejecutar($sql);
+
+                    // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+                $sql = "update pasaje set
+                        venta_id = {$venta_id},
+                        estado_id = 54
+                        where  
+                        estado_id = 51 and
+                        usuario_id = {$usuario_id} and
+                        viaje_id = {$viaje_id}";
+              //  echo $sql;
+                $this->Venta_model->ejecutar($sql);
+
+        }
+        
+        
+        if($operacion==2){ //Si operacion es reserva
+            
+            $venta_id = $this->Venta_model->ejecutar($sql);
+
+                    // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+                $sql = "update pasaje set
+                        venta_id = {$venta_id},
+                        estado_id = 52
+                        where  
+                        estado_id = 51 and
+                        usuario_id = {$usuario_id} and
+                        viaje_id = {$viaje_id}";
+              //  echo $sql;
+                $this->Venta_model->ejecutar($sql);
+
+        }
+        
+        
+        
+        
+
+        if($operacion==2222){ //reserva
+                    
+            // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
+                 $sql = "update pasaje set
+                         estado_id = 52
+                         
+                         where  
+                        estado_id = 51 and
+                        usuario_id = {$usuario_id} and
+                        viaje_id = {$viaje_id}";
+                 //echo $sql;
+             $this->Venta_model->ejecutar($sql);
+        }
+            
+        
+        echo json_encode(true);
+        
+    }
+
+/*************** funcion para mostrar la vista de la factura******************/
+function ultimo_pasaje(){
+    
+//    if($this->acceso(12)||$this->acceso(30)){
+//    //**************** inicio contenido ***************    
+    
+    $usuario_id = $this->session_data['usuario_id'];             
+    $viaje_id = $this->input->post("viaje_id");
+    
+    
+    $venta_id = $this->Viaje_model->ultima_venta($viaje_id, $usuario_id);
+    
+     redirect('viaje/imprimir_pasaje/'.$venta_id);
+        //redirect('factura/recibo_boucher/'.$venta_id);        
+ 
+        
+       //**************** fin contenido ***************
+//        }
+            
+}    
     
     
     

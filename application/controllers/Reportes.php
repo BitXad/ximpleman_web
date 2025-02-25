@@ -272,7 +272,9 @@ class Reportes extends CI_Controller{
 //            
             
             //********************************************************************
-            $data['_view'] = 'reportes/reportecaja';
+            //$data['_view'] = 'reportes/reportecaja';
+            $data['_view'] = 'reportes/reportecajares';
+            
             $this->load->view('layouts/main',$data);
         //}
     }

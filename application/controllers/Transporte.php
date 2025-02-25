@@ -8,6 +8,8 @@ class Transporte extends CI_Controller{
         parent::__construct();
         $this->load->model('Vehiculo_model');
         $this->load->model('Viaje_model');
+        $this->load->model('Sincronizacion_model');
+        $this->load->model('Forma_pago_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -37,6 +39,8 @@ class Transporte extends CI_Controller{
 //        if($this->acceso(24)){
             $data['page_title'] = "Transporte";
             
+            $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $viajes = $this->Vehiculo_model->get_viajes(); //viajes de la fecha para adelante
             $data['viajes'] = $viajes;
             

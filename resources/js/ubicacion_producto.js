@@ -217,7 +217,7 @@ function cargar_productos(controli_id,controlu_id){
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"ubicacion_producto/cargar_productos";
     
-    var r = confirm("Esta operación afectara a la base de datos. \n ¿Desea Continuar?");
+    var r = confirm("Esta operación afectara a la base de datos, eliminando todos los datos previamente registrados. \n ¿Desea Continuar?");
     if (r == true) {
 
     
@@ -338,39 +338,50 @@ function buscar_producto(e,opcion) {
                         let existencia;
                         var total_sobrante = 0;
                         var total_faltante = 0;
+                        var estilo = "";
 
 
                         for(var i=0; i<ubi_productos.length; i++){
 
+                                if(Number(ubi_productos[i]['ubiprod_lecturado'] == 1)){
+
+                                    estilo = " style='background: orange; ' ";
+
+                                }else{
+
+                                    estilo = "";
+
+                                }
+
                             html += "    <tr>";
-                            html += "        <td>"+(i+1)+"</td>";
-                            html += "        <td id='nombre"+ubi_productos[i]['ubiprod_id']+"'>"+ubi_productos[i]['producto_nombre']+"</td>";
-                            html += "        <td id='codigo"+ubi_productos[i]['ubiprod_id']+"'>"+ubi_productos[i]['producto_codigo']+"</td>";
+                            html += "        <td "+estilo+">"+(i+1)+"</td>";
+                            html += "        <td id='nombre"+ubi_productos[i]['ubiprod_id']+"' "+estilo+">"+ubi_productos[i]['producto_nombre']+"</td>";
+                            html += "        <td id='codigo"+ubi_productos[i]['ubiprod_id']+"' "+estilo+">"+ubi_productos[i]['producto_codigo']+"</td>";
      
-                            html += "        <td>";
+                            html += "        <td "+estilo+">";
                             html += "            <div class='input-group input-group-sm mb-3'>";
                             html += "                <input id='existencia"+ubi_productos[i]['ubiprod_id']+"' type='number' class='form-control' value='"+ubi_productos[i]['ubiprod_existencia']+"' disabled>";
                             html += "            </div>";
                             html += "        </td>";
-                            html += "        <td>";
+                            html += "        <td "+estilo+">";
                             html += "            <div class='input-group'>";
                             html += "                <input id='existencia_producto"+ubi_productos[i]['ubiprod_id']+"' type='number' min='0' class='form-control' value='"+ubi_productos[i]['ubiprod_existenciafisico']+"' onchange='calcular("+ubi_productos[i]['ubiprod_id']+")'>";                           
                             html += "            </div>";
                             html += "        </td>";
-                            html += "        <td>";
+                            html += "        <td "+estilo+">";
                             html += "                <button class='form-control btn-xs btn-facebook' style='width: 20px;' onclick='calcular("+ubi_productos[i]['ubiprod_id']+")'><fa class='fa fa-floppy-o'></fa></button>";
                             html += "        </td>";
-                            html += "        <td>";
+                            html += "        <td "+estilo+">";
                             html += "            <div class='input-group'>";
                             html += "                <input id='sobrante"+ubi_productos[i]['ubiprod_id']+"' type='number' class='form-control' value='"+(ubi_productos[i]['ubiprod_sobrante'] == 0 ? 0:ubi_productos[i]['ubiprod_sobrante'])+"' disabled>";
                             html += "            </div>";
                             html += "        </td>";
-                            html += "        <td>";
+                            html += "        <td "+estilo+">";
                             html += "            <div class='input-group'>";
                             html += "                <input id='faltante"+ubi_productos[i]['ubiprod_id']+"' type='number' class='form-control' value='"+(ubi_productos[i]['ubiprod_faltante'] == 0 ? 0:ubi_productos[i]['ubiprod_faltante'])+"' disabled>";
                             html += "            </div>";
                             html += "        </td>";
-                            html += "        <td >";
+                            html += "        <td "+estilo+">";
 
                                             total_sobrante += ubi_productos[i]['producto_costo'] * ubi_productos[i]['ubiprod_sobrante'];
                                             total_faltante += ubi_productos[i]['producto_costo'] * ubi_productos[i]['ubiprod_faltante'];
@@ -383,7 +394,7 @@ function buscar_producto(e,opcion) {
                             html += "                <input id='faltante"+ubi_productos[i]['ubiprod_id']+"' type='number' class='form-control' value='"+ubi_productos[i]['producto_costo'] * ubi_productos[i]['ubiprod_faltante']+"' disabled>";
                             html += "            <!--</div>-->";
                             html += "        </td>";
-                            html += "        <td class='no-print'>";
+                            html += "        <td class='no-print' "+estilo+">";
                             html += "            <button class='btn btn-danger btn-xs' title='Eliminar producto' onclick='eliminar_producto("+ubi_productos[i]['ubiprod_id']+")' style=''><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                             html += "        </td>";
                             html += "    </tr>";

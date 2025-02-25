@@ -41,10 +41,11 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+ <?php //var_dump($cantidad_productos); ?>
 <div class="box-header">
     <font size='4' face='Arial'><b><?= $ubicacion[0]['ubicacion_nombre'] ?></b></font><br>
     <span style="font-size: 8pt;"><?= $ubicacion[0]['ubicacion_descripcion'] ?></span>
-    <br><font size='2' face='Arial'>Registros Registrados: <?php echo sizeof($ubi_productos); ?></font>
+    <br><font size='2' face='Arial'>Registros Registrados: <?php echo $cantidad_productos[0]["cantidad_productos"]; ?></font>
     <div class="box-tools no-print">
         <button class="btn btn-success btn-sm"  onclick="imprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         <?php if ($control_ubicacion['estado_id'] != 26) {?>
@@ -97,11 +98,11 @@
                             $total_sobrante = 0;
                             $total_faltante = 0;
                             
-                            foreach($ubi_productos as $ubi_producto){
+                           // foreach($ubi_productos as $ubi_producto){
                         ?>
                         
                         
-                        <?php $i++; } ?>
+                        <?php// $i++; } ?>
                             <tr>
                                 <th></th>
                                 <th>TOTALES</th>

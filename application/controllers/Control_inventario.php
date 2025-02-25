@@ -1,6 +1,9 @@
 <?php
 class Control_inventario extends CI_Controller{
+
     private $sistema;
+    private $parametros;
+
     function __construct()
     {
         parent::__construct();
@@ -8,6 +11,7 @@ class Control_inventario extends CI_Controller{
         $this->load->model('Control_inventario_model');
         $this->load->model('Control_ubicacion_model');
         $this->load->model('Ubicacion_model');
+        $this->load->model('Empresa_model');
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
         $this->load->model('Ubicacion_producto_model');
@@ -36,6 +40,7 @@ class Control_inventario extends CI_Controller{
      */
     function index()
     {
+     $data['sistema'] = $this->sistema;
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $estado_tipo = 7;
@@ -51,6 +56,7 @@ class Control_inventario extends CI_Controller{
      * control ubicacion
      */
     function control_ubicacion(){
+     $data['sistema'] = $this->sistema;
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $session_data = $this->session->userdata('logged_in');
@@ -69,6 +75,7 @@ class Control_inventario extends CI_Controller{
      * Adding a new unidad
      */
     function add(){
+     $data['sistema'] = $this->sistema;
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             
@@ -330,5 +337,28 @@ class Control_inventario extends CI_Controller{
             $this->Venta_model->add_detalle_venta_aux($params);
         }
         /*****************************ADD DETALLE VENTA AUX***************************** */
+    }
+        /**
+     * control ubicacion
+     */
+    function reporte($controli_id){
+        
+        $data['sistema'] = $this->sistema;
+        
+//        if($this->acceso(136)){
+            
+            $session_data = $this->session->userdata('logged_in');
+            
+            $empresa = $this->Empresa_model->get_empresa(1);
+            $data["empresa"] = $empresa;
+            
+            $data['control_inventarios'] = $this->Control_inventario_model->get_control_inventario($controli_id);
+            $data['productos'] = $this->Ubicacion_producto_model->get_productos_inventario($controli_id);
+//            $data['ubicaciones'] = $this->Ubicacion_model->get_all_ubicacion();
+//            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['page_title'] = "Control inventario";
+            $data['_view'] = 'control_inventario/reporte';
+            $this->load->view('layouts/main',$data);
+//        }
     }
 }

@@ -1763,7 +1763,7 @@ $actualizar_precios = 1;
                                         
                                         <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
                                         <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
-                                        <select id="forma_pago" id="forma_pago" name="forma_pago" class="btn btn-default btn-xs" onchange="mostrar_formapago(), mostrar('forma_pago','glosa_banco')"  style="width: 120px;" >
+                                        <select id="forma_pago" name="forma_pago" class="btn btn-default btn-xs" onchange="mostrar_formapago(), mostrar('forma_pago','glosa_banco')"  style="width: 120px;" >
                                             <?php
                                                 foreach($forma_pago as $forma){ ?>
                                                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
@@ -1969,7 +1969,7 @@ $actualizar_precios = 1;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 17){ //en esta linea debe ser == 23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //en esta linea debe ser == 23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }

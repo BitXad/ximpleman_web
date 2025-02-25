@@ -50,4 +50,4 @@
                         array($codigo_actividadcaeb))->row_array();
         }
     }
-?>
+?>  

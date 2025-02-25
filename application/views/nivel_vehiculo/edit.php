@@ -1,20 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editar Nivel_vehiculo</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-<div class="container">
-    <h1>Editar Nivel_vehiculo</h1>
-    <form method="post">
-        <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" name="nivel_vehiculo_nombre" value="<?php echo isset($nivel_vehiculo_data->nivel_vehiculo_nombre) ? $nivel_vehiculo_data->nivel_vehiculo_nombre : ''; ?>" class="form-control" required>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Nivel Vehiculo Edit</h3>
+            <?php echo form_open('nivel_vehiculo/edit/'.$nivel_vehiculo['nivel_id']); ?>
+            <div class="box-body">
+              <div class="row clearfix">
+           <div class="col-md-6">
+               <label for="nivel_id" class="control-label">  <span class="text-danger"></span>ID</label>
+                <div class="form-group">
+                  <input type="number" name="nivel_id" value="<?php echo ($this->input->post('nivel_id') ? $this->input->post('nivel_id') : $nivel_vehiculo['nivel_id']); ?>" class="form-control" id="nivel_id" />
+                    <span class="text-danger"><?php echo form_error('nivel_id');?></span>
+               </div>
+             </div> 
+                        <div class="col-md-6">
+               <label for="nivel_nombre" class="control-label">  <span class="text-danger"></span>NOMBRE</label>
+                <div class="form-group">
+                  <input type="text" name="nivel_nombre" value="<?php echo ($this->input->post('nivel_nombre') ? $this->input->post('nivel_nombre') : $nivel_vehiculo['nivel_nombre']); ?>" class="form-control" id="nivel_nombre" />
+                    <span class="text-danger"><?php echo form_error('nivel_nombre');?></span>
+               </div>
+             </div> 
+                     </div>
+      </div>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Save
+              </button>
+            </div>
+            <?php echo form_close(); ?>
         </div>
-        <button type="submit" class="btn btn-success">Actualizar</button>
-        <a href="<?php echo site_url('nivel_vehiculo'); ?>" class="btn btn-secondary">Cancelar</a>
-    </form>
+    </div>
 </div>
-</body>
-</html>
+</div>

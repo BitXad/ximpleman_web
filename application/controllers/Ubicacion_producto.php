@@ -47,7 +47,10 @@ class Ubicacion_producto extends CI_Controller{
             $data['controlu_id'] = $controlu_id;
             $data['control_ubicacion'] = $this->Control_ubicacion_model->get_control_ubicacion($controlu_id);
             $data['ubicacion'] = $this->Control_ubicacion_model->get_ubicacion($controlu_id);
-            $data['ubi_productos'] = $this->Ubicacion_producto_model->get_all_producto_ubicacion($controlu_id);
+//            $data['ubi_productos'] = $this->Ubicacion_producto_model->get_all_producto_ubicacion($controlu_id);
+            $sql = "SELECT count(*) as cantidad_productos from ubicacion_producto up ";
+            $resultado =  $this->Venta_model->consultar($sql);
+            $data['cantidad_productos'] = $resultado;
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['imprimir'] = $imprimir;
@@ -177,22 +180,30 @@ class Ubicacion_producto extends CI_Controller{
     */
     function cargar_productos(){
         
-        $controlu_id = $this->input->post("controlu_id");
-        $controli_id = $this->input->post("controli_id");
-        
-        $sql ="insert into ubicacion_producto(
-                ubicacion_id,
-                producto_id,
-                controlu_id,
-                ubiprod_existencia,
-                ubiprod_existenciafisico,
-                ubiprod_faltante,
-                ubiprod_sobrante)
+        if($this->input->is_ajax_request()){
 
-                (select 1,producto_id,{$controlu_id},existencia,0,0,0
-                from inventario)";
-        $this->Venta_model->ejecutar($sql);
-        echo json_encode(true);
+            $controlu_id = $this->input->post("controlu_id");
+            $controli_id = $this->input->post("controli_id");
+            //primero aliminamos la lista de items
+
+            $sql ="truncate ubicacion_producto";
+            $this->Venta_model->ejecutar($sql);
+
+            //Cargamos los productos en la tabla ubicacion_producto
+            $sql ="insert into ubicacion_producto(
+                    ubicacion_id,
+                    producto_id,
+                    controlu_id,
+                    ubiprod_existencia,
+                    ubiprod_existenciafisico,
+                    ubiprod_faltante,
+                    ubiprod_sobrante, ubiprod_lecturado)
+
+                    (select 1,producto_id,{$controlu_id},existencia,0,0,0,0
+                    from inventario)";
+            $this->Venta_model->ejecutar($sql);
+            echo json_encode(true);
+        }
     }
     /** 
      * Revisa si existe algun producto ya registrado en otra ubicacion
@@ -220,7 +231,8 @@ class Ubicacion_producto extends CI_Controller{
         
         $sql ="update ubicacion_producto set ubiprod_existenciafisico = {$ubiprod_existenciafisico}
               ,ubiprod_faltante = if(ubiprod_existencia>={$ubiprod_existenciafisico},ubiprod_existencia - {$ubiprod_existenciafisico},0)
-               ,ubiprod_sobrante = if({$ubiprod_existenciafisico}>=ubiprod_existencia,{$ubiprod_existenciafisico}-ubiprod_existencia,0)
+              ,ubiprod_sobrante = if({$ubiprod_existenciafisico}>=ubiprod_existencia,{$ubiprod_existenciafisico}-ubiprod_existencia,0)
+              ,ubiprod_lecturado = 1 
               where ubiprod_id = {$producto_id}";
             
             

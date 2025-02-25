@@ -227,7 +227,7 @@
                                     ?>
                                     
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
-                                        <?php  echo "<br>DE: ".$empresa[0]['empresa_propietario'] ; ?>
+                                        <?php  echo "<br>".$empresa[0]['empresa_propietario'] ; ?>
                                     <?php } ?>
                                         
                                     <?php 
