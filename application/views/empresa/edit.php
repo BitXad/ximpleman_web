@@ -47,14 +47,42 @@ function mostrar(a) {
                                                     <input type="text" maxlength="25" name="empresa_telefono" value="<?php echo ($this->input->post('empresa_telefono') ? $this->input->post('empresa_telefono') : $empresas['empresa_telefono']); ?>" class="form-control" id="empresa_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
-					<div class="col-md-3">
-						<label for="empresa_imagen" class="control-label">Imagen (recomendado 4:3)</label>
-						<div class="form-group">
-                                                    <input type="file" name="empresa_imagen" value="<?php echo $this->input->post('empresa_imagen'); ?>" class="form-control" id="empresa_imagen" accept="image/png, image/jpeg, image/jpg, image/gif" />
-                                                    <input type="hidden" name="empresa_imagen1" value="<?php echo ($this->input->post('empresa_imagen') ? $this->input->post('empresa_imagen') : $empresas['empresa_imagen']); ?>" class="form-control" id="empresa_imagen1" />
-						</div>
-					</div>
-					<div class="col-md-4">
+                                        <div class="col-md-3">
+                                            <label for="empresa_imagen" class="control-label">Imagen (recomendado 4:3)</label>
+                                            <div class="form-group">
+                                                <input type="file" name="empresa_imagen" class="form-control" id="empresa_imagen" accept="image/png, image/jpeg, image/jpg, image/gif" />
+                                                <input type="hidden" name="empresa_imagen1" value="<?php echo ($this->input->post('empresa_imagen') ? $this->input->post('empresa_imagen') : $empresas['empresa_imagen']); ?>" class="form-control" id="empresa_imagen1" />
+                                            </div>
+                                            
+                                            
+                                            <div id="preview-container">
+                                                <?php if (!empty($empresas['empresa_imagen'])) : ?>
+                                                    <img id="preview-img" src="<?php echo base_url('resources/images/empresas/' . $empresas['empresa_imagen']); ?>" alt="Vista previa" style="max-width: 200px; height: auto; margin-top: 10px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                                                <?php else : ?>
+                                                    <img id="preview-img" src="" alt="Vista previa" style="display: none; max-width: 200px; height: auto; margin-top: 10px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                        document.getElementById('empresa_imagen').addEventListener('change', function(event) {
+                                            const file = event.target.files[0];
+                                            const previewImg = document.getElementById('preview-img');
+
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onload = function(e) {
+                                                    previewImg.src = e.target.result;
+                                                    previewImg.style.display = 'block';
+                                                };
+                                                reader.readAsDataURL(file);
+                                            } else {
+                                                previewImg.src = "";
+                                                previewImg.style.display = 'none';
+                                            }
+                                        });
+                                        </script>
+                                                                                <div class="col-md-4">
 						<label for="empresa_zona" class="control-label">Zona</label>
 						<div class="form-group">
 							<input type="text" name="empresa_zona" value="<?php echo ($this->input->post('empresa_zona') ? $this->input->post('empresa_zona') : $empresas['empresa_zona']); ?>" class="form-control" id="empresa_zona" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -113,93 +141,91 @@ function mostrar(a) {
                         <!-- ***********************aqui empieza el mapa para capturar coordenadas *********************** -->
                         <div id="oculto1" style="visibility:hidden">
                         <div id="map"></div>
-                        <script type="text/javascript">
-                            var marker;          //variable del marcador
-                            var coords_lat = {};    //coordenadas obtenidas con la geolocalización
-                            var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+                                    <!-- Carga Leaflet CSS y JS -->
+                                    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+                                    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+                                    <script>
+                                        var map;                                       
+                                        var marker;
 
-                            //Funcion principal
-                            initMap = function () 
-                            {
-                                //usamos la API para geolocalizar el usuario
-
-                                //milat = document.getElementById('cliente_latitud').value;
-                                milat = $('#empresa_latitud').val();
-                                //milng = document.getElementById('cliente_longitud').value;
-                                milng = $('#empresa_longitud').val();
-
-                                    navigator.geolocation.getCurrentPosition(
-                                    function (position){
-                                        if(milat == 'undefined' || milat == null || milat ==""){
-                                            coords_lat =  {
-                                            lat: position.coords.latitude,
-                                            };
-                                            //milat = position.coords.latitude;
-                                        }else{
-                                            coords_lat =  {
-                                            lat: milat,
-                                            };
+                                        function initMap() {
+                                            // Obtener coordenadas iniciales
+                                            var lat = parseFloat(document.getElementById('empresa_latitud').value) || 0;
+                                            var lng = parseFloat(document.getElementById('empresa_longitud').value) || 0;
+                                             
+                                            if (!lat || !lng) {
+                                                // Si no hay valores, obtener ubicación actual
+                                                if (navigator.geolocation) {
+                                                    navigator.geolocation.getCurrentPosition(function(position) {
+                                                        lat = position.coords.latitude;
+                                                        lng = position.coords.longitude;
+                                                        createMap(lat, lng);
+                                                    }, function(error) {
+                                                        console.log(error);
+                                                        // Si falla, usar coordenadas por defecto
+                                                        //createMap(-17.3935, -66.1570); // Ejemplo: Cochabamba, Bolivia
+                                                            var lt = position.coords.latitude;
+                                                            var lg = position.coords.longitude;
+                                                        createMap(lt, lg); // Ejemplo: Cochabamba, Bolivia
+                                                    });
+                                                } else {
+                                                    createMap(-17.3935, -66.1570); // Fallback
+                                                }
+                                            } else {
+                                                createMap(lat, lng);
+                                            }
                                         }
-                                        if(milng == 'undefined' || milng == null || milng ==""){
-                                            coords_lng =  {
-                                              lng: position.coords.longitude,
-                                            };
-                                            //lng = position.coords.longitude;
-                                        }else{
-                                            coords_lng =  {
-                                              lng: milng,
-                                            };
-                                        } 
-                                        /*coords_lat =  {
-                                            lat: milat,
-                                            };
 
-                                        coords_lng =  {
-                                              lng: milng,
-                                            };*/
-                                        setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+                                        function createMap(lat, lng) {
+                                            map = L.map('map').setView([lat, lng], 17);
 
+                                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                attribution: '&copy; OpenStreetMap contributors'
+                                            }).addTo(map);
 
-                                      },function(error){console.log(error);});
-                            }
+                                            marker = L.marker([lat, lng], { draggable: true }).addTo(map);
 
-                            function setMapa (coords_lat, coords_lng)
-                            {
-                                //document.getElementById("cliente_latitud").value = coords_lat.lat;
-                               // document.getElementById("cliente_longitud").value = coords_lng.lng;
-                                  //Se crea una nueva instancia del objeto mapa
-                                  var map = new google.maps.Map(document.getElementById('map'),
-                                  {
-                                    zoom: 13,
-                                    center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+                                            // Actualizar lat/long al mover el marcador
+                                            marker.on('dragend', function(e) {
+                                                var position = marker.getLatLng();
+                                                document.getElementById('empresa_latitud').value = position.lat;
+                                                document.getElementById('empresa_longitud').value = position.lng;
+                                            });
+                                            
+                                            // Ir a otra página al hacer clic en el marcador
+                                            marker.on('click', function(e) {
+                                                var position = marker.getLatLng();
+                                                //window.location.href = 'https://www.google.com/maps/dir/'+position.lat+','+position.lng;
+                                                window.open('https://www.google.com/maps/dir/'+position.lat+','+position.lng, '_blank');
+                                            });                                            
+                                            
+                                        }
 
-                                  });
+                                        // Mostrar/ocultar mapa
+                                        function mostrar(a) {
+                                            obj = document.getElementById('oculto' + a);
+                                            obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
 
-                                  //Creamos el marcador en el mapa con sus propiedades
-                                  //para nuestro obetivo tenemos que poner el atributo draggable en true
-                                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
-                                  marker = new google.maps.Marker({
-                                    map: map,
-                                    draggable: true,
-                                    animation: google.maps.Animation.DROP,
-                                    position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+                                            if (obj.style.visibility == 'hidden') {
+                                                $('#map').css({ 'width': '0px', 'height': '0px' });
+                                                $('#mosmapa').text("Modificar ubicación de la empresa");
+                                            } else {
+                                                $('#map').css({ 'width': '100%', 'height': '400px' });
+                                                $('#mosmapa').text("Cerrar mapa");
 
-                                  });
-                                  //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
-                                  //cuando el usuario a soltado el marcador
-                                  //marker.addListener('click', toggleBounce);
-
-                                  marker.addListener( 'dragend', function (event)
-                                  {
-                                    //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
-                                    document.getElementById("empresa_latitud").value = this.getPosition().lat();
-                                    document.getElementById("empresa_longitud").value = this.getPosition().lng();
-                                  });
-                            }
-                            initMap();
-                        </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro['parametro_apikey']?>&callback=initMap"></script>
+                                                // Si el mapa no se ha inicializado antes, lo inicializas
+                                                if (!map) {
+                                                    initMap();
+                                                } else {
+                                                    // Si ya existe, forzar refresco
+                                                    setTimeout(function() {
+                                                        map.invalidateSize();
+                                                    }, 200);
+                                                }
+                                            }
+                                        }
+                                    </script>
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>

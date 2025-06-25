@@ -7,7 +7,7 @@
 class Producto extends CI_Controller{
     var $session_data;
     private $sistema;
-
+    private $caja_id = 0;
     function __construct()
 {
         parent::__construct();
@@ -37,6 +37,21 @@ class Producto extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        //*********** Administracion de caja *********
+        $usuario_id = $this->session_data['usuario_id'];
+        $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+
+        if (!sizeof($caja)>0){ // si la caja no esta iniciada
+            //iniciar caja y dejarla en pendiente
+            $this->caja_id = 0;
+        }else{
+            $this->caja_id = $caja[0]["caja_id"];
+
+        }
+                
+                
+        //*********** FIN Administracion de caja *********        
         
     }
 
@@ -427,6 +442,8 @@ class Producto extends CI_Controller{
                     'producto_codigounidadsin' => $codigounidad,
                 );
 
+                //var_dump($params);
+                
                 $this->Producto_model->update_producto($producto_id,$params);
                 
                 $this->Inventario_model->update_inventario($producto_id, $params);
@@ -609,7 +626,9 @@ class Producto extends CI_Controller{
     function rapido(){
         
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(3)) {
+            
             $estado_id = 1;        
             $compra_id = $this->input->post('compra_id');
             $bandera = $this->input->post('bandera');
@@ -814,11 +833,41 @@ class Producto extends CI_Controller{
 
             $this->Compra_model->ejecutar($sql);
             
+        //************ inicio bitacora 
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+            $venta_id = 0;//$this->input->post("venta_id");            
+            $usuario_id = $this->session_data['usuario_id'];
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            
+            $producto_nombre = $this->input->post('producto_nombre');
+            $producto_codigo = $this->input->post('producto_codigo');
+            $bitacoracaja_evento = "'REGISTRO RAPIDO DEL PRODUCTO, ID: {$producto_id}, NOMBRE: {$producto_nombre} ,COD: {$producto_codigo}, COSTO: {$producto_costo},PRECIO: {$producto_precio}'";
+            
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+            $this->Venta_model->ejecutar($sql);
+        //************ fin bitacora bitacora              
+            
+            
+            
+            
+            
             redirect('compra/edit/'.$compra_id.'/'.$bandera);
             }else{
                 echo'<script type="text/javascript">
-                        alert("Este Nombre y/o Codigo  de Producto ya Existe");
+                        
+                        alert("Este Nombre y/o Codigo  de producto ya EXISTE.\n - ATENCION - \nActualice la lista de productos desde el BOTÓN INVENTARIO. ");
                         window.location.href="../compra/edit/'.$compra_id.'/'.$bandera.'";
+                            
                     </script>';
             }
         }

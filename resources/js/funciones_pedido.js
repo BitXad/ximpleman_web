@@ -285,7 +285,7 @@ function tablaproductos()
                        var descgral = 0;
                        var totalfinal = 0;
                         html = "";
-                        html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
+                        html += "<table class='table table-striped table-condensed' id='mitablaventassimple'>";
                         html += "                    <tr>";
                         html += "                            <th style='padding:0'>#</th>";
                         html += "                            <th style='padding:0'>Descripción<br>";

@@ -74,7 +74,9 @@
     <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
     <?php }?>
     <?php
-        if($pedido_titulo == "Pedidos"){
+        $labelboton = $sistema["sistema_modulopedidos"];
+        $partede = "";
+       /* if($pedido_titulo == "Pedidos"){
             $partede = " Todos los";
             $labelboton = "Pedido";
         }else{
@@ -84,7 +86,7 @@
             }else{
                 $labelboton = "Reserva";
             }
-        }
+        }*/
     ?>
     <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
@@ -107,8 +109,8 @@
         <div class="form-group" style="margin-bottom: 0;">
             <center>
                 <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 90px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
-                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 90px;"><span class="fa fa-cart-arrow-down"></span> </span> <span class="fa fa-user-plus"></span> <?php echo $labelboton; ?></a>
-                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 90px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 90px;"><span class="fa fa-cart-arrow-down"></span> <?php echo $labelboton; ?></a>
+                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" target="_blank" style="width: 90px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
                 <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
                 <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 90px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
                 <!-- <a href="<?php echo site_url('pedido/mapa_seg_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span>Mapa Seg</a> -->

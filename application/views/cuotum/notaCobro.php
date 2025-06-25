@@ -19,10 +19,7 @@
     margin-left: 0mm;
     margin-right: 0mm;
 }
-body {
-    font-family: "Arial", Arial, Arial, arial;
-    font-size: 11px;
-}
+
     #derechatabla {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: "Arial", Arial, Arial, arial;
@@ -61,6 +58,7 @@ body {
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+
 <!-------------------------------------------------------->
  
 <div class="row">
@@ -72,7 +70,7 @@ body {
         <p style="font-size: 7px;margin: 0;"><?php echo $empresa[0]['empresa_direccion']; ?></p>
         <?php echo $empresa[0]['empresa_telefono']; ?><br>
         <?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?><br>
-        <font size="1"><b>CUOTA N: <?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></b></font>
+        <font size="1"><b>CUOTA Nº: <?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo number_format($cuota[0]['credito_numpagos']); ?></b></font>
     </center>
 </div>
 <div style="float:right; width:78%;">
@@ -80,11 +78,11 @@ body {
     <div class="cuerpo" >
                     <div class="columna_derecha" style="text-align: right;">
                         <?php if ($cuota[0]['venta_id']>0) { ?>
-                        <b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?><br>
+                        <b>VENTA No.: </b>00<?php echo $cuota[0]['venta_id']; ?><br>
                         <?php } else { ?>
-                        <b>SERVICIO No.: </b><?php echo $cuota[0]['servicio_id']; ?><br>
+                        <b>SERVICIO No.: </b>00<?php echo $cuota[0]['servicio_id']; ?><br>
                         <?php } ?>
-                        <b>CREDITO No.: </b><?php echo $cuota[0]['credito_id']; ?><br>
+                        <b>CREDITO No.: </b>00<?php echo $cuota[0]['credito_id']; ?><br>
                         <b>ESTADO: </b><?php echo $cuota[0]['estado_descripcion']; ?>
                     
                     </div>
@@ -95,8 +93,10 @@ body {
                         <?php echo $empresa[0]['empresa_telefono']; ?>
                     </div> </center>
                     <div class="columna_central">
-                        <center>      <h4 class="box-title"><b>COMPROBANTE DE PAGO(NOTA DE COBRO)</b></h4>
-                           <font size="2"><b>No.:  <?php echo $cuota[0]['credito_id']; ?></b></font></center>
+                        <center style="line-height: 16px; font-size: 16px;">      
+                            <b>COMPROBANTE DE COBRO<br>
+                           No.:  00<?php echo $cuota[0]['credito_id']; ?></b>
+                        </center>
                 </center>
                     </div>
 </div></div></div>
@@ -154,10 +154,10 @@ body {
             </tr>
 
         </table><br>
-<center  style="text-align: right; width: 80%;">
-        CANCELADO:....................<br><br>
-                   SALDO:....................<br>
-                   </center> 
+            <center  style="text-align: right; width: 80%; font-size: 9px;">
+                    CANCELADO:....................<br><br>
+                    SALDO:....................<br>
+            </center> 
 </div>
 <div style="float:right; width:78%;">
 <div style="float:left; width:70%;">

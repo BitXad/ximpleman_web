@@ -29,6 +29,22 @@ class Venta_model extends CI_Model
         return $venta;
     }
     
+    /*
+     * Get venta by venta_id
+     */
+    function get_traspaso($venta_id)
+    {
+        $sql = "select * 
+                from traspaso v  
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                where v.venta_id = ".$venta_id;
+        
+        $venta = $this->db->query($sql)->row_array();
+
+        return $venta;
+    }
+    
     
     /*
      * Get ventas del dia
@@ -503,6 +519,21 @@ class Venta_model extends CI_Model
         return $ventas;
     }
 
+    function get_traspasos($condicion)
+    {    
+
+        $sql = "select v.*, b.banco_nombre
+                from traspaso v
+                left join banco b on b.banco_id = v.banco_id
+                where 1 = 1 
+                ".$condicion."
+                order by v.venta_id desc";
+
+        $ventas = $this->db->query($sql)->result_array();
+
+        return $ventas;
+    }
+
     function get_ventas_enlinea($condicion)
     {    
 
@@ -528,6 +559,29 @@ class Venta_model extends CI_Model
                 order by v.venta_id desc";
         
         //echo $sql;
+        $ventas = $this->db->query($sql)->result_array();
+
+        return $ventas;
+    }
+
+
+    function get_traspasos_enlinea($condicion)
+    {    
+
+        $sql = "select v.*, b.banco_nombre,
+                c.*, t.*,m.*, u.*, e.*
+                
+                from traspaso v
+                left join banco b on b.banco_id = v.banco_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                left join forma_pago m on m.forma_id = v.forma_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join estado e on e.estado_id = v.estado_id
+                where 1 = 1 
+                ".$condicion."
+                order by v.venta_id desc";
+
         $ventas = $this->db->query($sql)->result_array();
 
         return $ventas;
@@ -1001,6 +1055,45 @@ function get_busqueda($condicion)
                         );
         return $resultados;
         
+    }
+    
+    /*
+    * Ventas del mes actual de un usuario
+    */
+    function anular_operacion($venta_id, $usuario_id){
+        
+        
+        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = {$venta_id}";
+        $this->db->query($sql);
+        
+        $sql =" update pasaje set                
+                factura_id = 0,
+                cliente_id = 0,
+                pasaje_nombre = '',
+                pasaje_telefono = '',
+                pasaje_documento = '',
+                estado_id = 50,
+                usuario_id = {$usuario_id},
+                venta_id = 0,
+                cdi_codigoclasificador = 0
+                where venta_id = {$venta_id}";
+        
+        $this->db->query($sql);
+        
+        return $venta_id;
+    }
+    
+    /*
+    * Verificamos si la transaccion es reserva
+    */
+    function verificar_reserva($venta_id){
+        
+        $sql =  "select * from   venta_pasaje v
+                LEFT OUTER JOIN cliente c ON c.cliente_id = v.cliente_id
+                LEFT OUTER JOIN pasaje p ON p.venta_id = v.venta_id
+                LEFT OUTER JOIN asientos a ON a.asiento_id  = p.asiento_id
+                where v.venta_id = {$venta_id} and v.estado_id = 52";
+        return $this->db->query($sql)->result_array();
     }
     
 }

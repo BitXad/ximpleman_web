@@ -72,7 +72,7 @@ function tablaresultadoseventos()
                         html += "<tr>";
                         html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_codigo']+"</td>";
-                        html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_detalle']+"</td>";
+                        html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_detalle']+" <b> (COD. CLASIF.: </b>"+registros[i]['registroeventos_codigoevento']+")<sub>["+registros[i]['registroeventos_id']+"]</sub></td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_fecha']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_puntodeventa']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_inicio']+"</td>";
@@ -127,6 +127,17 @@ function tablaresultadoseventos()
     });
 }
 
+function normalizarFecha(fechaStr) {
+    // Si ya tiene segundos, no hacemos nada
+    if (fechaStr.length === 19) return fechaStr;
+
+    // Si no tiene segundos, le agregamos ":00"
+    if (fechaStr.length === 16) return fechaStr + ":00";
+
+    // Si por alguna razón es inválida
+    return null;
+}
+
 function registrar_evento(){
         
         let base_url = $("#base_url").val();
@@ -139,9 +150,14 @@ function registrar_evento(){
         let texto_evento = combo.options[combo.selectedIndex].text;
         
         //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
-        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        document.getElementById('loader2').style.display = 'block';
+//        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+//        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+        fecha_inicio = normalizarFecha(fecha_inicio);
+        fecha_fin = normalizarFecha(fecha_fin);
+
+        fecha_inicio =  fecha_inicio+"."+ Math.floor(Math.random() * 1000);
+        fecha_fin =  fecha_fin+"."+ Math.floor(Math.random() * 1000);
+        //document.getElementById('loader2').style.display = 'block';
         
         $.ajax({
             url: controlador,
@@ -179,13 +195,11 @@ function registrar_5eventos(){
         let combo = document.getElementById('select_eventos');
         let texto_evento = combo.options[combo.selectedIndex].text;
         
-        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
-        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        document.getElementById('loader2').style.display = 'block';
-        
-        
-        //alert(fecha_inicio+" **** "+fecha_fin);
+        fecha_inicio = normalizarFecha(fecha_inicio);
+        fecha_fin = normalizarFecha(fecha_fin);
+
+        fecha_inicio =  fecha_inicio+"."+ Math.floor(Math.random() * 1000);
+        fecha_fin =  fecha_fin+"."+ Math.floor(Math.random() * 1000);
         
         $.ajax({
             url: controlador,
@@ -232,7 +246,7 @@ function registrar_5eventos(){
                 let html = "";
 
                 for(i=0; i<res.length; i++){                    
-                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (PV: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
+                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (P.Venta: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
                 }
                 
                 $("#select_cufd").html(html);
@@ -282,10 +296,11 @@ function registrar_5eventos(){
 
 
 function actualizar_registro_evento(){
+    
     let base_url = $("#base_url").val();
     let controlador = `${base_url}eventos_significativos/actualizarEventoSignificativo`;
     let fecha_inicio =  document.getElementById('fecha_inicio1').value;
-    let fecha_fin =  document.getElementById('fecha_fin1').value;
+    let fecha_fin =  document.getElementById('ces_fecha_fin1').value;
     let cufd_evento =  document.getElementById('evento_cufd1').value;
     let codigo_evento =  document.getElementById('evento_codigo1').value;
     let texto_evento = document.getElementById('evento_detalle1').value;
@@ -293,8 +308,12 @@ function actualizar_registro_evento(){
 
     //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
     //fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-    fecha_inicio =  fecha_inicio+"."+ Math.floor(Math.random() * 1000);
-    fecha_fin    =  fecha_fin   +":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+    //fecha_inicio =  fecha_inicio+"."+ Math.floor(Math.random() * 1000);
+    
+    fecha_fin    =  fecha_fin+"."+ Math.floor(Math.random() * 1000);
+    
+    alert(fecha_inicio + " *** "+fecha_fin);
+    
     document.getElementById('loader2').style.display = 'block';
     $.ajax({
         url: controlador,

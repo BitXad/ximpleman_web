@@ -177,6 +177,7 @@ function eliminar_producto(ubi_producto){
 function guardar(controli_id){
     var base_url = document.getElementById("base_url").value;
     var controlador = `${base_url}ubicacion_producto/actualizar_inventario`;
+    
     ubi_productos[0].forEach(ub_producto => {
         ub_producto['ubiprod_existenciafisico'] = document.getElementById(`existencia_producto${ub_producto['ubiprod_id']}`).value
         ub_producto['ubiprod_faltante'] = document.getElementById(`faltante${ub_producto['ubiprod_id']}`).value
@@ -193,6 +194,7 @@ function guardar(controli_id){
             alert("algo salio mal :O")
         }
     });
+            window.location.href = `${base_url}control_ubicacion/index/${controli_id}`;
 }
 
 function actualizar_estado(ubi_productos,controli_id){

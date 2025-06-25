@@ -109,6 +109,7 @@ class Eventos_significativos extends CI_Controller{
         
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         try{
+            
             $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
@@ -145,27 +146,30 @@ class Eventos_significativos extends CI_Controller{
                 $descripcion = $texto_evento;
                 $fechaHoraFinEvento = $fecha_fin; //date('Y-m-d\TH:i:s.v');
                 $fechaHoraInicioEvento = $fecha_inicio; //date('Y-m-d\TH:i:s.v');
-                /* ordenado segun SoapUI */
-                /*echo                     
-                    "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
-                    "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
-                    "<br>codigoPuntoVenta"  ." : ". $dosificacion['dosificacion_puntoventa']."  ".
-                    "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
-                    "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
-                    "<br>cufd"              ." : ". $dosificacion['dosificacion_cufd']."  ".
-                    "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
-                    "<br>cuis"              ." : ". $dosificacion['dosificacion_cuis']."  ".
-                    "<br>descripcion"       ." : ". $descripcion."  ". 
-                    "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
-                    "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
-                    "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
                 
-                */
                 $usuario_id = $this->session_data['usuario_id'];
                 $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
                 $this->load->model('PuntoVenta_model');
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+                
+                /* ordenado segun SoapUI */
+                /*echo                     
+                    "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
+                    "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
+                    "<br>codigoPuntoVenta"  ." : ". $punto_venta['puntoventa_codigo']."  ".
+                    "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
+                    "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
+                    "<br>cufd"              ." : ". $punto_venta['cufd_codigo']."  ".
+                    "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
+                    "<br>cuis"              ." : ". $punto_venta['cuis_codigo']."  ".
+                    "<br>descripcion"       ." : ". $descripcion."  ". 
+                    "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
+                    "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
+                    "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
+                
+                
+                echo "feeeeeeeeeeca: ".date('Y-m-d\TH:i:s.v');*/
                 
                 $parametros = ["SolicitudEventoSignificativo" => [
                     "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
@@ -222,8 +226,29 @@ class Eventos_significativos extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo 'Ocurrio un problema al generar el evento; revisar los parámetros por favor...!';
         }
+    }
+    
+    
+    function sumar_tiempo_iso8601($fecha_iso, $intervalo = 'PT1M') {
+        // Separar la parte de milisegundos
+        $partes = explode('.', $fecha_iso);
+        $fecha_sin_ms = $partes[0]; // Ej: '2025-04-21T14:00:01'
+        $milisegundos = isset($partes[1]) ? $partes[1] : '000';
+
+        // Crear objeto DateTime (PHP no soporta 'T' directamente)
+        $datetime = DateTime::createFromFormat('Y-m-d\TH:i:s', $fecha_sin_ms);
+
+        if (!$datetime) {
+            return false; // Fecha inválida
+        }
+
+        // Sumar el intervalo (ej: 'PT1M' = 1 minuto)
+        $datetime->add(new DateInterval($intervalo));
+
+        // Reconstruir con milisegundos
+        return $datetime->format('Y-m-d\TH:i:s') . '.' . $milisegundos;
     }
     
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
@@ -271,10 +296,10 @@ class Eventos_significativos extends CI_Controller{
                 $this->load->model('PuntoVenta_model');
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
-
+                $descripcion = $texto_evento;
 
        
-                foreach($eventos as $evento){ //por cada tipo de evento
+                //foreach($eventos as $evento){ //por cada tipo de evento
                    
                     
                     $j = 0;
@@ -284,36 +309,36 @@ class Eventos_significativos extends CI_Controller{
                         //$codigomotivoambiente = $this->ambiente;
                         //Recuperar un cfd antiguo o del cual queremos hacer el registro del evento significativo
                         $cufdEvento = $cufd_evento;
-                        $descripcion = $evento["ces_descripcion"];
+                        //$descripcion = $evento["ces_descripcion"];
                         $fechaHoraFinEvento = $fecha_fin; //date('Y-m-d\TH:i:s.v');
                         $fechaHoraInicioEvento = $fecha_inicio; //date('Y-m-d\TH:i:s.v');
                         /* ordenado segun SoapUI */
                         /*echo                     
-                            "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
-                            "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
-                            "<br>codigoPuntoVenta"  ." : ". $dosificacion['dosificacion_puntoventa']."  ".
-                            "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
-                            "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
-                            "<br>cufd"              ." : ". $dosificacion['dosificacion_cufd']."  ".
-                            "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
-                            "<br>cuis"              ." : ". $dosificacion['dosificacion_cuis']."  ".
-                            "<br>descripcion"       ." : ". $descripcion."  ". 
-                            "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
-                            "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
-                            "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
-
-                        */
+                                            "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
+                                            "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
+                                            "<br>codigoPuntoVenta"  ." : ". $punto_venta['puntoventa_codigo']."  ".
+                                            "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
+                                            "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
+                                            "<br>cufd"              ." : ". $punto_venta['cufd_codigo']."  ".
+                                            "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
+                                            "<br>cuis"              ." : ". $punto_venta['cuis_codigo']."  ".
+                                            "<br>descripcion"       ." : ". $descripcion."  ". 
+                                            "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
+                                            "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
+                                            "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
+                                            */
+                        
 
                         $parametros = ["SolicitudEventoSignificativo" => [
                             "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
-                            "codigoMotivoEvento"=> $evento["ces_codigoclasificador"], //$codigo_evento, //$dosificacion['dosificacion_codsistema'],
+                            "codigoMotivoEvento"=> $codigo_evento, //$codigo_evento, //$dosificacion['dosificacion_codsistema'],
                             "codigoPuntoVenta"  => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                             "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
                             "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
                             "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
                             "cufdEvento"        => $cufdEvento, //$dosificacion['dosificacion_cuis'],
                             "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
-                            "descripcion"       => $evento["ces_descripcion"], //$descripcion, //$dosificacion['dosificacion_cuis'],
+                            "descripcion"       => $descripcion, //$descripcion, //$dosificacion['dosificacion_cuis'],
                             "fechaHoraFinEvento"=> $fechaHoraFinEvento, //$dosificacion['dosificacion_cuis'],
                             "fechaHoraInicioEvento"=>$fechaHoraInicioEvento, //$dosificacion['dosificacion_cuis'],
                             "nit"               => $dosificacion['dosificacion_nitemisor']
@@ -347,9 +372,9 @@ class Eventos_significativos extends CI_Controller{
                             
                             
                             //sumamos 2 minutos a la fecha de inicio
-                            $date = new DateTime($fecha_inicio);
-                            $fecha_fin = $date->modify('+3 minutes');
-                            $fecha_inicio = $date->modify('+2 minutes');
+                            //$date = new DateTime($fecha_inicio);
+                            $fecha_fin = $this->sumar_tiempo_iso8601($fecha_fin, 'PT1M');
+                            $fecha_inicio = $this->sumar_tiempo_iso8601($fecha_inicio, 'PT1M');
                             
                             
                             //$j++;
@@ -370,7 +395,7 @@ class Eventos_significativos extends CI_Controller{
                     }//fin while $j
                     
                    
-                }//fin while $i
+                //}//fin while $i
                 
                 echo json_encode($mensaje);
                 //echo $mensaje;
@@ -466,8 +491,8 @@ class Eventos_significativos extends CI_Controller{
                     "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
                     "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
                     "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
-                */
                 
+                */
                 //var_dump($parametros);
                 $resultado = $cliente->registroEventoSignificativo($parametros);
                 $res = $resultado->RespuestaListaEventos->transaccion;

@@ -9,7 +9,7 @@ class Producto_precios extends CI_Controller{
     private $parametros;
     private $sistema;
     private $empresa;
-    
+    private $caja_id = 0;
     function __construct(){
         
         parent::__construct();
@@ -17,6 +17,7 @@ class Producto_precios extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Venta_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Caja_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -31,6 +32,22 @@ class Producto_precios extends CI_Controller{
         $empresa = $this->Empresa_model->get_empresa(1);
         $this->empresa = $empresa[0];
 
+        
+                
+        //*********** Administracion de caja *********
+                $usuario_id = $this->session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->caja_id = 0;
+                }else{
+                    $this->caja_id = $caja[0]["caja_id"];
+                    
+                }
+                
+                
+        //*********** FIN Administracion de caja *********
         
     }
     
@@ -67,6 +84,7 @@ class Producto_precios extends CI_Controller{
             $data['lamoneda'] = $moneda[0];
             
             $data['productos'] = $this->Producto_precios_model->get_all_productos();
+            $data['categoria_producto'] = $this->Venta_model->Consultar('select * from categoria_producto order by categoria_nombre');
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Lista de Precios";
             $data['_view'] = 'producto_precios/index';
@@ -194,13 +212,15 @@ class Producto_precios extends CI_Controller{
                     (producto_id, producto_nombre, producto_codigobarra, producto_costo, producto_precio, producto_tipocambio, 
                     producto_precioactualizado, producto_preciofactor, producto_preciofactor1, producto_preciofactor2, 
                     producto_preciofactor3, producto_preciofactor4, producto_ultimocosto, 
-                    producto_costoenvase, producto_precioenvase)
+                    producto_costoenvase, producto_precioenvase, categoria_id, categoria_nombre)
                     
                     SELECT p.producto_id, p.producto_nombre, p.producto_codigobarra, p.producto_costo, p.producto_precio, 
                     p.producto_tipocambio, p.producto_precio, p.producto_preciofactor, p.producto_preciofactor1, 
                     p.producto_preciofactor2, p.producto_preciofactor3, p.producto_preciofactor4, 
-                    p.producto_ultimocosto, p.producto_costoenvase, p.producto_precioenvase
-                    FROM producto p";
+                    p.producto_ultimocosto, p.producto_costoenvase, p.producto_precioenvase, p.categoria_id, c.categoria_nombre
+                    FROM producto p, categoria_producto c
+                    WHERE p.categoria_id = c.categoria_id
+                    ";
             $this->Venta_model->Ejecutar($sql);
 
            
@@ -223,23 +243,37 @@ class Producto_precios extends CI_Controller{
             $afectar = $this->input->post("afectar");
             $redondear = $this->input->post("redondear");
             $razon = $this->input->post("razon");
-            
+            $tipo_moneda = $this->input->post("tipo_moneda");
+            $monto_incremento = $this->input->post("monto_incremento");
+            $categoria_id = $this->input->post("categoria_id");
+ 
             $decimales = 16;
+            
+            if($categoria_id==0){
+                $condicion = "";
+            }else{
+                $condicion = " where categoria_id = {$categoria_id}";
+            }
             
             if($operacion==1){//actualizacion de valor
            
-                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales})";
+                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales}) {$condicion}";
                 
             }
             
             if($operacion==2){//MOdificar el precio
                 
-                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales})";
+                $sql = "update producto_precios set producto_precioactualizado = round(producto_precio * {$razon},{$decimales}) {$condicion}";
                 
             }
             
             if($operacion==3){//incrementar al precio
                 
+                if($tipo_moneda=="Bs"){
+                    $sql = "update producto_precios set producto_precioactualizado = round(producto_precio + {$monto_incremento} ,{$decimales}) {$condicion}";
+                }else{
+                    $sql = "update producto_precios set producto_precioactualizado = round(producto_precio + (producto_precio * {$monto_incremento}/100) ,{$decimales}) {$condicion}";                    
+                }
                 
             }
             
@@ -248,22 +282,107 @@ class Producto_precios extends CI_Controller{
             
 
             if($redondear==1){ //CONVERTIR LOS DECIMALES EN 0.50 CTVS
-                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado)";
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado) {$condicion}";
             }
             
             if($redondear==2){//REDONDEAR AL SUPERIOR
-                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+1,producto_precioactualizado)";
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+1,producto_precioactualizado) {$condicion}";
             }
             
             if($redondear==3){//REDONDEAR AL INFERIOR
-                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0),producto_precioactualizado)";
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0),producto_precioactualizado) {$condicion}";
             }
 
             if($redondear==4){//TRUNCAR (SIN DECIMALES, SOLO ENTEROS)
-                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado)";
+                $sql =  "update producto_precios set producto_precioactualizado = if((producto_precioactualizado - truncate(producto_precioactualizado,0))>0,truncate(producto_precioactualizado,0)+0.5,producto_precioactualizado) {$condicion}";
             }
             
-            $this->Venta_model->Ejecutar($sql);
+            if ($redondear>0){
+                $this->Venta_model->Ejecutar($sql);
+            }
+            
+                 //************ inicio bitacora 
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                
+                $venta_id = 0;//$this->input->post("venta_id");            
+                $usuario_id = $this->session_data['usuario_id'];
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "'AJUSTE PRECIOS DE PRODUCTOS, AFECTACION: {$afectar}, REDONDEO: {$redondear}, RAZON: {$razon}, MONEDA: {$tipo_moneda}, INCREMENTO: {$monto_incremento}'";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin bitacora bitacora               
+            
+            
+            echo json_encode(true);
+        }
+        else
+        {                 
+            show_404();
+        }
+           
+    }
+    
+    function actualizar_productos()
+    { 
+        $data['sistema'] = $this->sistema;
+        
+        if($this->input->is_ajax_request()){
+            
+            $categoria_id = $this->input->post("categoria_id");
+            $decimales = 16;
+            
+            if($categoria_id==0){
+                $condicion = "";
+                $condicion2 = "";
+            }else{
+                $condicion = " and p.categoria_id = {$categoria_id}";
+                $condicion2 = " where categoria_id = {$categoria_id}";
+            }
+            
+            //Actualizar la lista de precios
+            $sql = "update producto p, producto_precios r
+                    set 
+                    p.producto_precio = r.producto_precioactualizado
+                    where
+                    p.producto_id = r.producto_id {$condicion}";
+                $this->Venta_model->Ejecutar($sql);
+                        
+
+                
+                 //************ inicio bitacora 
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                
+                $venta_id = 0;//$this->input->post("venta_id");            
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "'MODIFIQUE TODA LA LISTA DE PRECIOS, SENTENCIA EJECUTADA: {$sql}'";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin bitacora bitacora                 
+                
+            //Actualizar la lista de producto_precios
+            $sql = "update producto_precios 
+            set  producto_precio = producto_precioactualizado {$condicion2}";
+            $this->Venta_model->Ejecutar($sql);  
             
             echo json_encode(true);
         }

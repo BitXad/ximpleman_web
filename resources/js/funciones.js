@@ -4,19 +4,33 @@
 $(document).on("ready",inicio);
 function inicio(){
         
-//        alert("holaxxx");
         tablaresultados(1);
         tablaproductos(); 
-        //pedidos_pendientes();
-        let tiposistema = document.getElementById('parametro_tiposistema').value;
-        if(tiposistema != 1){
-            verificar_cufd();
+
+        let tiposistema = document.getElementById('parametro_tiposistema').value; //tipo sistema SFV =1; > 1 eletronico y computarizado 
+        let parametro_tipoemision = document.getElementById('parametro_tipoemision').value; //1 = en linea, 2 fuera de liena
+        let generar_cufd = document.getElementById('parametro_generarcufd').value; 
+        
+        
+        if(tiposistema != 1 && parametro_tipoemision==1){ //si es electronico/computarizado y esta en linea
+            
+            if (generar_cufd == 1){ //Si esta activo la funcion de generar CUFD automaticamente
+                
+                var cufd_hoy = document.getElementById('cufd_hoy').value; 
+                var punto_venta = document.getElementById('punto_venta').value; 
+                
+                if(cufd_hoy!=1){          // Sino existe un CUFD para hoy-> debe generar          
+                    generarCufd(punto_venta);
+                }
+                
+            }else{
+                verificar_cufd();                
+            }
+            
         }
         
         document.getElementById('nit').focus();
-        document.getElementById('nit').select();
-        
-
+        document.getElementById('nit').select();       
         
 }
 
@@ -535,6 +549,22 @@ function formato_cantidad(cantidad){
     return lacantidad;
 }
 
+function cufd_vigente() {
+    // Reemplazar el espacio por 'T' para que sea un formato ISO válido
+    let fechaStr = document.getElementById("vigencia_cufd").value;
+    const fechaComparar = new Date(fechaStr.replace(" ", "T"));
+    const fechaActual = new Date();
+
+    // Comparar fechas
+    if(fechaActual > fechaComparar){
+        $("#puede_facturar").val(3); //3 cufd FUERA DE VIGENCIA
+        let error = document.getElementById("motivo_puede_facturar").value + " *** CUFD FUERA DE VIGENCIA ";
+        $("#motivo_puede_facturar").val(error); //2 conflicto de precios por ser cero
+    }
+    //return fechaActual > fechaComparar ? 1 : 0;
+}
+
+
 //muestra la tabla de productos del detalle de la venta
 function tablaproductos(){
     
@@ -561,6 +591,10 @@ function tablaproductos(){
     var total_final_equivalente = 0; //1 bolivianos - 2 moneda extrangera
     let tamanio_fuente = document.getElementById('parametro_tamanioletras').value+"px";
     let tamanio_fuente2 = (Number(document.getElementById('parametro_tamanioletras').value)+3)+"px";
+    
+    //$("#motivo_puede_facturar").val("");
+    $("#puede_facturar").val(0);
+    cufd_vigente();
     
     $.ajax({url: controlador,
            type:"POST",
@@ -647,7 +681,7 @@ function tablaproductos(){
                             }
                             
                         }else{
-                            
+                                
                                 color = "style='padding:0'";
                                 fuente = '1';
                         }
@@ -665,12 +699,24 @@ function tablaproductos(){
 
                         if (parseFloat(Number(registros[i]["producto_costo"]).toFixed(2)) >= parseFloat(Number(registros[i]["producto_precio"]).toFixed(2))) {
                             html += "<br><span class='btn btn-danger btn-xs' title='ADVERTENCIA: El precio de COSTO es MAYOR O IGUAL AL PRECIO DE VENTA...!'><fa class='fa fa-exclamation-triangle'></fa> CONFLICTO DE PRECIOS</span>";
+                            
+                                if(Number(registros[i]["detalleven_total"])==0){
+                                    
+                                    $("#puede_facturar").val(2); //2 conflicto de precios por ser cero
+                                    let error = document.getElementById("motivo_puede_facturar").value + " *** PRECIO(S) TOTALES EN CERO ";
+                                    $("#motivo_puede_facturar").val(error); //2 conflicto de precios por ser cero
+                                    
+                                }
                         }
 
 
                         //productos no homologados
-                        if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 ))
-                                html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-danger btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'><fa class='fa fa-exclamation-triangle'></fa> PRODUCTO SIN HOMOLOGAR </a>";
+                        if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 )){
+                            html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-danger btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'><fa class='fa fa-exclamation-triangle'></fa> PRODUCTO SIN HOMOLOGAR </a>";
+                            $("#puede_facturar").val("1"); //NO puede facturar porque existe un producto no homologado
+                                    let error = document.getElementById("motivo_puede_facturar").value + " *** PRODUCTO(S) NO HOMOLOGADO(S) ";
+                                    $("#motivo_puede_facturar").val(error); //2 conflicto de precios por ser cero                            
+                        }
                             
                        //html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
@@ -830,11 +876,11 @@ html += "  </div>";
                        
                             html += "                    <div class='btn-group'>      ";   
                             html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
-                            html += "                              		<span class='btn btn-default  btn-xs'> "+detalle_cantidad+"</span>";
+                            //html += "                              		<span class='btn btn-default  btn-xs'> "+detalle_cantidad+"</span>";
 
                             html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
-                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+                            html += "                       <input type='hidden' size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' >";
 
                             html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
                             html += "                    </div>";
@@ -845,7 +891,7 @@ html += "  </div>";
 //
                             html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
-                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+                            html += "                       <input type='hidden' size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' >";
                                
                            }
 
@@ -859,10 +905,12 @@ html += "  </div>";
                         
                         html += "</td>";
                         html += "			<td "+color+">";
-                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
-                       
+//                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
+                       html += "<button style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></button>";
+                       html += "<button class='btn btn-facebook btn-success btn-xs' onclick='actualizar_portotal("+registros[i]["detalleven_id"]+")' title='Actualizar precios por el total'><span class='fa fa-calculator' aria-hidden='true'></span></button>";
+
                         if(parametro_botonescontrol==1){
-                           html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                           html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'  title='Quitar producto de la lista'><span class='fa fa-times'></span></a></button> ";
                         }
                         html += "                        </td>";    
                         
@@ -922,8 +970,11 @@ html += "  </div>";
                         html += "			<td "+color+">";
 
                         if(parametro_botonescontrol==1){   
-                            html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
-                            html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                            //html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
+                            html += "<button style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></button>";
+                            html += "<button class='btn btn-facebook btn-success btn-xs' onclick='actualizar_portotal("+registros[i]["detalleven_id"]+")' title='Actualizar precios por el total'><span class='fa fa-calculator' aria-hidden='true'></span></button>";
+
+                            html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs' title='Quitar producto de la lista'><span class='fa fa-times'></span></a></button> ";
                         }
                         html += "                        </td>";
                         html += "                    </tr>";  
@@ -1965,8 +2016,10 @@ function actualizarprecios(e,detalleven_id)
         }else{
             
             alert("ADVERTENCIA: Descuento no permitido..!!");
-            $('#descuento'+detalleven_id).val(0);
-            actualizar_losprecios(detalleven_id);
+            $('#descuento'+detalleven_id).val(precio);
+            tablaproductos();
+            
+            //actualizar_losprecios(detalleven_id);
             
         }
         
@@ -2000,8 +2053,9 @@ function actualizar_losprecios(detalleven_id)
         
     }else{
         alert("ADVERTENCIA: Descuento no permitido..!!");
-        $('#descuento'+detalleven_id).val(0);
-        actualizar_losprecios(detalleven_id);
+        $('#descuento'+detalleven_id).val(precio);
+            tablaproductos();
+        //actualizar_losprecios(detalleven_id);
     }
     }else{
         alert("Usted no tiene permisos para modificar los detallles; consulte con su administrador.");
@@ -2009,6 +2063,102 @@ function actualizar_losprecios(detalleven_id)
         
     //}
 }
+
+function actualizar_portotal(detalleven_id)
+{
+    //var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador =  base_url+"venta/actualizarprecio";
+    var precio = document.getElementById('precio'+detalleven_id).value;
+    var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
+    
+    
+    $("#calcular_detalleven_id").val(detalleven_id);
+    $("#calcular_precio").val(precio);
+    $("#calcular_cantidad").val(cantidad);
+    
+    total = Number(precio) * Number(cantidad);
+    
+    $("#calcular_total").val(total);
+    
+    $('#modalportotal').modal('show');
+    $('#modalportotal').on('shown.bs.modal', function () {
+        var input = $('#calcular_total');
+        input.focus().select();
+    });
+
+}
+
+function calcular_portotal()
+{
+    //var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador =  base_url+"venta/actualizarprecio";
+    var detalleven_id = document.getElementById("calcular_detalleven_id").value;
+    var precio = document.getElementById("calcular_precio").value;
+    //var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById("calcular_cantidad").value; 
+    var total    = document.getElementById("calcular_total").value; 
+    
+    precio = Number(total) / Number(cantidad);    
+    
+    $("#calcular_cantidad").val(cantidad);
+    $("#calcular_precio").val(precio);
+
+}
+
+function calcular_porunitario()
+{
+    //var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador =  base_url+"venta/actualizarprecio";
+    var detalleven_id = document.getElementById("calcular_detalleven_id").value;
+    var precio = document.getElementById("calcular_precio").value;
+    //var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById("calcular_cantidad").value; 
+    var total    = document.getElementById("calcular_total").value; 
+    
+    cantidad = Number(total) / Number(precio);    
+    
+    $("#calcular_cantidad").val(cantidad);
+    //$("#calcular_precio").val(precio);
+
+}
+
+function registrar_calculos()
+{
+    //var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador =  base_url+"venta/registrar_calculos";
+    var detalleven_id = document.getElementById("calcular_detalleven_id").value;
+    var precio = document.getElementById("calcular_precio").value;
+    //var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById("calcular_cantidad").value; 
+    var total    = document.getElementById("calcular_total").value; 
+
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{detalleven_id:detalleven_id, precio:precio, cantidad:cantidad, total:total},
+            success:function(respuesta){
+
+                let res = JSON.parse(respuesta);                            
+
+                tablaproductos();
+
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+
+}
+
+
 
 function actualizar_cantidad_inventario()
 {
@@ -2846,9 +2996,9 @@ function tablaresultados(opcion)
         
     let tamanio_fuente = document.getElementById('parametro_tamanioletrasboton').value+"px";
     
-    let verificar_cantidades = document.getElementById('verificar_cantidades').value;
-    let compra_rapida = document.getElementById('compra_rapida').value;
-    let actualizar_precios = document.getElementById('actualizar_precios').value;
+    let verificar_cantidades = document.getElementById('parametro_vercantidades').value;
+    let compra_rapida = document.getElementById('parametro_comprarapida').value;
+    let actualizar_precios = document.getElementById('parametro_actualizarprecios').value;
     
     
     // var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
@@ -3001,15 +3151,15 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";  
                         
-                        if(verificar_cantidades>0){
+                        if(verificar_cantidades==1){
                             html += "<button class='btn btn-info btn-xs' style='padding:0px;' title='Verificar cantidades en sucursales'  data-toggle='modal' data-target='#modalsucursales'>- <fa class='fa fa-bar-chart' onclick='seleccionar_producto("+registros[i]["producto_id"]+","+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")'></fa> -</button>";
                         }
                         
-                        if(compra_rapida>0){
+                        if(compra_rapida==1){
                             html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
                         }
 
-                        if(actualizar_precios>0){
+                        if(actualizar_precios==1){
                             html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Actualizador de precios' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
                         }
                         
@@ -3918,8 +4068,26 @@ function registrarventa(cliente_id){
     let cliente_nombre = document.getElementById('cliente_nombre').value;
     let cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;
     //alert(cliente_nombre+" *** "+ cliente_nombrenegocio);
-    
-   // alert(pensionado);
+    let datos_codigopais2 = document.getElementById('datos_codigopais2').value;
+    let datos_incoterm = document.getElementById('datos_incoterm').value;
+    let datos_incotermdetalle = document.getElementById('datos_incotermdetalle').value;
+    let datos_costosgastosnacionales = document.getElementById('datos_costosgastosnacionales').value;
+    let datos_totalgastosnacionalesfob = document.getElementById('datos_totalgastosnacionalesfob').value;
+    let datos_costosgastosinternacionales = document.getElementById('datos_costosgastosinternacionales').value;
+    let datos_totalgastosinternacionales = document.getElementById('datos_totalgastosinternacionales').value;
+    let datos_codigomoneda = document.getElementById('datos_codigomoneda').value;
+    let datos_tipocambio = document.getElementById('datos_tipocambio').value;
+    var select = document.getElementById("datos_codigomoneda");
+    var datos_monedatransaccional = select?.options?.[select.selectedIndex]?.text || ''; // select.options[select.selectedIndex].text;
+    //let datos_monedatransaccional = document.getElementById('datos_monedatransaccional').value;
+    let datos_descripcionpaquetes = document.getElementById('datos_descripcionpaquetes').value;
+    let datos_informacionadicional = document.getElementById('datos_informacionadicional').value;
+    let datos_descuentoadicional = document.getElementById('datos_descuentoadicional').value;
+    let datos_lugardestino = document.getElementById('datos_lugardestino').value;
+    let datos_direccioncomprador = document.getElementById('datos_direccioncomprador').value;
+    let datos_puertodestino = document.getElementById('datos_puertodestino').value;
+
+    //alert(datos_monedatransaccional+" ** "+datos_descripcionpaquetes+" ** "+datos_informacionadicional+" ** "+datos_descuentoadicional+" ** "+datos_lugardestino+" ** "+datos_puertodestino);
     
     if (registroeventos_codigo>0){
         
@@ -4023,7 +4191,13 @@ function registrarventa(cliente_id){
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
                 datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
-                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado,
+                datos_codigopais2 : datos_codigopais2,datos_incoterm : datos_incoterm,datos_incotermdetalle : datos_incotermdetalle,
+                datos_costosgastosnacionales : datos_costosgastosnacionales,datos_totalgastosnacionalesfob : datos_totalgastosnacionalesfob,
+                datos_costosgastosinternacionales : datos_costosgastosinternacionales,datos_totalgastosinternacionales : datos_totalgastosinternacionales,
+                datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
+                datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
+                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4139,7 +4313,13 @@ function registrarventa(cliente_id){
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
                 datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
-                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio, pensionado:pensionado,
+                datos_codigopais2 : datos_codigopais2,datos_incoterm : datos_incoterm,datos_incotermdetalle : datos_incotermdetalle,
+                datos_costosgastosnacionales : datos_costosgastosnacionales,datos_totalgastosnacionalesfob : datos_totalgastosnacionalesfob,
+                datos_costosgastosinternacionales : datos_costosgastosinternacionales,datos_totalgastosinternacionales : datos_totalgastosinternacionales,
+                datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
+                datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
+                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -6427,7 +6607,7 @@ function pedidos_pendientes()
                             html += "     <br>"+p[i]['cliente_nombrenegocio'];
                         }
                         html += "     <br>"+p[i]['pedido_fecha'];
-                        html += "     <br><small><b>PREVENTISTA:</b> "+p[i]['usuario_nombre']+"</small>";
+                        html += "     <br><small><b>PREV./RESPONSABLE:</b> "+p[i]['usuario_nombre']+"</small>";
                         html += "     </td>";
                         html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
                         //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
@@ -6469,6 +6649,7 @@ function ordenes_pendientes()
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'/orden_trabajo/ordenes_pendientes';
     var parametro = document.getElementById('filtrar4').value;
+    var decimales = Number(document.getElementById('parametro_decimales').value);
     
 //    if (parametro != null)
 //        filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
@@ -6500,8 +6681,8 @@ function ordenes_pendientes()
                         html += "     ";
                         html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
                         
-                        html += "     <br>"+p[i]['orden_fechaentrega'];
-                        html += "     <br><small><b>VENDEDOR:</b> "+p[i]['usuario_nombre']+"</small>";
+                        html += "     <br><b>FEC. ENTREGA:</b> "+formato_fecha(p[i]['orden_fechaentrega']);
+                        html += "     <br><small><b>VENDEDOR: </b>"+p[i]['usuario_nombre']+"</small>";
                         html += "     </td>";
                         html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
                         //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
@@ -6513,9 +6694,9 @@ function ordenes_pendientes()
                         html += "     </td>";
                         html += "      ";
                         html += "     ";
-                        html += "     <td align='right' style='white-space: nowrap'><font size='3'><b>Total: "+p[i]['orden_total']+"</b></font><br>";
-                        html += "	 a Cuenta: "+p[i]['orden_acuenta']+"<br>  ";
-                        html += "	    Saldo: "+p[i]['orden_saldo']+"";
+                        html += "     <td align='right' style='white-space: nowrap'><font size='3'><b>Total: "+Number(p[i]['orden_total']).toFixed(decimales)+"</b></font><br>";
+                        html += "	 a Cuenta: "+Number(p[i]['orden_acuenta']).toFixed(decimales)+"<br>  ";
+                        html += "	    Saldo: "+Number(p[i]['orden_saldo']).toFixed(decimales)+"";
                         html += "     </td>";
 
                         html += "     <td>";
@@ -7521,7 +7702,20 @@ function seleccion_documento(){
     
     
 }
-//
+
+function formatearFecha(fechaISO) {
+    const fecha = new Date(fechaISO);
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const horas = String(fecha.getHours()).padStart(2, '0');
+    const minutos = String(fecha.getMinutes()).padStart(2, '0');
+    const segundos = String(fecha.getSeconds()).padStart(2, '0');
+
+    return `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+}
+
 function solicitudCufd(punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
@@ -7561,6 +7755,10 @@ function solicitudCufd(punto_venta=0){
                         if(transaccion == true){
                            // $("#modal_mensajeadvertencia").modal("show");
                             almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                            
+                            $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
+                            
+                            
                         }
                     else{
                         alert(JSON.stringify(registros));
@@ -7580,7 +7778,59 @@ function solicitudCufd(punto_venta=0){
                    alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
                 }
         }); 
+        
     }
+   // alert("llegaaa hasta aqui...!!");
+    tablaproductos();
+}
+
+function generarCufd(punto_venta=0){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cufd';
+
+
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{punto_venta:punto_venta},
+                success:function(respuesta){
+                    var datos = JSON.parse(respuesta);
+                    //var datos =  JSON.parse(registros);
+                let registros = datos['respuesta'];
+                let lafalla = datos['falla']
+                    
+                    if(lafalla != ""){
+                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                    }else{
+
+                        let codigo = registros.RespuestaCufd.codigo;
+                        let codigoControl = registros.RespuestaCufd.codigoControl;
+                        let direccion = registros.RespuestaCufd.direccion;
+                        let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
+                        let transaccion = registros.RespuestaCufd.transaccion;
+
+                        if(transaccion == true){
+                          
+                            almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                            
+                            $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
+                            
+                            
+                        }
+                    else{
+                        alert(JSON.stringify(registros));
+                    }
+                    }
+
+                },
+                error:function(respuesta){
+                    let datos = JSON.parse(respuesta);
+                    let registros = datos['respuesta'];
+                    let lafalla = datos['falla']
+                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                }
+        });         
+    tablaproductos();
 }
 
 function almacenar_cufd(datos,punto_venta=0){
@@ -7793,7 +8043,8 @@ function finalizarventa_sin(){
     var tam = cad.length;
     var forma_id = document.getElementById('forma_pago').value;
     var venta_cambio = document.getElementById('venta_cambio').value;
-    
+    var puede_facturar = document.getElementById('puede_facturar').value;
+   
     
     if (boton_presionado == 0){ //Si el boton no esta presionado
         
@@ -7835,8 +8086,10 @@ function finalizarventa_sin(){
 
                 }
 
-                        if ($('#facturado').is(':checked')){
+                        if ($('#facturado').is(':checked')){ //Si es venta facturada
 
+                            tablaproductos();
+                            
                             let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
                             let venta_total = document.getElementById('venta_total').value;
 
@@ -7865,124 +8118,141 @@ function finalizarventa_sin(){
                             }else if(docsec_codigoc == 23 && venta_total > 1000){
                                 alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
                                 location.reload();
-                            }else{
-
-                                if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
-
-
-                                    if(navigator.onLine){ //si esta el linea
-                                        let cantidad_facturas = document.getElementById('cantidad_facturas').value;
-
-                                        if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
-                                            cliente_valido = 1;
-
-                                        if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
-
-                                            if(razon_social!=''){
-                                                //alert(forma_pago+" * "+tam+" = "+ (tam == 16));
-
-                                                if(((Number(forma_pago) == 2) && (Number(tam) == 16)) || (forma_pago!=2)){ //(forma_pago==2 && venta_detalletransaccion.lenght == 16)||(forma_pago<>2)
-
-                                                    //alert("entra aqui: "+forma_pago+" * "+cad);
-                                                    //*********************************************************************
-                                                    
-                                                        if(parametro_verificarconexion==1){
-                                                            
-                                                            //alert("Con verificar conexion");
-                                                            $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
-                                                                    type:"POST",
-                                                                    data:{},
-                                                                    success:function(respuesta){
-                                                                        let registros = JSON.parse(respuesta);
-
-                                                                        //alert(JSON.stringify(registros));
-                                                                        //alert(registros.RespuestaComunicacion.transaccion);
-                                                                        if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
-
-                                                                            //Finalizamos venta normalmente
-                                                                            finalizarventa();
-
-
-                                                                        }else{
-
-                                                                            //debe registrar como fuera de linea
-                                                                            alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
-                                                                            modal_cambiartipoemision()
-                                                                            document.getElementById("elparametro_tipoemision").value = 2;
-                                                                            document.getElementById("select_eventos").value = 2;
-                                                                            $("#boton_tipoemision").click();
-
-                                                                        }
-
-                                                                    },
-                                                                    error:function(respuesta){
-                                                                        alert("Error: Conexión fallida. Vuelva a intentar...!");
-                                                                    }
-                                                                });  
-                                                        }else{
-                                                            //alert("Sin verificar conexion");
-                                                            finalizarventa();                                                            
-                                                        }
-                                                            
-                                                        //*********************************************************************
-
-
-                                                    }//if((forma_pago==2 && venta_detalletransaccion.length==16)||(forma_pago<>2)){
-                                                    else{                                    
-                                                            document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                                                            document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                                            alert("ADVERTENCIA: No registro correctamente el número de tarjeta de debito/credito...!!"); 
-                                                        }
-
-
-                                                }//if (razon_social<>'')
-                                                else{
-
-                                                        document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                                                        document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                                        $("#boton_presionado").val(0); // 1 - Boton presionado
-                                                        alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
-
-                                                        $("nit").focus();
-                                                        $("nit").select();
-
-                                                }
-
-                                            } //fin cliente_valido ==1
-                                            else{ 
-                                                    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                                                    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                                    alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
-
-                                                    $("nit").focus();
-                                                    $("nit").select();
-                                                }
-                                            }else{
-                                                if (docsec_codigoc == 23){
-                                                   alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
-                                               }else
-                                                    alert("ADVERENCIA: El NIT es INVALIDO...!");
-
-                                                document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                                                document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                            }
-                                        }else{
-                                                //se debe registrar como fuera de linea
-                                                alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
-                                                modal_cambiartipoemision()
-                                                document.getElementById("elparametro_tipoemision").value = 2;
-                                                document.getElementById("select_eventos").value = 1;
-                                                $("#boton_tipoemision").click();
-
-                                        }
-
                                     }else{
 
+                                        if(puede_facturar==0){ // puede_facturar == 0 si puede, == 1 producto sin homologar
+                                            
+                                                if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
 
-                                        //alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
-                                        finalizarventa();
 
+                                                    if(navigator.onLine){ //si esta el linea
+
+                                                        let cantidad_facturas = document.getElementById('cantidad_facturas').value;
+
+                                                        if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
+                                                            cliente_valido = 1;
+
+                                                        if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
+
+                                                            if(razon_social!=''){
+                                                                //alert(forma_pago+" * "+tam+" = "+ (tam == 16));
+
+                                                                if(((Number(forma_pago) == 2) && (Number(tam) == 16)) || (forma_pago!=2)){ //(forma_pago==2 && venta_detalletransaccion.lenght == 16)||(forma_pago<>2)
+
+                                                                    //alert("entra aqui: "+forma_pago+" * "+cad);
+                                                                    //*********************************************************************
+
+                                                                        if(parametro_verificarconexion==1){
+
+                                                                            //alert("Con verificar conexion");
+                                                                            $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
+                                                                                    type:"POST",
+                                                                                    data:{},
+                                                                                    success:function(respuesta){
+                                                                                        let registros = JSON.parse(respuesta);
+
+                                                                                        //alert(JSON.stringify(registros));
+                                                                                        //alert(registros.RespuestaComunicacion.transaccion);
+                                                                                        if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
+
+                                                                                            //Finalizamos venta normalmente
+                                                                                            finalizarventa();
+
+
+                                                                                        }else{
+
+                                                                                            //debe registrar como fuera de linea
+                                                                                            alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
+                                                                                            modal_cambiartipoemision()
+                                                                                            document.getElementById("elparametro_tipoemision").value = 2;
+                                                                                            document.getElementById("select_eventos").value = 2;
+                                                                                            $("#boton_tipoemision").click();
+
+                                                                                        }
+
+                                                                                    },
+                                                                                    error:function(respuesta){
+                                                                                        alert("Error: Conexión fallida. Vuelva a intentar...!");
+                                                                                    }
+                                                                                });  
+                                                                        }else{
+                                                                            //alert("Sin verificar conexion");
+                                                                            finalizarventa();                                                            
+                                                                        }
+
+                                                                        //*********************************************************************
+
+
+                                                                    }//if((forma_pago==2 && venta_detalletransaccion.length==16)||(forma_pago<>2)){
+                                                                    else{                                    
+                                                                            document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                                                            document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                                            alert("ADVERTENCIA: No registro correctamente el número de tarjeta de debito/credito...!!"); 
+                                                                        }
+
+
+                                                                }//if (razon_social<>'')
+                                                                else{
+
+                                                                        document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                                                        document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                                        $("#boton_presionado").val(0); // 1 - Boton presionado
+                                                                        alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
+
+                                                                        $("nit").focus();
+                                                                        $("nit").select();
+
+                                                                }
+
+                                                            } //fin cliente_valido ==1
+                                                            else{ 
+                                                                    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                                                    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                                    alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
+
+                                                                    $("nit").focus();
+                                                                    $("nit").select();
+                                                                }
+                                                            }else{
+                                                                if (docsec_codigoc == 23){
+                                                                   alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
+                                                               }else
+                                                                    alert("ADVERENCIA: El NIT es INVALIDO...!");
+
+                                                                document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                                                document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                            }
+                                                        }else{
+                                                                //se debe registrar como fuera de linea
+                                                                alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
+                                                                modal_cambiartipoemision()
+                                                                document.getElementById("elparametro_tipoemision").value = 2;
+                                                                document.getElementById("select_eventos").value = 1;
+                                                                $("#boton_tipoemision").click();
+
+                                                        }
+
+                                                    }else{
+
+
+                                                        //alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
+                                                        finalizarventa();
+
+                                                    }
+                                                    
+                                    }//fin if(puede_facturar==0)
+                                    else{
+                                        
+                                        document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                        document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                        $("#boton_presionado").val(0);
+                                        
+                                        let error = document.getElementById("motivo_puede_facturar").value;  
+                                        alert("NO PUEDE FACTURAR, MOTIVO(s): \n"+error+"\nCorrija el error y vuelva a intentar por favor..!");
+                                        $("#motivo_puede_facturar").val("");
                                     }
+                                                    
+                                    
                                 }
 
                         }else{
@@ -8161,6 +8431,33 @@ function existen_bolsa(){
     
 }
 
+function placa_atendida_hoy(numeroplaca) {
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url + 'venta/buscar_placa_atendida';
+
+    let resultado = false; // valor por defecto
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: { numeroplaca: numeroplaca },
+        async: false, // SINCRÓNICO
+        success: function (respuesta) {
+            let registro = JSON.parse(respuesta);
+            if (registro.length > 0) {
+                resultado = true;
+            } else {
+                resultado = false;
+            }
+        },
+        error: function () {
+            resultado = false;
+        }
+    });
+
+    return resultado;
+}
+
 function buscar_placa(e){    
     
     let base_url = document.getElementById('base_url').value;
@@ -8171,6 +8468,7 @@ function buscar_placa(e){
     
     if (tecla==13){
     
+        if(!placa_atendida_hoy(numeroplaca)){
     
 
             $.ajax({url: controlador,
@@ -8264,6 +8562,9 @@ function buscar_placa(e){
             });     
             return res;
             
+        }else{
+            alert("NOTIFICACION: La placa: "+numeroplaca+" ya tiene registro de venta del dia..!");
+        }
     }
 }
 
@@ -9038,6 +9339,40 @@ function registrar_pensionado(){
  
 }
 
+
+function seleccionar_almacen(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/seleccionar_almacen';
+    let almacen = document.getElementById('select_almacen').value;
+    
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{almacen:almacen},
+                success:function(respuesta){
+
+                    let res = JSON.parse(respuesta);                            
+
+                    if (res.length>0) {  
+                        
+                        $("#nit").val(res[0]["almacen_codigo"]);
+                        buscarcliente();  
+                        //quitamos facturacion
+                        document.getElementById('facturado').checked = false;
+                        
+                        
+//                        $("#razon_social").val(res[0]["almacen_descripcion"]);
+                    }
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+   
+}
+
+
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
@@ -9111,6 +9446,13 @@ function borrar_datos_cliente(){
     $("#tipo_doc_identidad").val("1");
     $("#cliente_valido").val("1");
     $("#glosay").val("");
+    $("#puede_facturar").val("0");
+    $("#motivo_puede_facturar").val("");
+    $("#cuotas").val("1");
+    $("#modalidad").val("1");
+    $("#dia_pago").val("1");
+    $("#credito_interes").val("1");
+    $("#cuota_inicial").val("0");
     
     
     document.getElementById("codigoexcepcion").checked = false;
@@ -9282,3 +9624,4 @@ function borrar_datos_cliente(){
     $("#boton_presionado").val(0);
 
 }
+

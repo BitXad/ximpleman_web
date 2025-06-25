@@ -1,13 +1,31 @@
 <div class="row">
     <div class="col-md-12">
             <?php echo form_open_multipart('asientos/add'); ?>
-             <div class="col-md-6">
+            <div class="col-md-6" hidden>
                <label for="asiento_id" class="control-label"> <span class="text-danger"></span>ID</label>
                 <div class="form-group">
                   <input type="number" name="asiento_id" value="<?php echo $this->input->post('asiento_id'); ?>" class="form-control " id="asiento_id" />
                    <span class="text-danger"><?php echo form_error('asiento_id');?></span>
                </div>
              </div>
+        
+                    <div class="col-md-6">
+                <label for="vehiculo_id" class="control-label"> <span class="text-danger"></span>  VEHICULO</label>
+                 <div class="form-group">
+                  <select name="vehiculo_id" class="form-control"> 
+                    <option value="">select vehiculo_id</option>
+                     <?php
+                          foreach($all_vehiculo as   $vehiculo)
+                          {
+                              $selected = ($vehiculo['vehiculo_id'] == $this->input->post('vehiculo_id')) ? ' selected="selected"' : ""; 
+                                   echo '<option value="'.$vehiculo['vehiculo_id'].'" '.$selected.'>'.$vehiculo['vehiculo_marca'].' ('.$vehiculo['vehiculo_placa'].')</option>'; 
+                          } 
+                          ?>
+                        </select>
+                        <span class="text-danger"><?php echo form_error('vehiculo_id');?></span>
+                      </div>
+              </div>
+        
             <div class="col-md-6">
                 <label for="nivel_id" class="control-label"> <span class="text-danger"></span>  NIVEL</label>
                  <div class="form-group">
@@ -73,22 +91,7 @@
                    <span class="text-danger"><?php echo form_error('asiento_y');?></span>
                </div>
              </div>
-            <div class="col-md-6">
-                <label for="vehiculo_id" class="control-label"> <span class="text-danger"></span>  VEHICULO</label>
-                 <div class="form-group">
-                  <select name="vehiculo_id" class="form-control"> 
-                    <option value="">select vehiculo_id</option>
-                     <?php
-                          foreach($all_vehiculo as   $vehiculo)
-                          {
-                              $selected = ($vehiculo['vehiculo_id'] == $this->input->post('vehiculo_id')) ? ' selected="selected"' : ""; 
-                                   echo '<option value="'.$vehiculo['vehiculo_id'].'" '.$selected.'>'.$vehiculo['vehiculo_marca'].'</option>'; 
-                          } 
-                          ?>
-                        </select>
-                        <span class="text-danger"><?php echo form_error('vehiculo_id');?></span>
-                      </div>
-              </div>
+
              <div class="col-md-6">
                <label for=" " class="control-label"> </label>
                 <div class="form-group">

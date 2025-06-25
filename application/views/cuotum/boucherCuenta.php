@@ -47,7 +47,7 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
+font-family: Arial;
 font-size: 7pt;
 }
 
@@ -91,19 +91,17 @@ border-bottom : 1px solid #aaa;*/
         <td style="padding: 0;" colspan="4">
                 
             <center>
-                               
+                                                                      
+                    <?php if($parametro["parametro_mostrarlogo"]==1){ ?>
+
+                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="150" height="90"><br>
+
+                    <?php } ?>                               
                     
                     <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
-                    <font size="1" face="Arial"></b>
-
-                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
-
-                        </b></font><br>
-                    <?php } ?>
 
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
@@ -114,8 +112,8 @@ border-bottom : 1px solid #aaa;*/
                          //else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
                    
                     
-                <font size="3" face="arial"><b>COMPROBANTE DE PAGO</b></font> <br>
-                <font size="1" face="arial"><b>Nº 00<?php echo $cuota[0]['credito_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b>COMPROBANTE DE COBRO</b></font> <br>
+                <font size="3" face="arial"><b>Nº 00<?php echo $cuota[0]['credito_id']; ?></b></font> <br>
                 
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
@@ -152,7 +150,7 @@ border-bottom : 1px solid #aaa;*/
 <!--                <br>_______________________________________________
                 <br> -->
     <tr  style="border-top-style: solid; border-top-width: 0px; border-bottom-style: solid; border-bottom-width: 2px;" >
-        <td colspan="4" style="padding: 0;  font-size: 9pt;">
+        <td colspan="4" style="padding: 0;  font-size: 8pt;">
             
                 <?php $fecha = new DateTime($cuota[0]['cuota_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -201,7 +199,7 @@ border-bottom : 1px solid #aaa;*/
  
     <tr>
         <td nowrap style="padding: 0;" colspan="4">
-            <font size="2">
+            <font size="1">
             
                 NOTA: <b><?php echo  $cuota[0]['cuota_glosa']; ?></b><br><br><br>
                 
@@ -209,8 +207,8 @@ border-bottom : 1px solid #aaa;*/
         </td>           
     </tr>
       
-    <tr >
-        <td style="padding: 0;  line-height: 12px;" colspan="4">
+    <tr>
+        <td style="padding: 0;  line-height: 10px;" colspan="4">
             <center>
                 
             <?php echo "-----------------------------------------------------"; ?><br>
@@ -219,8 +217,8 @@ border-bottom : 1px solid #aaa;*/
             <font face="Arial" size="1"><?php echo "ENTREGUE CONFORME"; ?></font>
         
             <br>
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
             </center>
+                    <?php echo date("d/m/Y H:m:s"); ?>  
          </td>
     </tr>    
     

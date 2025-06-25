@@ -25,6 +25,17 @@
                 })
             }(jQuery));
         });   
+        
+function establecer_fecha() {
+    let fecha = document.getElementById("fechainventario").value;
+    
+    if (fecha) {
+        let partes = fecha.split("-"); // Divide el formato YYYY-MM-DD
+        let nuevaFecha = `${partes[2]}/${partes[1]}/${partes[0]}`; // Reorganiza a DD/MM/YYYY
+        
+        document.getElementById("fecha_inventario").textContent = nuevaFecha;
+    }
+}
 
 </script>   
 
@@ -63,11 +74,14 @@
             </center>                      
         </td>
                    
-        <td style="width: 6cm; padding: 0" > 
+        <td style="width: 6cm; padding: 0; line-height: 10px;" > 
             <center>
             
                 <br><br>
+                <br><br>
                 <font size="3" face="arial"><b>INVENTARIO FISICO VALORADO</b></font> <br>
+                <font size="1" face="arial"><b>AJUSTADO AL <span id="fecha_inventario"><?php echo date("d/m/y");  ?></span></b></font> <br>
+                <font size="1" face="arial"><b>Expresado en Bs</b></font> <br>
                 <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
@@ -92,44 +106,22 @@
             <h3 class="box-title"></h3>
             <div class="box-tools no-print">
                 
-                <select class="btn btn-warning btn-sm" id="tipo_reporte">
-                    <option value="2">INVENTARIO DETALLADO</option>
-                    <option value="1">INVENTARIO POR OPERACIONES</option>
-                </select>
+     
                 
-                <?php //$mostrar_almacenes = true;
-                    $parasucursal = 0;
-                    if(sizeof($almacenes)> 0){
-                        $parasucursal = 1;
-                        ?>
-                        <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-                <select class="btn btn-success btn-sm" id="select_almacen">
-                        <?php   
-                            foreach($almacenes as $almacen){ ?>
-                             
-                                    <option value="<?php echo $almacen["almacen_basedatos"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
-
-                            <?php } ?>
-                            
-                </select>
-                        
-                        
-                <?php }else{ ?>
-                <select class="btn btn-success btn-sm hidden" id="select_almacen">
-                    <option value="default">No tiene Almacenes</option>
-                </select>
-                <?php } ?>
+               
+                <input type="date" name="fechainventario" class="btn btn-info btn-sm" id="fechainventario" value='<?php echo date("Y-m-d") ?>' onchange="establecer_fecha()" />
                 <input type="hidden" name="parasucursal" id="parasucursal" value='<?php echo $parasucursal ?>' />
                 
-                <button class="btn btn-success btn-sm" onclick="actualizar_inventario()" type="button"><span class="fa fa-cubes"></span> Actualizar</button>
-                <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
-                <button class="btn btn-primary btn-sm" onclick="tabla_inventario()" type="button"><span class="fa fa-list"></span> Mostrar todo</button>
-
-                <button class="btn btn-info btn-sm" onclick="tabla_inventario_existencia()" type="button"><span class="fa fa-list-ol" title="Ver Produtos con Existencia"></span> Con Existencia</button>
-                <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
-                <button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()" type="button"><span class="fa fa-copy"></span> Prod. Duplicados</button>
+                <button class="btn btn-success btn-sm" onclick="tabla_inventario_saldos()" type="button"><span class="fa fa-binoculars"></span> Mostrar</button>
                 
-                <button class="btn btn-danger btn-sm" id="excel" onclick="generarexcel()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
+                <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
+                <!--<button class="btn btn-primary btn-sm" onclick="tabla_inventario()" type="button"><span class="fa fa-list"></span> Mostrar todo</button>-->
+
+                <!--<button class="btn btn-info btn-sm" onclick="tabla_inventario_existencia()" type="button"><span class="fa fa-list-ol" title="Ver Produtos con Existencia"></span> Con Existencia</button>-->
+                <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
+                <!--<button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()" type="button"><span class="fa fa-copy"></span> Prod. Duplicados</button>-->
+                
+                <button class="btn btn-danger btn-sm" id="excel" onclick="generarexcel_saldos()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
                 <?php } ?>
               
             </div>

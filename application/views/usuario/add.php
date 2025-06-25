@@ -141,7 +141,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="<?php echo site_url('uploads/profile/default.jpg')?>" id="previewing" class="img-responsive center-block">
+                        <img src="<?php echo site_url('uploads/profile/default.jpg')?>" id="previewing" class="img-responsive center-block" style="max-width: 200px; height: auto; margin-top: 10px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
                     </div>
                 </div>
             </div>

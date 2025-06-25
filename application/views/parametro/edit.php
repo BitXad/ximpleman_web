@@ -1011,10 +1011,53 @@ div {
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-md-1">
+                        <label for="parametro_vercantidades" class="control-label" title="Cierra las ventanas de factura/recibo/comanda luego de imprimir">CANTIDAD SUC.</label>
+                        <div class="form-group">
+                            <select name="parametro_vercantidades" class="form-control" id="parametro_vercantidades">
+                                <option value="1" <?php if($parametro['parametro_vercantidades']=="1"){ ?> selected <?php } ?>>SI</option>
+                                <option value="2" <?php if($parametro['parametro_vercantidades']=="2"){ ?> selected <?php } ?>>NO</option>
+                            </select>
+                        </div>
+                    </div>
                     
                     
+                    <div class="col-md-1">
+                        <label for="parametro_comprarapida" class="control-label" title="Cierra las ventanas de factura/recibo/comanda luego de imprimir">COMPRA RAPIDA</label>
+                        <div class="form-group">
+                            <select name="parametro_comprarapida" class="form-control" id="parametro_comprarapida">
+                                <option value="1" <?php if($parametro['parametro_comprarapida']=="1"){ ?> selected <?php } ?>>SI</option>
+                                <option value="2" <?php if($parametro['parametro_comprarapida']=="2"){ ?> selected <?php } ?>>NO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="parametro_actualizarprecios" class="control-label" title="Cierra las ventanas de factura/recibo/comanda luego de imprimir">ACT. PRECIOS</label>
+                        <div class="form-group">
+                            <select name="parametro_actualizarprecios" class="form-control" id="parametro_actualizarprecios">
+                                <option value="1" <?php if($parametro['parametro_actualizarprecios']=="1"){ ?> selected <?php } ?>>SI</option>
+                                <option value="2" <?php if($parametro['parametro_actualizarprecios']=="2"){ ?> selected <?php } ?>>NO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="parametro_generarcufd" class="control-label" title="Generar CUFD diario de forma automatica">CUFD AUTOMAT.</label>
+                        <div class="form-group">
+                            <select name="parametro_generarcufd" class="form-control" id="parametro_generarcufd">
+                                <option value="1" <?php if($parametro['parametro_generarcufd']=="1"){ ?> selected <?php } ?>>SI</option>
+                                <option value="2" <?php if($parametro['parametro_generarcufd']=="2"){ ?> selected <?php } ?>>NO</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
-            </div><hr>
+            </div>
+
+            
+        
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>
                 <div class="row clearfix">
                     <div class="col-md-1">

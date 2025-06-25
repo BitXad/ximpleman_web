@@ -958,9 +958,9 @@ function validacompra(e,opcion) {
         } 
         
     } 
-
     
 }
+
 function compravalidar(e) {
   tecla = (document.all) ? e.keyCode : e.which;
   
@@ -1290,21 +1290,25 @@ function compraproveedor(opcion)
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
                         html += "<td align='center' style='background: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"<br>";
+                        
                         if (Number(registros[i]["compra_placamovil"])==1) {  
-                        html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
+                            html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  
+                        }  
+                    
                         html += "<td style='background: #"+registros[i]["estado_color"]+"'>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
+                        
                         if (Number(registros[i]["compra_placamovil"])==1) {
-                        //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
-                        html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
-                        html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                        html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
-                        html += "<div class='modal-footer'>";
-                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
-                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
-                        html += "</div> </div></div></div></div>";
+                            //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
+                            html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+                            html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
+                            html += "<div class='modal-content'>";
+                            html += "<div class='modal-header'>";
+                            html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                            html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
+                            html += "<div class='modal-footer'>";
+                            html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
+                            html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
+                            html += "</div> </div></div></div></div>";
                         } else {
                         
                         }
@@ -1469,18 +1473,21 @@ function fechadecompra(filtro)
                         html += "<td class='no-print' style='background: #"+registros[i]["estado_color"]+"'>";
                         if (Number(registros[i]["compra_placamovil"])==1) {
                         //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
-                        html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
-                        html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                        html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
-                        html += "<div class='modal-footer'>";
-                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
-                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
-                        html += "</div> </div></div></div></div>";
-                        } else {
-                        
+                            html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+                            html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
+                            html += "<div class='modal-content'>";
+                            html += "<div class='modal-header'>";
+                            html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                            html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
+                            html += "<div class='modal-footer'>";
+                            html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
+                            html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
+                            html += "</div> </div></div></div></div>";
+                            
+                        } 
+                        if (Number(registros[i]["compra_placamovil"])==1) {
+                            html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-danger btn-xs' title='Continuar compra sin finalizar'>";
+                            html += "<i class='fa fa-warning'></i> .. <i class='fa fa-arrow-right'></i></a>";
                         }
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
                         html += "<a href='"+base_url+"compra/notaingreso/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-facebook btn-xs' title='Nota de ingreso/utilidades'><span class='fa fa-print'></span></a>";
@@ -1488,9 +1495,9 @@ function fechadecompra(filtro)
                             
                            
                            if((Number(tipousuario_id)==1)||(Number(autorizado)==1)){
-                               
+                               if (registros[i]["compra_placamovil"]!=1){
                                 html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";                               
-
+                               }
 
                                 html +="<button data-toggle='modal'  class='btn btn-xs btn-github' title='Ver compras perdidas' onclick='cargar_datosbackup("+registros[i]["compra_id"]+")'> <i class='fa fa-paperclip'></i> </button>";
 
@@ -2246,6 +2253,49 @@ function restablecer_backup(bitacora_codigo, compra_id)
     }
 }
 
+function mostrar_listabackup(bitacora_codigo, compra_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"compra/lista_backup/";
+    
+ 
+    
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{bitacora_codigo:bitacora_codigo, compra_id:compra_id},
+                success:function(respuesta){    
+
+                    res = JSON.parse(respuesta);
+
+                    if(res!=null){
+                        
+                        for (let i=0;i<res.length; i++){
+                            
+                            html += "<br>"+res[i]["detallecomp_codigo"]+" "+res[i]["detallecomp_codigo"]+" "+res[i]["producto_nombre"]+" "+Number(res[i]["detallecomp_costo"])+" "+res[i]["detallecomp_codigo"];
+                        }
+                        $("#listaprod"+bitacora_codigo).html(html);
+                    }
+                    
+//                    cargar_datosbackup(compra_id);
+
+                },
+                complete: function (jqXHR, textStatus) {
+                }
+            });   
+
+}
+
+function cambiar_formatofecha(fechaStr) {
+  // Dividimos la fecha y la hora
+  const [fecha, hora] = fechaStr.split(' ');
+
+  // Dividimos el año, mes y día
+  const [anio, mes, dia] = fecha.split('-');
+
+  // Retornamos en el nuevo formato
+  return `${dia}/${mes}/${anio} ${hora}`;
+}
+
 function cargar_datosbackup(compra_id){
    
     document.getElementById("micompra_id").value = compra_id;   
@@ -2255,8 +2305,7 @@ function cargar_datosbackup(compra_id){
     var decimales = document.getElementById('decimales').value;
     var controlador = base_url+"compra/verificar_detalle/";
     
-   // document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
-    
+
     $.ajax({url: controlador,
         type:"POST",
         data:{compra_id:compra_id},
@@ -2315,9 +2364,6 @@ function cargar_datosbackup(compra_id){
                 html += "<th "+estilo+">CODIGO</th>";
                 html += "<th "+estilo+">ITEMS</th>";
                 html += "<th "+estilo+"></th>";
-//                html += "<th "+estilo+">COSTO</th>";
-//                html += "<th "+estilo+">TOTAL</th>";
-//                html += "<th "+estilo+">CODIGO</th>";
 
             html += "</tr>";            
             
@@ -2326,17 +2372,15 @@ function cargar_datosbackup(compra_id){
                 html += "<tr>";
 
                     html += "<td "+estilo+">"+(i+1)+"</td>";
-                    html += "<td "+estilo+">"+res2[i]["fecha_bitacora"]+"</td>";
+                    html += "<td "+estilo+">"+cambiar_formatofecha(res2[i]["fecha_bitacora"])+" ** "+res2[i]["usuario_nombre"]+"<span id='listaprod"+res2[i]["codigo_bitacora"]+"'></span>";
+                                html += " <button class='btn btn-warning btn-xs' id='boton_productos' title='Ver lista de productos' onclick='mostrar_listabackup("+JSON.stringify(res2[i]["codigo_bitacora"])+","+res2[i]["compra_id"]+")'><fa class='fa fa-binoculars'></fa> </button>"
+                    html += "</td>";
                     html += "<td "+estilo+">"+res2[i]["codigo_bitacora"]+"</td>";
                     html += "<td "+estilo+">"+Number(res2[i]["items"]).toFixed(decimales)+"</td>";
                     html += "<td "+estilo+">";
-                        html += "<button class='btn btn-xs btn-info' onclick='restablecer_backup("+JSON.stringify(res2[i]["codigo_bitacora"])+","+res2[i]["compra_id"]+")'><fa class='fa fa-chain'></fa>Restablecer</button>";
+                        html += "<button class='btn btn-xs btn-info' onclick='restablecer_backup("+JSON.stringify(res2[i]["codigo_bitacora"])+","+res2[i]["compra_id"]+")'><fa class='fa fa-chain'> </fa> Restablecer</button>";
                     
                     html += "</td>";
-                    
-//                    html += "<td "+estilo+">"+Number(res2[i]["detallecomp_costo"]).toFixed(decimales)+"</td>";
-//                    html += "<td "+estilo+">"+Number(res2[i]["detallecomp_total"]).toFixed(decimales)+"</td>";
-//                    html += "<td "+estilo+">"+res2[i]["codigo_bitacora"]+"</td>";
 
                 html += "</tr>";
                
@@ -2459,6 +2503,7 @@ function replicar_producto(producto_id){
     
         var base_url = document.getElementById("base_url").value;
         var controlador = base_url+"venta/get_producto_id";
+        var decimales = document.getElementById('decimales').value; 
         
         $.ajax({url: controlador,
                 type:"POST",
@@ -2479,15 +2524,15 @@ function replicar_producto(producto_id){
                     $("#categoria_id").val(producto["categoria_id"]);
                     $("#subcategoria_prod").val(producto["subcategoria_prod"]);
                     $("#texto1").val(producto["producto_ultimocosto"]); //No se porque le pusieron texto1 al id del costo
-                    $("#texto2").val(producto["producto_precio"]);
+                    $("#texto2").val(Number(producto["producto_precio"]).toFixed(decimales));
                     $("#producto_unidad").val(producto["producto_unidad"]);
                     $("#cantidad").val(1);
                     $("#producto_unidadfactor").val(producto["producto_unidadfactor"]);
                     $("#producto_codigofactor").val(producto["producto_codigofactor"]);
-                    $("#producto_factor").val(producto["producto_factor"]);
-                    $("#producto_preciofactor").val(producto["producto_preciofactor"]);
+                    $("#producto_factor").val(Number(producto["producto_factor"]).toFixed(decimales));
+                    $("#producto_preciofactor").val(Number(producto["producto_preciofactor"]).toFixed(decimales));
                     $("#producto_industria").val(producto["producto_industria"]);
-                    $("#producto_comision").val(producto["producto_comision"]);
+                    $("#producto_comision").val(Number(producto["producto_comision"]).toFixed(decimales));
                     
                     $("#boton_nuevoprod").click();
                 },
@@ -2562,29 +2607,34 @@ function actualizar_precio(){
     var producto_costo = document.getElementById("modificarprecios_producto_costo").value;
     var producto_precio = document.getElementById("modificarprecios_producto_precio").value;
     var producto_codigo = document.getElementById("modificarprecios_producto_codigo").value;
+    var producto_nombre = document.getElementById("modificarprecios_producto").value;
     var actualizarpreciossucursales = $('#actualizarpreciossucursales').is(':checked');
     
     //alert(actualizarpreciossucursales);
     
-
+        var r = confirm("Esta a punto de modificar los datos del producto. Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
     
-    $.ajax({url: controlador,
-            type: "POST",
-            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo}, 
-            success:function(resultado){
- 
-                tablaresultados(1);
-//                var registros =  JSON.parse(resultado);
-//                if (registros != null){
-//                    cargar_factura2(venta_id);
-//                }
+                $.ajax({url: controlador,
+                        type: "POST",
+                        data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio,
+                            actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo,
+                            producto_nombre:producto_nombre}, 
+                        success:function(resultado){
 
-            },
-            error:function(resultado){
-                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
-            },
-        
-        
-    })
+                            tablaresultados(1);
+            //                var registros =  JSON.parse(resultado);
+            //                if (registros != null){
+            //                    cargar_factura2(venta_id);
+            //                }
+
+                        },
+                        error:function(resultado){
+                            alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+                        },
+
+
+                });
     
+        }
 }

@@ -3,6 +3,7 @@ class Punto_venta extends CI_Controller{
     
     var $session_data;
     private $sistema;
+    private $dosificacion;
     function __construct()
     {
         parent::__construct();
@@ -14,6 +15,9 @@ class Punto_venta extends CI_Controller{
         //$this->load->model('Estado_model');
         //$this->load->model('Usuario_model');
         //$this->load->helper('numeros_helper');
+        
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $this->dosificacion = $dosificacion;
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -45,6 +49,7 @@ class Punto_venta extends CI_Controller{
         if($this->acceso(1)) {
             $data['page_title'] = "Puntos de venta";
             $data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
+            $data['dosificacion'] = $this->dosificacion;
             // $data['puntos_ventas'] = $this->Puntoventa_model->get_all_puntoventa();
             $data['_view'] = 'punto_venta/index';
             $this->load->view('layouts/main',$data);

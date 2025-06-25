@@ -70,7 +70,7 @@
                     <td><?php echo $a['asiento_numero']; ?></td>
                     <td><?php echo $a['asiento_descripcion']; ?></td>
                     <td><?php echo $a['asiento_caracteristicas']; ?></td>
-                    <td><img width="30" height="30" src="<?php echo base_url('resource/asiento_foto/').$a['asiento_foto']; ?>"></td>                    <td><?php echo $a['asiento_orden']; ?></td>
+                    <td><img width="30" height="30" src="<?php echo base_url('resources/asiento_foto/').$a['asiento_foto']; ?>"></td>                    <td><?php echo $a['asiento_orden']; ?></td>
                     <td><?php echo $a['asiento_x']; ?></td>
                     <td><?php echo $a['asiento_y']; ?></td>
                     <td><?php echo $a['vehiculo_marca']; ?></td>

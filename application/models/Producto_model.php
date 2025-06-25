@@ -96,7 +96,7 @@ class Producto_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY producto_nombre limit 10
+            ORDER BY producto_nombre limit 100
 
             " . $limit_condition . "
         ")->result_array();
@@ -128,7 +128,7 @@ class Producto_model extends CI_Model
      */
     function get_all_unidad()
     {
-        $sql = "select * from unidad";
+        $sql = "select * from unidad order by unidad_nombre";
         $unidades = $this->db->query($sql)->result_array();        
         return $unidades;
     }

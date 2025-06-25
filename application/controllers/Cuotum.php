@@ -286,11 +286,14 @@ class Cuotum extends CI_Controller{
             // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
            
             if ($este == 'NORMAL') {
-            $data['_view'] = 'cuotum/reciboCuenta';
-            $this->load->view('layouts/main',$data);
+                
+                $data['_view'] = 'cuotum/reciboCuenta';
+                $this->load->view('layouts/main',$data);
+                
             }else{
-            $data['_view'] = 'cuotum/boucherCuenta';
-            $this->load->view('layouts/main',$data);
+                
+                $data['_view'] = 'cuotum/boucherCuenta';
+                $this->load->view('layouts/main',$data);
 
             }
         }

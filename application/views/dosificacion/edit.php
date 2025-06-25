@@ -532,7 +532,7 @@
         
         let documento_sector = document.getElementById("docsec_codigoclasificador").value;
         //alert(documento_sector);
-        if (documento_sector==8||documento_sector==6){
+        if (documento_sector==3||documento_sector==8||documento_sector==6||documento_sector==45){
             alert("ADVERTENCIA: Este documento es SIN DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 2");
             document.getElementById("tipofac_codigo").style = "background: yellow;";
             document.getElementById("tipofac_codigo").value = 2;
@@ -545,7 +545,7 @@
             $("#tipofac_codigo").focus();
         }        
             
-        if (documento_sector!=6 && documento_sector!=8 && documento_sector!=24){
+        if (documento_sector!=3 && documento_sector!=6 && documento_sector!=8 && documento_sector!=24 && documento_sector!=45){
             
             alert("ADVERTENCIA: Este documento es CON DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 1");
             document.getElementById("tipofac_codigo").style = "background: yellow;";           

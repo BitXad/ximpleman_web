@@ -93,21 +93,21 @@
 <input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
 
 <div class="box-header no-print">
-<h3 class="box-title">Ventas</h3>
+<h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> </h3>
             	<div class="box-tools">                    
                     <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
                     <select  class="btn btn-facebook btn-sm" id="select_ventas" onchange="buscar_ventas()">
 <!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
-                        <option value="1">Ventas de Hoy</option>
-                        <option value="2">Ventas de Ayer</option>
-                        <option value="3">Ventas de la semana</option>
-                        <option value="4">Todos las ventas</option>
-                        <option value="5">Ventas por fecha</option>
-                        <option value="6">Ventas Perdidas/Sin Detalle</option>
+                        <option value="1"><?php echo $sistema["sistema_moduloventas"]; ?> de Hoy</option>
+                        <option value="2"><?php echo $sistema["sistema_moduloventas"]; ?> de Ayer</option>
+                        <option value="3"><?php echo $sistema["sistema_moduloventas"]; ?> de la semana</option>
+                        <option value="4">Todos(as) las <?php echo $sistema["sistema_moduloventas"]; ?> </option>
+                        <option value="5"><?php echo $sistema["sistema_moduloventas"]; ?> por fecha</option>
+                        <option value="6"><?php echo $sistema["sistema_moduloventas"]; ?> Perdidas/Sin Detalle</option>
                     </select>
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
-                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
+                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> <?php echo $sistema["sistema_moduloventas"]; ?> </a>
                     <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){    ?>
                     <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
                     <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-success btn-sm" title="Registro de eventos significativos" style="background-color: #8BC34A" target="_BLANK"><span class="fa fa-print"></span> Eventos Significativos</a>

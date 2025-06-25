@@ -157,7 +157,21 @@ function emision_paquetes(){
                                 mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                                 //mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
                                 //mensaje += "Codigo transacción: "+registros.transaccion+"\n";
-                            }else if(registros.codigoDescripcion == "OBSERVADA"){
+                            }
+                            if(registros.codigoDescripcion == "OBSERVADA"){
+                                mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                                mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                                mensaje += "Lista de mensajes: \n";
+
+                                mensaje += JSON.stringify(registros.mensajesList);
+
+    //                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+    //                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
+    //                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
+
+                            }
+                            
+                            if(registros.codigoDescripcion == "RECHAZADA"){
                                 mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                                 mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                                 mensaje += "Lista de mensajes: \n";

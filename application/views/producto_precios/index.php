@@ -19,8 +19,10 @@
     <br><font size='2' face='Arial'>Expresado en <?php echo $lamoneda['moneda_descripcion']; ?></font>
     <div class="box-tools no-print">
 
+        <button class="btn btn-info btn-sm" onclick="cargar_precios()"><fa class='fa fa-list'></fa> Cargar precios actuales</button>
         <button type="button" id="boton_cambiarprecios"  class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_cambiarprecios" ><fa class='fa fa-money'></fa>  Ajustar Precios</button>
-        <button class="btn btn-info btn-sm" onclick="cargar_precios()"><fa class='fa fa-list'></fa> Cargar lista de precios</button>
+        <!--<button class="btn btn-danger btn-sm" onclick="actualizar_productos()"><fa class='fa fa-floppy-o'></fa> Actualizar precios</button>-->
+        <button type="button" id="boton_actualizarprecios" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal_actualizarprecios" ><fa class='fa fa-floppy-o'></fa>  Actualizar precios</button>
     </div>
 </div>
 
@@ -40,10 +42,11 @@
                             <th>#</th>
                             <!--<th>Id</th>-->
                             <th>Descripción</th>
+                            <th>Categoria</th>
                             <th>Costo.<br><?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Ultimo<br>Costo <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Codigo</th>
-                            <th>Precio<br><?php echo $lamoneda['moneda_descripcion'] ?></th>
+                            <th>Precio<br>Actual <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Actualizado <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor1 <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor2 <?php echo $lamoneda['moneda_descripcion'] ?></th>
@@ -55,16 +58,18 @@
                     </thead>
                     <tbody class="buscar">
                         <?php $cont = 0;
+                            
                             foreach($productos as $t){;
                                 $cont = $cont+1; ?>
                         <tr>
                             <td style="text-align: right;"><?php echo $cont ?></td>
                             <td><?php echo $t['producto_nombre']."<sub>[".$t['producto_id']."]</sub>"; ?></td>
+                            <td><?php echo $t['categoria_nombre']; ?></td>
                             <td><?php echo $t['producto_codigobarra']; ?></td>
                             <td style="text-align: right;"><?php echo number_format($t['producto_costo'],$decimales,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($t['producto_ultimocosto'],$decimales,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($t['producto_precio'],$decimales,".",","); ?></td>
-                            <td style="text-align: right; background-color: #f3e97a; "><b><?php echo $t['producto_precioactualizado']; ?></b></td>
+                            <td style="text-align: right; background-color: #f3e97a; "><b><?php echo number_format($t['producto_precioactualizado'],$decimales,".",","); ?></b></td>
                             <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor'],$decimales,".",","); ?></td>
                             <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor1'],$decimales,".",","); ?></td>
                             <td style="text-align: right; background-color: #f3e97a; "><?php echo number_format($t['producto_preciofactor2'],$decimales,".",","); ?></td>
@@ -185,7 +190,7 @@
                         <div class="col-md-3">
                                 <label for="moneda_tc" class="control-label">T.C. Actual</label>
                                 <div class="form-group">
-                                    <input type="number" id="moneda_tc" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off" disabled="false"/>
+                                    <input type="number" id="moneda_tc" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off"/>
                                         <span class="text-danger"><?php echo form_error('moneda_tc');?></span>
                                 </div>
                         </div>
@@ -210,7 +215,7 @@
                             <label for="razon social" class="control-label" >Monto</label>
                             <div class="input-group">
 
-                                <input type="text" name="razon_social" class="form-control" <?php //echo $estilos_facturacion; ?> "  id="razon_social" value="0" />
+                                <input type="text" name="monto_incremento" class="form-control" <?php //echo $estilos_facturacion; ?> "  id="monto_incremento" value="0" />
                                 
                                 <!--- div class="input-group-addon" style="pading:0px;">
                                     <select>
@@ -263,6 +268,20 @@
                                 </div>
                         </div>
                         
+                        <div class="col-md-12">
+                                <label for="categoria" class="control-label">Aplicar a:</label>
+                                <div class="form-group">
+                                    <select class="form-group form-control" id="categoria_id">
+                                        <option value="0" selected="">- TODAS LAS CATEGORIAS -</option>
+                                       <?php foreach($categoria_producto as $cat){ ?>
+                                        
+                                            <option value="<?php echo $cat["categoria_id"]; ?>"><?php echo $cat["categoria_nombre"]; ?></option>
+                                           
+                                       <?php } ?>
+                                    </select>
+                                </div>
+                        </div>
+                        
                     </div>
 
                         <div class="modal-footer" style="text-align: center">
@@ -279,6 +298,66 @@
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CAMBIAR ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!------------------- INICIO MODAL ACTUALIZAR PRECIOS --------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_actualizarprecios" class="btn btn-default" data-toggle="modal" data-target="#modal_actualizarprecios" >
+      Ajustar precios
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modal_actualizarprecios" tabindex="-1" role="dialog" aria-labelledby="modalexcel" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">ACTUALIZAR PRECIOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                <?php // echo form_open_multipart('producto_precios/cambiarprecios'); ?>
+                
+                    <div class="box-body">
+                        
+                        <div class="col-md-12">
+                                <label for="categoria2" class="control-label">Aplicar precios nuevos a la categoria:</label>
+                                <div class="form-group">
+                                    <select class="form-group form-control" id="categoria_id2">
+                                        <option value="0" selected="">- TODAS LAS CATEGORIAS -</option>
+                                       <?php foreach($categoria_producto as $cat){ ?>
+                                        
+                                            <option value="<?php echo $cat["categoria_id"]; ?>"><?php echo $cat["categoria_nombre"]; ?></option>
+                                           
+                                       <?php } ?>
+                                    </select>
+                                </div>
+                        </div>
+                        
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                            <button type="submit"  class="btn btn-success"  value="Calcular Precios" onclick="actualizar_productos()"><fa class="fa fa-file-excel-o"></fa> Actualizar Precios</button>
+                        </div>
+                
+                <?php // echo form_close(); ?>
+            
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL ACTUALIZAR PRECIOS -------------------------->
 <!------------------------------------------------------------------------------->
 
 

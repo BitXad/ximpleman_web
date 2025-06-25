@@ -92,28 +92,14 @@ border-bottom : 1px solid #aaa;
                 <td style="padding:0;" colspan="4">        
                     <center style="line-height: 12px;">
 
-                                        <?php if($parametro["parametro_logoenfactura"]==1){ ?>
-                                        <center>                                
-                                            <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="150" height="90"><br>
-                                        </center>
-                                        <?php } ?>
-                                    
+                                    <?php if($parametro["parametro_mostrarlogo"]==1){ ?>
+
+                                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="150" height="90">
+
+                                    <?php } ?>      
+
                                     
                                     <?php
-                                                                             
-
-                                    
-                                    /*
-                                    $titulo1 = "FACTURA";  
-                                    if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
-                                    else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";
-                                    */
-                                    ?>
-                                    <b><?php //echo $titulo1; ?></b>
-<!--                                    <b><?php echo "<br>".$subtitulo_factura; ?></b>-->
-
-                                    <?php 
-                                    
                                         if($parametro["parametro_mostrarempresa"]==1){ 
                                             echo "<br>".$empresa[0]['empresa_nombre']; 
                                         
@@ -379,7 +365,7 @@ border-bottom : 1px solid #aaa;
                     echo "ENTREGADO POR: ".$venta[0]['usuario_entrega']."<br>";
                 }
             ?>
-            TRANS.: <?php echo $venta[0]['tipotrans_nombre']; ?>
+            TRANS.: <?php echo $venta[0]['tipotrans_nombre']; ?>/<?php echo $venta[0]['forma_nombre']; ?>
             <?php
             if($parametro['parametro_puntos'] >0){
                 echo "PUNTOS: ".$venta[0]['cliente_puntos']."";

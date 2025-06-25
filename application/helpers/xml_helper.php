@@ -145,6 +145,24 @@
         return $vDigito;
     }
     
+    
+    function textoajson($texto) {
+        // Dividir el texto por líneas
+        $lineas = explode("\n", $texto);
+
+        // Crear arreglo asociativo
+        $resultado = [];
+        foreach ($lineas as $linea) {
+            if (strpos($linea, ':') !== false) {
+                list($clave, $valor) = explode(':', $linea, 2);
+                $resultado[trim($clave)] = trim($valor);
+            }
+        }
+
+        // Retornar como JSON
+        return json_encode($resultado, JSON_UNESCAPED_UNICODE);
+    }
+    
     /**
      * Crea la factura de compra venta 
      * 1 = COMPUTARIZADA
@@ -168,7 +186,7 @@
         $decimales = $parametros[0]["parametro_decimales"];
         $dos_decimales = 2;
         
-        if($documento_sector == 11 || $documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
+        if($documento_sector == 3 || $documento_sector == 11 || $documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
             $CI2 = & get_instance();
             $CI2->load->model('Factura_datos_model');
             
@@ -202,7 +220,12 @@
             $razonSocial = "S/N";
         }
         
+
         $complemento = $factura['factura_complementoci'];
+
+        
+        
+        
         $valor_vacio = "";
         
         if (strlen($factura['factura_detalletransaccion'])>1){   
@@ -234,7 +257,7 @@
         
         if($factura['factura_cafc'] != 0 && $factura['factura_cafc'] != ""){
             
-            $cafc = '<cafc xsi:nil="false">'.$factura['factura_cafc'].'</cafc>';
+            $cafc = '<cafc>'.$factura['factura_cafc'].'</cafc>';
 
          }else{
 
@@ -337,10 +360,30 @@ $salto_linea='
         
         if ($documento_sector != 23){ //23- factura prevalorada
             $cabecera_facturaxml .= $salto_linea.'          <numeroDocumento>'.$factura['factura_nit'].'</numeroDocumento>';
-            $cabecera_facturaxml .= $salto_linea.'          <complemento>'.$complemento.'</complemento>';
+            
+            if (strlen($complemento) > 0){  
+                $cabecera_facturaxml .= $salto_linea.'          <complemento>'.$complemento.'</complemento>';
+            }else{
+                $cabecera_facturaxml .= $salto_linea.'          <complemento xsi:nil="true"></complemento>';
+            }
+            
+            
         }else{
             $cabecera_facturaxml .= $salto_linea.'          <numeroDocumento>0</numeroDocumento>';
         }
+        
+        
+        if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+            if ($factura['cliente_direccion']!=""){                
+                $cabecera_facturaxml .= $salto_linea.'          <direccionComprador>'.$factura_datos['datos_direccioncomprador'].'</direccionComprador>';
+            }else{                
+                $cabecera_facturaxml .= $salto_linea.'          <direccionComprador>-</direccionComprador>';
+            }
+
+        }
+        
+        
+        
         
         if ($documento_sector != 23){ //23- factura prevalorada
             
@@ -350,6 +393,20 @@ $salto_linea='
                 $cabecera_facturaxml .= $salto_linea.'          <modalidadServicio>Post Operatorio</modalidadServicio>';
                 
             }
+            
+            
+            
+            if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+
+                $cabecera_facturaxml .= $salto_linea.'          <incoterm>'.$factura_datos['datos_incoterm'].' '.$factura_datos['datos_incotermdetalle'].'</incoterm>';
+                $cabecera_facturaxml .= $salto_linea.'          <incotermDetalle>'.$factura_datos['datos_direccioncomprador'].'</incotermDetalle>';
+                $cabecera_facturaxml .= $salto_linea.'          <puertoDestino>'.$factura_datos['datos_puertodestino'].'</puertoDestino>';
+                $cabecera_facturaxml .= $salto_linea.'          <lugarDestino>'.$factura_datos['datos_lugardestino'].'</lugarDestino>';
+                $cabecera_facturaxml .= $salto_linea.'          <codigoPais>'.$factura_datos['datos_codigopais'].'</codigoPais>';
+
+            }
+            
+            
             
             
         }else{
@@ -509,22 +566,49 @@ $salto_linea='
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
         }
         
+     
+            
+        
         if ($documento_sector != 23 && $documento_sector != 24){  //23- factura prevalorada //12 Comercializacion hidrocarburos
-           
-            if ($documento_sector == 6){ //6-AServicio Turismo Hospedaje
-                
+           /***
+            if ($documento_sector == 6){ //6-AServicio Turismo Hospedaje 
+                ***/
                 if ($num_tarjeta==0)
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta xsi:nil="true"/>';
                 else
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
                     
-                
+                /***
             }else{
                 
                 $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
                 
-            }    
+            }    ***/
         }
+        
+         
+        if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+
+            $monto_total_exp =  ($factura['factura_subtotal'] + $factura_datos['datos_totalgastosnacionalesfob'] + $factura_datos['datos_totalgastosinternacionales'] -  $factura_datos['datos_descuentoadicional']);
+            
+            $monto_total_monedaexp = number_format($monto_total_exp * $factura_datos['datos_tipocambio'],2,".","");
+            
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($monto_total_exp * $factura_datos['datos_tipocambio'],2,".","").'</montoTotal>'; //<!-- DEBE SER IGUAL AL MONTO TOTAL MONEDA POR EL TIPO DE CAMBIO -->
+            $cabecera_facturaxml .= $salto_linea.'          <costosGastosNacionales>'.textoajson($factura_datos['datos_costosgastosnacionales']).'</costosGastosNacionales>'; //<!-- DEBE SER IGUAL AL MONTO TOTAL MONEDA POR EL TIPO DE CAMBIO -->
+            $cabecera_facturaxml .= $salto_linea.'          <totalGastosNacionalesFob>'.number_format($factura_datos['datos_totalgastosnacionalesfob']+$factura['factura_subtotal'],2,".","").'</totalGastosNacionalesFob>'; //<!-- DEBE SER IGUAL A LA SUMA DE LOS COSTOS GASTOS NACIONALES  + MONTO DETALLE -->
+            $cabecera_facturaxml .= $salto_linea.'          <costosGastosInternacionales>'.textoajson($factura_datos['datos_costosgastosinternacionales']).'</costosGastosInternacionales>'; //<!-- DEBE SER IGUAL AL MONTO TOTAL MONEDA POR EL TIPO DE CAMBIO -->
+            $cabecera_facturaxml .= $salto_linea.'          <totalGastosInternacionales>'.number_format($factura_datos['datos_totalgastosinternacionales'],2,".","").'</totalGastosInternacionales>'; //<!-- DEBE SER IGUAL A LA SUMA DE LOS COSTOS GASTOS INTERNACIONALES  -->
+            $cabecera_facturaxml .= $salto_linea.'          <montoDetalle>'.number_format($factura['factura_subtotal'],2,".","").'</montoDetalle>'; //<!-- DEBE SER IGUAL A LA SUMATORIA DE LOS SUBTOTALES -->    
+           
+//            $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>0</montoTotalSujetoIva>'; //<!-- SIEMPRE DEBERA SER IGUAL A 0 (POR SER SIN DERECHO A CREDITO FISCAL -->
+//            $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>2</codigoMoneda>'; //<!-- AQUI ESTA EN DOLARES -->
+//            $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>6.96</tipoCambio>';
+//            $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>25000</montoTotalMoneda>'; //<!-- DEBE SER IGUAL A LA SUMA DEL MONTO DETALLE, MAS LOS COSTOS DE GASTOS INTERNACIONALES Y NACIONALES  -->
+            
+//            $cabecera_facturaxml .= $salto_linea.'          <numeroDescripcionPaquetesBultos>10 PAQUETES DE MEDIO QUINTAL</numeroDescripcionPaquetesBultos>';
+//            $cabecera_facturaxml .= $salto_linea.'          <informacionAdicional>CUENTA DE BANCO: 1-2323-434-43-434343</informacionAdicional>';
+
+        }   
         
         
         if ($documento_sector == 15 ){  //15- Entidad fiananciera 
@@ -544,8 +628,9 @@ $salto_linea='
         
             
         }else{
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
-            
+            if ($documento_sector != 3 && $documento_sector != 45){
+                $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
+            }
         }
         // Ley Financial 317 para la gestiÃ³n 2013 establece que por la presentaciÃ³n de facturas por consumo de diÃ©sel y gasolina, 
         // el crÃ©dito fiscal del IVA serÃ¡ sÃ³lo del 70% del valor de la compra, mientras que el 30% restante pasarÃ¡ a apoyar 
@@ -557,14 +642,14 @@ $salto_linea='
         }
         
         
-        if ($documento_sector == 8 || $documento_sector == 6){  //8 - Factura tasa cero
+        if ($documento_sector == 3 || $documento_sector == 6 || $documento_sector == 8 || $documento_sector == 45){  //8 - Factura tasa cero
             
             $total_creditofiscal = 0;
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';            
             
         }else{
             
-            if ($documento_sector != 13){
+            if ($documento_sector != 13){ //Si no es Factura Servicios
                 
                 $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
                 
@@ -669,7 +754,7 @@ $salto_linea='
             
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>'.number_format($factura_datos['datos_otrastasas'],$dos_decimales,".","").'</otrasTasas>'; //cambiar por cliente_nombre
         
-            $monto_total_moneda = $factura['factura_subtotal'] - $factura['factura_descuento'];
+            $monto_total_moneda = $factura['factura_total'] - $factura['factura_descuento'];
             
             $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
             $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
@@ -677,15 +762,40 @@ $salto_linea='
             
         }else{
             
-            $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
-            $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalMoneda>';
+            
+            
+            if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+                
+                $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura_datos['datos_codigomoneda'].'</codigoMoneda>';
+                $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura_datos['datos_tipocambio'],$dos_decimales,".","").'</tipoCambio>';
+            
+                //echo $monto_total_monedaexp;
+                $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($monto_total_exp,2,".","").'</montoTotalMoneda>';
+                
+            }else{ // Para los demas documentos sector
+                
 
+                $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
+                $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
+
+                $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalMoneda>';
+                
+            }
+            
+            
         }
         
-        if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 15 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
+        if ($documento_sector != 2 && $documento_sector != 3 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 15 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 45 && $documento_sector != 51){
             $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$dos_decimales,".","").'</montoGiftCard>';
         }
+        
+        if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+            
+            $cabecera_facturaxml .= $salto_linea.'          <numeroDescripcionPaquetesBultos>'.$factura_datos['datos_descripcionpaquetes'].'</numeroDescripcionPaquetesBultos>';
+            $cabecera_facturaxml .= $salto_linea.'          <informacionAdicional>'.$factura_datos['datos_informacionadicional'].'</informacionAdicional>';
+            
+        }
+
         
         
         if ($documento_sector != 23){  //23- factura prevalorada
@@ -694,7 +804,7 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
         
             if($factura['factura_cafc'] != 0 && $factura['factura_cafc'] != ""){            
-                $cabecera_facturaxml .= $salto_linea.'          <cafc xsi:nil="false">'.$factura['factura_cafc'].'</cafc>';
+                $cabecera_facturaxml .= $salto_linea.'          <cafc>'.$factura['factura_cafc'].'</cafc>';
              }else{
                 $cabecera_facturaxml .= $salto_linea.'          <cafc xsi:nil="true">'.$valor_vacio.'</cafc>';
              }
@@ -760,6 +870,13 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProductoSin>'.$df['producto_codigosin'].'</codigoProductoSin>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProducto>'.$df['detallefact_codigo'].'</codigoProducto>';
+                                
+                if ($documento_sector == 3 || $documento_sector == 45){ //3 - factura comercial de exportacion ** 45 - factura comercial de exportacion precio venta
+
+                        $codigo_nandina = '0909610000';
+                        $detalle_facturaxml .= $salto_linea.'           <codigoNandina>'.$codigo_nandina.'</codigoNandina>';
+                        
+                }
                 
                 if($documento_sector == 16){ //16 Hoteles
                     
@@ -891,8 +1008,8 @@ $salto_linea='
                 }
                 
                 
-                if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
-                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24){
+                if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 3 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 45 && $documento_sector != 51 && $documento_sector != 24){
                     
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
@@ -946,7 +1063,8 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProductoSin>'.$df['producto_codigosin'].'</codigoProductoSin>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProducto>'.$df['detallefact_codigo'].'</codigoProducto>';
-                
+
+                        
                 if($documento_sector == 16){ //16 Hoteles
                     
                     $tipohabitacion = 1; //$df['categoria_id'];

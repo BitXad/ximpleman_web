@@ -39,6 +39,8 @@
             location.href =dir_url;
         }
     }
+    
+
 </script>   
 
 <!----------------------------- fin script buscador --------------------------------------->
@@ -107,8 +109,12 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
+                
                 <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor, num. compra" onkeypress="validacompra(event,4)" >
-            </div></div>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="compraproveedor(1);" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                
+            </div>
+        </div>
             <div class="col-md-4 no-print">
                 <?php if($rolusuario[11-1]['rolusuario_asignado'] == 1){ ?>
                 <select  class="btn btn-primary btn-sm"  id="select_compra" onchange="buscar_compras()">
@@ -343,8 +349,8 @@
                     
                     <td class="no-print" style="text-align:center; background: #<?php echo $c['estado_color']; ?>">
                         <?php if($c['compra_placamovil']==1) { ?>
-                         <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" title='Modificar Compra'>
-                           <i class="fa fa-pencil "></i>
+                         <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-danger btn-xs" title='Continuar compra sin finalizar'>
+                          <i class="fa fa-warning"></i> .. <i class="fa fa-arrow-right"></i>
 
                        </a>
 
@@ -352,7 +358,8 @@
 
                           <div class="modal-dialog"  role="document">
                             <div class="modal-content">
-                              <div class="modal-header">
+                              <div class="modal-header" style="background-color: #dd4b39; color:white;">
+                                  <b>CONTINUAR LA COMPRA</b>
                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -376,9 +383,11 @@
                 <?php } ?>
                 <a href="<?php echo site_url('compra/nota/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs" title='Nota de Compra'><span class="fa fa-print"></span></a>  
                 <a href="<?php echo site_url('compra/notaingreso/'.$c['compra_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title='Nota de Compra/utilidades'><span class="fa fa-print"></span></a>  
-                 <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1 && $c['elestado']==1){ ?> 
+                 
+                <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1 && $c['elestado']==1){ 
+                        if ($c['compra_placamovil']!=1){ ?>
                    <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs" title='Modificar Compra'><span class="fa fa-pencil"></span></a>
-                   
+                        <?php } ?>
                 <button data-toggle="modal"  class="btn btn-xs btn-github" title="Ver compras perdidas" onclick="cargar_datosbackup(<?php echo $c['compra_id']; ?>)">
                     <i class="fa fa-paperclip"></i>
                 </button>
@@ -494,7 +503,7 @@
                             
                             <td><?php echo $psn['estado_descripcion']; ?></td>
                             <td>
-                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar <?php echo $sistema["sistema_modulocompras"]; ?></a>
+                                <a href="<?php echo site_url('compra/continuarcompra/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar <?php echo $sistema["sistema_modulocompras"]; ?></a>
                            <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
                             <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
@@ -578,8 +587,8 @@
     
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background: #3399cc; background: #3399cc;">
-                <b style="color: white;">RESPALDOS</b>
+            <div class="modal-header" style="background: #3399cc; background: #3399cc; color: white;">
+                <b>RESPALDOS:</b> Aqui se encuentran el registro de modificaciones de las compras.
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -607,7 +616,7 @@
             
             <div class="modal-footer" style="text-align: center">
                 <!--<button type="button" class="btn btn-success" onclick="confirmar_traspaso()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Confirmar Traspaso</button>-->
-                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"> </fa> Cerrar</button>
             </div>
             
         </div>

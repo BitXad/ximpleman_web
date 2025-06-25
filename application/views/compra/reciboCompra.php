@@ -169,7 +169,7 @@ border-bottom:1px solid black;
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?></font><br>0
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
                 

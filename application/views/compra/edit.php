@@ -98,6 +98,81 @@ function final(){
   document.getElementById('loader').style.display = 'block';
 }
     
+    
+function compruebaTecla (e) {
+    var keyCode = document.all ? e.which : e.keyCode;
+
+
+    //  if (keyCode == 39)
+    //alert("flecha derecha")
+    //  else if (keyCode == 40)
+    //
+    //MarcaCheck ();
+    //  else if (keyCode == 38)
+    //alert("flecha arriba")
+    //  else if (keyCode == 37)
+    //alert("flecha izquierda")
+    //  return true;
+
+    //  if (keyCode == 112) //f1
+    //  { alert("Tecla F1"); }    
+
+      if (keyCode == 113) //f2
+      { //alert("Tecla F2"); 
+        $('#comprar').focus();
+        $('#comprar').select();
+
+      }    
+
+      if (keyCode == 115) //f4
+      {       
+        $('#filtrar').focus();
+      }
+
+      if (keyCode == 118) //f7
+      {       
+        $('#nit').focus();
+        $('#nit').select();
+      }
+
+      if (keyCode == 119) //f8
+      {       
+        $('#boton_finalizar').click();
+      }
+
+      if (keyCode == 120) //f9
+      {   
+        $('#glosay').click();
+
+
+        //$('#imprimir').click();
+      }
+
+      if (keyCode == 121) //f9
+      {   
+          //$("#boton_modal_paquetes").click();
+          $("#boton_simulador").click();
+
+        //$('#imprimir').click();
+      }
+
+      //if (keyCode == 121) //f10
+      //{       
+        //$('#nit').focus();
+        //$('#nit').select();
+
+      //}
+
+        e = e || event;
+      if(e.altKey && String.fromCharCode(e.keyCode) == 'C')
+      {
+          $("#imprimir").click();
+      } 
+
+    }
+    
+    window.onkeydown = compruebaTecla;
+    
 </script>
 <style type="text/css">
 body {
@@ -235,7 +310,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
          <!--<span class="btn btn-default" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
          
-        <span style="margin-right: 40%">Buscar Productos</span> <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+        <span style="margin-right: 40%">Buscar Productos</span> <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" id="inventario"><span class="fa fa-cubes"></span> Inventario</button>
         
          <label class="btn btn-default btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
                 <?php if($bandera==1) { ?>
@@ -342,7 +417,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
           </div>
                 
               <div class="modal-footer" >
-                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-success" >
+                  <a  href="<?php echo site_url('compra/singuardar/'.$compra_id); ?>" class="btn btn-md btn-success" >
                 <i class="fa fa-sign-out "></i>
                Salir sin guardar
             </a>  
@@ -748,10 +823,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <input type="checkbox" value="1" checked name="registrar_producto" id="registrar_producto">Registrar producto en todas las sucursales/depositos.<br>
                 
                         <button type="submit" class="btn btn-success">
-                            <i class="fa fa-check"></i> Guardar
+                            <i class="fa fa-floppy-o"></i> Guardar
                         </button>
                 
-                        <button class="btn btn-danger" data-dismiss="modal" >
+                        <button class="btn btn-danger" data-dismiss="modal">
                             <i class="fa fa-times"></i> Cancelar
                         </button>
 
@@ -774,17 +849,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <div class="modal fade" id="modalproveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            
+            <div class="modal-header" style="background:silver;"> <b><fa class="fa fa-user-plus"></fa> REGISTRO DE PROVEDORES</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                    <span id="mensaje" class="text-danger"></span>
-                <div class="row">
+            </div>
+                <div class="row">             
+                    
     <div class="col-md-12">
         <div class="box box-info">
-            <div class="box-header with-border">
+<!--            <div class="box-header with-border">
                 <h3 class="box-title">Añadir Proveedor</h3>
-            </div>
+            </div>-->
 
             <div class="box-body">
                 <div class="row clearfix">
@@ -869,13 +946,21 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     </div>
                     </div>
                 </div>
+                    <footer>
+                        <center>
+                            
+                            <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
+
+                                <i class="fa fa-floppy-o"></i> Guardar
+                            </button>           
+                            
+                        </center>
+
+                    </footer>
+
             </div></div>
-            
+        
 
-                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
-
-                    <i class="fa fa-check"></i> Guardar
-                </button>           
             </form>
         </div>
     </div>
@@ -895,7 +980,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Buscar Proveedor</h4>
+                <b>Buscar Proveedor</b>
+                <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#modalproveedor"class="btn btn-warning btn-xs" title="Registrar nuevo Proveedor"><font size="1"><span class="fa fa-user-plus"></span></font> Nuevo Proveedor</a>
                                 
       <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre">
@@ -940,7 +1026,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
                                        
                                          <button  class="btn btn-info btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
-                                            <i class="fa fa-check"></i> Añadir
+                                            <i class="fa fa-check"></i> Seleccionar
                                         </button>
 
         <div class="box collapsed-box">
@@ -1131,9 +1217,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </td>
                 </tr>
                 <tr>                      
-                        <td>Descuento Global <?php echo $parametro["moneda_descripcion"];; ?></td>
+                        <td>Descuento Global <?php echo $parametro["moneda_descripcion"]; ?></td>
                         <td>
-                         <input class="btn btn-default" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
+                         <input class="btn btn-default" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? number_format($compra[0]['compra_descglobal'],2,'.',',') : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
                         </td>
                 </tr>
                 <tr>                      
@@ -1422,7 +1508,7 @@ $("#texto2").change(function(){
 <div class="modal fade" id="modalhistorial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+<!--			<div class="modal-header">
                             
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -1433,6 +1519,12 @@ $("#texto2").change(function(){
 
                                 
                     </div>
+                    -->
+            <div class="modal-header" style="background:silver;"> <b><fa class="fa fa-list"></fa> HISTORIAL DE COSTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 					
                     <div class="modal-body">
                         <!--------------------- TABLA---------------------------------------------------->
@@ -1658,8 +1750,13 @@ $("#texto2").change(function(){
 
 <div class="modal fade" id="modalprecios" tabindex="-1" role="dialog" aria-labelledby="modalprecios" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
-            <div class="modal-header" style="background: #3399cc">
+<!--            <div class="modal-header" style="background: #3399cc">
                 <b style="color: white;">CALCULAR COSTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>-->
+            <div class="modal-header" style="background:silver;"> <b><fa class="fa fa-calculator"></fa> CALCULAR COSTOS</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1690,7 +1787,7 @@ $("#texto2").change(function(){
                         </div>
                         
                         <div class="col-md-3">
-                                <label for="costo_caja_id" class="control-label">Costo Caja</label>
+                                <label for="costo_caja_id" class="control-label">Costo Caja/Paq.</label>
                                 <div class="form-group">
                                     <input type="number" name="costo_caja" value="0.00" class="form-control" id="costo_caja" onkeyup="calcular_costo_nuevo()"/>
                                 </div>
@@ -1723,8 +1820,8 @@ $("#texto2").change(function(){
                         <div class="col-md-4">
                                 <label for="tipo_unidad_id" class="control-label">Unidad</label>
                                 <div class="form-group">
-                                    <select  type="number" name="tipo_unidad" value="1" class="form-control" id="tipo_unidad" />
-                                        <option value="1">CAJA</option>
+                                    <select  type="number" name="tipo_unidad" value="1" class="form-control" id="tipo_unidad">
+                                        <option value="1">CAJA/PAQ./DISP.</option>
                                         <option value="2">UNIDAD</option>
                                     </select>
                                 </div>
@@ -1735,8 +1832,8 @@ $("#texto2").change(function(){
 
                         <div class="modal-footer" style="text-align: center">
                             <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
-                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
                             <button type="button"  class="btn btn-success"  onclick="registrar_precios()" data-dismiss="modal"><fa class="fa fa-file-excel-o"></fa> Registrar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
                         </div>
                 
             
@@ -1760,17 +1857,22 @@ $("#texto2").change(function(){
 <div class="modal fade" id="modal_actualizarprecio" tabindex="-1" role="dialog" aria-labelledby="modalactualizaprecio" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+<!--			<div class="modal-header">
                             
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>ACTUALIZAR PRECIOS</b></h4>
-                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                                <b>ADVERTENCIA: Seleccione la </b>                                
                             </center>
                             
-                    </div>
+                    </div>-->
+            <div class="modal-header" style="background:silver;"> <b><fa class="fa fa-money"></fa> ACTUALIZAR PRECIOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
                     <div class="modal-body">
                         <!--------------------- TABLA---------------------------------------------------->
                         
@@ -1778,7 +1880,7 @@ $("#texto2").change(function(){
                             
        
                                             
-                                        <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
+                                        <input type="text" style="font-size:12px;" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default">
                                         
                                         <div class="col-md-3">
                                             <label for="usuario_idx" class="control-label">Precio Costo:</label>

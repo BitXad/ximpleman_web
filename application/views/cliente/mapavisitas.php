@@ -13,8 +13,8 @@
   </head>
   <body>
       <div class="container">
-          <h4><b>ZONA: <?php echo $zona["zona_nombre"]; ?>, CLIENTES: <?php echo sizeof($all_cliente); ?></b>
-          <a href="javascript:location.reload()" class="btn btn-danger btn-sm"><span class="fa fa-map-marker"></span> Actualizar visitas</a>
+          <h4><b>ZONA: <?php echo (empty($zona["zona_nombre"]))?"":$zona["zona_nombre"]; ?>, CLIENTES: <?php echo (empty($all_cliente))?0:sizeof($all_cliente); ?></b>
+          <a href="javascript:location.reload()" class="btn btn-info btn-sm"><span class="fa fa-map-marker"></span> Actualizar visitas</a>
           </h4>
           <div class="col col-md-12 table-responsive">
               <table class="table">
@@ -23,135 +23,71 @@
                        
                         <div id="map"></div> <!-- mapa --> 
                          
-                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58"></script> 
-                        <script>       
-                            //coordada inicial del mapa 
-                            var coordenadas= new google.maps.LatLng(-17.4038, -66.1635); 
-                             
-                            //variable para globos de informacion 
-                            var infowindow = true; 
-                       
-                            //puntos a ser marcados en el mapa 
-                            var puntos = []; 
+                        <!-- Leaflet CSS -->
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+                        <!-- Leaflet JS -->
+                        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                        
+                        <script>
+                            // Coordenadas iniciales del mapa
+                            var coordenadas = [-17.4038, -66.1635];
+
+                            // Puntos a ser marcados en el mapa
+                            var puntos = [];
                             var link1 = '<?php echo base_url().'venta/ventas_cliente/'; ?>';
                             var link2 = '<?php echo base_url().'pedido/pedidoabierto/'; ?>';
-                              var punto; 
-                             
-                             
-                                  <?php $i = 0; 
-                                   
-                                  foreach($all_cliente as $p){ ?> 
-                                     
-                                      punto = ['<?php echo $p['cliente_nombre']; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['cliente_id']; ?>','<?php echo $p['cliente_visitado']; ?>']; 
-                                      puntos['<?php echo $i; ?>'] = punto; 
-                                       
-                                  <?php $i++; } ?>        
-                             
-                               
-                            //        punto=['Prueba nueva 2',-17.4138,-66.1735,'Micromercado el Papichin'];         
-                            //        puntos[1]=punto; 
-                            //         
-                            //        punto=['Mas pruebas 3',-17.4125,-66.1720,'Micromercado el tribilin'];         
-                            //        puntos[2]=punto; 
-                            // 
-                            //     
-                            //     
-                            //     
-                            //        punto=['Mas pruebas 3',-17.4125,-66.1720,'Micromercado el tribilin'];         
-                            //        puntos[2]=punto; 
-                               
-                               
-                               
-                            //funcion para posicionar los marcadores en el mapa 
-                            function setMarkers(map, puntos) {     
-                              //limpiamos el contenido del globo de informacion 
-                              var infowindow = new google.maps.InfoWindow({ 
-                                  content: '' 
-                              }); 
-                       
-                              //recorremos cada uno de los puntos 
-                              for (var i = 0; i < puntos.length; i++) { 
-                                var place = puntos[i]; 
- 
- 
-                                if (place[5]==1){ 
-                                     
-                                      //propiedades del marcador 
-                                      var marker = new google.maps.Marker({ 
- 
-                                          position: new google.maps.LatLng(place[1], place[2]), //posicion 
-                                          map: map, 
-                                          title: place[0], 
-                                          scrollwheel: false, 
-                                          animation: google.maps.Animation.DROP, //animacion            
-                                          nombre: place[0], //personalizado - nombre del punto 
-                                          info: place[3], //personalizado - informacion adicional 
-                                          link: '', //'<?php //echo base_url().'pedido/comprobante/'; ?>'personalizado - informacion adicional               
-                                          icon: '<?php echo base_url().'resources/images/red.png';?>' 
- 
-                                      }); 
- 
-                                } 
-                                else{
-                                      //propiedades del marcador 
-                                      var marker = new google.maps.Marker({ 
- 
-                                          position: new google.maps.LatLng(place[1], place[2]), //posicion 
-                                          map: map, 
-                                          title: place[0], 
-                                          scrollwheel: false, 
-                                          animation: google.maps.Animation.DROP, //animacion            
-                                          nombre: place[0], //personalizado - nombre del punto 
-                                          info: place[3], //personalizado - informacion adicional 
-                                          link: place[4],
-                                          //link: '<?php //echo base_url().'venta/ventas_cliente/'; ?>'+place[4], //personalizado - informacion adicional               
-                                          icon: '<?php echo base_url().'resources/images/blue.png';?>' 
- 
-                                      }); 
-                                      
+                            var punto;
+
+                            <?php $i = 0;
+                            foreach($all_cliente as $p){ ?>
+                                punto = ['<?php echo $p['cliente_nombre']; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['cliente_id']; ?>','<?php echo $p['cliente_visitado']; ?>'];
+                                puntos.push(punto);
+                            <?php $i++; } ?>  
+
+                            // Inicializar el mapa con Leaflet
+                            var map = L.map('map').setView(coordenadas, 14);
+
+                            // Añadir capa base de OSM
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo(map);
+
+                            // Función para agregar los marcadores
+                            function setMarkers(map, puntos) {
+                                for (var i = 0; i < puntos.length; i++) {
+                                    var place = puntos[i];
+                                    var markerIcon = L.icon({
+                                        iconUrl: (place[5] == 1) ? '<?php echo base_url().'resources/images/red.png';?>' : '<?php echo base_url().'resources/images/blue.png';?>',
+                                        iconSize: [32, 32], // tamaño del icono (ajusta si necesario)
+                                        iconAnchor: [16, 32], // punto de anclaje
+                                        popupAnchor: [0, -32] // donde se abre el popup respecto al icono
+                                    });
+
+                                    var marker = L.marker([place[1], place[2]], { icon: markerIcon }).addTo(map);
+
+                                    var milat = <?php echo $p['cliente_latitud'];?>;
+                                    var milon = <?php echo $p['cliente_longitud'];?>;
+
+                                    // Contenido del popup
+                                    
+                                    var enlace = 'https://www.google.com/maps/dir/'+milat+','+milon;
+                                    var contenido = '<div id="content" style="width: auto; height: auto;"><h5><b><fa class="fa fa-user"> </fa> CLIENTE:</b> ' +place[0]+'<h5>'+
+                                        '<a href="'+link1+place[4]+'" target="_blank"><h5><fa class="fa fa-cart-arrow-down"> </fa> Realizar venta</h5></a>' +
+                                        '<a href="'+link2+place[4]+'" target="_blank"><h5><fa class="fa fa-cubes"> </fa> Realizar pedido/preventa</h5></a>' +
+                                        '<a href="'+enlace+'" target="_blank"><h5><fa class="fa fa-map-marker"> </fa> Como llegar</h5></a>' +
+                                        '<h5><b><fa class="fa fa-home"> </fa> DIRECCION:</b></h5> <p>'+place[3]+'</p>' +  // dirección del cliente
+                                        '</div>';
+
+                                    marker.bindPopup(contenido);
                                 }
- 
- 
- 
- 
-                                 
-                                 
-                                //se agrega el evento click a cada marcador, asi despliega la 
-                                //informacion nada uno de los marcadores 
-                                //          if (this.cliente_visitado==1){ 
-                                //            google.maps.event.addListener(marker, 'click', function() { 
-                                //          } 
-                                //          else{ 
-                                //            google.maps.event.addListener(marker2, 'click', function() {               
-                                //          } 
-                                  google.maps.event.addListener(marker, 'click', function() { 
-                                 
-                              //html de como vamos a visualizar el contenido del globo 
-                                  var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+link1+this.link+'"><h5>Ventas: '+this.nombre +'</h5></a>'+'<a href="'+link2+this.link+'"><h5>Pedidos: '+this.nombre +'</h5></a>' +  this.info + '</div>'; 
-                                  
-                                  infowindow.setContent(contenido); //asignar el contenido al globo 
-                                  infowindow.open(map, this); //mostrarlo 
-                                }); 
-                              } 
-                            } 
-                             
-                            //funcion para inicializar el mapa 
-                            function initialize() { 
-                              //iniciamos un nuevo mapa el div 'map' y le asignamos propiedades 
-                              var map = new google.maps.Map(document.getElementById('map'), { 
-                                center: new google.maps.LatLng(-17.4038, -66.1635), //coordenada inicial 
-                                zoom: 14, //nivel de zoom 
-                                mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa       
-                                 
-                              });  
-                               
-                              //llamar a la funcion que escribe los marcadores 
-                              setMarkers(map, puntos); 
-                       
-                            } 
-                       
-                            initialize(); //inicializar el mapa 
-                        </script> 
+                            }
+
+                            // Llamar a la función
+                            setMarkers(map, puntos);
+
+                        </script>
+
+
      
                     </td> 
                 <!-- <td style="padding: 0"> 
@@ -183,11 +119,26 @@
      
         </div> 
            
-    </div> 
-    <center> 
-        <a href="<?php echo base_url("cliente"); ?>" class="btn btn-danger btn-xs"><fa class="fa fa-times"> </fa> Cerrar</a    > 
-    </center> 
-  </body> 
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-6">
+                        <img src="<?php echo base_url("resources/images/red.png"); ?>" width="15px" height="15x"><small> VENTA REALIZADA</small> 
+                        <img src="<?php echo base_url("resources/images/blue.png"); ?>" width="15px" height="15x"><small> VISITA PENDIENTE</small> 
+                   
+                </div> 
+                <div class="col-md-2">
+                    <center> 
+                        <a href="<?php echo base_url("cliente"); ?>" class="btn btn-danger btn-block"><fa class="fa fa-times"> </fa> Cerrar</a    > 
+                    </center> 
+                </div> 
+                
+                <div class="col-md-4">
+                </div> 
+                
+            </div> 
+        </div> 
   
+</body> 
   
 </html>

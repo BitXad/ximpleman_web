@@ -49,6 +49,125 @@ class Inventario_model extends CI_Model
     /*
      * Get inventario
      */
+    function mostrar_inventario_saldos($fechainventario)
+    {
+        //echo $basededatos;
+        //$this->db = $this->load->database($basededatos, TRUE);
+
+        
+        $sql = "SELECT 
+                    p.producto_id,
+                    p.estado_id,
+                    p.categoria_id,
+                    p.presentacion_id,
+                    p.moneda_id,
+                    p.producto_codigo,
+                    p.producto_codigobarra,
+                    p.producto_foto,
+                    p.producto_nombre,
+                    p.producto_unidad,
+                    p.producto_marca,
+                    p.producto_industria,
+                    p.producto_costo,
+                    p.producto_precio,
+                    p.producto_comision,
+                    p.producto_tipocambio,
+                    p.producto_cantidadminima,
+                    p.producto_factor,
+                    p.producto_unidadfactor,
+                    p.producto_codigofactor,
+                    p.producto_preciofactor,
+                    p.producto_factor1,
+                    p.producto_unidadfactor1,
+                    p.producto_codigofactor1,
+                    p.producto_preciofactor1,
+                    p.producto_factor2,
+                    p.producto_unidadfactor2,
+                    p.producto_codigofactor2,
+                    p.producto_preciofactor2,
+                    p.producto_factor3,
+                    p.producto_unidadfactor3,
+                    p.producto_codigofactor3,
+                    p.producto_preciofactor3,
+                    p.producto_factor4,
+                    p.producto_unidadfactor4,
+                    p.producto_codigofactor4,
+                    p.producto_preciofactor4,
+                    p.producto_ultimocosto,
+                    p.producto_caracteristicas,
+                    p.producto_envase,
+                    p.producto_nombreenvase,
+                    p.producto_costoenvase,
+                    p.producto_precioenvase,
+                    p.destino_id,
+                    p.producto_principioact,
+                    p.producto_accionterap,
+                    p.producto_cantidadenvase,
+                    p.subcategoria_id,
+                    p.producto_unidadentera,
+                    p.producto_catalogo,
+                    if(c.compras > 0, c.compras, 0) AS compras,
+                    if(v.ventas > 0, v.ventas, 0) AS ventas,
+                    if(d.pedidos > 0, d.pedidos, 0) AS pedidos,
+                    if(c.compras > 0, c.compras, 0) - if(v.ventas > 0, v.ventas, 0) - if(d.pedidos > 0, d.pedidos, 0) AS existencia,
+                    m.moneda_descripcion,
+                    m.moneda_tc AS tc,
+                    p.producto_colsur,
+                    p.producto_coleste,
+                    p.producto_coloeste,
+                    p.producto_colnorte,
+                    p.producto_codigosin,
+                    p.producto_codigounidadsin,
+                    p.producto_orden,
+                    c.categoria_nombre
+                  FROM
+                    producto p
+                    LEFT OUTER JOIN moneda m ON (p.moneda_id = m.moneda_id)
+                    LEFT OUTER JOIN categoria_producto c ON (p.categoria_id = c.categoria_id)
+                    LEFT OUTER JOIN (select 
+                      `d`.`producto_id` AS `producto_id`,
+                      if(sum(`d`.`detallecomp_cantidad`) > 0,sum(`d`.`detallecomp_cantidad`),0) AS `compras` 
+                    from 
+                      (`detalle_compra` `d` join `compra` `c`) 
+                    where 
+                          c.compra_fecha <= '{$fechainventario}' and
+                      `c`.`estado_id` = 1 and `d`.`compra_id` = `c`.`compra_id`
+
+                    group by 
+                      `d`.`producto_id`) c ON (p.producto_id = c.producto_id)
+
+                    LEFT OUTER JOIN (select 
+                      `d`.`producto_id` AS `producto_id`,
+                      if(sum(`d`.`detalleven_cantidad`) > 0,sum(`d`.`detalleven_cantidad`),0) AS `ventas` 
+                    from 
+                      `detalle_venta` `d`, venta v
+                    where
+                          v.venta_fecha<='{$fechainventario}' and
+                      v.venta_id = d.venta_id
+                    group by 
+                      `d`.`producto_id`) v ON (p.producto_id = v.producto_id)
+
+                    LEFT OUTER JOIN (select 
+                      `p`.`producto_id` AS `producto_id`,
+                      if(sum(`e`.`detalleped_cantidad`) > 0,sum(`e`.`detalleped_cantidad`),0) AS `pedidos` 
+                    from 
+                      ((`detalle_pedido` `e` join `pedido` `t`) join `producto` `p`) 
+                    where 
+                          t.pedido_fecha <= '{$fechainventario}' and
+                      `t`.`pedido_id` = `e`.`pedido_id` and `e`.`producto_id` = `p`.`producto_id` and `t`.`estado_id` = 11 
+                    group by 
+                      `p`.`producto_id`) d ON (p.producto_id = d.producto_id)";
+
+          
+        //echo $sql;
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+        
+    }
+    
+    /*
+     * Get inventario
+     */
     function ejecutar_en_sucursal($basededatos, $sql)
     {
         //echo $basededatos;

@@ -262,7 +262,7 @@
                     </div>
                     
                     <div class="col-md-12">
-                    <a href="#inputs" class="btn btn-facebook btn-sm inf" title="Agregar colindancias Norte, Sur, Este y Oeste"><i class="fa fa-map-o" aria-hidden="true"></i> Agregar Colindancias</a>
+                    <a href="#inputs"  style="width: 120px;" class="btn btn-facebook btn-sm inf" title="Agregar colindancias Norte, Sur, Este y Oeste"><i class="fa fa-map-o" aria-hidden="true"></i> Agregar Colindancias</a>
                         <div id="inputs" class="row" style="display:none;">
                             <div class="col-md-3">
                                 <label for="producto_colnorte" class="control-label">Colindancia norte</label>
@@ -296,161 +296,156 @@
                                 <input type="number" step="any" min="0" name="producto_tipocambio" value="1" class="form-control" id="producto_tipocambio" />
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <a href="#info1" class="btn btn-facebook btn-sm inf" title="Los factores se utilizan para describir productos con diferentes presentaciones."><fa class="fa fa-sitemap"></fa> Configurar Factores</a>
-                        <div id="info1" class="oculto">
-                            <div class="col-md-3">
-                                <label for="producto_factor" class="control-label">NIVEL 1: Cantidad/Unidades</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor" value="<?php echo "0.00"; ?>" class="form-control btn-warning" id="producto_factor"  onclick="this.select();"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_unidadfactor" class="control-label">Unidad</label>
-                                <div class="form-group">
-                                    <select name="producto_unidadfactor" class="form-control btn-warning">
-                                        <option value="">- UNIDAD FACTOR -</option>
-                                        <?php 
-                                        foreach($unidades as $u){ ?>
-                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_codigofactor" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo $this->input->post('producto_codigofactor'); ?>" class="form-control  btn-warning" id="producto_codigofactor"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_preciofactor" class="control-label">Precio Unit.</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo $this->input->post('producto_preciofactor'); ?>" class="form-control btn-warning" id="producto_preciofactor"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_factor1" class="control-label">NIVEL 2: Cantidad/Unidades</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor1" value="<?php echo "0.00"; ?>" class="form-control btn-primary" id="producto_factor1"  onclick="this.select();"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_unidadfactor1" class="control-label">Unidad</label>
-                                <div class="form-group">
-                                    <select name="producto_unidadfactor1" class="form-control btn-primary">
-                                        <option value="">- UNIDAD FACTOR -</option>
-                                        <?php 
-                                        foreach($unidades as $u){ ?>
-                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_codigofactor1" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" step="any" min="0" name="producto_codigofactor1" value="<?php echo $this->input->post('producto_codigofactor1'); ?>" class="form-control btn-primary" id="producto_codigofactor1" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_preciofactor1" class="control-label">Precio Unit.</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor1" value="<?php echo $this->input->post('producto_preciofactor1'); ?>" class="form-control btn-primary" id="producto_preciofactor1"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_factor2" class="control-label">NIVEL 3: Cantidad/Unidades</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor2" value="<?php echo "0.00"; ?>" class="form-control btn-info" id="producto_factor2"  onclick="this.select();"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_unidadfactor2" class="control-label">Unidad</label>
-                                <div class="form-group">
-                                    <select name="producto_unidadfactor2" class="form-control btn-info">
-                                        <option value="">- UNIDAD FACTOR -</option>
-                                        <?php 
-                                        foreach($unidades as $u){ ?>
-                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_codigofactor2" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" step="any" min="0" name="producto_codigofactor2" value="<?php echo $this->input->post('producto_codigofactor2'); ?>" class="form-control btn-info" id="producto_codigofactor2"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_preciofactor2" class="control-label">Precio Unit.</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor2" value="<?php echo $this->input->post('producto_preciofactor2'); ?>" class="form-control btn-info" id="producto_preciofactor2"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_factor3" class="control-label">NIVEL 4: Cantidad/Unidades</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor3" value="<?php echo "0.00"; ?>" class="form-control btn-soundcloud" id="producto_factor3"  onclick="this.select();"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_unidadfactor3" class="control-label">Unidad</label>
-                                <div class="form-group">
-                                    <select name="producto_unidadfactor3" class="form-control btn-soundcloud">
-                                        <option value="">- UNIDAD FACTOR -</option>
-                                        <?php 
-                                        foreach($unidades as $u){ ?>
-                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_codigofactor3" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" step="any" min="0" name="producto_codigofactor3" value="<?php echo $this->input->post('producto_codigofactor3'); ?>" class="form-control btn-soundcloud" id="producto_codigofactor3"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_preciofactor3" class="control-label">Precio Unit.</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor3" value="<?php echo $this->input->post('producto_preciofactor3'); ?>" class="form-control btn-soundcloud" id="producto_preciofactor3"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_factor4" class="control-label">NIVEL 5: Cantidad/Unidades</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor4" value="<?php echo "0.00"; ?>" class="form-control btn-twitter" id="producto_factor4"  onclick="this.select();"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_unidadfactor4" class="control-label">Unidad</label>
-                                <div class="form-group">
-                                    <select name="producto_unidadfactor4" class="form-control btn-twitter">
-                                        <option value="">- UNIDAD FACTOR -</option>
-                                        <?php 
-                                        foreach($unidades as $u){ ?>
-                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_codigofactor4" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" step="any" min="0" name="producto_codigofactor4" value="<?php echo $this->input->post('producto_codigofactor4'); ?>" class="form-control btn-twitter" id="producto_codigofactor4"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="producto_preciofactor4" class="control-label">Precio Unit.</label>
-                                <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor4" value="<?php echo $this->input->post('producto_preciofactor4'); ?>" class="form-control btn-twitter" id="producto_preciofactor4"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
+<div class="col-md-12">
+    <a href="#info1"  style="width: 120px;" class="btn btn-facebook btn-sm inf" title="Los factores se utilizan para describir productos con diferentes presentaciones.">
+        <fa class="fa fa-sitemap"></fa> Configurar Factores
+    </a>
+
+    <div id="info1" class="oculto">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="producto_factor" class="control-label">NIVEL 1: Cantidad/Unidades</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_factor" value="0.00" class="form-control btn-warning" id="producto_factor" onclick="this.select();" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_unidadfactor" class="control-label">Unidad (Display/Caja/Paquete)</label>
+                <div class="form-group">
+                    <input type="text" name="producto_unidadfactor" value="" class="form-control btn-warning" id="producto_unidadfactor" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_codigofactor" class="control-label">Código</label>
+                <div class="form-group">
+                    <input type="text" name="producto_codigofactor" value="<?php echo $this->input->post('producto_codigofactor'); ?>" class="form-control btn-warning" id="producto_codigofactor" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_preciofactor" class="control-label">Precio Unit.</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo $this->input->post('producto_preciofactor'); ?>" class="form-control btn-warning" id="producto_preciofactor" onclick="this.select();" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Repetir la estructura para cada grupo de 4 columnas -->
+        <div class="row">
+            <div class="col-md-3">
+                <label for="producto_factor1" class="control-label">NIVEL 2: Cantidad/Unidades</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_factor1" value="0.00" class="form-control btn-primary" id="producto_factor1" onclick="this.select();" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_unidadfactor1" class="control-label">Unidad (Display/Caja/Paquete)</label>
+                <div class="form-group">
+                    <input type="text" name="producto_unidadfactor1" value="" class="form-control btn-warning" id="producto_unidadfactor1" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_codigofactor1" class="control-label">Código</label>
+                <div class="form-group">
+                    <input type="text" name="producto_codigofactor1" value="<?php echo $this->input->post('producto_codigofactor1'); ?>" class="form-control btn-primary" id="producto_codigofactor1" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_preciofactor1" class="control-label">Precio Unit.</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_preciofactor1" value="<?php echo $this->input->post('producto_preciofactor1'); ?>" class="form-control btn-primary" id="producto_preciofactor1" onclick="this.select();" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Continúa repitiendo bloques de .row para los siguientes niveles -->
+        <!-- NIVEL 3 -->
+        <div class="row">
+            <div class="col-md-3">
+                <label for="producto_factor2" class="control-label">NIVEL 3: Cantidad/Unidades</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_factor2" value="0.00" class="form-control btn-info" id="producto_factor2" onclick="this.select();" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_unidadfactor2" class="control-label">Unidad (Display/Caja/Paquete)</label>
+                <div class="form-group">
+                    <input type="text" name="producto_unidadfactor2" value="" class="form-control btn-warning" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_codigofactor2" class="control-label">Código</label>
+                <div class="form-group">
+                    <input type="text" name="producto_codigofactor2" value="<?php echo $this->input->post('producto_codigofactor2'); ?>" class="form-control btn-info" id="producto_codigofactor2" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_preciofactor2" class="control-label">Precio Unit.</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_preciofactor2" value="<?php echo $this->input->post('producto_preciofactor2'); ?>" class="form-control btn-info" id="producto_preciofactor2" onclick="this.select();" />
+                </div>
+            </div>
+        </div>
+
+        <!-- NIVEL 4 -->
+        <div class="row">
+            <div class="col-md-3">
+                <label for="producto_factor3" class="control-label">NIVEL 4: Cantidad/Unidades</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_factor3" value="0.00" class="form-control btn-soundcloud" id="producto_factor3" onclick="this.select();" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_unidadfactor3" class="control-label">Unidad (Display/Caja/Paquete)</label>
+                <div class="form-group">
+                    <input type="text" name="producto_unidadfactor3" value="" class="form-control btn-warning" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_codigofactor3" class="control-label">Código</label>
+                <div class="form-group">
+                    <input type="text" name="producto_codigofactor3" value="<?php echo $this->input->post('producto_codigofactor3'); ?>" class="form-control btn-soundcloud" id="producto_codigofactor3" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_preciofactor3" class="control-label">Precio Unit.</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_preciofactor3" value="<?php echo $this->input->post('producto_preciofactor3'); ?>" class="form-control btn-soundcloud" id="producto_preciofactor3" onclick="this.select();" />
+                </div>
+            </div>
+        </div>
+
+        <!-- NIVEL 5 -->
+        <div class="row">
+            <div class="col-md-3">
+                <label for="producto_factor4" class="control-label">NIVEL 5: Cantidad/Unidades</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_factor4" value="0.00" class="form-control btn-twitter" id="producto_factor4" onclick="this.select();" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_unidadfactor4" class="control-label">Unidad (Display/Caja/Paquete)</label>
+                <div class="form-group">
+                    <input type="text" name="producto_unidadfactor4" value="" class="form-control btn-warning" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_codigofactor4" class="control-label">Código</label>
+                <div class="form-group">
+                    <input type="text" name="producto_codigofactor4" value="<?php echo $this->input->post('producto_codigofactor4'); ?>" class="form-control btn-twitter" id="producto_codigofactor4" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="producto_preciofactor4" class="control-label">Precio Unit.</label>
+                <div class="form-group">
+                    <input type="number" step="any" min="0" name="producto_preciofactor4" value="<?php echo $this->input->post('producto_preciofactor4'); ?>" class="form-control btn-twitter" id="producto_preciofactor4" onclick="this.select();" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    
                     <div class="col-md-3">
                         <label for="producto_cantidadminima" class="control-label">Cant. Minima</label>
                         <div class="form-group">
@@ -458,11 +453,31 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                            <label for="producto_foto" class="control-label">Foto (800x600; 4:3)</label>
-                            <div class="form-group">
-                                    <input type="file" name="producto_foto" value="<?php echo "producto.jpg"; ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
-                            </div>
+                        <label for="producto_foto" class="control-label">Foto (800x600; 4:3)</label>
+                        <div class="form-group">
+                            <input type="file" name="producto_foto" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="mostrarVistaPrevia(event)" />
+                            <br>
+                            <img id="vista_previa" src="#" alt="Vista previa" class="img-thumbnail" style="max-width: 200px; max-height: 150px; display: none;">
+                        </div>
                     </div>
+
+                    <script>
+                        function mostrarVistaPrevia(event) {
+                            var vistaPrevia = document.getElementById('vista_previa');
+                            var archivo = event.target.files[0];
+
+                            if (archivo) {
+                                var reader = new FileReader();
+                                reader.onload = function(e) {
+                                    vistaPrevia.src = e.target.result;
+                                    vistaPrevia.style.display = "block";
+                                };
+                                reader.readAsDataURL(archivo);
+                            } else {
+                                vistaPrevia.style.display = "none";
+                            }
+                        }
+                    </script>
 
                     <div class="col-md-6">
                         <label for="producto_caracteristicas" class="control-label">Características</label>

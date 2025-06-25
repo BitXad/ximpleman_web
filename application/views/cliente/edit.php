@@ -8,6 +8,17 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> 
 
+    
+<style type="text/css">
+        
+#map {
+    height: 400px !important;
+    min-height: 400px !important;
+    width: 100% !important;
+}
+</style>
+        
+    
 <script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
@@ -198,93 +209,93 @@ function toggle(source) {
                         <!-- ***********************aqui empieza el mapa para capturar coordenadas *********************** -->
                         <div id="oculto1" style="visibility:hidden">
                         <div id="map"></div>
-                        <script type="text/javascript">
-                            var marker;          //variable del marcador
-                            var coords_lat = {};    //coordenadas obtenidas con la geolocalización
-                            var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+                        
+                            <!-- Leaflet CSS -->
+                            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+                            <!-- Leaflet JS -->
+                            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                            
+                            <script type="text/javascript">
+                                var map;
+                                var marker; // Variable del marcador
 
+                                function initMap() {
+                                    // Obtener valores de los inputs
+                                    var milat = $('#cliente_latitud').val();
+                                    var milng = $('#cliente_longitud').val();
 
-                            //Funcion principal
-                            initMap = function () 
-                            {
-                                //usamos la API para geolocalizar el usuario
-
-                                //milat = document.getElementById('cliente_latitud').value;
-                                milat = $('#cliente_latitud').val();
-                                //milng = document.getElementById('cliente_longitud').value;
-                                milng = $('#cliente_longitud').val();
-
-                                    navigator.geolocation.getCurrentPosition(
-                                    function (position){
-                                        if(milat == 'undefined' || milat == null || milat ==""){
-                                            coords_lat =  {
-                                            lat: position.coords.latitude,
+                                    // Ver si hay valores preexistentes en los inputs
+                                    if (milat && milng) {
+                                        var coords = {
+                                            lat: parseFloat(milat),
+                                            lng: parseFloat(milng)
+                                        };
+                                        setMapa(coords);
+                                    } else {
+                                        // Si no hay valores, usar geolocalización
+                                        if (navigator.geolocation) {
+                                            navigator.geolocation.getCurrentPosition(
+                                                function (position) {
+                                                    var coords = {
+                                                        lat: position.coords.latitude,
+                                                        lng: position.coords.longitude
+                                                    };
+                                                    $('#cliente_latitud').val(coords.lat);
+                                                    $('#cliente_longitud').val(coords.lng);
+                                                    setMapa(coords);
+                                                },
+                                                function (error) {
+                                                    console.log("Error de geolocalización:", error);
+                                                    // Ubicación por defecto
+                                                    var coords = {
+                                                        lat: -16.5,
+                                                        lng: -68.15
+                                                    };
+                                                    setMapa(coords);
+                                                }
+                                            );
+                                        } else {
+                                            console.log("Geolocalización no es soportada por este navegador.");
+                                            var coords = {
+                                                lat: -16.5,
+                                                lng: -68.15
                                             };
-                                            //milat = position.coords.latitude;
-                                        }else{
-                                            coords_lat =  {
-                                            lat: milat,
-                                            };
+                                            setMapa(coords);
                                         }
-                                        if(milng == 'undefined' || milng == null || milng ==""){
-                                            coords_lng =  {
-                                              lng: position.coords.longitude,
-                                            };
-                                            //lng = position.coords.longitude;
-                                        }else{
-                                            coords_lng =  {
-                                              lng: milng,
-                                            };
-                                        } 
-                                        /*coords_lat =  {
-                                            lat: milat,
-                                            };
+                                    }
+                                }
 
-                                        coords_lng =  {
-                                              lng: milng,
-                                            };*/
-                                        setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+                                function setMapa(coords) {
+                                    if (!map) {
+                                        map = L.map('map').setView([coords.lat, coords.lng], 17);
+
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '&copy; OpenStreetMap contributors'
+                                        }).addTo(map);
+
+                                        marker = L.marker([coords.lat, coords.lng], { draggable: true }).addTo(map);
+
+                                        marker.on('dragend', function (e) {
+                                            var newPos = marker.getLatLng();
+                                            $('#cliente_latitud').val(newPos.lat);
+                                            $('#cliente_longitud').val(newPos.lng);
+                                        });
+                                    } else {
+                                        map.setView([coords.lat, coords.lng], 20);
+                                        marker.setLatLng([coords.lat, coords.lng]);
+                                    }
+
+                                    // Fuerza el redibujo del mapa:
+                                    setTimeout(function() {
+                                        map.invalidateSize();
+                                    }, 200);
+                                }
+
+                                // Inicializar el mapa cuando el DOM esté listo
+                                window.onload = initMap;
+                            </script>
 
 
-                                      },function(error){console.log(error);});
-                            }
-
-                            function setMapa (coords_lat, coords_lng)
-                            {
-                                //document.getElementById("cliente_latitud").value = coords_lat.lat;
-                               // document.getElementById("cliente_longitud").value = coords_lng.lng;
-                                  //Se crea una nueva instancia del objeto mapa
-                                  var map = new google.maps.Map(document.getElementById('map'),
-                                  {
-                                    zoom: 13,
-                                    center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
-
-                                  });
-
-                                  //Creamos el marcador en el mapa con sus propiedades
-                                  //para nuestro obetivo tenemos que poner el atributo draggable en true
-                                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
-                                  marker = new google.maps.Marker({
-                                    map: map,
-                                    draggable: true,
-                                    animation: google.maps.Animation.DROP,
-                                    position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
-
-                                  });
-                                  //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
-                                  //cuando el usuario a soltado el marcador
-                                  //marker.addListener('click', toggleBounce);
-
-                                  marker.addListener( 'dragend', function (event)
-                                  {
-                                    //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
-                                    document.getElementById("cliente_latitud").value = this.getPosition().lat();
-                                    document.getElementById("cliente_longitud").value = this.getPosition().lng();
-                                  });
-                            }
-                            initMap();
-                        </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>

@@ -79,17 +79,32 @@ class Control_ubicacion_model extends CI_Model
     }
     
     function get_productos_inventario($controli_id){
-        return $this->db->query(
-            "SELECT ci.controli_descripcion ,up.producto_id, p.*,up.ubiprod_existencia, sum(up.ubiprod_existenciafisico) as existenciaf_total,
+//        $sql = "SELECT ci.controli_descripcion ,up.producto_id, p.*,up.ubiprod_existencia, sum(up.ubiprod_existenciafisico) as existenciaf_total,
+//            p.producto_costo , p.producto_precio ,
+//            if(up.ubiprod_existencia > sum(up.ubiprod_existenciafisico) , (up.ubiprod_existencia - sum(up.ubiprod_existenciafisico)) , 0) as faltante,
+//            if(up.ubiprod_existencia < sum(up.ubiprod_existenciafisico) , (sum(up.ubiprod_existenciafisico - up.ubiprod_existencia)) , 0) as sobrante
+//            from control_ubicacion cu 
+//            left join ubicacion_producto up on up.controlu_id =cu.controlu_id 
+//            left join producto p on up.producto_id = p.producto_id 
+//            left join control_inventario ci on ci.controli_id = cu.controli_id  
+//            where ci.controli_id = $controli_id
+//            group by up.producto_id";
+//        
+        $sql = "SELECT ci.controli_descripcion ,up.producto_id, p.*,up.ubiprod_existencia, sum(up.ubiprod_existenciafisico) as existenciaf_total,
             p.producto_costo , p.producto_precio ,
             if(up.ubiprod_existencia > sum(up.ubiprod_existenciafisico) , (up.ubiprod_existencia - sum(up.ubiprod_existenciafisico)) , 0) as faltante,
             if(up.ubiprod_existencia < sum(up.ubiprod_existenciafisico) , (sum(up.ubiprod_existenciafisico - up.ubiprod_existencia)) , 0) as sobrante
-            from control_ubicacion cu 
-            left join ubicacion_producto up on up.controlu_id =cu.controlu_id 
-            left join producto p on up.producto_id = p.producto_id 
-            left join control_inventario ci on ci.controli_id = cu.controli_id  
-            where ci.controli_id = $controli_id
-            group by up.producto_id
-            ")->result_array();
+            from control_ubicacion cu, ubicacion_producto up, producto p, control_inventario ci
+            
+            where             
+            up.ubiprod_lecturado = 1 and
+            up.controlu_id = cu.controlu_id and 
+            ci.controli_id = $controli_id and
+            up.producto_id = p.producto_id and
+            ci.controli_id = cu.controli_id 
+            
+            group by up.producto_id";
+        
+        return $this->db->query($sql)->result_array();
     }
 }

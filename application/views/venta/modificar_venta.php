@@ -324,6 +324,14 @@ $actualizar_precios = 1;
 <input type="text" id="compra_rapida" value="<?php echo $compra_rapida; ?>" hidden>
 <input type="text" id="actualizar_precios" value="<?php echo $actualizar_precios; ?>" hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
+<input type="text" id="motivo_puede_facturar" value="" hidden>
+
+<input type="text" id="parametro_vercantidades" value="<?php echo $parametro['parametro_vercantidades']; ?>" name="parametro_vercantidades"  hidden>
+<input type="text" id="parametro_comprarapida" value="<?php echo $parametro['parametro_comprarapida']; ?>" name="parametro_comprarapida"  hidden>
+<input type="text" id="parametro_actualizarprecios" value="<?php echo $parametro['parametro_actualizarprecios']; ?>" name="parametro_actualizarprecios"  hidden>
+<input type="text" id="vigencia_cufd" value="<?php echo ($parametro['parametro_tiposistema'] != 1)?$cufd[0]["cufd_fechavigencia"]:""; ?>" hidden>
+<input type="text" id="parametro_generarcufd" value="<?php echo $parametro['parametro_generarcufd']; ?>" hidden>
+<input type="text" id="cufd_hoy" value="1" hidden>
 
 <?php
 if(isset($credito)){
@@ -980,7 +988,7 @@ if(isset($credito)){
 
                 <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
                     <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
-                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?>
+                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
                     <br><b>DOC:</b> <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?>
                     <br><b>CUFD VIGENCIA:</b> <?php 
                     

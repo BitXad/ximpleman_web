@@ -2,6 +2,15 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="producto_id" id="producto_id" value="<?php echo $producto['producto_id']; ?>" />
 <input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+
+<!-- CSS de Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- JS de Select2 y jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <script type="text/javascript">
     function cambiarcodproducto(){
@@ -94,6 +103,16 @@
         $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
     }
 </script>
+<script>
+    <script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "- UNIDAD -",
+        allowClear: true
+    });
+});
+</script>
+</script>
 
 <!-- CODIGO PARA EVITAR ENTER EN LOS INPUTS-->
   <script>
@@ -146,17 +165,16 @@ function es_null($val){
                     <div class="col-md-2">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <select name="producto_unidad" class="form-control">
-                                <option value="">- UNIDAD -</option>
-                                <?php 
-                                foreach($unidades as $unidad)
-                                {
-                                    $selected = ($unidad['unidad_nombre'] == $producto['producto_unidad']) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                } 
-                                ?>
-                            </select>
+                                <select name="producto_unidad" class="form-control select2">
+                                    <option value="">- UNIDAD -</option>
+                                    <?php 
+                                    foreach($unidades as $unidad)
+                                    {
+                                        $selected = ($unidad['unidad_nombre'] == $producto['producto_unidad']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -310,7 +328,7 @@ function es_null($val){
                     </div>
                     
                     <div class="col-md-12">
-                        <a href="#inputs" class="btn btn-facebook btn-sm inf" title="Agregar colindancias Norte, Sur, Este y Oeste"><i class="fa fa-map-o" aria-hidden="true"></i> Agregar Colindancias</a>
+                        <a href="#inputs" class="btn btn-facebook btn-sm inf" title="Agregar colindancias Norte, Sur, Este y Oeste" style="width: 120px;"><i class="fa fa-map-o" aria-hidden="true"></i> Agregar Colindancias</a>
                         <div id="inputs" class="row" style="display:none;">
                             <div class="col-md-3">
                                 <label for="producto_colnorte" class="control-label">Colindancia norte</label>
@@ -340,7 +358,8 @@ function es_null($val){
                     </div>
                     
                     <div class="col-md-12">
-                        <a href="#info1" class="btn btn-facebook btn-sm inf" title="Los factores se utilizan para describir productos con diferentes presentaciones."><fa class="fa fa-sitemap"></fa> Configurar Factores</a>
+                        <a href="#info1" class="btn btn-facebook btn-sm inf"  style="width: 120px;" title="Los factores se utilizan para describir productos con diferentes presentaciones."><fa class="fa fa-sitemap"></fa> Configurar Factores</a>
+                        
                         <div id="info1" class="oculto">
                             <div class="col-md-3">
                                 <label for="producto_factor" class="control-label">NIVEL 1: Cantidad/Unidades</label>
@@ -348,19 +367,11 @@ function es_null($val){
                                     <input type="number" step="any" min="0" name="producto_factor" value="<?php echo ($this->input->post('producto_factor') ? $this->input->post('producto_factor') : number_format(es_null($producto['producto_factor']),$decimales,".","")); ?>" class="form-control btn-warning" id="producto_factor"  onclick="this.select();"/>
                                 </div>
                             </div>
+                            
                             <div class="col-md-3">
-                                <label for="producto_unidadfactor" class="control-label">Unidad</label>
+                                <label for="producto_unidadfactor" class="control-label">Unidad (Display/Caja/Paquete)</label>
                                 <div class="form-group">
-                                    <select name="producto_unidadfactor" class="form-control btn-warning">
-                                        <option value="">- UNIDAD -</option>
-                                        <?php 
-                                        foreach($unidades as $unidad)
-                                        {
-                                            $selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor']) ? ' selected="selected"' : "";
-                                            echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                        } 
-                                        ?>
-                                    </select>
+                                    <input type="text" name="producto_unidadfactor" value="<?php echo ($this->input->post('producto_unidadfactor')) ? $this->input->post('producto_unidadfactor') : $producto['producto_unidadfactor'] ; ?>" class="form-control btn-warning" id="producto_unidadfactor"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -370,7 +381,7 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_preciofactor" class="control-label">Precio Unit.</label>
+                                <label for="producto_preciofactor" class="control-label">Precio Unit. Bs</label>
                                 <div class="form-group">
                                     <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : number_format(es_null($producto['producto_preciofactor']),$decimales,".","")); ?>" class="form-control btn-warning" id="producto_preciofactor"  onclick="this.select();"/>
                                 </div>
@@ -384,18 +395,9 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_unidadfactor1" class="control-label">Unidad</label>
+                                <label for="producto_unidadfactor1" class="control-label">Unidad (Display/Caja/Paquete)</label>
                                 <div class="form-group">
-                                    <select name="producto_unidadfactor1" class="form-control btn-primary">
-                                        <option value="">- UNIDAD -</option>
-                                        <?php 
-                                        foreach($unidades as $unidad)
-                                        {
-                                            $selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor1']) ? ' selected="selected"' : "";
-                                            echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                        } 
-                                        ?>
-                                    </select>
+                                    <input type="text" name="producto_unidadfactor1" value="<?php echo ($this->input->post('producto_unidadfactor1')) ? $this->input->post('producto_unidadfactor1') : $producto['producto_unidadfactor1'] ; ?>" class="form-control btn-primary"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -405,7 +407,7 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_preciofactor1" class="control-label">Precio Unit.</label>
+                                <label for="producto_preciofactor1" class="control-label">Precio Unit. Bs</label>
                                 <div class="form-group">
                                     <input type="number" step="any" min="0" name="producto_preciofactor1" value="<?php echo ($this->input->post('producto_preciofactor1') ? $this->input->post('producto_preciofactor1') : number_format(es_null($producto['producto_preciofactor1']),$decimales,".","")); ?>" class="form-control btn-primary" id="producto_preciofactor1"  onclick="this.select();"/>
                                 </div>
@@ -417,18 +419,9 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_unidadfactor2" class="control-label">Unidad</label>
+                                <label for="producto_unidadfactor2" class="control-label">Unidad (Display/Caja/Paquete)</label>
                                 <div class="form-group">
-                                    <select name="producto_unidadfactor2" class="form-control btn-info">
-                                        <option value="">- UNIDAD -</option>
-                                        <?php 
-                                        foreach($unidades as $unidad)
-                                        {
-                                            $selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor2']) ? ' selected="selected"' : "";
-                                            echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                        } 
-                                        ?>
-                                    </select>
+                                    <input type="text" name="producto_unidadfactor2" value="<?php echo ($this->input->post('producto_unidadfactor2')) ? $this->input->post('producto_unidadfactor2') : $producto['producto_unidadfactor2'] ; ?>" class="form-control btn-info"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -438,7 +431,7 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_preciofactor2" class="control-label">Precio Unit.</label>
+                                <label for="producto_preciofactor2" class="control-label">Precio Unit. Bs</label>
                                 <div class="form-group">
                                     <input type="number" step="any" min="0" name="producto_preciofactor2" value="<?php echo ($this->input->post('producto_preciofactor2') ? $this->input->post('producto_preciofactor2') : number_format(es_null($producto['producto_preciofactor2']),$decimales,".","")); ?>" class="form-control btn-info" id="producto_preciofactor2"  onclick="this.select();"/>
                                 </div>
@@ -450,18 +443,9 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_unidadfactor3" class="control-label">Unidad</label>
+                                <label for="producto_unidadfactor3" class="control-label">Unidad (Display/Caja/Paquete)</label>
                                 <div class="form-group">
-                                    <select name="producto_unidadfactor3" class="form-control btn-soundcloud">
-                                        <option value="">- UNIDAD -</option>
-                                        <?php 
-                                        foreach($unidades as $unidad)
-                                        {
-                                            $selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor3']) ? ' selected="selected"' : "";
-                                            echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                        } 
-                                        ?>
-                                    </select>
+                                    <input type="text" name="producto_unidadfactor3" value="<?php echo ($this->input->post('producto_unidadfactor3')) ? $this->input->post('producto_unidadfactor3') : $producto['producto_unidadfactor3'] ; ?>" class="form-control btn-soundcloud"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -471,7 +455,7 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_preciofactor3" class="control-label">Precio Unit.</label>
+                                <label for="producto_preciofactor3" class="control-label">Precio Unit. Bs</label>
                                 <div class="form-group">
                                     <input type="number" step="any" min="0" name="producto_preciofactor3" value="<?php echo ($this->input->post('producto_preciofactor3') ? $this->input->post('producto_preciofactor3') : number_format(es_null($producto['producto_preciofactor3']),$decimales,".","")); ?>" class="form-control btn-soundcloud" id="producto_preciofactor3"  onclick="this.select();"/>
                                 </div>
@@ -483,18 +467,9 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_unidadfactor4" class="control-label">Unidad</label>
+                                <label for="producto_unidadfactor4" class="control-label">Unidad (Display/Caja/Paquete)</label>
                                 <div class="form-group">
-                                    <select name="producto_unidadfactor4" class="form-control btn-twitter">
-                                        <option value="">- UNIDAD -</option>
-                                        <?php 
-                                        foreach($unidades as $unidad)
-                                        {
-                                            $selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor4']) ? ' selected="selected"' : "";
-                                            echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-                                        } 
-                                        ?>
-                                    </select>
+                                    <input type="text" name="producto_unidadfactor4" value="<?php echo ($this->input->post('producto_unidadfactor4')) ? $this->input->post('producto_unidadfactor4') : $producto['producto_unidadfactor4'] ; ?>" class="form-control btn-twitter" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -504,7 +479,7 @@ function es_null($val){
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="producto_preciofactor4" class="control-label">Precio Unit.</label>
+                                <label for="producto_preciofactor4" class="control-label">Precio Unit. Bs</label>
                                 <div class="form-group">
                                     <input type="number" step="any" min="0" name="producto_preciofactor4" value="<?php echo ($this->input->post('producto_preciofactor4') ? $this->input->post('producto_preciofactor4') : number_format(es_null($producto['producto_preciofactor4']),$decimales,".","")); ?>" class="form-control btn-twitter" id="producto_preciofactor4"  onclick="this.select();"/>
                                 </div>
@@ -526,10 +501,39 @@ function es_null($val){
                     <div class="col-md-3">
                         <label for="producto_foto" class="control-label">Foto</label>
                         <div class="form-group">
-                            <input type="file" name="producto_foto" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+                            <input type="file" name="producto_foto" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="mostrarVistaPrevia(event)" />
                             <input type="hidden" name="producto_foto1" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="form-control" id="producto_foto1" />
+
+                            <?php
+                            // Obtener la imagen del producto
+                            $imagen = $producto['producto_foto'] ?? ''; // Verifica si existe la imagen en el array
+                            $ruta_imagen = !empty($imagen) ? base_url("resources/images/productos/" . $imagen) : "#";
+                            $mostrar_imagen = !empty($imagen) ? "block" : "none";
+                            ?>
+
+                            <br>
+                            <img id="vista_previa" src="<?php echo $ruta_imagen; ?>" alt="Imagen del producto" class="img-thumbnail" style="max-width: 150px; max-height: 150px; display: <?php echo $mostrar_imagen; ?>;">
                         </div>
                     </div>
+
+<script>
+    function mostrarVistaPrevia(event) {
+        var vistaPrevia = document.getElementById('vista_previa');
+        var archivo = event.target.files[0];
+
+        if (archivo) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                vistaPrevia.src = e.target.result;
+                vistaPrevia.style.display = "block";
+            };
+            reader.readAsDataURL(archivo);
+        } else {
+            vistaPrevia.style.display = "none";
+        }
+    }
+</script>
+
                     <div class="col-md-5">
                         <label for="producto_caracteristicas" class="control-label">Características</label>
                         <div class="form-group">

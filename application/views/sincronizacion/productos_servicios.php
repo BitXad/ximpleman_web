@@ -50,7 +50,9 @@
                             <tr>
                                 <td><?= $i ?></td>
                                 <td style="text-align: center;"><?php 
-                                        echo $sincronizacion['prodserv_codigoactividad']; 
+                                        echo $sincronizacion['prodserv_codigoactividad'];
+                                        
+                                        echo $sincronizacion['prodserv_codigoactividad']." = ".$dosificacion["dosificacion_actividad"];
                                         
                                         if($sincronizacion['prodserv_codigoactividad']==$dosificacion["dosificacion_actividad"])
                                                     echo "<small style='color:red;'><br>PRINCIPAL<small>";

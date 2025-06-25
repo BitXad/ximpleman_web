@@ -73,6 +73,34 @@ class Inventario extends CI_Controller{
     /*
      * Listing of producto
      */
+    function inventariofecha()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(24)){
+            //**************** inicio contenido ***************
+            $data['rolusuario'] = $this->session_data['rol'];
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
+            
+            $data['_view'] = 'inventario/inventariofecha';
+            $this->load->view('layouts/main',$data);
+
+            //**************** fin contenido ***************
+        }
+			
+    }
+
+    /*
+     * Listing of producto
+     */
     function realizable()
     {
         $data['parametro'] =  $this->parametros;
@@ -257,6 +285,33 @@ class Inventario extends CI_Controller{
         }
     }
 
+    /*
+     * muestra inventario por parametro
+     */
+    function mostrar_inventario_saldos()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(25)){
+            if($this->input->is_ajax_request()){
+                //**************** inicio contenido ***************
+                $parametro = $this->input->post("parametro");
+                $select_almacen = $this->input->post("select_almacen");
+                $fechainventario = $this->input->post("fechainventario");
+
+                $resultado = $this->Inventario_model->mostrar_inventario_saldos($fechainventario);
+//                if ($parametro=="" || $parametro==null){
+//                    $resultado = $this->Inventario_model->get_inventario_almacen($select_almacen);
+//                }else{
+//                    $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+//                }
+                echo json_encode($resultado);            
+                //**************** fin contenido ***************
+            }echo false;
+        }
+    }
+
     function mostrar_inventario_existencia()
     {      
         $data['parametro'] =  $this->parametros;
@@ -331,6 +386,19 @@ class Inventario extends CI_Controller{
         echo json_encode($llamadas); 
 
     }
+
+    function generar_excel_saldos()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        $fecha = $this->input->post("fecha");
+        
+        $resultado = $this->Inventario_model->mostrar_inventario_saldos($fecha);
+        //$llamadas = $this->Inventario_model->get_inventario();
+        echo json_encode($resultado); 
+
+    }
+    
     /* muestra operaciones en proceso de venta!! */
     function operacion_enproceso()
     {
@@ -364,8 +432,8 @@ class Inventario extends CI_Controller{
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
-            //$data['almacenes'] = $this->Inventario_model->get_all_almacenes();
-            $data['almacenes'] = $this->Inventario_model->get_inventario_saldos($fecha);
+            $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
+            //$data['almacenes'] = $this->Inventario_model->get_inventario_saldos($fecha);
             
             $data['_view'] = 'inventario/inventario_saldos';
             $this->load->view('layouts/main',$data);

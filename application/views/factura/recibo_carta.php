@@ -321,7 +321,7 @@ border-bottom : 1px solid #aaa;
                     echo "PUNTOS: <b>".$venta[0]['cliente_puntos']."</b><br>";
                 }
                 ?>
-                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
+                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?>/<?php echo $venta[0]['forma_nombre']; ?></b><br>
                 <?php
                 if($venta[0]['tipotrans_id'] == 2){
                 ?>

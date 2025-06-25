@@ -497,6 +497,10 @@ class Parametro extends CI_Controller{
                     'parametro_contarventasmes' => $this->input->post('parametro_contarventasmes'),
                     'parametro_mostrarnumero' => $this->input->post('parametro_mostrarnumero'),
                     'parametro_cerrarventanas' => $this->input->post('parametro_cerrarventanas'),
+                    'parametro_vercantidades' => $this->input->post('parametro_vercantidades'),
+                    'parametro_comprarapida' => $this->input->post('parametro_comprarapida'),
+                    'parametro_actualizarprecios' => $this->input->post('parametro_actualizarprecios'),
+                    'parametro_generarcufd' => $this->input->post('parametro_generarcufd'),
                 );
                 
                 
@@ -859,7 +863,7 @@ class Parametro extends CI_Controller{
                                 //*************************************************************************
                                 //       SERVICIOS FACTURACION ELECTRONICA
                                 //*************************************************************************
-                                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
+                                $documentos_sector = array(2,3,6,8,11,12,16,17,23,39,51);
 
                                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 

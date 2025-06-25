@@ -86,7 +86,7 @@ function cerrar_ventana(){
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
 <div id="selector" hidden="">
@@ -186,7 +186,7 @@ if($cliente[0]['cliente_id'] >0){
 <center>
     <font size="3"><b><?php echo $pedido_titulo; ?></b></font>
      <!--<a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>-->
-    <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></button>
+    <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font> Buscar Clie</button>
     
      <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
      <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>

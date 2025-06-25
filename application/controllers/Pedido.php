@@ -87,6 +87,7 @@ class Pedido extends CI_Controller{
         
         $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
         //$data['usuarios'] = $this->Venta_model->get_usuarios(); corregido mediante left join
         
         /*$filtro = $this->input->post('filtro');
@@ -900,8 +901,7 @@ class Pedido extends CI_Controller{
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
-       
-        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
         if ($this->input->is_ajax_request()){
             
@@ -1280,7 +1280,7 @@ class Pedido extends CI_Controller{
 //
 //            $usuario_id = $this->session_data['usuario_id'];
 //            $dia_visita = $this->input->post('dia_visita');
-            
+            $now = "'".date("Y-m-d H:i:s")."'";
             if($dia_visita == 1){ $condicion = " and c.lun = 1"; } //lunes
             if($dia_visita == 2){ $condicion = " and c.mar = 1"; }
             if($dia_visita == 3){ $condicion = " and c.mie = 1"; }

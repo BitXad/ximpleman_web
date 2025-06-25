@@ -6,6 +6,8 @@
  
 class Compra_model extends CI_Model
 {
+    private $session_data = "";
+    private $caja_id = 0;
     function __construct()
     {
         parent::__construct();
@@ -13,6 +15,35 @@ class Compra_model extends CI_Model
         $this->load->model('Producto_model');
         $this->load->model('Proveedor_model');
        $this->load->model('Inventario_model');
+       $this->load->model('Caja_model');
+       
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+            $usuario_id = $this->session_data['usuario_id'];
+            $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+            
+        }
+        else {
+            //redirect('', 'refresh');
+            $usuario_id = 0;
+            $caja = [];
+        }
+        
+        
+        //*********** Administracion de caja *********
+        
+
+        if (!sizeof($caja)>0){ // si la caja no esta iniciada
+            //iniciar caja y dejarla en pendiente
+            $this->caja_id = 0;
+        }else{
+            $this->caja_id = $caja[0]["caja_id"];
+
+        }
+                
+                
+        //*********** FIN Administracion de caja *********        
+        
     }
     
     
@@ -317,6 +348,31 @@ class Compra_model extends CI_Model
                 "value(".$usuario_id.",".$estado_id.",".$forma_id.",".$tipotrans_id.",".$proveedor_id.",".$moneda_id.",".$compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_total.",".$compra_glosa.",".$movil.",".$proveedor_id.")";
         $compra = $this->db->query($sql);
         $compra_id = $this->db->insert_id();
+ 
+        //************ inicio bitacora 
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+            $venta_id = 0;//$this->input->post("venta_id");            
+            $usuario_id = $this->session_data['usuario_id'];
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            
+            $bitacoracaja_evento = "'GENERE UNA COMPRA NUEVA, ID: {$compra_id}'";
+
+            
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+            $this->Venta_model->ejecutar($sql);
+        //************ fin bitacora bitacora            
+        
+        
         return $compra_id;        
         
     }

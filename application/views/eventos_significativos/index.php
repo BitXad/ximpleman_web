@@ -144,14 +144,14 @@
         <div class="col-md-6">
             <label for="ces_fechainicio" class="control-label">Fecha Inicio</label>
             <div class="form-group">
-                <input type="datetime-local" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="ces_fechainicio"/>
+                <input type="datetime-local" name="ces_fechainicio" value="<?= Date('Y-m-d\TH:i:s');  ?>" class="form-control" id="ces_fechainicio"/>
             </div>
         </div>
           
         <div class="col-md-6">
             <label for="ces_fechafin" class="control-label">Fecha Fin</label>
             <div class="form-group">
-                <input type="datetime-local" name="ces_fechafin" value="<?= date("d/m/y");  ?>" class="form-control" id="ces_fechafin" />
+                <input type="datetime-local" name="ces_fechafin" value="<?= date('Y-m-d\TH:i:s');  ?>" class="form-control" id="ces_fechafin" />
             </div>
         </div>
 
@@ -161,11 +161,11 @@
         <div class="col-md-3">
             <label for="ces_fechainicio" class="control-label">Buscar</label>
             <div class="form-group">
-                <input type="date" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="buscar_fecha" onchange="seleccionar_cufd()"/>
+                <input type="date" name="ces_fechainicio" value="<?= Date("Y-m-d");  ?>" class="form-control" id="buscar_fecha" onchange="seleccionar_cufd()"/>
             </div>
         </div>
         <div class="col-md-9">
-            <label for="dosificacion_cufd" class="control-label">CUFD del evento</label>
+            <label for="dosificacion_cufd" class="control-label">CUFD del evento/Fecha Generación</label>
             <div class="form-group">
 
                 <select id="select_cufd" class="form-control">
@@ -242,7 +242,7 @@
                 <div class="col-md-4">
                     <label for="fecha_fin1" class="control-label"><span class="text-danger"></span>Fecha Fin</label>
                     <div class="form-group">
-                        <input type="datetime-local" name="fecha_fin1" value="" class="form-control" id="fecha_fin1" />
+                        <input type="datetime-local" name="ces_fecha_fin1" value="<?= Date('Y-m-d\TH:i:s');  ?>" class="form-control" id="ces_fecha_fin1" />   
                     </div>
                 </div>
                 

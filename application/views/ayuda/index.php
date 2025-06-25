@@ -115,7 +115,7 @@
                         if(tam>0){
                             
                             for(let i=0; i<tam; i++){
-
+                                
                                 if(registros[i]['ayuda_tipo']=="video"){
                                     
                                     html += "<div class='col-md-2'>";

@@ -42,8 +42,6 @@ truncate detalle_cotizacion;
 truncate registro_eventos;
 truncate recepcion_paquetes;
 truncate cufd;
-truncate cuis;
-truncate punto_venta;
 truncate sucursales;
 truncate ingresos;
 truncate egresos;
@@ -105,7 +103,7 @@ empresa_nombre = 'OTOGROUP SRL'
 ,empresa_zona = 'CENTRAL'
 ,empresa_ubicacion = 'CERCADO'
 ,empresa_departamento = 'COCHABAMBA'
-,empresa_propietario = ''
+,empresa_propietario = ''   
 ,empresa_email = ''
 ,empresa_profesion = ''
 ,empresa_cargo = ''
@@ -772,7 +770,9 @@ truncate almacenes;
 truncate articulo;
 truncate asiento;
 truncate asiento_eliminado;
+truncate asientos;
 truncate ayuda;
+truncate ayudante;
 truncate bancariz;
 truncate banco;
 truncate bitacora;
@@ -794,17 +794,21 @@ truncate categoria_mesa;
 truncate categoria_producto;
 truncate categoria_servicio;
 truncate categoria_trabajo;
+truncate categoria_vehiculo;
 truncate ci_session;
 truncate clasificador;
 truncate clasificador_producto;
 truncate cliente;
+truncate cliente_borrar;
 truncate cod_doc_identidad;
 truncate cod_eventos_significativos;
 truncate cod_motivo_anulacion;
 truncate composicion_producto;
 truncate compra;
+truncate conductor;
 truncate config;
 truncate configuracion_email;
+truncate consumo;
 truncate control_inventario;
 truncate control_ubicacion;
 truncate cotizacion;
@@ -814,6 +818,7 @@ truncate cufd;
 truncate cufd_masivo;
 truncate cuis;
 truncate cuota;
+truncate destino;
 truncate destino_producto;
 truncate detalle_clasificador;
 truncate detalle_clasificador_aux;
@@ -883,14 +888,18 @@ truncate menu_principal;
 truncate mesa;
 truncate modelo_contrato;
 truncate moneda;
+truncate nivel_vehiculo;
 truncate numero_nit;
 truncate objetivo;
 truncate orden_compra;
 truncate orden_pago;
 truncate orden_trabajo;
+truncate origen;
 truncate pagina_web;
 truncate pais;
+truncate parada;
 truncate parametros;
+truncate pasaje;
 truncate pedido;
 truncate pedido_diario;
 truncate pedidos;
@@ -914,8 +923,10 @@ truncate recepcion_paquetes;
 truncate recorrido_usuario;
 truncate red_social;
 truncate registro_eventos;
+truncate registro_parqueo;
 truncate rol;
 truncate rol_usuario;
+truncate ruta;
 truncate seccion;
 truncate servicio;
 truncate simulacion_evento;
@@ -930,6 +941,8 @@ truncate sucursales;
 truncate tabla;
 truncate tabla_asiento;
 truncate tablapermiso;
+truncate tablas_sistema;
+truncate tarifa_parqueo;
 truncate tiempo_uso;
 truncate tipo_cliente;
 truncate tipo_emision;
@@ -941,15 +954,20 @@ truncate tipo_respuesta;
 truncate tipo_servicio;
 truncate tipo_transaccion;
 truncate tipo_usuario;
+truncate tipo_vehiculo;
 truncate token;
 truncate ubicacion;
 truncate ubicacion_producto;
 truncate unidad;
 truncate usuario;
 truncate usuario_destino;
+truncate vehiculo;
 truncate vencimiento_producto;
 truncate venta;
 truncate venta_online;
+truncate venta_pasaje;
+truncate viaje;
+truncate viaje_conductor;
 truncate zona;
 
  * 

@@ -162,7 +162,7 @@ class Cuotum_model extends CI_Model
             left join banco b on b.banco_id = k.banco_id  
             where k.credito_id = $credito_id
             and m.moneda_id = 2
-            ORDER BY k.cuota_numcuota, `cuota_id` ASC")->result_array();
+            ORDER BY k.cuota_numcuota, k.cuota_id ASC")->result_array();
 
         return $credito;
     }
@@ -212,13 +212,13 @@ class Cuotum_model extends CI_Model
 
         return $cuota_id;
     }
-    function get_recibo_cuenta($cuota_id)
+    /*function get_recibo_cuenta($cuota_id)
     {
         $limit_condition = "";
         if(isset($params) && !empty($params))
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
-        $cuota_id = $this->db->query("
+        $sql = "
             SELECT
                 c.*, p.*, co.*, k.*, e.*, fv.factura_numero
 
@@ -234,14 +234,35 @@ class Cuotum_model extends CI_Model
                 and k.estado_id = e.estado_id
                 and ".$cuota_id." = k.cuota_id
 
-            ORDER BY `cuota_numcuota` ASC
-
-            " . $limit_condition . "
-        ")->result_array();
+            ORDER BY k.cuota_numcuota ASC";
+        
+        $cuota_id = $this->db->query($sql)->result_array();
 
         return $cuota_id;
-    }
+    }*/
 
+function get_recibo_cuenta($cuota_id)
+{
+    $sql = "
+        SELECT
+            c.*, p.*, co.*, k.*, e.*, fv.factura_numero
+        FROM
+            cuota k
+        JOIN credito c ON k.credito_id = c.credito_id
+        JOIN venta co ON c.venta_id = co.venta_id
+        JOIN cliente p ON p.cliente_id = co.cliente_id
+        JOIN estado e ON k.estado_id = e.estado_id
+        LEFT JOIN factura fv ON fv.venta_id = c.venta_id
+        WHERE
+            k.cuota_id = " . (int)$cuota_id . "
+        ORDER BY
+            k.cuota_numcuota ASC
+    ";
+
+    $result = $this->db->query($sql)->result_array();
+    return $result;
+}
+    
     function get_recibo_cuentaServ($cuota_id)
     {
         $limit_condition = "";
@@ -264,7 +285,7 @@ class Cuotum_model extends CI_Model
                 and k.estado_id = e.estado_id
                 and ".$cuota_id." = k.cuota_id
 
-            ORDER BY `cuota_numcuota` ASC
+            ORDER BY k.cuota_numcuota ASC
 
             " . $limit_condition . "
         ")->result_array();
@@ -409,7 +430,7 @@ class Cuotum_model extends CI_Model
     
     function get_detallesventa($venta_id)
     {
-        $venta = $this->db->query("
+        $sql = "
             SELECT
                 dv.producto_id, dv.`detalleven_cantidad`, p.producto_nombre, cp.`categoria_nombre`
             FROM
@@ -419,7 +440,9 @@ class Cuotum_model extends CI_Model
             WHERE
                 dv.`venta_id` = $venta_id
             ORDER BY dv.`detalleven_id` ASC
-        ")->result_array();
+        ";
+        //echo $sql;
+        $venta = $this->db->query($sql)->result_array();
         return $venta;
     }
 }

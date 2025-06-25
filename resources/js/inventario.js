@@ -435,8 +435,8 @@ function tabla_inventario(){
                 html += "	<th> </th>";
                 html += "	<th> </th>";
                 html += "	<th> </th>";
-//                html += "	<th> </th>";
-//                html += "	<th></th>";
+                html += "	<th> </th>";
+                html += "	<th></th>";
 //                html += "	<th></th>";
                 html += "	<th>"+formato_numerico(total_final)+"</th>";
                 html += "	<th>"+formato_numerico(total_otramoneda)+"</th>";
@@ -464,6 +464,257 @@ function tabla_inventario(){
     
     
           
+    //  document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader         
+    
+}
+
+function tabla_inventario_saldos(){
+
+    var decimales = document.getElementById('decimales').value;
+    var base_url = document.getElementById("base_url").value;
+    var parametro = "";
+    var fechainventario = document.getElementById("fechainventario").value;
+    var controlador = base_url+"inventario/mostrar_inventario_saldos";
+    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
+    var lamoneda_id = document.getElementById('lamoneda_id').value;
+    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+    var total_otramoneda = Number(0);
+    var total_otram = Number(0);
+    var tipo_reporte = 1; //document.getElementById('tipo_reporte').value;    
+    var select_almacen = "";
+    
+    let parasucursal = 1; //document.getElementById('parasucursal').value;
+    
+
+    if (tipo_reporte == 1){
+        
+        //alert("parametro:"+parametro+"* almacen: "+select_almacen);
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{parametro:parametro, select_almacen:select_almacen, fechainventario:fechainventario},
+        success: function(resultado){
+            
+            var inv = JSON.parse(resultado);
+            var tamanio = inv.length;
+            //alert(tamanio);
+            
+             html = "";            
+                    html += "<table class='table table-striped table-bordered' id='mitabla' >";
+                    html += "<tr>";
+                    html += "	<th>#</th>";
+//                    html += "	<th>Imagen</th>";
+                    html += "	<th>Descripción</th>";
+                    html += "	<th>Código</th>";
+                    html += "	<th>Marca</th>";
+                    html += "	<th>Industria</th>";
+                    html += "	<th>Categoría</th>";                    
+                    html += "	<th>Unidad</th>";
+                    html += "	<th>Costo ("+nombre_moneda+")</th>";
+//                    html += "	<th>Compras</th>";
+//                    html += "	<th>Ventas</th>";
+//                    html += "	<th>Pedidos</th>";
+                    html += "	<th>Saldo</th>";
+                    html += "	<th>Total ("+nombre_moneda+")</th>";
+                    
+                    try{
+                    
+                    html += "	<th>Total (";
+                                            if(lamoneda_id == 1){
+                                                html += lamoneda[1]['moneda_descripcion'];
+                                            }else{
+                                                html += lamoneda[0]['moneda_descripcion'];
+                                            }
+                                            
+                                            
+                    html += ")</th>";
+                    
+                    } catch (error) {
+                    
+                        console.error(error);
+                        alert("ADVERTENCIA: No existen monedas registradas/activas...!");
+                    }
+                    
+                    html += "	<th colspan='6'>Saldos/Presentaciones</th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar'>";
+                           
+
+            if (inv != null){
+            
+                    
+                    var total = 0;
+                    var total_final = 0;
+                    var existencia = 0;
+                    var margen = " style='padding:0; text-align: right;'";
+                    var categoria = "";
+                    
+                for (var i = 0; i < tamanio ; i++){
+                   
+                    //alert('dentra aqui: '+i+"/"+tamanio);
+                    if (categoria != inv[i]["categoria_nombre"]){                        
+                        html += "<tr><td colspan='14'><b>"+inv[i]["categoria_nombre"]+"<b></tr>";
+                    }   
+
+                        html += `<tr style='padding:0;${inv[i]["existencia"] <= 0 ? "background-color: #FF8989":""}'>`;
+
+                                    total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
+                                    total_final += total;
+                                    existencia = parseFloat(inv[i]["existencia"]);                                                    
+                        html += "             	<td "+margen+"><a style='margin-right: 10px;'>"+(i+1)+"</a></td>";
+                        html += "             	<td  style='padding:0; text-align: left;'><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
+                        html += "             	<td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_marca"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_industria"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
+
+                        html += "	<td "+margen+"><b style='margin-right: 10px;'>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</b></td>";
+                        html += "             	<td "+margen+"><font size='1'><b style='margin-right: 10px;'>"+ existencia.toFixed(decimales)+"</b></font></td>";
+                        html += "             	<td "+margen+"><font size='1'><b style='margin-right: 10px;'>"+ numberFormat(total.toFixed(decimales))+"</b></font></td>";
+                        html += "<td "+margen+"> <b style='margin-right: 10px;'>";
+                        if(lamoneda_id == 1){
+                            total_otram = total/Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = total*Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
+                        html += "</d></td>";
+
+                        factor = 0;
+                        producto_factor = 0;
+                        unidadfactor = "";
+
+                        if (inv[i]["producto_factor"]>0){
+
+                            producto_factor = inv[i]["producto_factor"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor"]);
+                            html += "             	<td "+margen+" ><center style='line-height:80%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+" </sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor1"]>0){
+
+                            producto_factor = inv[i]["producto_factor1"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor1"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor1"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor1"]);
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor2"]>0){
+
+                            producto_factor = inv[i]["producto_factor2"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor2"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor2"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor2"]);
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor3"]>0){
+
+                            producto_factor = inv[i]["producto_factor3"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor3"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor3"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor3"]);
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+
+                        if (inv[i]["producto_factor4"]>0){
+
+                            producto_factor = inv[i]["producto_factor4"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor4"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor4"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor4"]);
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+
+    //                    html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ existencia +"<br>"+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        html += "<td> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs no-print'><fa class='fa fa-list'> </fa> Kardex</a></small> </td>";
+                        //html += "<td><a href='"+base_url++"'>kardex</a></td>";
+                        html += "</tr>";
+                   
+                 
+                     
+
+                   categoria = inv[i]["categoria_nombre"];     
+                } // end for (i = 0 ....)
+            } //end if (inv != null){
+                
+                html += "</tbody>";
+                html += "<tr>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+                html += "	<th> </th>";
+//                html += "	<th> </th>";
+//                html += "	<th></th>";
+//                html += "	<th></th>";
+                html += "	<th>"+formato_numerico(total_final)+"</th>";
+                html += "	<th>"+formato_numerico(total_otramoneda)+"</th>";
+                html += "	<th></th>";
+                html += "	<th></th>";
+                html += "	<th></th>";
+                html += "	<th></th>";
+                html += "	<th></th>";
+                html += "</tr>    ";
+                html += "</table>";            
+                $("#tabla_inventario").html(html);   
+                             
+                
+            }, // end succes: function(resultados){
+            error:function(resultado){
+                //alert('ocurrio un error..!!');
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 
+            }
+            
+         }); // close ajax                 
+        
+    }
+
     //  document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader         
     
 }
@@ -2266,6 +2517,154 @@ function generarexcel(){
 
 }
 
+function generarexcel_saldos(){
+    
+    var decimales = document.getElementById('decimales').value;
+    var base_url = document.getElementById('base_url').value;
+    var fecha = document.getElementById('fechainventario').value;
+    var controlador = base_url+'inventario/generar_excel_saldos';    
+    
+
+     //parametro = document.getElementById('filtrar').value;   
+     //controlador = base_url+'ingreso/buscarallingreso/';
+    var showLabel = true;
+    
+    var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{fecha:fecha},
+           success:function(result){
+                var factura = JSON.parse(result);
+                var tam = factura.length;
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var otramoneda_nombre = "";
+                var total_otram = Number(0);
+                html = "";
+                if (tam>0){
+                  /* **************INICIO Generar Excel JavaScript************** */
+                    var CSV = 'sep=,' + '\r\n\n';
+                    //This condition will generate the Label/Header
+                    if (showLabel) {
+                        var row = "";
+
+                        //This loop will extract the label from 1st index of on array
+                        
+
+                            //Now convert each value to string and comma-seprated
+                            
+                            row += 'N°' + ',';
+                            row += 'DESCRIPCION' + ',';
+                            row += 'CODIGO' + ',';
+                            row += 'MARCA' + ',';
+                            row += 'INDUSTRIA' + ',';
+                            row += 'CATEGORIA' + ',';
+                            row += 'UNIDAD' + ',';
+                            row += 'COSTO(' +nombre_moneda+ '),';
+                            row += 'SALDO' + ',';
+                            row += 'TOTAL(' +nombre_moneda+ '),';
+                            row += 'TOTAL(';
+                            if(lamoneda_id == 1){
+                                otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                            }
+                            row += otramoneda_nombre+ '),';
+       
+                        row = row.slice(0, -1);
+
+                        //append Label row with line break
+                        CSV += row + '\r\n';
+                    }
+                    
+                    //1st loop is to extract each row
+                    for (var i = 0; i < tam; i++) {
+                        var row = "";
+                        //2nd loop will extract each column and convert it in string comma-seprated
+                        
+                            row += '='+i+'+1,';
+                            row += '"' +factura[i]["producto_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_codigo"]+ '",';
+                            row += '"' +factura[i]["producto_marca"]+ '",';
+                            row += '"' +factura[i]["producto_industria"]+ '",';
+                            row += '"' +factura[i]["categoria_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_unidad"]+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            if(lamoneda_id == 1){
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
+                           
+
+                        
+                        row.slice(0, row.length - 1);
+
+                        //add a line break after each row
+                        CSV += row + '\r\n';
+                    }
+                    
+                    if (CSV == '') {        
+                        alert("Invalid data");
+                        return;
+                    }
+                    
+                    //Generate a file name
+                    var fileName = "Inventario_";
+                    //this will remove the blank-spaces from the title and replace it with an underscore
+                    fileName += reportitle.replace(/ /g,"_");   
+
+                    //Initialize file format you want csv or xls
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                    // Now the little tricky part.
+                    // you can use either>> window.open(uri);
+                    // but this will not work in some browsers
+                    // or you will not get the correct file extension    
+
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");    
+                    link.href = uri;
+
+                    //set the visibility hidden so it will not effect on your web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
+
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    /* **************F I N  Generar Excel JavaScript************** */
+                   
+                   
+                   
+                   
+                   //document.getElementById('loader').style.display = 'none';
+            }
+         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_factura").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });   
+
+}
+
 
 function ver_operacionproceso(producto_id){
     
@@ -2419,8 +2818,6 @@ function actualizar_productos(){
             var productos =  JSON.parse(respuesta);
             var sucproductos =  productos["sucproductos"];
             var misproductos =  productos["misproductos"];
-            
-
 
             alert(JSON.stringify(productos));
 
@@ -2430,8 +2827,34 @@ function actualizar_productos(){
             //tabla_inventario();
         }
     });      
+
+}
+
+function mostrar_saldos(){
     
-   
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/mostrar_saldos";
+    var fecha = document.getElementById('fechainventario').value;
+
     
+    //alert("base de datos: "+base_datos+" operacion: "+operacion)
     
+    document.getElementById('loaderindex').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{fechainventario: fechainventario},
+        success:function(respuesta){
+            
+            tabla_inventario();
+
+
+
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });      
+
 }

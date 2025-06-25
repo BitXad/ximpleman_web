@@ -1163,6 +1163,7 @@ function dibujar_tabla_puntos_venta(){
     
     let base_url = document.getElementById('base_url').value;
     let controlador = `${base_url}punto_venta/get_puntos_venta`;
+    let dosificacion_ambiente = document.getElementById('dosificacion_ambiente').value;
     
     $.ajax({url:controlador,
             type:"POST",
@@ -1204,10 +1205,13 @@ function dibujar_tabla_puntos_venta(){
                     html +=    `</td>
                                 <td>${moment(pv.cufd_fechavigencia).format("DD/MM/YYYY HH:mm:ss")}</td>
                                 <td>
-                                <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
-                                <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>
-                                <button class="btn btn-xs btn-info" title="Cantidad CUFD 50" onclick="solicitudCufds(${pv.puntoventa_codigo},50)">50 CUFDS</button>
-                                <button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})"><span class='fa fa-trash'></span></button>
+                                <button class="btn btn-xs btn-primary" title="Generar un nuevo C.U.I.S." onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
+                                <button class="btn btn-xs btn-success" title="Generar un C.U.F.D. nuevo" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>`;
+                                
+                                if(dosificacion_ambiente == 2){ //si el ambiente es pruebas
+                                    html +=    `<button class="btn btn-xs btn-info" title="Cantidad CUFD 50" onclick="solicitudCufds(${pv.puntoventa_codigo},50)">50 CUFDS</button>`;
+                                }
+                    html +=    `<button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})"><span class='fa fa-trash'></span></button>
                                 </td>
                             </tr>`;
                     i++;

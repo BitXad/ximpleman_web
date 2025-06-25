@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="<?php echo site_url('resources/images/usuarios/'.$usuario['usuario_imagen'])?>" id="previewing" class="img-responsive center-block">
+                        <img src="<?php echo site_url('resources/images/usuarios/'.$usuario['usuario_imagen'])?>" id="previewing" class="img-responsive center-block" style="max-width: 200px; height: auto; margin-top: 10px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
                         <input type="hidden" value="<?php echo $usuario['usuario_id'] ?>" name="userid" id="userid">
                         <input type="hidden" value="<?php echo $usuario['usuario_imagen'] ?>" name="foto">
                     </div>

@@ -58,6 +58,8 @@ function mostrar_ocultar(){
         
             document.getElementById('div_sucursales').style.display = 'block';
             document.getElementById('facturado').checked = false;
+            
+            
        
         }
     else{
@@ -223,12 +225,7 @@ window.onkeydown = compruebaTecla;
 
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
-<?php 
-$verificar_cantidades = 1;
-$compra_rapida = 1;
-$actualizar_precios = 1;
 
-?>
 <div id="selector" hidden>
     <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
     
@@ -351,11 +348,16 @@ $actualizar_precios = 1;
 <input type="text" id="parametro_verificarconexion" value="<?php echo $parametro['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
 <input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
 <input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
+<input type="text" id="parametro_vercantidades" value="<?php echo $parametro['parametro_vercantidades']; ?>" name="parametro_vercantidades"  hidden>
+<input type="text" id="parametro_comprarapida" value="<?php echo $parametro['parametro_comprarapida']; ?>" name="parametro_comprarapida"  hidden>
+<input type="text" id="parametro_actualizarprecios" value="<?php echo $parametro['parametro_actualizarprecios']; ?>" name="parametro_actualizarprecios"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
-<input type="text" id="verificar_cantidades" value="<?php echo $verificar_cantidades; ?>" hidden>
-<input type="text" id="compra_rapida" value="<?php echo $compra_rapida; ?>" hidden>
-<input type="text" id="actualizar_precios" value="<?php echo $actualizar_precios; ?>" hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
+<input type="text" id="puede_facturar" value="0" hidden>
+<input type="text" id="motivo_puede_facturar" value="" hidden>
+<input type="text" id="vigencia_cufd" value="<?php echo ($parametro['parametro_tiposistema'] != 1)?$cufd[0]["cufd_fechavigencia"]:""; ?>" hidden>
+<input type="text" id="parametro_generarcufd" value="<?php echo $parametro['parametro_generarcufd']; ?>" hidden>
+<input type="text" id="cufd_hoy" value="<?php  echo (empty($cufd))?0:(($cufd[0]['fecharegistro']==date("Y-m-d"))?1:0); ?>" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -802,7 +804,7 @@ $actualizar_precios = 1;
                 <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
             </div>
         </div>
-        <div class="col-md-14" >
+        <div class="col-md-12" >
             <br>
             <small>
                 <b>
@@ -1061,7 +1063,7 @@ $actualizar_precios = 1;
         </div>
             
                 <?php $estilo_tabla = "style='padding:0;'"; ?>
-        <div class="col-md-12" style="padding:0; font-family: Arial;">
+        <div class="col-md-12 table-responsive" style="padding:0; font-family: Arial;">
             <table id="mitabla">
                 <tr <?php echo $estilo_tabla; ?>>
                     <th <?php echo $estilo_tabla; ?>>#</th>
@@ -1127,7 +1129,7 @@ $actualizar_precios = 1;
         <div class="box">
             <font size="1"><b>VENTAS CON FALLAS</b></font> <button class="btn btn-xs btn-info" onclick="ventas_fallidas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
         <div class="box" style="border-color:black;">
-            <div class="box-body">        
+            <div class="box-body table-responsive">        
         
        
         <div class="col-md-12" style="padding:0;" id="div_mensaje">
@@ -1202,6 +1204,14 @@ $actualizar_precios = 1;
                 
                 
             <!--------------- botones ---------------------->
+            
+            <?php if($dosificacion[0]['docsec_codigoclasificador']==3){ ?>
+                <button type="button" id="boton_exportacion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalFacturaDatos" >
+                    <fa class="fa fa-truck"></fa>  Exportacion
+                </button>    
+            <?php } ?>
+            
+            
             <?php //if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
@@ -1581,7 +1591,7 @@ $actualizar_precios = 1;
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_cierrecaja"]!=1)?"display:none":"" ?>">
                 <i class="fa fa-calculator fa-4x"></i><br><br>
-               Cierre<br>de Caja <br>
+               Abrir/Cerrar<br>Caja <br>
             </a>
             <?php //} ?>                
 
@@ -1637,9 +1647,12 @@ $actualizar_precios = 1;
                         <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?> <br>
                         <button class="btn btn-default btn-xs"><b>F9</b></button> Registrar Glosa <br>
                     </p>
+                    
+                    <?php if($dosificacion[0]["dosificacion_ambiente"]==2){ // Si el ambiente es pruebas ?>
                         <div >            
                             <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
                         </div>
+                    <?php }?>
                     </div>
                 </div>
             </div>
@@ -1793,7 +1806,8 @@ $actualizar_precios = 1;
                                             <?php $mostrar_almacenes = true;
                                                 if($mostrar_almacenes){?>
 
-                                                <select class="btn btn-default btn-xs" id="select_almacen">
+                                                <select class="btn btn-default btn-xs" id="select_almacen" onchange="seleccionar_almacen()">
+                                                    <option value="0">- SELECCIONE SUCURSAL -</option>
                                                     <?php   
                                                         foreach($almacenes as $almacen){ ?>
 
@@ -2118,6 +2132,7 @@ $actualizar_precios = 1;
                     <h5 class="modal-title" id="myModalLabel"><b>MODALIDAD</b></h5>
                     <select class="form-control input-sm" id="modalidad" name="modalidad">                       
                         <option value="MENSUAL">MENSUAL</option>
+                        <option value="QUINCENAL">QUINCENAL</option>
                         <option value="SEMANAL">SEMANAL</option>
                     </select>
                 </div>
@@ -2210,7 +2225,7 @@ $actualizar_precios = 1;
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-                            <h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>
+                            <h4 class="modal-title" id="myModalLabel"><b><?php echo $sistema["sistema_modulopedidos"]; ?></b></h4>
                                 
                             <div class="input-group"> <span class="input-group-addon">Buscar</span>
                               <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
@@ -2606,7 +2621,7 @@ $actualizar_precios = 1;
 						<div class="form-group">
                                                         
                                                     <button class="btn btn-success" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
-                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                            <span class="fa fa-floppy-o"></span> Registrar 
                                                     </button>
                                                     
                                                     <button class="btn btn-danger" id="boton_cancelar_precio" data-dismiss="modal" >
@@ -3950,4 +3965,211 @@ $(document).ready(function() {
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!-------------------- MODAL PARA EXPORACION----------------------------------------------------------->
+<!------------------------------------------------------------------------------->
+<div hidden>
+    <button type="button" id="boton_exportacion" class="btn btn-default" data-toggle="modal" data-target="#modalFacturaDatos" >
+      Exportacion
+    </button>
+    
+</div>
+
+<!-- Modal -->
+<div id="modalFacturaDatos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalFacturaDatosLabel">
+  <div class="modal-dialog" role="document">
+    <form id="formFacturaDatos" method="post">
+      <div class="modal-content">
+          
+        <div class="modal-header" style="background-color: #3399cc; color: white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalFacturaDatosLabel"><b>DATOS FACTURA EXPORTACION</b></h4>
+        </div>
+          
+        <div class="modal-body">
+            
+            
+                <div class="col-md-12 form-group">
+                  <label for="datos_codigopais">Código País</label>
+                  <select class="form-control" name="datos_codigopais" id="datos_codigopais2">
+                        <?php foreach($paises as $p){?>
+                      <option value="<?php echo $p["pais_codigoclasificador"]; ?>"><?php echo $p["pais_descripcion"]; ?></option>
+                            
+                        <?php } ?>
+                  </select>
+                      
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_incoterm">Incoterm</label>
+                  <input type="text" class="form-control" name="datos_incoterm" value="CIF" id="datos_incoterm">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_incotermdetalle">Detalle Incoterm</label>
+                  <input type="text" class="form-control" name="datos_incotermdetalle" value="CIF-WEBEX" id="datos_incotermdetalle">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_costosgastosnacionales">Costos/Gastos Nacionales</label>
+                  <textarea class="form-control" name="datos_costosgastosnacionales" id="datos_costosgastosnacionales">
+Gasto Transporte:7000
+Gasto de Seguro:2000
+                  </textarea>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_totalgastosnacionalesfob">Total Gastos Nacionales FOB</label>
+                  <input type="number" step="0.0000000000000001" class="form-control" name="datos_totalgastosnacionalesfob" id="datos_totalgastosnacionalesfob" value="9000">
+                </div>
+
+            <div class="col-md-12 form-group"></div>
+                    
+                
+                <div class="col-md-6 form-group">
+                  <label for="datos_costosgastosinternacionales">Costos/Gastos Internac.</label>
+                  <textarea class="form-control" name="datos_costosgastosinternacionales" id="datos_costosgastosinternacionales">
+Gasto Transporte:7000                      
+Gasto de Seguro:2000
+                  </textarea>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_totalgastosinternacionales">Total Gastos Internacionales</label>
+                  <input type="number" step="0.0000000000000001" class="form-control" name="datos_totalgastosinternacionales" value="9000" id="datos_totalgastosinternacionales">
+                </div>
+
+                <div class="col-md-12 form-group"></div>
+            
+                <div class="col-md-6 form-group">
+                  <label for="datos_codigomoneda">Moneda de Export.</label>
+                  <select class="form-control" name="datos_codigomoneda" value="1" id="datos_codigomoneda">
+                      <?php foreach($monedas as $mon){ ?>
+                      
+                      <option value="<?php echo $mon["moneda_codigoclasificador"]; ?>"><?php echo $mon["moneda_nombre"]; ?></option>
+                      <?php } ?>
+                      
+                  </select>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_tipocambio">Tipo de Cambio</label>
+                  <input type="number" step="0.0000000000000001" class="form-control" value="6.96" name="datos_tipocambio" id="datos_tipocambio">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_descripcionpaquetes">Descripción de Paquetes</label>
+                  <textarea class="form-control" name="datos_descripcionpaquetes" id="datos_descripcionpaquetes">10 PAQUETES DE MEDIO QUINTAL</textarea>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_informacionadicional">Información Adicional</label>
+                  <textarea class="form-control" name="datos_informacionadicional" id="datos_informacionadicional">CUENTA DE BANCO: 1-12542-212174</textarea>
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_descuentoadicional">Descuento Adicional</label>
+                  <input type="number" step="0.0000000000000001" class="form-control"  value="0.00"  name="datos_descuentoadicional" id="datos_descuentoadicional">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_lugardestino">Lugar Destino</label>
+                  <input type="text" class="form-control"  value="CHILE"  name="datos_lugardestino" id="datos_lugardestino">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_direccioncomprador">Direccion comprador</label>
+                  <input type="text" class="form-control"  value="AV. ROSENDO TOMILLO S/N"  name="datos_direccioncomprador" id="datos_direccioncomprador">
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="datos_puertodestino">Puerto Destino</label>
+                  <input type="text" class="form-control"  value="ARICA - CHILE"  name="datos_puertodestino" id="datos_puertodestino">
+                </div>
+
+        </div>
+        <div class="modal-footer">
+          <!--<button type="submit" class="btn btn-primary">Guardar</button>-->
+          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa>Cerrar</button>
+        </div>
+          
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL TOTAL ------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div>
+    <button type="button" id="boton_portotal" class="btn btn-default" data-toggle="modal" data-target="#modalportotal" >
+      Total
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalportotal" tabindex="-1" role="dialog" aria-labelledby="modalportotal" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">CALCULAR POR TOTAL</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                    <input type="hidden" id="calcular_detalleven_id" />
+    
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <center>
+                                
+                            <div class="col-md-12 form-group" hidden>
+                              <!--<label for="calcular_producto">producto</label>-->
+                              <input type="text" class="form-control" value="HELADO DE CAMARONES DULCES 180G - 65431334654" name="calcular_producto" id="calcular_producto" disabled="true">
+                            </div>
+                                
+                            <div class="col-md-4 form-group">
+                              <label for="calcular_total">Total Final</label>
+                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_total" id="calcular_total" onkeyup="calcular_portotal()">
+                            </div>
+                               
+                            <div class="col-md-4 form-group">
+                              <label for="calcular_cantidad">Cantidad</label>
+                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_cantidad" id="calcular_cantidad" onkeyup="calcular_portotal()">
+                            </div>
+                                
+                            <div class="col-md-4 form-group">
+                              <label for="calcular_precio">Prec. Unit</label>
+                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_precio" id="calcular_precio" onkeyup="calcular_porunitario()">
+                            </div>
+
+                                
+
+                            </center>
+                        </div>
+
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-success btn-block" data-dismiss="modal" onclick="registrar_calculos()"><fa class="fa fa-save"></fa> Registrar Totales</button>
+                            <button type="button" class="btn btn-danger btn-block" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+                
+
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL TOTAL ----------------------------------->
 <!------------------------------------------------------------------------------->

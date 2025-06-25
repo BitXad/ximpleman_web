@@ -260,9 +260,36 @@ function ventas_cocina_dia($estado)
                 c.cliente_puntos, u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
                 r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
                 r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id,
-                m.moneda_descripcion, ue.usuario_nombre as usuario_entrega
+                m.moneda_descripcion, ue.usuario_nombre as usuario_entrega, f.forma_nombre
 
                 from venta v
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                left join forma_pago f on f.forma_id = v.forma_id
+                left join zona z on z.zona_id = c.zona_id
+                left join credito r on r.venta_id = v.venta_id
+                left join moneda m on m.moneda_id = v.moneda_id
+                left join usuario ue on v.entrega_usuarioid = ue.usuario_id
+                where v.venta_id = ".$venta_id;
+                        
+        $venta = $this->db->query($sql)->result_array();        
+        return $venta;
+    }
+
+    function get_traspaso($venta_id)
+    {
+        $sql = "select v.*,
+                c.tipocliente_id,c.categoriaclie_id,c.usuario_id,c.cliente_codigo,c.cliente_nombre,c.cliente_ci,
+                c.cliente_direccion,c.cliente_telefono,c.cliente_celular,c.cliente_foto,c.cliente_email,
+                c.cliente_nombrenegocio,c.cliente_aniversario,c.cliente_latitud,c.cliente_longitud,c.cliente_nit,
+                c.cliente_razon,c.cliente_departamento,c.zona_id,c.lun,c.mar,c.mie,c.jue,c.vie,c.sab,c.dom,
+                c.cliente_puntos, u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
+                r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
+                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id,
+                m.moneda_descripcion, ue.usuario_nombre as usuario_entrega
+
+                from traspaso v
                 left join cliente c on c.cliente_id = v.cliente_id
                 left join usuario u on u.usuario_id = v.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id

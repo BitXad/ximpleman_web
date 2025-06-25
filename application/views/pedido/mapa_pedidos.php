@@ -93,7 +93,9 @@
                        
                         <div id="map"></div> <!-- mapa --> 
                          
-                        <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametros['parametro_apikey']; ?>"></script> 
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+                        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
                         <script>       
                             
                         </script> 

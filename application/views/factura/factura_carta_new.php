@@ -220,7 +220,7 @@ border-bottom : 1px solid #aaa;
                         
                             <?php if($parametro["parametro_mostrarempresa"]==1){ ?>
                                 
-                                <font size="2" face="Arial black"><b><?php echo "<br>".$empresa[0]['empresa_nombre']; ?></b></font><br>
+                                <font size="2" face="Arial"><b><?php echo "<br>".$empresa[0]['empresa_nombre']; ?></b></font><br>
                                 
                             <?php } ?>
                             
@@ -324,6 +324,10 @@ border-bottom : 1px solid #aaa;
 
                                 case 2: echo "FACTURA DE ALQUILER";
                                         break;
+                                    
+                                case 3: echo "FACTURA COMERCIAL DE EXPORTACIÓN<br>(COMMERCIAL INVOICE)";
+                                        $subtitulo_factura = "Sin Derecho a Crédito Fiscal";
+                                        break;
 
                                 case 8: echo "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
                                         $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
@@ -352,11 +356,34 @@ border-bottom : 1px solid #aaa;
                                 ?> 
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $fecha." ".$factura[0]['factura_hora'] ?></td>
                             </tr>
+                            
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Razón Social:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_razonsocial'] ?></td>
                             </tr>
                                                         
+                            <?php
+                            if($opc == 3){ //Sector Exportacion comercial
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>INCOTERM:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_incoterm']." ".$datos_factura['datos_incotermdetalle']; ?></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Tipo de Cambio:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo number_format($datos_factura['datos_tipocambio'],5,".",","); ?></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Moneda de Transacción Comercial:<br>(Comercial Transaction Currency)</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_monedatransaccional']; ?></td>
+                            </tr>
+
+                            <?php
+                            }
+                            ?>
+                            
                             <?php
                             if($opc == 11){ //Sector Educativo
                             ?>
@@ -411,6 +438,31 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_codigocliente'] ?></td>
                             </tr>
+                            
+                            
+                            
+                            <?php
+                            if($opc == 3){ //Comercializacion de hidrocarburos
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Lugar Destino:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_lugardestino']; ?></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Dirección Comprador:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_direccioncomprador']; ?></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Puerto Destino:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_puertodestino']; ?></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
+                        
+                            
                             <?php
                             if($opc == 12){ //Comercializacion de hidrocarburos
                             ?>
@@ -481,6 +533,8 @@ border-bottom : 1px solid #aaa;
         <!--<table class="table"  style="width: <?php echo $ancho;?>cm; height: <?php echo $tipo_factura."cm"; ?>; margin: 0; padding: 0; border-collapse: collapse;" >-->
             <tr>
                 <td>
+                    <?php if( $factura[0]['docsec_codigoclasificador']!=3){ ?>
+                    
                     <table class="table-condensed table-fondito"  style="width: 100%; margin: 0; ">
                         <tr  style=" font-family: Arial; border: 1px solid black;">
                             <?php if($factura[0]['docsec_codigoclasificador']==2 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ ?>
@@ -775,6 +829,217 @@ border-bottom : 1px solid #aaa;
                     
                     
                 </table>
+                
+                <?php }else{ //Si es factura de exportacion ?>
+                    
+                    <table class="table-condensed table-fondito"  style="width: 100%; margin: 0; ">
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            
+                            
+                            <td align="center"><b>NANDINA</b></td>
+                            <td align="center"><b>CANTIDAD<br>(Quantity)</b></td>
+                            <td align="center"><b>DESCRIPCIÓN<br>(Description)</b></td>
+                            <td align="center"><b>UNIDAD MEDIDA<br>(Unit of Measurement)</b></td>
+                            <td align="center"><b>PRECIO UNITARIO<br>(Unit Value)</b></td>
+                            <td align="center"><b>SUBTOTAL</b></td>
+                        </tr>
+                        <?php $cont = 0;
+                            $cantidad = 0;
+                            $total_descuentoparcial = 0;
+                            $total_descuento = 0;
+                            $total_final = 0;
+                            
+                            $total_subtotal = 0;
+                            $ice = 0.00;
+    
+                            if ($factura[0]['estado_id']<>3){
+                                foreach($detalle_factura as $d){
+                                    $cont = $cont+1;
+                                    $cantidad += $d['detallefact_cantidad'];
+                                    $sub_total = $d['detallefact_subtotal'];
+                                    $total_subtotal += $sub_total;
+                                    $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad']; 
+                                    $total_descuento += $d['detallefact_descuento']; 
+                                    $total_final += $d['detallefact_total']; 
+                        ?>
+                        <tr style="border: 1px solid black">
+                            <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= "2304.00.00.00"; ?></font></td>
+                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><?= number_format($d['detallefact_cantidad'],$decimales,'.',','); ?></font></td>
+                            <!--<td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= $d['detallefact_codigo']; ?></font></td>-->
+                            <td colspan="1" style="padding: 0; line-height: 10px;"><font style="size:7px; font-family: arial; padding-left:3px">
+                                
+                                    <?php echo $d['detallefact_descripcion']; ?>
+                                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                                        echo $d['detallefact_preferencia']; }
+                                    ?>
+                                    <?php 
+                                        if($factura[0]['docsec_codigoclasificador']!=16){ // SI es diferente de hoteles
+                                            
+                                            if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                                            echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                                        }
+                                    ?>
+
+                                
+                                </font>
+                            </td>
+                            <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"><center> <?= $d['producto_unidad'] ?></center></font></td>
+                            
+                            <!-------------- PRECIO UNITARIO ---------->
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio'],$decimales,'.',','); ?></font></td>                                                        
+                            <!-------------- SUBTOTAL ---------->
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,$decimales,'.',','); ?></font></td>
+                        </tr>
+                    <?php
+                            }
+                        } 
+                        
+
+                        $total_final_factura = $factura[0]['factura_subtotal'];
+                        
+                        $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+
+                        $span = 5;
+                    ?>
+                        
+                        
+       
+                    <!-------------- SUB TOTAL ---------->
+                    
+                    <tr>                        
+                        <td style="padding:0; padding-right: 3px;" colspan="5" align="right">TOTAL DETALLE (<?= $datos_factura['datos_monedatransaccional']; ?>)(Total Detail)</td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
+                    </tr>                        
+                    <tr>                        
+                        <td colspan="6" align="left" style="padding: 0; padding-right: 3px; border-left: none; border-right: none;"><b>Desglose de Costos y Gastos Nacionales</b><br>(National Costs and Expenses Detail)</td>
+                    </tr>                        
+                    <?php     
+                    $texto = $datos_factura['datos_costosgastosnacionales'];//"Gasto Transporte:7000\nGasto de Seguro:2000";
+
+                    // Convertir a arreglo asociativo
+                    $lineas = explode("\n", trim($texto));
+                    $gastos = [];
+
+                    foreach ($lineas as $linea) {
+                        list($clave, $valor) = explode(":", $linea);
+                        $gastos[trim($clave)] = (float) trim($valor);
+                    }
+
+                    ?>
+                    
+                    <?php foreach ($gastos as $concepto => $monto){ ?>
+                        <tr>
+                            <td colspan="5"><?php echo htmlspecialchars($concepto); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($monto, 2); ?></td>
+                        </tr>
+                    <?php } ?>
+                        
+                    <?php if($datos_factura['datos_totalgastosnacionalesfob']>0){ 
+                            $total_final_factura = $total_final_factura + $datos_factura['datos_totalgastosnacionalesfob'];
+                        
+                        ?>
+                        
+                        <tr>
+                            <td colspan="5">SUBTOTAL FOB(FRONTERA)</td>
+                            <td style="text-align: right;"><?php echo number_format($total_final_factura, 2); ?></td>
+                        </tr>
+                       
+                    <?php } ?>
+                        
+                     
+                    <tr>                        
+                        <td colspan="6" align="left" style="padding: 0; padding-right: 3px; border-left: none; border-right: none;"><b>Desglose de Costos y Gastos Internacionales</b><br>(International Costs and Expenses Detail)</td>
+                    </tr>   
+                        
+                    <?php     
+                    $texto = $datos_factura['datos_costosgastosinternacionales'];//"Gasto Transporte:7000\nGasto de Seguro:2000";
+
+                    // Convertir a arreglo asociativo
+                    $lineas = explode("\n", trim($texto));
+                    $gastos = [];
+
+                    foreach ($lineas as $linea) {
+                        list($clave, $valor) = explode(":", $linea);
+                        $gastos[trim($clave)] = (float) trim($valor);
+                    }
+
+                    ?>
+                    
+                    <?php foreach ($gastos as $concepto => $monto){ ?>
+                        <tr>
+                            <td colspan="5"><?php echo htmlspecialchars($concepto); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($monto, 2); ?></td>
+                        </tr>
+                    <?php } ?>
+                        
+                    <?php if($datos_factura['datos_totalgastosinternacionales']>0){ 
+                            $total_final_factura = $total_final_factura + $datos_factura['datos_totalgastosinternacionales'];
+                        
+                        ?>
+
+                    <?php } ?>         
+                        
+                    <?php
+                        
+                   
+                    
+                    ?>    
+                        
+                        <tr>
+                            <td colspan="3" style="border-left: none; border-bottom: none;"></td>
+                            <td colspan="2">SUBTOTAL (<?php echo $datos_factura['datos_monedatransaccional']; ?>)</td>
+                            <td style="text-align: right;"><?php echo number_format($total_final_factura, 2); ?></td>
+                        </tr>     
+                        
+                        <tr>
+                            <td colspan="3" style="border-left: none; border-bottom: none; border-top: none;"></td>
+                            <td colspan="2">DESCUENTO (<?php echo $datos_factura['datos_monedatransaccional']; ?>)</td>
+                            <td style="text-align: right;"><?php echo number_format($datos_factura['datos_descuentoadicional'], 2); ?></td>
+                        </tr>     
+                        
+                        <tr>
+                            <?php $total_final_factura = $total_final_factura - $datos_factura['datos_descuentoadicional']; ?>
+                            <td colspan="3" style="border-left: none; border-bottom: none; border-top: none;"></td>
+                            <td colspan="2">TOTAL GENERAL (<?php echo $datos_factura['datos_monedatransaccional']; ?>)</td>
+                            <td style="text-align: right;"><?php echo number_format($total_final_factura, 2); ?></td>
+                        </tr>     
+                        
+                        <tr>
+                            <?php $total_final_bs = $total_final_factura * $datos_factura['datos_tipocambio']; ?>
+                            <td colspan="3" style="border-left: none; border-bottom: none; border-top: none;"></td>
+                            <td colspan="2">TOTAL GENERAL (Bolivianos)</td>
+                            <td style="text-align: right;"><?php echo number_format($total_final_bs, 2); ?></td>
+                        </tr>     
+                        
+                        <tr>
+                            <td style="padding:0; border: none !important;" colspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_factura,' ('.$datos_factura['datos_monedatransaccional'].')') ?></b></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0; border: none !important;" colspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_bs,' (BOLIVIANOS)') ?></b></td>
+                        </tr>
+                        
+                        
+                        <tr>                        
+                        <td colspan="6" align="left" style="padding: 0; padding-right: 3px; border: none;"><b>Número y Descripción de Paquetes (Bultos)</b><br>(Number and Description of Boxes)</td>
+                        </tr>   
+                        <tr>
+                            <td colspan="6"><?php echo $datos_factura['datos_descripcionpaquetes']; ?></td>
+                        </tr>                         
+                        
+                        
+                        <tr>                        
+                        <td colspan="6" align="left" style="padding: 0; padding-right: 3px; border: none;"><b>Información Adicional</b><br>(Additional Information)</td>
+                        </tr>   
+                        <tr>
+                            <td colspan="6"><?php echo $datos_factura['datos_informacionadicional']; ?></td>
+                        </tr>                         
+                                
+            </table>             
+
+                    <?php }//Si es factura de exportacion ?>
+                    
+                    
+                    
             </td>
         </tr>
         <tr>
@@ -818,7 +1083,6 @@ border-bottom : 1px solid #aaa;
                     <div style="float: right;width: 80px;">
                         <center>
                             <figure>
-                                <!--<img src="<?php echo $codigoqr;?>" width="80" height="80" alt="Codigo QR">-->
                                 <img src="<?php echo $codigoqr . '?timestamp=' . time(); ?>" width="80" height="80" alt="Código QR">
                             </figure>                            
                         </center>

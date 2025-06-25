@@ -83,7 +83,7 @@
   
 </head>
 <body>
-<input type="text" name="cliente_id" value="0" class="form-control" id="cliente_id" >
+<input type="hidden" name="cliente_id" value="0" class="form-control" id="cliente_id" >
 <div class="container">
         <div class="panel panel-primary col-md-12">
             <!--<h6 class="fw-bold">DATOS DEL CLIENTE</h6>-->
@@ -152,6 +152,7 @@
             <center>
 
             <table class="border" style="border-color: black; background-color: lightgray; ">
+                <tbody id="tabla_asientos" style="display: none;">
                 <tr>
                     <!--<td colspan="<?php echo $columnas; ?>">-->
                     <td>
@@ -175,7 +176,7 @@
                         </button>
                     </td>
                 </tr>
-
+                    
                 <?php for ($i = 0; $i < $filas; $i++): ?>
                     <tr>
                         <?php for ($j = 0; $j < $columnas; $j++): ?>
@@ -199,6 +200,7 @@
                     </tr>
                 <?php endfor; ?>
 
+                </tbody>
             </table>
 
             </center>
@@ -308,9 +310,12 @@
 
 
 <!-- Button trigger modal -->
+<div hidden>
+    
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_ventapasajes" id="boton_datos">
   modal pasaje
 </button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modal_ventapasajes" tabindex="-1" role="dialog" aria-labelledby="modal_ventapasajes" aria-hidden="true">
@@ -398,9 +403,12 @@
 </div>
 
 <!-- Button trigger modal -->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_finalizar" id="boton_finalizar">-->
+<div hidden>
+    
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_finalizar" id="boton_finalizar">
   modal finalizar
 </button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modal_finalizar" tabindex="-1" role="dialog" aria-labelledby="modal_finalizar" aria-hidden="true">
@@ -470,10 +478,33 @@
 
 
                         <div class="col-md-3">
-                            <label for="complemento" class="form-label">A CUENTA<input type="checkbox" id="facturado" value="1" name="facturado"></label>                    
-                            <input class="form-control" type="number" id="acuenta" value="0.00" onKeyUp="this.value = this.value.toUpperCase();" style="display: none"><!-- comment -->
+                            <label for="complemento" class="form-label">MAS INF..</label><br>
+                            <input type="checkbox"  id="facturado" value="1" name="facturado">
                         </div>
             
+                        <div class="col-md-12"><br></div>
+
+                        <div class="col-md-12" id="datos_reserva" style="background-color: #ffc107;" hidden>
+  
+                                <div class="col-md-4">
+                                    <label for="complemento" class="form-label">A CUENTA</label>                    
+                                    <input class="form-control" type="number" id="acuenta" value="0.00" onKeyUp="this.value = this.value.toUpperCase();" 
+                                           ><!-- comment -->
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="complemento" class="form-label">FECHA LIMITE</label>                    
+                                    <input class="form-control" type="date" id="fechareserva" value="<?php echo date("Y-m-d"); ?>" onKeyUp="this.value = this.value.toUpperCase();"  ><!-- comment -->
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="complemento" class="form-label">HORA LIMITE</label>                    
+                                    <input class="form-control" type="time" id="horareserva" 
+                                           value="<?php echo (new DateTime())->modify('+2 hours')->format('H:i'); ?>" 
+                                           onKeyUp="this.value = this.value.toUpperCase();">
+                                </div>
+                            <div class="col-md-12"><br></div>
+                    
+                        </div>
+
 
             
 <!--                <div class="col-md-6">
@@ -661,9 +692,12 @@
 
 
 <!-- Button trigger modal -->
+<div hidden>
+    
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_datosvehiculo" id="boton_datosvehiculo">
   Caracteristcas
 </button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modal_datosvehiculo" tabindex="-1" role="dialog" aria-labelledby="modal_datosvehiculo" aria-hidden="true">
@@ -799,3 +833,248 @@
         
     </div>
   </div>
+
+
+<!-- Button trigger modal -->
+<div hidden>
+    
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalopciones" id="boton_modalopciones">
+  Modal opciones
+</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalopciones" tabindex="-1" role="dialog" aria-labelledby="modaopciones" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">OPCIONES</h5>
+        
+        <input type="hidden" value="0" id="venta_id">
+        <input type="hidden" value="0" id="pasaje_id2">
+        
+      </div>
+       
+      <div class="modal-body">
+          <div class="row">
+                <div class="col-md-12">
+                    <center>
+                        
+                        <span id="transaccion">TRANSACCION Nº 4212</span>
+                        <br><span  id="asiento">ASIENTO: A5</span>
+                        <br><span  id="pasajero">PASAJERO: JUAN PEREZ</span>
+                        <br>
+                    </center>
+                </div>
+              
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-warning btn-block form-control" onclick="reimprimir_pasaje()"> <fa class="fa fa-print"></fa> Reimprimir Pasaje</button>     
+                    <br>
+                </div>
+              
+             
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-info btn-block form-control"> <fa class="fa fa-recycle"></fa> Cambiar Asiento</button>              
+                    <br>
+                </div>
+              
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-primary btn-block form-control" onclick="verificar_reserva()"> <fa class="fa fa-calendar"></fa> Ampliar Reserva</button>              
+                    <br>
+                </div>
+              
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-danger btn-block form-control" onclick="anular_operacion()" data-dismiss="modal"> <fa class="fa fa-trash"></fa> Anular Operación</button>              
+                    <br>
+                </div>
+              
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-success btn-block form-control"> <fa class="fa fa-cubes"></fa> Equipaje Adicional</button>              
+                    <br>
+                </div>
+              
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #000;" onclick="emitir_factura()"> <fa class="fa fa-list-alt"></fa> Emitir Factura</button>              
+                    <br>
+                </div>
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerraropciones"><fa class="fa fa-times"></fa> Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+
+
+<!-- Button trigger modal -->
+<div hidden>
+    
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaleliminar">
+  Modal Anular
+</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modaleliminar" tabindex="-1" role="dialog" aria-labelledby="modaleliminar" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">ANULAR OPERACION</h5>
+        
+      </div>
+       
+      <div class="modal-body">
+          <div class="row">
+              <br>
+              <center>
+                  <h4><b>ANULAR OPERACION <span>321 </span></b></h4>
+                  
+                  <input type="hidden" id="anular_venta_id" value="0" />
+              </center>
+
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cerrar</button>
+        <button type="button" class="btn btn-primary"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- Button trigger modal -->
+<div hidden>
+    
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalampliarreserva" id="boton_ampliarreserva">
+  Modal Ampliar Reserva
+</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalampliarreserva" tabindex="-1" role="dialog" aria-labelledby="modalampliarreserva" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">AMPLIAR RESERVA</h5>
+        
+      </div>
+       
+      <div class="modal-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <center>
+                        
+                        <span id="transaccion1">TRANSACCION Nº: 4212</span>
+                        <br><span id="codigoreserva1">COD. RESERVA: 42YUN12</span>
+                        <br><span  id="asiento1">ASIENTO: A5</span>
+                        <br><span  id="pasajero1">PASAJERO: JUAN PEREZ</span>
+                        <br>
+                    </center>
+                </div>                
+                
+                
+                <div class="col-md-6">
+                    <label class="fw-bold"><i class="fa fa-calendar"></i> Fecha Límite:</label>
+                    <input type="date" class="form-control" id="fecha_limite" min="<?php echo date("y-m-d"); ?>">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="fw-bold"><i class="fa fa-clock-o"></i> Hora Límite:</label>                    
+                    <input type="time" class="form-control" id="hora_limite">
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cancelar</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="ampliar_reserva()"><fa class="fa fa-floppy-o"></fa> Cambiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- Button trigger modal -->
+<div>
+    
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcambiarasiento">
+  Modal Cambia Asiento
+</button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalcambiarasiento" tabindex="-1" role="dialog" aria-labelledby="modaleliminar" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">CAMBIAR ASIENTO</h5>
+        
+      </div>
+       
+      <div class="modal-body">
+          <div class="row">
+
+                <div class="col-md-6">
+                    <label class="fw-bold"><fa class="fa fa-chain"></fa> Asiento:</label>
+                    <input class="form-control" id="asiento_origen" value="ASIENTO 6X, PASAJE 15">
+                    
+               </div>
+
+                <div class="col-md-6">
+                    <label class="fw-bold"><fa class="fa fa-chain"></fa> Cambiar a:</label>
+                    <select class="form-control">
+                        <option>ASIENTO 5X, PASAJE 25</option>
+                    </select>
+                    
+               </div>
+
+              
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cerrar</button>
+        <button type="button" class="btn btn-primary"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

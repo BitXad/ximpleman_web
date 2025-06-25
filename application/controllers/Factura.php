@@ -249,7 +249,7 @@ class Factura extends CI_Controller{
             // 12 FACTURA DE COMERCIALIZACIÓN DE HIDROCARBUROS 13 FACTURA DE SERVICIOS BASICOS
             // 22 FACTURA TELECOMUNICACIONES
             
-            $documentos_sector1 = array(1,2,8,11,12,13,16,17,22);
+            $documentos_sector1 = array(1,2,3,8,11,12,13,16,17,22,45);
             
             if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector1 )){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
@@ -504,6 +504,10 @@ class Factura extends CI_Controller{
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] <= 2){ //FACTURA COMPRA VENTA
+//                $data['_view'] = 'factura/factura_carta_servicios';
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            if($dosificacion['docsec_codigoclasificador'] == 3){ //FACTURA EXPORTACION
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_bouchern';
             }
@@ -1423,8 +1427,8 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
                              $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
 
@@ -1442,8 +1446,8 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 ||  $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                         
                         if ($dosificacion['docsec_codigoclasificador']==13)
@@ -1485,7 +1489,7 @@ class Factura extends CI_Controller{
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 
                 $tipoFacturaDoc = 1;
-                if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+                if ($factura[0]['docsec_codigoclasificador'] == 3 || $factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6 ||$factura[0]['docsec_codigoclasificador'] == 45){
                     $tipoFacturaDoc = 2;
                 }
                 
@@ -2826,8 +2830,8 @@ class Factura extends CI_Controller{
                 $wsdl = $dosificacion['dosificacion_factura'];
 
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -2842,8 +2846,8 @@ class Factura extends CI_Controller{
         }
         
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 ||$dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 ||  $dosificacion['docsec_codigoclasificador']==51)
                 $wsdl = $dosificacion['dosificacion_facturaglp'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -2882,7 +2886,7 @@ class Factura extends CI_Controller{
         $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
 
         $tipoFacturaDoc = 1;
-        if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+        if ($factura[0]['docsec_codigoclasificador'] == 3 || $factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6 ||$factura[0]['docsec_codigoclasificador'] == 45){
             $tipoFacturaDoc = 2;
         }
                 
@@ -3030,8 +3034,8 @@ class Factura extends CI_Controller{
                 $wsdl = $dosificacion['dosificacion_factura'];
 
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+            if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 ||$dosificacion['docsec_codigoclasificador']==51)
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -3046,8 +3050,8 @@ class Factura extends CI_Controller{
         }
         
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+            if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
                 $wsdl = $dosificacion['dosificacion_facturaglp'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -3086,7 +3090,7 @@ class Factura extends CI_Controller{
         $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
 
         $tipoFacturaDoc = 1;
-        if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+        if ($factura[0]['docsec_codigoclasificador'] == 3 ||$factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6||$factura[0]['docsec_codigoclasificador'] == 45){
             $tipoFacturaDoc = 2;
         }
                 

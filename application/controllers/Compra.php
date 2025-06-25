@@ -109,6 +109,33 @@ class Compra extends CI_Controller{
         }
     }
     
+    function singuardar($compra_id){
+        
+        if($this->acceso(1)){
+
+                //************ inicio bitacora 
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "concat('CERRE LA COMPRA: {$compra_id} SIN GUARDAR')";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora                
+                redirect('compra');
+        }
+    }
+    
     function reportes(){
         
         if($this->acceso(137)){
@@ -497,6 +524,7 @@ class Compra extends CI_Controller{
        
         $codigo_bitacora = chr(rand(65,90)).chr(rand(65,90)).round(rand(100,100000));
         $usuario_id = $this->session_data['usuario_id'];
+        
         $sql_bitacora = "insert into detalle_compra_bitacora(compra_id
                     , moneda_id
                     , producto_id
@@ -553,27 +581,28 @@ class Compra extends CI_Controller{
         
         $this->guardar_detalle_bitacora($compra_id);
 
-        //**************** bitacora caja ********************
-            $now = "'".date("Y-m-d H:i:s")."'";
-        
+        //************ inicio bitacora 
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+            $venta_id = 0;//$this->input->post("venta_id");            
+            $usuario_id = $this->session_data['usuario_id'];
             $bitacoracaja_fecha = "date({$now})";
             $bitacoracaja_hora = "time({$now})";
-            $bitacoracaja_evento = "(select concat('MODIFICAR COMPRA No: 00','".$compra_id."','| PROVEEDOR: ',c.proveedor_id, '| CANT: ',count(*),'| NUEVO TOTAL: ',round(sum(detallecomp_cantidad * detallecomp_precio),2)
-                                     ,' *** PRODUCTOS => ',(SELECT GROUP_CONCAT(ROUND(s.detallecomp_cantidad, 2), ' ', s.detallecomp_codigo, ' X ',  ROUND(s.detallecomp_precio, 2) SEPARATOR ' *** ') FROM detalle_compra s WHERE s.compra_id = {$compra_id})
-                                    ) from detalle_compra d, compra c where c.compra_id = ".$compra_id." and c.compra_id = d.compra_id )";
-            //$usuario_id = esta mas arriba;
+            
+            $bitacoracaja_evento = "'ELIMINE CONTENIDO DE COMPRA, ID: {$compra_id} PARA REHACERLA'";
+
+            
             $bitacoracaja_montoreg = 0;
             $bitacoracaja_montocaja = 0;
-            $bitacoracaja_tipo = 3; //3 operaciones sobre compras
+            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
 
 
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
                     $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
                     $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-            //echo $sql;
             $this->Venta_model->ejecutar($sql);
-        //****************** fin bitacora caja *************** 
+        //************ fin bitacora bitacora  
         
         
         
@@ -628,6 +657,34 @@ class Compra extends CI_Controller{
 
     }
 
+    function continuarcompra($compra_id,$bandera){
+        
+        //************ inicio bitacora 
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+            $venta_id = 0;//$this->input->post("venta_id");            
+            $usuario_id = $this->session_data['usuario_id'];
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            
+            $bitacoracaja_evento = "'CONTINUE COMPRA SIN FINALIZAR, ID: {$compra_id}'";
+
+            
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+            $this->Venta_model->ejecutar($sql);
+        //************ fin bitacora bitacora  
+        redirect("compra/edit/{$compra_id}/{$bandera}");
+        
+    }
+            
     function edit($compra_id,$bandera)
     {
         $data['sistema'] = $this->sistema;
@@ -645,6 +702,36 @@ class Compra extends CI_Controller{
             
             $this->Usuario_model->anular_autorizacion($this->session_data['usuario_id']);
         }
+        
+        
+        //************ inicio bitacora 
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+            $venta_id = 0;//$this->input->post("venta_id");            
+            $usuario_id = $this->session_data['usuario_id'];
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            
+           // if($bandera==0)
+                //$bitacoracaja_evento = "'GENERE UNA COMPRA NUEVA, ID: {$compra_id}'";
+
+            if($bandera==1){
+                $bitacoracaja_evento = "'INGRESE A MODIFICAR LA COMPRA, ID: {$compra_id}'";
+            
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+            }
+        //************ fin bitacora bitacora    
+        
+        
         
         //**********************
         
@@ -916,8 +1003,7 @@ class Compra extends CI_Controller{
                 if ($saldo>=$k["detallecomp_cantidad"]){
 
                         $costo_total += ($k["detallecomp_cantidad"] * $k["detallecomp_costo"]);
-                        $saldo -= $k["detallecomp_cantidad"]; 
-                        
+                        $saldo -= $k["detallecomp_cantidad"];                         
                         
                 }
                 else{
@@ -933,8 +1019,7 @@ class Compra extends CI_Controller{
             $costo_promedio = $costo_total / $saldo_total;
             //echo $costo_total."  -  ".$saldo_total;
             $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$producto_id." and p.producto_id=".$producto_id." ";
-            $this->db->query($sql);
-            
+            $this->db->query($sql);            
 
         }
         
@@ -1053,7 +1138,7 @@ class Compra extends CI_Controller{
 
                 );
             }
-            
+            $compra_params = json_encode($params);
             $this->Compra_model->update_compra($compra_id,$params);
             $facturation=$this->input->post('documento_respaldo_id');
             
@@ -1224,13 +1309,15 @@ class Compra extends CI_Controller{
         
           if($actualizarprecios==1){
               
+              
+              
             //Nuevo metodo para actualizar precios  
             //$productos_compra = "select producto_id from detalle_compra_aux where compra_id=".$compra_id;
             $productos_compra = "select d.producto_id,i.existencia as saldo, d.detallecomp_costo, d.detallecomp_precio from detalle_compra_aux d, consinventario i
                                 where 
                                 d.producto_id = i.producto_id and
                                 d.compra_id = ".$compra_id;
-                        
+            //El ultimo producto en ser comprado   
             $productos = $this->db->query($productos_compra)->result_array();
             
             foreach ($productos as $pr){
@@ -1243,7 +1330,6 @@ class Compra extends CI_Controller{
             
 
           
-        } // FIN ACTUALIZAR COSTOS
 
 
            $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
@@ -1255,7 +1341,35 @@ class Compra extends CI_Controller{
               $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
               $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
 
-           }          
+                $detallecomp_costo = number_format($producto_id['detallecomp_costo'],2,".",",");
+                $detallecomp_precio = number_format($producto_id['detallecomp_precio'],2,".",",");
+              $productos = " PRODUCTO ID: {$producto_id['producto_id']}, COSTO: {$detallecomp_costo}, PRECIO: {$detallecomp_precio}";
+           }
+           
+           
+           
+           
+                //************ inicio bitacora 
+                    $now = "'".date("Y-m-d H:i:s")."'";
+
+                    $usuario_id = $this->session_data['usuario_id'];
+
+                    $bitacoracaja_fecha = "date({$now})";
+                    $bitacoracaja_hora = "time({$now})";
+                    $bitacoracaja_evento = "concat('ACTUALICE PRECIOS Y COSTOS => COMPRA: {$compra_id}',' ** DETALLE => ','{$productos}')";
+                    $bitacoracaja_montoreg = 0;
+                    $bitacoracaja_montocaja = 0;
+                    $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS
+
+
+                    $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                            usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                            $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                            $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                    $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora    
+           
+        } // FIN ACTUALIZAR COSTOS
 
 //            //////////////////6. ELIMINAR AUX///////////////////////////
 //           $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
@@ -1500,7 +1614,33 @@ class Compra extends CI_Controller{
         //////////////////6. ELIMINAR AUX///////////////////////////
                    $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
                    $this->db->query($eliminar_aux);
-        //           ///////////si elige generar orden de pago/////////////////////////                   
+        //           ///////////si elige generar orden de pago/////////////////////////      
+            
+                   
+                   
+                    //************ inicio bitacora 
+                        $now = "'".date("Y-m-d H:i:s")."'";
+
+                        $usuario_id = $this->session_data['usuario_id'];
+
+                        $bitacoracaja_fecha = "date({$now})";
+                        $bitacoracaja_hora = "time({$now})";
+                        $bitacoracaja_evento = "concat('GUARDE COMPRA  => ID: {$compra_id}',' ** ','{$compra_params}')";
+                        $bitacoracaja_montoreg = 0;
+                        $bitacoracaja_montocaja = 0;
+                        $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS
+
+
+                        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                        $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora  
+                   
+                   
+                   
+                   
         
                 redirect('compra/index');
 
@@ -2014,6 +2154,8 @@ function compra_rapida(){
     $usuario_id = $this->session_data['usuario_id'];
     $compra_fecha = date('Y-m-d');               
     $compra_hora = date('H:i:s');
+    
+    
 
     $costo_producto = "SELECT producto_costo FROM inventario WHERE producto_id=".$producto_id." ";
     $costo = $this->db->query($costo_producto)->result_array();
@@ -2078,10 +2220,37 @@ function compra_rapida(){
         $this->db->query($detalle);  
 
     $inventario = "update inventario set inventario.existencia=inventario.existencia+".$cantidad." where producto_id=".$producto_id."";
+    $this->db->query($inventario);
+    
+    $resultado = "ok";
+            
+    
+        
+        //**************** bitacora caja ********************
+            $now = "'".date("Y-m-d H:i:s")."'";
+        
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            $bitacoracaja_evento = "(select concat('COMPRA RAPIDA No: 00{$compra_id}','| PROVEEDOR: 1 ','| CANT: ',{$cantidad},'| TOTAL: ',round(".($producto_costo*$cantidad).",2)
+                                     ,' *** PRODUCTOS => ',(SELECT GROUP_CONCAT(ROUND(s.detallecomp_cantidad, 2), ' ', s.detallecomp_codigo, ' X ',  ROUND(s.detallecomp_costo, 2) SEPARATOR ' *** ') FROM detalle_compra s WHERE s.compra_id = {$compra_id})
+                                    ) from detalle_compra d, compra c where c.compra_id = ".$compra_id." and c.compra_id = d.compra_id )";
+            //$usuario_id = esta mas arriba;
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //3 operaciones sobre compras
 
-            $resulrado=$this->db->query($inventario);
-            $resultado = "ok";
-        echo json_encode($resultado);  
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja *************** 
+    
+    
+    
+    echo json_encode($resultado);  
         
     }
 
@@ -2230,6 +2399,32 @@ function compra_rapida(){
                 );
                 $detallecomp_id = $this->Detalle_compra_model->add_detalle_compra_aux($params);
             }
+            
+
+            //************ inicio bitacora 
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+                $venta_id = 0;//$this->input->post("venta_id");            
+                $usuario_id = $this->session_data['usuario_id'];
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+
+                $bitacoracaja_evento = "'LLEVE INVENTARIO A CERO, COMPRA ID: {$compra_id}'";
+
+
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre compras
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+            //************ fin bitacora bitacora           
+            
+            
             redirect('compra/edit/'.$compra_id.'/'.$bandera);
         }
     }
@@ -2237,14 +2432,15 @@ function compra_rapida(){
     /* confirmar traspaso */
     function confirmar_traspaso(){
         
+        $usuario_id = $this->session_data['usuario_id'];
         $compra_id = $this->input->post('compra_id');
-        $sql = "update compra set estado_id = 1 where compra_id = ".$compra_id;
+        
+        $sql = "update compra set estado_id = 1, usuario_id = {$usuario_id} where compra_id = ".$compra_id;
         $this->Compra_model->ejecutar($sql);
         
         //************ inicio bitacora 
                 $venta_id = $this->input->post("venta_id");
             
-                $usuario_id = $this->session_data['usuario_id'];
                 
                 $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
                 $bitacoracaja_fecha = "date({$now})";
@@ -2276,11 +2472,11 @@ function compra_rapida(){
         $detalle_compra = $this->Compra_model->consultar($sql);
         
         //$sql = "select p.producto_nombre,p.producto_codigobarra,d.* from detalle_compra_bitacora d, producto p where d.compra_id = {$compra_id} and d.producto_id = p.producto_id ";
-        $sql = "select count(*) as items, codigo_bitacora, fecha_bitacora, compra_id
-                from detalle_compra_bitacora
-                where compra_id = {$compra_id}
-                group by codigo_bitacora 
-                order by fecha_bitacora desc";
+        $sql = "select count(*) as items, d.codigo_bitacora, d.fecha_bitacora, d.compra_id, u.usuario_nombre
+                from detalle_compra_bitacora d, usuario u
+                where d.compra_id = {$compra_id} and d.usuario_id = u.usuario_id
+                group by d.codigo_bitacora 
+                order by d.fecha_bitacora desc";
         $detalle_compra_bitacora = $this->Compra_model->consultar($sql);
         
         $res = array("detalle_compra" => $detalle_compra, "detalle_compra_bitacora" => $detalle_compra_bitacora);
@@ -2319,7 +2515,7 @@ function compra_rapida(){
             $bitacoracaja_fecha = "date({$now})";
             $bitacoracaja_hora = "time({$now})";
             $cadena = str_replace("'", "", $sql);
-            $bitacoracaja_evento = "concat('RESTABLECER BACKUP DE BITACORA: {$bitacora_codigo}', 'COMPRA: {$compra_id}','CONSULTA: {$cadena}')";
+            $bitacoracaja_evento = "'RESTABLECI BACKUP DE BITACORA: {$bitacora_codigo}, COMPRA: {$compra_id}'";
             //$usuario_id = esta mas arriba;
             $bitacoracaja_montoreg = 0;
             $bitacoracaja_montocaja = 0;
@@ -2333,6 +2529,33 @@ function compra_rapida(){
                     $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
             $this->Venta_model->ejecutar($sql);
 
+            //****************** fin bitacora caja *************** 
+            
+        } catch (Exception $ex) {
+
+            $res = array("mensaje" => "Ocurrio un problema al intentar ejecutar la operación...!");
+        }
+        
+        
+        echo json_encode($res);
+            
+    }
+    
+    /* confirmar traspaso */
+    function lista_backup()
+    {
+       
+        
+        $bitacora_codigo = $this->input->post('bitacora_codigo');
+        $compra_id = $this->input->post('compra_id');
+        
+        try{
+            
+            $sql = "select d.*, p.producto_nombre from detalle_compra_bitacora d, producto p where d.codigo_bitacora='{$bitacora_codigo}' and d.compra_id = {$compra_id} and d.producto_id = p.producto_id";
+            //echo $sql;
+            $res = $this->Venta_model->consultar($sql);
+            
+            
             //****************** fin bitacora caja *************** 
             
         } catch (Exception $ex) {

@@ -178,14 +178,28 @@ class Viaje_model extends CI_Model
         /* Viajes pendites*/
         function get_viajes_pendientes() {
 
-            $sql = "select * 
-                    from viaje v
-                    left join ruta r on r.ruta_id = v.ruta_id
-                    left join vehiculo h on h.vehiculo_id = v.vehiculo_id
-                    left join conductor c on c.conductor_id = v.conductor_id
-                    left join ayudante a on a.ayudante_id = v.ayudante_id
-                    left join usuario u on u.usuario_id = v.usuario_id
-                    where viaje_fechasalida>=date(now())";
+//            $sql = "select * 
+//                    from viaje v
+//                    left join ruta r on r.ruta_id = v.ruta_id
+//                    left join vehiculo h on h.vehiculo_id = v.vehiculo_id
+//                    left join conductor c on c.conductor_id = v.conductor_id
+//                    left join ayudante a on a.ayudante_id = v.ayudante_id
+//                    left join usuario u on u.usuario_id = v.usuario_id
+//                    where viaje_fechasalida>=date(now())";
+            $sql = "SELECT 
+                        *, 
+                        CASE 
+                            WHEN EXISTS (SELECT 1 FROM pasaje p WHERE p.viaje_id = v.viaje_id) 
+                            THEN '1' 
+                            ELSE '0' 
+                        END AS tiene_pasajes
+                    FROM viaje v
+                    LEFT JOIN ruta r ON r.ruta_id = v.ruta_id
+                    LEFT JOIN vehiculo h ON h.vehiculo_id = v.vehiculo_id
+                    LEFT JOIN conductor c ON c.conductor_id = v.conductor_id
+                    LEFT JOIN ayudante a ON a.ayudante_id = v.ayudante_id
+                    LEFT JOIN usuario u ON u.usuario_id = v.usuario_id
+                    WHERE v.viaje_fechasalida >= DATE(NOW());";
 
             return $this->db->query($sql)->result_array();
         }
@@ -253,5 +267,20 @@ class Viaje_model extends CI_Model
             return $this->db->query($sql)->result_array();
         
         }
+
+    public function obtener_ventas() {
+        
+        $sql = "select * from venta_pasaje v
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join forma_pago f on f.forma_id = v.forma_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join estado e on e.estado_id = v.estado_id
+                left join moneda m on m.moneda_id = v.moneda_id
+                where v.venta_fecha = date(now())";
+        
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
  }
  

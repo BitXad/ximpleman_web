@@ -104,9 +104,14 @@ class Verificar extends CI_Controller
                     
                     $tok="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
                     $token = $this->db->query($tok)->row_array();
+
+                    $punto_venta = $session_data['puntoventa_codigo'];
+                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";               
+                    $cuis = $this->db->query($cuissql)->row_array();
                     
                     if ($session_data['tipousuario_id'] == 1) {// admin page
-                        if ($token['dias']<=10 && $token['dias']!=null) {
+                        
+                        if (($token['dias']<=5 && $token['dias']!=null)||($cuis['dias']<=5&&$cuis['dias']!=null)) {
                             redirect('alerta/token'); 
                         }
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
@@ -122,7 +127,8 @@ class Verificar extends CI_Controller
                         }
                         
                     }else{  // En caso de otro usuario no administrador 
-                        if ($token['dias']<=10 && $token['dias']!=null) { 
+                        
+                        if (($token['dias']<=5 && $token['dias']!=null)||($cuis['dias']<=5&&$cuis['dias']!=null)) { 
                             redirect('alerta/token'); 
                         }
                         

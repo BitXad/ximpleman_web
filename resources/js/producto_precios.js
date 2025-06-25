@@ -57,16 +57,18 @@ function actualizar_precios(){
     let tc = document.getElementById('moneda_tc').value;
     let tc_nuevo = document.getElementById('moneda_tc_nuevo').value;    
     let razon = tc_nuevo / tc ;
-    var tipo_moneda = document.getElementById("span_tipo_moneda");
+    var tipo_moneda = document.getElementById("span_tipo_moneda").innerText;
+    var monto_incremento = document.getElementById("monto_incremento").value;
+    var categoria_id = document.getElementById("categoria_id").value;
     
     
-    alert(operacion +' *** '+afectar+' *** '+redondear)
+    //alert(operacion+" *** "+afectar+" *** "+redondear+" *** "+razon+" *** "+tipo_moneda);
     var r = confirm("ADVERTENCIA: Esta operación eliminará y reemplazará la lista actual. \n ¿Desea Continuar?");    
     if (r == true) {
         
         if(Number(operacion)>0){
             if(Number(afectar)>0){
-                if(Number(redondear)>0){
+                if(Number(redondear)>=0){
                 
                         // Mostrar el overlay de bloqueo
                         document.getElementById("overlay").style.display = "block";
@@ -74,7 +76,7 @@ function actualizar_precios(){
                         $.ajax({
                             url: controlador,
                             type: "POST",
-                            data: {operacion:operacion,afectar:afectar,redondear:redondear, razon:razon, tipo_moneda:tipo_moneda},
+                            data: {operacion:operacion,afectar:afectar,redondear:redondear, razon:razon, tipo_moneda:tipo_moneda, monto_incremento:monto_incremento, categoria_id:categoria_id},
                             success: function(respuesta) {
                                 let res = JSON.parse(respuesta);
 
@@ -111,5 +113,44 @@ function cambiar_tipomoneda() {
         span.innerHTML = "Bs";  // Cambia a "$"
     } else {
         span.innerHTML = "%";  // Cambia a "%"
+    }
+}
+
+
+/* Carga los precios desde la tabla producto a producto_precios */
+function actualizar_productos() {
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url + 'producto_precios/actualizar_productos';
+    var categoria_id = document.getElementById("categoria_id2").value;
+    
+    var r = confirm("ADVERTENCIA: Esta operación reemplazará los precios de los productos, esta operación es irreversible. \n ¿Desea Continuar?");
+    
+    if (r == true) {
+        // Mostrar el overlay de bloqueo
+        document.getElementById("overlay").style.display = "block";
+
+        $.ajax({
+            url: controlador,
+            type: "POST",
+            data: {categoria_id: categoria_id},
+            success: function(respuesta) {
+                let res = JSON.parse(respuesta);
+                
+                if (res) {
+                    alert("Los datos fueron cargados con éxito...!");
+                    location.reload();
+                } else {
+                    alert("ADVERTENCIA: Ocurrió un problema al cargar los datos, verifique el archivo de datos y vuelva a intentar.");
+                }
+            },
+            error: function(respuesta) {
+                alert("ADVERTENCIA: Ocurrió un problema con la solicitud.");
+            },
+            complete: function() {
+                // Ocultar el overlay de bloqueo
+                document.getElementById("overlay").style.display = "none";
+            }
+        });
     }
 }

@@ -227,15 +227,15 @@ if(isset($data['all_ayudante']) && $data['all_ayudante']!=null)
         $this->load->model('Vehiculo_model');
         $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo(); 
       $viaje = $this->Viaje_model->get_all_with_asso_viaje();
-if(isset($data['all_vehiculo']) && $data['all_vehiculo']!=null)
-                                              {
-                                              foreach($data['all_vehiculo'] as $v){ 
-      echo          "<option value='".$v['vehiculo_id']."'> ".$v['vehiculo_modelo']."</option>"; 
- } 
-                                              }
-                                              else{
-                                                        echo '<tr>No data found</tr>';
-                                              }
+    if(isset($data['all_vehiculo']) && $data['all_vehiculo']!=null)
+                                                  {
+                                                  foreach($data['all_vehiculo'] as $v){ 
+          echo          "<option value='".$v['vehiculo_id']."'> ".$v['vehiculo_modelo']."</option>"; 
+     } 
+    }
+    else{
+              echo '<tr>No data found</tr>';
+    }
  } 
   /*
   * get get_search_values_byclms by id
@@ -246,15 +246,15 @@ if(isset($data['all_vehiculo']) && $data['all_vehiculo']!=null)
         $this->load->model('Ruta_model');
         $data['all_ruta'] = $this->Ruta_model->get_all_ruta(); 
       $viaje = $this->Viaje_model->get_all_with_asso_viaje();
-if(isset($data['all_ruta']) && $data['all_ruta']!=null)
-                                              {
-                                              foreach($data['all_ruta'] as $v){ 
-      echo          "<option value='".$v['ruta_id']."'> ".$v['ruta_nombre']."</option>"; 
- } 
-                                              }
-                                              else{
-                                                        echo '<tr>No data found</tr>';
-                                              }
+    if(isset($data['all_ruta']) && $data['all_ruta']!=null)
+                                                  {
+                                                  foreach($data['all_ruta'] as $v){ 
+          echo          "<option value='".$v['ruta_id']."'> ".$v['ruta_nombre']."</option>"; 
+     } 
+                                                  }
+    else{
+              echo '<tr>No data found</tr>';
+    }
  } 
   /*
   * get get_search_values_byclms by id
@@ -283,16 +283,17 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
      $conductor_id= $this->input->post('value');
         $this->load->model('Conductor_model');
         $data['all_conductor'] = $this->Conductor_model->get_all_conductor(); 
-      $viaje = $this->Viaje_model->get_all_with_asso_viaje();
-if(isset($data['all_conductor']) && $data['all_conductor']!=null)
-                                              {
-                                              foreach($data['all_conductor'] as $v){ 
-      echo          "<option value='".$v['conductor_id']."'> ".$v['conductor_nombres']."</option>"; 
- } 
-                                              }
-                                              else{
-                                                        echo '<tr>No data found</tr>';
-                                              }
+        $viaje = $this->Viaje_model->get_all_with_asso_viaje();
+        
+        if(isset($data['all_conductor']) && $data['all_conductor']!=null){
+            
+            foreach($data['all_conductor'] as $v){ 
+                echo          "<option value='".$v['conductor_id']."'> ".$v['conductor_nombres']."</option>"; 
+            }
+            
+        }else{
+                  echo '<tr>No data found</tr>';
+        }
  } 
     /*
    * get search values by column- viaje
@@ -351,5 +352,19 @@ if(isset($data['all_conductor']) && $data['all_conductor']!=null)
             $data['_view'] = 'viaje/pasaje_boucher';
             $this->load->view('layouts/main',$data);
    }
+   
+    public function reporte_ventas() {
+        
+        $data['sistema'] = $this->sistema;
+        $data['page_title'] = "Reporte de Ventas";
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $data['ventas'] = $this->Viaje_model->obtener_ventas();
+        $data['title'] = "REPORTE VENTAS";
+        $data['_view'] = 'viaje/reporte_ventas';
+        $this->load->view('layouts/main',$data);
+        
+    }
    
 }

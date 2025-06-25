@@ -51,7 +51,7 @@
         <?php if ($control_ubicacion['estado_id'] != 26) {?>
             <button class="btn btn-facebook btn-sm"  data-toggle="modal" data-target="#modal_add_producto"><i class="fa fa-plus" aria-hidden="true"></i> Agregar producto</button> 
         <?php } ?> 
-        <button class="btn btn-info btn-sm"  onclick="cargar_productos(<?= $controli_id; ?>,<?= $controlu_id; ?>)" title="Cargar todos los productos"><i class="fa fa-print" aria-hidden="true"></i> Cargar Todo</button>
+        <button class="btn btn-danger btn-sm"  onclick="cargar_productos(<?= $controli_id; ?>,<?= $controlu_id; ?>)" title="Cargar todos los productos"><i class="fa fa-cubes" aria-hidden="true"></i> Cargar Productos</button>
         <button class="btn btn-warning btn-sm"  onclick="mostrar_productos(<?= $controli_id; ?>,<?= $controlu_id; ?>)" title="Mostrar todos los productos"><i class="fa fa-list-ol" aria-hidden="true"></i> Mostrar Todo</button>
     </div>
 </div>
@@ -119,7 +119,8 @@
                 </table>
             </div>
             <div class="box-body table-responsive no-print" style="<?= ($tipousuario_id == 1) ? '' : (($control_ubicacion['estado_id'] == 26) ? 'display: none' : '') ?>" >
-                <button class="btn btn-success" onclick="guardar(<?= $controli_id ?>)">Guardar</button>
+<!--                <button class="btn btn-success" onclick="guardar(<?= $controli_id ?>)">Guardar</button> anterior..revisar la funcion guardar-->
+                <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-success">Guardar</a>
                 <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-danger">Cancelar</a>
             </div>
         </div>

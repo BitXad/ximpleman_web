@@ -118,6 +118,10 @@
         <td class="text-right"><strong>NIT:</strong></td>
         <td><?php echo $pasaje['cliente_nit']; ?></td>
       </tr>
+      <tr>
+        <td class="text-right"><strong>COD. RESERVA:</strong></td>
+        <td><?php echo $pasaje['venta_codigoreserva']; ?></td>
+      </tr>
     </table>
 
     <!-- LISTADO DE PASAJEROS -->

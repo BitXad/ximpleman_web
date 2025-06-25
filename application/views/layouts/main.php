@@ -784,6 +784,10 @@
                             <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario Valorado</a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('inventario/inventario_saldos');?>"><i class="fa fa-cubes"></i> Inventario Saldos por Fecha </a>
+                            
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('inventario/realizable');?>"><i class="fa fa-money"></i> Inventario Realizable</a>
                         </li>
                         <li>
