@@ -39,6 +39,8 @@ function tabla_pedidos(filtro)
     var esrol           = document.getElementById('esrol').value;
     var esrolconsolidar = document.getElementById('esrolconsolidar').value;
     let pedido_titulo   = document.getElementById('pedido_titulo').value;
+    let sistema_modulopedidos   = document.getElementById('sistema_modulopedidos').value;
+    let sistema_moduloventas   = document.getElementById('sistema_moduloventas').value;
     var controlador = base_url+"pedido/mostrar_pedidos";
     $("#respedido").val("");
     //var forma_pago =  document.getElementById('forma_pago').value;
@@ -132,17 +134,17 @@ function tabla_pedidos(filtro)
                 html += "     ";
                 html += "    </td> ";
                 
-                html += "    <td align='center' bgcolor='"+p[i]["estado_color"]+"'  style='line-height: 10px; padding:"+padding+";'> ";
+                html += "    <td align='center' bgcolor='"+p[i]["estado_color"]+"'  style='line-height: 12px; padding:"+padding+";'> ";
 //                html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"'> ";
-                html += "        <font size='3' color='white'><b>"+'00'+p[i]["pedido_id"]+"</b></font> <br> ";
-                html += "        <font size='1' color='white'>"+p[i]["estado_descripcion"]+"</font> ";
+                html += "        <font size='3'><b>"+'00'+p[i]["pedido_id"]+"</b></font> <br> ";
+                html += "        <font size='1'>"+p[i]["estado_descripcion"]+"</font> ";
                 html += "        "+'<br><b>'+tipotrans+" </b> ";                
                 html += "         ";
 //                html += "        </a> ";
                 html += "    </td> ";
 
 
-                html += "    <td align='right' bgcolor='"+p[i]["estado_color"]+"' style='line-height: 10px; padding:"+padding+";'> ";
+                html += "    <td align='right' bgcolor='"+p[i]["estado_color"]+"' style='line-height: 12px; padding:"+padding+";'> ";
                 html += "        "+'Sub Total: '+parseFloat(p[i]["pedido_subtotal"]).toFixed(2)+"<br>  ";
                 html += "        "+'Desc.: '+parseFloat(p[i]["pedido_descuento"]).toFixed(2)+"<br>   ";
                 html += "        <font size='3'><b>"+parseFloat(p[i]["pedido_total"]).toFixed(2)+"</b></font> ";
@@ -229,7 +231,7 @@ function tabla_pedidos(filtro)
                         html += "      <div class='modal-header' style='background-color: #CDCDCD'> ";
                         html += "          <center> ";
 
-                        html += "          <h3 class='modal-title' id='exampleModalLabel'><b><span class='fa fa-cart-plus'></span>  Enviar pedido a ventas<span class='fa fa-cart-plus'></span></b></h3> ";
+                        html += "          <h3 class='modal-title' id='exampleModalLabel'><b><span class='fa fa-cart-plus'></span>  Enviar "+sistema_modulopedidos+" a "+sistema_moduloventas+"<span class='fa fa-cart-plus'></span></b></h3> ";
                         html += "        <button type='button' class='close' data-dismiss='modal' aria-label='Close'> ";
                         html += "          <span aria-hidden='true'>&times;</span> ";
                         html += "        </button>  ";
@@ -239,7 +241,7 @@ function tabla_pedidos(filtro)
 
                         html += "      <div class='modal-body'> ";
                         html += "          <center> ";
-                        html += "              <font size='2'><b>Se enviara este pedido como operación de venta</b></font><br>   ";
+                        html += "              <font size='2'><b>Se enviara este pedido como operación de "+sistema_moduloventas+"</b></font><br>   ";
                         
                         html += "              <br>   ";
                         
@@ -255,7 +257,7 @@ function tabla_pedidos(filtro)
                         html += "      </div> ";
                         html += "      <div class='modal-footer' style='text-align: center'> ";
                         
-                        html += "        <button type='button' class='btn btn-success' onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")' data-dismiss='modal'><span class='fa fa-cart-plus'></span> Vender</button> ";
+                        html += "        <button type='button' class='btn btn-success' data-dismiss='modal' onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")'><span class='fa fa-cart-plus'></span> "+sistema_moduloventas+"</button> ";
                         html += "        <button type='button' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar</button> ";
                         
                         html += "      </div> ";

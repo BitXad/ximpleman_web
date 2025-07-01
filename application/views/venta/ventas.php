@@ -1214,7 +1214,7 @@ window.onkeydown = compruebaTecla;
             
             <?php //if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="<?php echo $sistema["sistema_modulopedidos"]; ?> Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> <?php echo $sistema["sistema_modulopedidos"]; ?></b></a> 
             <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 //} ?>

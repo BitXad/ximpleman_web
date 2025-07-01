@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -14,6 +15,7 @@
         }(jQuery));
     });
 </script>
+
 <script type="text/javascript">
     function sel_todos(source) {
         checkboxes = document.getElementsByClassName('checkbox');
@@ -22,6 +24,7 @@
         }
     }
 </script>
+
 <!--<body onload="buscar_pedidos();">-->
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -37,6 +40,8 @@
 <!--<input id='tipo_venta' name='tipo_venta' value='<?php //echo json_encode($tipo_venta); ?>' hidden>-->
 <input type="hidden" name="respedido" id="respedido" />
 <input type="hidden" id="pedido_titulo" name="pedido_titulo" value="<?php echo $pedido_titulo; ?>">
+<input type="text" id="sistema_moduloventas" value="<?php echo $sistema['sistema_moduloventas']; ?>" name="sistema_moduloventas"  hidden>
+<input type="text" id="sistema_modulopedidos" value="<?php echo $sistema['sistema_modulopedidos']; ?>" name="sistema_modulopedidos"  hidden>
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
@@ -109,12 +114,13 @@
         <div class="form-group" style="margin-bottom: 0;">
             <center>
                 <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 90px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
-                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 90px;"><span class="fa fa-cart-arrow-down"></span> <?php echo $labelboton; ?></a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " style="width: 90px;"><span class="fa fa-cart-arrow-down"></span> <?php echo $labelboton; ?></a>
                 <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" target="_blank" style="width: 90px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
+                <br>
                 <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
-                <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 90px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
+                <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 90px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa zonas</a>
                 <!-- <a href="<?php echo site_url('pedido/mapa_seg_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span>Mapa Seg</a> -->
-                <a href="" id="mapa_seg_entregas" name="mapa_seg_entregas" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de seguimiento" onclick="mapa_seg()"><span class="fa fa-map"></span>Mapa Seg</a>
+                <a href="" id="mapa_seg_entregas" name="mapa_seg_entregas" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de seguimiento" onclick="mapa_seg()"><span class="fa fa-map"></span> Mapa Seg</a>
             </center>
         </div>
     </div>
@@ -185,7 +191,7 @@
                         <th style="padding: 0;">Total</th>
                         <th style="padding: 0;">Fecha<br>entrega</th>
                         <th style="padding: 0; vertical-align: middle">
-                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar <?php echo ($partede)." ".$pedido_titulo ?> a ventas"><span class="fa fa-cart-plus"></span> </a>
+                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar <?php echo ($partede)." ".$sistema["sistema_modulopedidos"]." a ".$sistema['sistema_moduloventas']; ?>"><span class="fa fa-cart-plus"></span> </a>
                         </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">

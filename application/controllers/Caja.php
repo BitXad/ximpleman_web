@@ -415,7 +415,8 @@ class Caja extends CI_Controller{
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         
-                $data['_view'] = 'caja/reportecaja_boucher';
+                //$data['_view'] = 'caja/reportecaja_boucher';
+                redirect("reportes/reportecajaid/".$caja_id);
                 $this->load->view('layouts/main',$data);
     }
     /*

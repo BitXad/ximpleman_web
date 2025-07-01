@@ -143,6 +143,10 @@ function cerrar_ventana(){
 <input type="text" id="zona_id" name="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>" hidden>
 <input type="text" id="cliente_complementoci" name="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>" hidden>
 <input type="text" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" name="decimales"  hidden>
+<input type="text" id="parametro_sininventario" value="<?php echo $parametro[0]['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
+<input type="text" id="sistema_moduloventas" value="<?php echo $sistema['sistema_moduloventas']; ?>" name="sistema_moduloventas"  hidden>
+<input type="text" id="sistema_modulopedidos" value="<?php echo $sistema['sistema_modulopedidos']; ?>" name="sistema_modulopedidos"  hidden>
+
 <?php
 if($cliente[0]['cliente_id'] >0){
 ?>
@@ -174,22 +178,19 @@ if($cliente[0]['cliente_id'] >0){
 <!-------------------- inicio collapse ---------------------->
 
 <?php
-    if($pedido_titulo == "Pedidos"){
-        $labelboton = "Pedido";
-    }elseif($pedido_titulo == "Preventas"){
-        $labelboton = "Preventa";
-    }else{
-        $labelboton = "Reserva";
-    }
+
+    $labelboton = $sistema["sistema_modulopedidos"];
 ?>
 
 <center>
-    <font size="3"><b><?php echo $pedido_titulo; ?></b></font>
+    <font size="3"><b><?php echo strtoupper($labelboton); ?></b></font>
      <!--<a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>-->
     <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font> Buscar Clie</button>
     
      <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
      <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
+     <a href="<?php echo base_url("pedido/ultimopedido"); ?>" target="_blank" class="btn btn-success btn-xs" style="width: 90px;" id="imprimir"><font size="3"><span class="fa fa-print" ></span></font> Comp. A</a>
+     <a href="<?php echo base_url("pedido/ultimopedido2"); ?>" target="_blank" class="btn btn-facebook btn-xs" style="width: 90px;" id="imprimir2"><font size="3"><span class="fa fa-print" ></span></font> Comp. B</a>     
      <button class="btn btn-facebook btn-xs" onclick="mostrar_buscadores()" title="Buscar productos"><font size="3"><span class="fa fa-binoculars" ></span></font></button>
 </center>   
 
@@ -301,7 +302,7 @@ if($cliente[0]['cliente_id'] >0){
 <div class="row">
     <div class="col-md-6" >
         
-        <div class="row" id="buscador1" style="display: none;">
+        <div class="row" id="buscador1" style="display: block;">
             
             <!--------------------- parametro de buscador por codigo --------------------->
 
@@ -334,7 +335,7 @@ if($cliente[0]['cliente_id'] >0){
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria" style="padding:0; display: none;">
+<div class="container" id="categoria" style="padding:0; display: block;">
     <span class="badge btn-danger">
         <select lect class="bange btn-danger" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
             <option value="0" >- CATEGORIAS -</option>
@@ -475,17 +476,15 @@ if($cliente[0]['cliente_id'] >0){
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar <?php echo $labelboton; ?><br>
             </a>
             
-                
-<!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
-                <i class="fa fa-truck fa-4x"></i><br><br>
-               Asignar <br>
-            </a>-->
-
-            
-                <button  onclick="cerrar_ventana()" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+<!--                <button  onclick="cerrar_ventana()" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x  "></i><br><br>
                Salir <br>
-            </button>    
+            </button>    -->
+            
+                <a href="<?php echo base_url("pedido"); ?>"  class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-sign-out fa-4x  "></i><br><br>
+               Salir <br>
+            </a>    
                 
             </center>
             <br>

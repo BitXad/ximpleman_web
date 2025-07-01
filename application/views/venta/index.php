@@ -92,6 +92,7 @@
 
 <input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
 
+
 <div class="box-header no-print">
 <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> </h3>
             	<div class="box-tools">                    

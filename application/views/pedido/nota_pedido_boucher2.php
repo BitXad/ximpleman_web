@@ -81,7 +81,9 @@ padding: 0;
 
 
 }
+
 tr {
+
   /*border: 1px solid #000;
   text-align: center;*/
   padding: 0px;
@@ -272,13 +274,13 @@ border-bottom : 1px solid #aaa;
  
     <table class="table" style="width:<?php echo $ancho; ?>; height: 1px; padding: 0;" >
     -->
-        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0; font-family: Arial narrow;">
+        <tr>
             <!--<th>#</th>-->
-            <th style="padding: 0"><center>CANT</center></th>
-            <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
+            <th style="padding: 0; padding: 0; border-top: solid 1px #000; border-bottom:solid 1px #000;"><center>CANT</center></th>
+            <th style="padding: 0; padding: 0; border-top: solid 1px #000; border-bottom:solid 1px #000;"><center>DESCRIPCIÓN</center></th>
             <!--<th style="padding: 0"><center>UNIDAD</center></th>-->
-            <th style="padding: 0"><center> P.UNIT</center></th>
-            <th style="padding: 0"><center> TOTAL</center></th>
+            <th style="padding: 0; padding: 0; border-top: solid 1px #000; border-bottom:solid 1px #000;"><center> P.UNIT</center></th>
+            <th style="padding: 0; padding: 0; border-top: solid 1px #000; border-bottom:solid 1px #000;"><center> TOTAL</center></th>
         </tr>
         
         <?php 
@@ -327,27 +329,36 @@ border-bottom : 1px solid #aaa;
         <?php 
             }
         ?>
-        <tr style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
-<!--            <th></th>-->
-            <td colspan="3"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
-<!--            <th></th>
-            <th></th>-->
-            <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
+        <tr>
+            <td align="right"  colspan="2"  style="padding: 0; border-top: solid 1px #000;"><b>Total Bs</b></font></td>
+            <td align="right" colspan="2"  style="padding: 0; border-top: solid 1px #000;"><b> <?php echo number_format($pedido[0]['pedido_subtotal'] ,2,".",","); ?></b></font></td>
         </tr>                        
+        <tr>
+            <td align="right"  colspan="2"  style="padding: 0"><b>Descuento Bs</b></font></td>
+            <td align="right" colspan="2"  style="padding: 0;"><b> <?php echo number_format($pedido[0]['pedido_descuento'] ,2,".",","); ?></b></font></td>
+        </tr>                        
+        
+        <tr>
+            <td align="right"  colspan="2"  style="padding: 0"><font size="3"><b>Total Final Bs</b></font></td>
+            <td colspan="2"  align="right"  style="padding: 0;"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
+        </tr>                        
+        <tr>
+            <td colspan="4" style="padding-left: 3px; padding-bottom: 5px; font-size: 10px; border-bottom: solid 1px #000; padding: 0;">               
+                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?>
+            </td>
+        </tr>                     
 
-<!--    </table>    
-</font>-->
-
-
-<!--    <table class="table" style="width: <?php echo $ancho; ?>;">-->
         <tr>
             <td colspan="4">
-                <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
-                <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; 
+                
+                <?php echo (!empty($pedido[0]['pedido_glosa']))? "<br><font size='1'><b>NOTA: </b>".$pedido[0]['pedido_glosa'] : ""; ?>
+                
+                <b>USUARIO: </b><?php echo $pedido[0]['usuario_nombre']; 
                 if($pedido[0]['ingreso_monto'] > 0){
                     echo "<br><b>RESERVA: </b>".$pedido[0]['ingreso_monto']." ".$pedido[0]['ingreso_moneda'];
                 }
-                ?></font>
+                ?>
+            <center><br>GRACIAS POR SU PREFERENCIA...!</center>
             </td>
         </tr>    
         

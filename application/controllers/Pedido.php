@@ -40,6 +40,12 @@ class Pedido extends CI_Controller{
             redirect('', 'refresh');
         }
         
+        $this->load->helper([
+            'xml',
+            'numeros_helper',// Helper para convertir numeros a letras
+            'validacionxmlxsd_helper',
+        ]);
+        
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
@@ -88,6 +94,7 @@ class Pedido extends CI_Controller{
         $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        
         //$data['usuarios'] = $this->Venta_model->get_usuarios(); corregido mediante left join
         
         /*$filtro = $this->input->post('filtro');
@@ -164,6 +171,30 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         }
+    }    		
+    /*
+     * Listing of pedido
+     */
+    function nota_pedido_boucher2($pedido_id)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(32)) {
+        //**************** inicio contenido ***************            
+            $usuario_id = $this->session_data['usuario_id'];
+            $empresa_id = 1;
+
+            $data['page_title'] = "Nota de Pedido";
+            $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
+            $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+            
+            $data['_view'] = 'pedido/nota_pedido_boucher2';
+            $this->load->view('layouts/main',$data);
+
+        		
+        //**************** fin contenido ***************
+        }
         		
     }
     
@@ -193,6 +224,60 @@ class Pedido extends CI_Controller{
         }
         		
     }
+    
+    
+    
+    /*
+     * Listing of pedido
+     */
+    function ultimopedido()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(32)) {
+            //**************** inicio contenido ***************            
+            
+            $pedidos = $this->Venta_model->Consultar("select * from pedido where pedido_id = (select max(pedido_id) from pedido)");
+            $pedido_id = $pedidos[0]["pedido_id"];
+                            
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->nota_pedido_boucher($pedido_id);
+                else
+                    $this->nota_pedido($pedido_id);
+            }
+
+            
+            //**************** fin contenido ***************
+        }
+        		
+    }
+    /*
+     * Listing of pedido
+     */
+    function ultimopedido2()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(32)) {
+            //**************** inicio contenido ***************            
+            
+            $pedidos = $this->Venta_model->Consultar("select * from pedido where pedido_id = (select max(pedido_id) from pedido)");
+            $pedido_id = $pedidos[0]["pedido_id"];
+                            
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                $this->nota_pedido_boucher2($pedido_id);
+            }
+
+            
+            //**************** fin contenido ***************
+        }
+        		
+    }
+    
     
     
     /*
