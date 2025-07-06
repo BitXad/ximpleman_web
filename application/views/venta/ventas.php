@@ -1244,6 +1244,7 @@ window.onkeydown = compruebaTecla;
                 ?>
             <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-list-alt"></span><b> Factura</b></a> 
             <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura_pdf" title="Imprimir factura en PDF"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-file-pdf"></span> <b>PDF</b></a>
+            <a href="<?php echo base_url('venta/enviopdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="enviar_factura_pdf" title="Enviar factura PDF por whatsapp"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-whatsapp"></span> <b>Whatsapp</b></a>
             
             <?php } 
             ?>
@@ -4108,7 +4109,7 @@ Gasto de Seguro:2000
 <!------------------------------------------------------------------------------->
 
 
-<div>
+<div hidden>
     <button type="button" id="boton_portotal" class="btn btn-default" data-toggle="modal" data-target="#modalportotal" >
       Total
     </button>
@@ -4173,3 +4174,5 @@ Gasto de Seguro:2000
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL TOTAL ----------------------------------->
 <!------------------------------------------------------------------------------->
+
+

@@ -816,6 +816,9 @@ div {
                                 <option value="7" <?php if($parametro['parametro_imprimirfactura']=="7"){ echo "selected"; } ?>>IMPRIMIR FACTURA,RECIBO Y COMANDA</option>
                                 <option value="8" <?php if($parametro['parametro_imprimirfactura']=="8"){ echo "selected"; } ?>>IMPRIMIR FACTURA O RECIBO Y COMANDA</option>
                                 <option value="9" <?php if($parametro['parametro_imprimirfactura']=="9"){ echo "selected"; } ?>>IMPRIMIR FACTURA PDF</option>
+                                <option value="10" <?php if($parametro['parametro_imprimirfactura']=="10"){ echo "selected"; } ?>>FACTURA POR WHATSAPP</option>
+                                <option value="11" <?php if($parametro['parametro_imprimirfactura']=="11"){ echo "selected"; } ?>>IMPRIMIR RECIBO Y FACTURA POR WHATSAPP</option>
+                                <option value="12" <?php if($parametro['parametro_imprimirfactura']=="12"){ echo "selected"; } ?>>IMPRIMIR FACTURA Y FACTURA POR WHATSAPP</option>
                                 
                             </select>
                         </div>

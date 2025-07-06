@@ -1077,27 +1077,35 @@ function consolidar_allpedido()
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/pedido_a_ventas";
     var respuesta   = document.getElementById('respedido').value;
+    var sistema_moduloventas   = document.getElementById('sistema_moduloventas').value;
     var registros   =  JSON.parse(respuesta);
     var tipotrans_id = 1; // 1-->CONTADO //document.getElementById('tipo_venta'+pedido_id).value;
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-    for (var i = 0; i < registros.length; i++){
-        if(registros[i]['estado_id'] == 11){
-            $.ajax({url:controlador,
-                type:"POST",
-                data:{pedido_id:registros[i]['pedido_id'], tipotrans_id:tipotrans_id,pedido_total:registros[i]['pedido_total']},
-                success: function(response){
-                    //var res = JSON.parse(response);
-                    /*if (res != null){
-                        if(res == "ok"){
-                            alert("Pedidos consolidados con exito!.");
-                        }
-                    }*/
-                }
-            });
+    
+    var r = confirm("ADVERTENCIA: Esta operación CONSOLIDARA todas las tansacciones a "+sistema_moduloventas+" ¿Desea Continuar?");
+    if (r == true) {
+
+        document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+        for (var i = 0; i < registros.length; i++){
+            if(registros[i]['estado_id'] == 11){
+                $.ajax({url:controlador,
+                    type:"POST",
+                    data:{pedido_id:registros[i]['pedido_id'], tipotrans_id:tipotrans_id,pedido_total:registros[i]['pedido_total']},
+                    success: function(response){
+                        //var res = JSON.parse(response);
+                        /*if (res != null){
+                            if(res == "ok"){
+                                alert("Pedidos consolidados con exito!.");
+                            }
+                        }*/
+                    }
+                });
+            }
         }
+        buscar_pedidos();
+        document.getElementById('loader').style.display = 'none';
+
     }
-    buscar_pedidos();
-    document.getElementById('loader').style.display = 'none';
+    
 }
 
 function modificar_lahora(venta_id, lafecha){

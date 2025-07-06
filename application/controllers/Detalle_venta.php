@@ -523,14 +523,14 @@ class Detalle_venta extends CI_Controller{
                     'detallefact_caracteristicas' => $detalle_venta['detalleven_caracteristicas'],
                     'usuario_id' => $usuario_id,
                 );
+                foreach ($params as $key => $value) {
+                    if (is_null($value)) {
+                        $params[$key] = '';
+                    }
+                }
                 $this->Detalle_factura_aux_model->add_detalleventa_factura_aux($params);
             }
             
-            foreach ($params as $key => $value) {
-                if (is_null($value)) {
-                    $params[$key] = '';
-                }
-            }
             //$datos = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
             echo json_encode("ok");
         }

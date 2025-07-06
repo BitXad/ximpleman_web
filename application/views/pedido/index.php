@@ -191,7 +191,7 @@
                         <th style="padding: 0;">Total</th>
                         <th style="padding: 0;">Fecha<br>entrega</th>
                         <th style="padding: 0; vertical-align: middle">
-                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar <?php echo ($partede)." ".$sistema["sistema_modulopedidos"]." a ".$sistema['sistema_moduloventas']; ?>"><span class="fa fa-cart-plus"></span> </a>
+                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar todos  <?php echo ($partede)." ".$sistema["sistema_modulopedidos"]." a ".$sistema['sistema_moduloventas']; ?>"><span class="fa fa-cart-plus"></span> </a>
                         </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">

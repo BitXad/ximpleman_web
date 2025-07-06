@@ -1240,6 +1240,20 @@
             <!-- /.content-wrapper -->
             <footer class="main-footer no-print">
                 <strong>Desarrollado por <a href="http://www.passwordbolivia.com/">PASSWORD SRL</a> Ingenieria Hardware & Software</strong>
+                
+                <!<!-- Aqui entra el icono de whatsapp -->
+                
+                <a href="https://wa.me/59177417605" class="whatsapp-float" target="_blank">
+                <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png"/>
+              </a>
+              <style>
+              .whatsapp-float {
+                  position: fixed;
+                  bottom: 20px;
+                  right: 20px;
+                  z-index: 999;
+              }
+              </style>
             </footer>
 
             <!-- Control Sidebar -->

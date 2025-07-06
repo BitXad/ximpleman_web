@@ -6238,9 +6238,16 @@ function anular_traspaso($venta_id){
                                 );
                                     
                                 $this->Factura_model->update_factura($factura_id, $params);
+                                //echo json_encode($res);
                                 
-                                echo json_encode($res);
-                                
+                                if (isset($res->codigoDescripcion) && $res->codigoDescripcion == "VALIDADA") {
+                                    echo json_encode($res);
+                                } else {
+                                    $sql = "UPDATE factura SET venta_id = 0 WHERE factura_id = {$factura_id}";
+                                    $this->Venta_model->ejecutar($sql);
+                                    echo json_encode($res);
+                                }
+
                         }else{
                             
                                 // COMPRESION XML EN GZIP
@@ -8156,6 +8163,7 @@ function anular_traspaso($venta_id){
         $micad .= "      margin : 0 0 0 0;";
         $micad .= "      padding : 0 0px 0 0px;";
         $micad .= "  }";
+        
         $micad .= "       </style>"; 
         $micad .= "   </head>";
         $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
@@ -8179,7 +8187,7 @@ function anular_traspaso($venta_id){
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
         //$opc = 1; // Valor solo declarado para actualzar emavra
-        $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
+        $subtitulo_factura = "CON DERECHO A CRÉDITO FISCAL";
         switch($opc){
             
             default: $titulo1 = "FACTURA";
@@ -8189,7 +8197,7 @@ function anular_traspaso($venta_id){
                     break;
                 
             case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
-                    $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
+                    $subtitulo_factura = "SIN DERECHO A CRÉDITO FISCAL";
                     break;
                 
                 
@@ -8198,14 +8206,14 @@ function anular_traspaso($venta_id){
                                                     //   $tipo = 1;
                                                     //if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                                     //else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
-        $micad .= "                                    <span style='font-weight: bold !important'>".$titulo1."</span><br>";
-        $micad .= "                                    <span style='font-weight: bold !important'>".$subtitulo_factura."</span><br>";
+        $micad .= "                                    <span style='font-weight: bold; font-family: Helvetica;'>".$titulo1."</span><br>";
+        $micad .= "                                    <span style='font-weight: bold; font-family: Helvetica;'>".$subtitulo_factura."</span><br>";
         $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
         if($empresa[0]['empresa_eslogan'] !="" && $empresa[0]['empresa_eslogan'] != null){
             $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
         }
                                                     if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
-        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
+        $micad .= "                                       ".$empresa[0]['empresa_propietario']."<br>";
                                                     }
                                                     if($factura[0]['factura_sucursal']==0){
         $micad .= "                                            CASA MATRIZ";
@@ -8222,19 +8230,19 @@ function anular_traspaso($venta_id){
         $micad .= "                        </table>";
         $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-        $micad .= "                                <td><center><span style='font-weight: bold !important'>NIT:</span> ".$factura[0]['factura_nitemisor']."</center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold; font-family: Helvetica;'>NIT:</span> ".$factura[0]['factura_nitemisor']."</center></td>";
         $micad .= "                            </tr>";
 //                                        $micad .= "                            <tr>";
 //                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
 //                                        $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td><center><span style='font-weight: bold !important'>FACTURA Nº:</span> ".$factura[0]['factura_numero']."</center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold; font-family: Helvetica;'>FACTURA Nº:</span> ".$factura[0]['factura_numero']."</center></td>";
         $micad .= "                            </tr>";
 //                                        $micad .= "                            <tr>";
 //                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
 //                                        $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td><center><span style='font-weight: bold !important'>CÓD. AUTORIZACIÓN</span></center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold;  font-family: Helvetica;'>CÓD. AUTORIZACIÓN</span></center></td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
@@ -8246,11 +8254,11 @@ function anular_traspaso($venta_id){
         $micad .= "                    <td colspan='4' style='padding: 0;'>";
         $micad .= "                        <table style='width: ".$ancho."' >";
         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-        $micad .= "                                <td style='padding: 0; white-space: nowrap; text-align: right; font-weight: bold !important'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
+        $micad .= "                                <td style='padding: 0; white-space: nowrap; text-align: right; font-weight: bold; font-family: Helvetica;'>NOMBRE/RAZÓN SOCIAL: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>NIT/CI/CEX: </td>";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>NIT/CI/CEX: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
                                                if($factura[0]['cdi_codigoclasificador']!=5){
         $micad .=                                  $factura[0]["cliente_complementoci"];
@@ -8258,7 +8266,7 @@ function anular_traspaso($venta_id){
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
         $micad .= "                            </tr>";
         
@@ -8268,7 +8276,7 @@ function anular_traspaso($venta_id){
         }
         
         $micad .= "                            <tr ".$linea_recortada.">";
-        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>FECHA DE EMISI&Oacute;N: </td>";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>FECHA DE EMISIÓN: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
                                                     $fecha = new DateTime($factura[0]['factura_fecha']);
                                                     $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -8278,11 +8286,11 @@ function anular_traspaso($venta_id){
                             
                             if($opc == 12){
         $micad .= "                   <tr>";
-        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold'>PLACA/B-SISA/VIN:</td>";
+        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>PLACA/B-SISA/VIN:</td>";
         $micad .= "                       <td style='padding: 0; padding-left: 3px'>".$datos_factura['datos_placa']."<br></td>";
         $micad .= "                   </tr>";
         $micad .= "                   <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold !important'>TIPO ENVASE:</td>";
+        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>TIPO ENVASE:</td>";
         $micad .= "                       <td style='padding: 0; padding-left: 3px'>".$datos_factura['datos_embase']."<br></td>";
         $micad .= "                   </tr>";
                             }
@@ -8290,7 +8298,7 @@ function anular_traspaso($venta_id){
         $micad .= "                    </td>";
         $micad .= "                </tr>";
         $micad .= "                <tr>";
-        $micad .= "                    <td colspan='4' align='center' style='padding: 0; font-weight: bold !important'>DETALLE</td>";
+        $micad .= "                    <td colspan='4' align='center' style='padding: 0; font-weight: bold; font-family: Helvetica;'>DETALLE</td>";
         $micad .= "                </tr>";
         $micad .= "                <tr>";
         $micad .= "                    <td colspan='4' style='padding: 0'>";
@@ -8310,7 +8318,7 @@ function anular_traspaso($venta_id){
                                                     $total_final += $d['detallefact_total']; 
         $micad .= "                            <tr>";
         $micad .= "                                <td colspan='3' style='font-size: 7pt; padding: 0;'>";
-        $micad .= "                                <span style='font-weight: bold !important'>";
+        $micad .= "                                <span style='font-weight: bold; font-family: Helvetica;'>";
         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
                                                     if($d['detallefact_preferencia']!='' && ! is_null($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='-' ){
         $micad .=                                       " ".$d['detallefact_preferencia'];
@@ -8321,7 +8329,7 @@ function anular_traspaso($venta_id){
                                                     }
         $micad .= "                                </span>";
                                                     if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
-        $micad .= "                                      <br><span style='font-size: 10px'>Unidad de Medida: [".$d['detallefact_unidadfactor']."]</span>";
+        $micad .= "                                      <br><span style='font-size: 10px'>Unidad de Medida: ".$d['detallefact_unidadfactor']."</span>";
                                                     }
         $micad .= "                                ";
         $micad .= "                                </td>";
@@ -8403,7 +8411,7 @@ function anular_traspaso($venta_id){
         if ($mostrarice==1){
                                                     
             $micad .= "                            <tr>";
-            $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
+            $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPECÍFICO Bs</td>";
             $micad .= "                                <td></td>";
             $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,$dos_decimales,'.',','); //number_format($factura[0]['factura_ice'],$decimales,'.',',');
             $micad .= "                                </td>";
@@ -8416,11 +8424,11 @@ function anular_traspaso($venta_id){
             $micad .= "                            </tr>";
         
         }
-        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8){                        
+        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==1|| $factura[0]['docsec_codigoclasificador']==8){                        
             $micad .= "                            <tr>";
-            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>MONTO A PAGAR Bs</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold; font-family: Helvetica;'>MONTO A PAGAR Bs</td>";
             $micad .= "                                <td></td>";
-            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold; font-family: Helvetica;'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
             $micad .= "                            </tr>";
         }
                 
@@ -8433,9 +8441,9 @@ function anular_traspaso($venta_id){
             } 
             
             $micad .= "                            <tr>";
-            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".$elimporte."</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold; font-family: Helvetica;'>".$elimporte."</td>";
             $micad .= "                                <td></td>";
-            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".number_format($importe_base_iva,$dos_decimales,'.',',')."</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold; font-family: Helvetica;'>".number_format($importe_base_iva,$dos_decimales,'.',',')."</td>";
             $micad .= "                            </tr>";
             
         }
@@ -8607,7 +8615,7 @@ function anular_traspaso($venta_id){
         $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
         $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
                                                     if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
-        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
+        $micad .= "                                       ".$empresa[0]['empresa_propietario']."<br>";
                                                     }
                                                     if($factura[0]['factura_sucursal']==0){
         $micad .= "                                            CASA MATRIZ";
@@ -8969,37 +8977,37 @@ function anular_traspaso($venta_id){
         } 
         
         if($this->parametros["parametro_mostrarempresa"]==1){
-            $micad .= "                            <div><font size='1' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
+            $micad .= "                            <div style='font-weight: bold; font-family: Helvetica;'>".$empresa[0]['empresa_nombre']."</div>"; 
         }
         
         if($this->parametros["parametro_mostrareslogan"]==1){
             if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
                 
-                $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
+                $micad .= "                                 <div><small>".$empresa[0]['empresa_eslogan']."</small></div>"; 
                 
             }
         }
                                                 
         if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
-            $micad .= "                                 <div><font size='1' face='Arial'>".$empresa[0]['empresa_propietario']."</font></div>";    
+            $micad .= "                                 <div style='font-weight: bold; font-family: Helvetica;'>".$empresa[0]['empresa_propietario']."</div>";    
         }
                                                 
         $micad .= "                            <br>"; 
         $micad .= "                            <div>"; 
-        $micad .= "                            <font size='1' face='Arial'>"; 
+//        $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
         $micad .= "                                "; 
                                                 if($factura[0]['factura_sucursal']==0){ 
-        $micad .= "                                            <div>CASA MATRIZ</div>"; 
+        $micad .= "                                            <div style='font-weight: bold; font-family: Helvetica;'>CASA MATRIZ</div>"; 
                                                 }else{ 
-        $micad .= "                                            <div>SUCURSAL ".$factura[0]['factura_sucursal']."</div>"; 
+        $micad .= "                                            <div style='font-weight: bold; font-family: Helvetica;'>SUCURSAL ".$factura[0]['factura_sucursal']."</div>"; 
                                                 }
         $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
         $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
         $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
         $micad .=                                 $empresa[0]['empresa_ubicacion']; 
         $micad .= "                            </small>"; 
-        $micad .= "                            </font>"; 
+//        $micad .= "                            </font>"; 
         $micad .= "                            </div>"; 
         $micad .= "                    </center>"; 
         $micad .= "                </td>"; 
@@ -9008,15 +9016,15 @@ function anular_traspaso($venta_id){
         $micad .= "                <td style='width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
         $micad .= "                    <table style='width: ".round($ancho/3,2)."cm; word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
         $micad .= "                        <tr>"; 
-        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>NIT: </td>"; 
+        $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>NIT: </td>"; 
         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'> ".$factura[0]['factura_nitemisor']."</td>"; 
         $micad .= "                        </tr>"; 
         $micad .= "                        <tr>"; 
-        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
+        $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>".$factura[0]['factura_numero']."</td>"; 
         $micad .= "                        </tr>"; 
         $micad .= "                        <tr>"; 
-        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
+        $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
         $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; max-width: 3cm'><div style='word-wrap: break-word !important; padding=0px'>".$factura[0]['factura_cuf']."</div></td>"; 
         $micad .= "                        </tr>"; 
         $micad .= "                    </table>"; 
@@ -9034,34 +9042,39 @@ function anular_traspaso($venta_id){
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
        // echo "opc: ".$opc;
+        
+        $micad .= "<center style='font-weight: bold; font-family: Helvetica; font-size: 16px;'>"; 
+            switch($opc){
+
+
+                case 1: $micad .= "FACTURA <br>";
+                        break;                
+                case 2: $micad .= "FACTURA DE ALQUILER <br>";
+                        break;
+                case 3: $micad .= "FACTURA COMERCIAL DE EXPORTACIÓN<br>(COMMERCIAL INVOICE) <br>";
+                        $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
+                        break;
+
+                case 4: $micad .= "FACTURA <br>";
+                        break;                
+                case 5: $micad .= "FACTURA <br>";
+                        break;
+
+                case 8: $micad .= "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL <br>";
+                        $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
+                        break;
+
+                case 23: $micad .= "FACTURA <br>";
+                        break;
+
+                default: $micad .= "FACTURA <br>";
+                        break;
+
+            }
+        
+        $micad .= "</center>"; 
+        
         $subtitulo_factura = "Con Derecho a Cr&eacute;dito Fiscal";
-        switch($opc){
-            
-                    
-            case 1: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
-                    break;                
-            case 2: $micad .= "<font size='4' face='arial'>FACTURA DE ALQUILER</font> <br>";
-                    break;
-            case 3: $micad .= "<font size='4' face='arial'>FACTURA COMERCIAL DE EXPORTACIÓN<br>(COMMERCIAL INVOICE)</font> <br>";
-                    $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
-                    break;
-                
-            case 4: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
-                    break;                
-            case 5: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
-                    break;
-                
-            case 8: $micad .= "<font size='4' face='arial'>FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL</font> <br>";
-                    $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
-                    break;
-                
-            case 23: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
-                    break;
-                
-            default: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
-                    break;
-                
-        }
         
         
         $micad .= "                        <font size='1' face='arial'>(".$subtitulo_factura.")</font> <br>"; 
@@ -9073,35 +9086,35 @@ function anular_traspaso($venta_id){
         //$micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
         $micad .= "                            <tr>"; 
-        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'>Fecha:</td>"; 
+        $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'>Fecha:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$fecha_d_m_a." ".$factura[0]['factura_hora']."</td>"; 
         $micad .= "                            </tr>"; 
         $micad .= "                            <tr>"; 
-        $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Nombre/Razón Social:</td>"; 
+        $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Nombre/Razón Social:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
         $micad .= "                            </tr>";
         
         if($opc == 3){ //Sector Exportacion comercial
        
         $micad .= " <tr>";
-        $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>INCOTERM:</td>";
+        $micad .= "     <td style='ffont-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>INCOTERM:</td>";
         $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_incoterm'].' '.$datos_factura['datos_incotermdetalle']."</td>";
         $micad .= " </tr>";
 
         $micad .= " <tr>";
-        $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Tipo de Cambio:</td>";
+        $micad .= "     <td style='ffont-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Tipo de Cambio:</td>";
         $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".number_format($datos_factura['datos_tipocambio'],5,'.',',')."</td>";
         $micad .= " </tr>";
 
         $micad .= " <tr>";
-        $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Moneda de Transacción Comercial:<br>(Comercial Transaction Currency)</td>";
+        $micad .= "     <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Moneda de Transacción Comercial:<br>(Comercial Transaction Currency)</td>";
         $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_monedatransaccional']."</td>";
         $micad .= " </tr>";
         }
         
         if($opc == 11){ //Sector Educativo
             $micad .= " <tr>";
-            $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' >Nombre Estudiante:</td>";
+            $micad .= "     <td font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' >Nombre Estudiante:</td>";
             $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiarioley1886']."</td>";
             $micad .= " </tr>";
         }
@@ -9109,7 +9122,7 @@ function anular_traspaso($venta_id){
         
         if($opc == 12){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
-            $micad .= "                            <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Placa/B-Sisa/Vin:</td>"; 
+            $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Placa/B-Sisa/Vin:</td>"; 
             $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_placa']."</td>"; 
             $micad .= "                        </tr>";
         }
@@ -9117,12 +9130,12 @@ function anular_traspaso($venta_id){
         if($opc == 13){ //Servicios Basicos
                     
             $micad .= "                            <tr>"; 
-            $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Dirección:</td>"; 
+            $micad .= "                                <td style=' font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Dirección:</td>"; 
             $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['cliente_direccion']."</td>"; 
             $micad .= "                            </tr>"; 
 
             $micad .= "                            <tr>"; 
-            $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Consumo Período:</td>"; 
+            $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Consumo Período:</td>"; 
             $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_consumoperiodo']."</td>"; 
             $micad .= "                            </tr>"; 
         }
@@ -9137,7 +9150,7 @@ function anular_traspaso($venta_id){
         //$micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
         $micad .= "                            <tr>"; 
-        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'>NIT/CI/CEX:</td>"; 
+        $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'>NIT/CI/CEX:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
                                                     if ($factura[0]['cdi_codigoclasificador']!=5){
         $micad .=                                        $factura[0]["cliente_complementoci"];
@@ -9145,23 +9158,23 @@ function anular_traspaso($venta_id){
         $micad .= "</td>"; 
         $micad .= "                            </tr>"; 
         $micad .= "                            <tr>"; 
-        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
+        $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
         $micad .= "                            </tr>";
         
         if($opc == 3){ //Comercializacion de hidrocarburos
             $micad .= "<tr>";
-                $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Lugar Destino:</td>";
+                $micad .= "<td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Lugar Destino:</td>";
                 $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_lugardestino']."</td>";
             $micad .= "</tr>";
 
            $micad .= " <tr>";
-                $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Dirección Comprador:</td>";
+                $micad .= "<td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Dirección Comprador:</td>";
                 $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_direccioncomprador']."</td>";
             $micad .= "</tr>";
 
             $micad .= "<tr>";
-                $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Puerto Destino:</td>";
+                $micad .= "<td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Puerto Destino:</td>";
                 $micad .= "<td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_puertodestino']."</td>";
             $micad .= "</tr>";
         }
@@ -9169,7 +9182,7 @@ function anular_traspaso($venta_id){
         if($opc == 11){ //Sector Educativo
 
             $micad .= "<tr>";
-            $micad .= "    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Periodo Facturado:</td>";
+            $micad .= "    <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Periodo Facturado:</td>";
             $micad .= "    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_periodofacturado']."</td>";
             $micad .= "</tr>";      
         }
@@ -9177,14 +9190,14 @@ function anular_traspaso($venta_id){
         
         if($opc == 12){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
-            $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Tipo Envase:</td>"; 
+            $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Tipo Envase:</td>"; 
             $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_embase']."</td>"; 
             $micad .= "                        </tr>"; 
         }
 
         if($factura[0]['docsec_codigoclasificador']==2){
                 $micad .= "                            <tr>"; 
-                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
+                $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_glosa']."</td>"; 
                 $micad .= "                            </tr>";
         }
@@ -9192,15 +9205,15 @@ function anular_traspaso($venta_id){
 
         if($factura[0]['docsec_codigoclasificador']==13){ //factura de servicios basicos
                 $micad .= "                            <tr>"; 
-                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Beneficiario Ley 1886:</td>"; 
+                $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Beneficiario Ley 1886:</td>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiarioley1886']."</td>"; 
                 $micad .= "                            </tr>";
                 $micad .= "                            <tr>"; 
-                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
+                $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_mes']."/".$datos_factura['datos_anio']."</td>"; 
                 $micad .= "                            </tr>";
                 $micad .= "                            <tr>"; 
-                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Nro Medidor:</td>"; 
+                $micad .= "                                <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Nro Medidor:</td>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_medidor']."</td>"; 
                 $micad .= "                            </tr>";
         }
@@ -9219,7 +9232,8 @@ function anular_traspaso($venta_id){
         $micad .= "            <tr>"; 
         $micad .= "                <td>"; 
 
-        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+//        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+        $colorCelda = "style='font-weight: bold; font-family: Helvetica; padding: 0; background-color: #ebebeb !important; -webkit-print-color-adjust: exact;'";
 
         if( $factura[0]['docsec_codigoclasificador']!=3){
         $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
@@ -9446,7 +9460,7 @@ function anular_traspaso($venta_id){
             
                 $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
                 $micad .= "                    <tr>"; 
-                $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+                $micad .= "                        <td style='font-weight: bold; font-family: Helvetica; padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,$dos_decimales,'.',',')."</td>"; 
                 $micad .= "                    </tr>";
@@ -9497,11 +9511,11 @@ function anular_traspaso($venta_id){
 
                 $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
 
-                if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8 ||  $factura[0]['docsec_codigoclasificador']==11 || $factura[0]['docsec_codigoclasificador']==16 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ // Mostrar si es factura con ICE o Tasa Cero
+                if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==1  || $factura[0]['docsec_codigoclasificador']==8 ||  $factura[0]['docsec_codigoclasificador']==11 || $factura[0]['docsec_codigoclasificador']==16 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ // Mostrar si es factura con ICE o Tasa Cero
 
                     $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
+                    $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
+                    $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
                     $micad .= "    </tr>";
                 }
 
@@ -9522,8 +9536,8 @@ function anular_traspaso($venta_id){
                     if($opc == 12){ //Comercializacion de hidrocarburos
                         $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
                     }        
-                    $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>".$elimporte."</td>"; 
-                    $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' align='right'>".number_format($importe_base_iva ,$dos_decimales,'.',',')."</td>"; 
+                    $micad .= "                        <td class='text-bold' style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' colspan='".$span."' align='right'>".$elimporte."</td>"; 
+                    $micad .= "                        <td class='text-bold' style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' align='right'>".number_format($importe_base_iva ,$dos_decimales,'.',',')."</td>"; 
                     $micad .= "                    </tr>";
 
                 }
@@ -9560,7 +9574,7 @@ function anular_traspaso($venta_id){
                 $micad .= "    </tr>";
 
                 $micad .= "    <tr>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>MONTO TOTAL A PAGAR Bs</td>";
+                $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' colspan='{$span}' align='right'>MONTO TOTAL A PAGAR Bs</td>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($monto_total_pagar ,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
 
@@ -9580,8 +9594,8 @@ function anular_traspaso($venta_id){
                 $micad .= "    </tr>";
 
                 $micad .= "    <tr>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>IMPORTE BASE CREDITO FISCAL</td>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',')."</td>";
+                $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' colspan='{$span}' align='right'>IMPORTE BASE CREDITO FISCAL</td>";
+                $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
 
         
@@ -10086,7 +10100,8 @@ function anular_traspaso($venta_id){
         $micad .= "            <tr>"; 
         $micad .= "                <td>"; 
 
-        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+//        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+        $colorCelda = "style='padding: 0; background-color: #ebebeb !important; -webkit-print-color-adjust: exact;'";
 
        
         
@@ -10189,7 +10204,7 @@ function anular_traspaso($venta_id){
                              } */
         $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
         $micad .= "    <tr>           ";
-        $micad .= "        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+        $micad .= "        <td style='font-weight: bold; font-family: Helvetica; padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
         $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>";
         $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,$decimales,'.',',')."</td>";
         $micad .= "    </tr>";
@@ -11461,7 +11476,118 @@ function anular_traspaso($venta_id){
 
     }    
     
+    function crear_url_corta($long_url)
+    {
+        $short_code = substr(md5(uniqid()), 0, 6);
+
+        $this->db->insert('urls', [
+            'long_url' => $long_url,
+            'short_code' => $short_code
+        ]);
+
+        return base_url('venta/u/' . $short_code);
+    }
+
+    function obtener_url_larga($short_code)
+    {
+        $query = $this->db->get_where('urls', ['short_code' => $short_code]);
+        return $query->row();
+    }
+
+    public function u($short_code)
+    {
+        //$this->load->model('Url_model');
+        $url = $this->obtener_url_larga($short_code);
+
+        if ($url) {
+            redirect($url->long_url);
+        } else {
+            show_404();
+        }
+    }
  
     
+
+/*************** Ultima factura******************/
+function enviopdf(){
+    
+    if($this->acceso(12)||$this->acceso(30)){
+        
+            //**************** inicio contenido ***************    
+        $venta = $this->Factura_model->ultima_factura();
+        $factura_id = $venta['ultimo'];
+        
+        $this->enviarwhatsapp($factura_id);
+
+        
+           //**************** fin contenido ***************
+    }
+            
+}
+    
+    /*************** registrar_calculos ******************/
+    function enviarwhatsapp($factura_id){
+
+        
+        $sql = "SELECT c.*,f.*, d.documento_nombre FROM factura f, venta v, cliente c, documentos_fiscales d
+                WHERE f.factura_id = {$factura_id} and f.venta_id = v.venta_id and v.cliente_id = c.cliente_id and f.factura_sectoreconomico = d.dosificacion_sectoreconomico and f.factura_modalidad = d.dosifcacion_modalidad";
+        $factura = $this->Venta_model->Consultar($sql);
+        $factura = $factura[0];
+        
+        $telefono_cliente = '591'.$factura["cliente_celular"];
+        $nombre_cliente = $factura["factura_razonsocial"];
+        $nombre_empresa = $this->empresa["empresa_nombre"]." - ".$this->empresa["empresa_telefono"];
+        
+        $documento_nombre = $factura["documento_nombre"];
+        $enlace = $this->crear_url_corta(base_url("resources/xml/{$documento_nombre}{$factura_id}.pdf"));
+        
+        $mensaje = "*Saludos {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
+
+        // Codificar mensaje para URL
+        $mensaje_url = urlencode($mensaje);
+
+        // Construir link wa.me
+        $link_whatsapp = "https://wa.me/{$telefono_cliente}?text={$mensaje_url}";
+
+        // Mostrar link o redirigir
+        //echo "<a href='$link_whatsapp' target='_blank'>Enviar por WhatsApp</a>";
+
+        redirect($link_whatsapp);
+    }    
+    
+    /*************** registrar_calculos ******************/
+    function enviar_factura_wp(){
+
+        
+        $factura_id = $this->input->post("factura_id");
+        $cliente_celular = $this->input->post("cliente_celular");
+                
+        $sql = "SELECT c.*,f.*, d.documento_nombre FROM factura f, venta v, cliente c, documentos_fiscales d
+                WHERE f.factura_id = {$factura_id} and f.venta_id = v.venta_id and v.cliente_id = c.cliente_id and f.factura_sectoreconomico = d.dosificacion_sectoreconomico and f.factura_modalidad = d.dosifcacion_modalidad";
+        $factura = $this->Venta_model->Consultar($sql);
+        $factura = $factura[0];
+        
+        $telefono_cliente = '591'.$cliente_celular;
+        $nombre_cliente = $factura["factura_razonsocial"];
+        $nombre_empresa = $this->empresa["empresa_nombre"]." - ".$this->empresa["empresa_telefono"];
+        
+        $documento_nombre = $factura["documento_nombre"];
+        $enlace = $this->crear_url_corta(base_url("resources/xml/{$documento_nombre}{$factura_id}.pdf"));
+        
+        $mensaje = "*Saludos {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
+
+        // Codificar mensaje para URL
+        $mensaje_url = urlencode($mensaje);
+
+        // Construir link wa.me
+        $link_whatsapp = "https://wa.me/{$telefono_cliente}?text={$mensaje_url}";
+
+        // Mostrar link o redirigir
+        //echo "<a href='$link_whatsapp' target='_blank'>Enviar por WhatsApp</a>";
+
+        //redirect($link_whatsapp);
+        echo json_encode($link_whatsapp);
+    }    
+
     
 }

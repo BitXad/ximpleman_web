@@ -48,12 +48,12 @@ class Detalle_factura_aux_model extends CI_Model
     {
         $detalle_factura_aux = $this->db->query("
             SELECT
-                d.*, v.cliente_nit, v.cliente_razon, v.venta_total, v.cdi_codigoclasificador
+                d.*, v.cliente_nit, v.cliente_razon, v.venta_total, v.cdi_codigoclasificador, p.*
             FROM
-                detalle_factura_aux d, consventastotales v
+                detalle_factura_aux d, consventastotales v, producto p
             WHERE
                 d.venta_id = $venta_id
-                and d.venta_id = v.venta_id
+                and d.venta_id = v.venta_id and d.producto_id = p.producto_id
         ")->result_array();
 
         return $detalle_factura_aux;

@@ -5458,6 +5458,7 @@ function tabla_ventas(filtro)
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                         html += " <a href='"+base_url+"venta/facturaventapdf/"+v[i]['factura_id']+"' target='_blank' class='btn btn-danger btn-xs' title='Ver factura en PDF'><span class='fa fa-file-pdf'></span></a> ";
                         html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
+                        html += " <a onclick='modal_enviowhatsapp("+v[i]['factura_id']+")' class='btn btn-success btn-xs' title='Enviar factura por whatsapp'><span class='fa fa-whatsapp'></span></a>";
                     }
                     else{
                         if(generar_factura == 1){
@@ -5527,9 +5528,9 @@ function tabla_ventas(filtro)
                     html += "                                     </div>";
                     html += "                                     <div class='modal-footer'>";
                     html += "                                         <center>";
-                    html += "                                           <a class='btn btn-success btn-sm' onclick='anular_venta("+v[i]['venta_id']+", "+v[i]['factura_id']+", "+JSON.stringify(v[i]['factura_enviada'])+")'><em class='fa fa-check'></em> Si </a>";
+                    html += "                                           <a class='btn btn-success btn-sm' style='width: 80px;' onclick='anular_venta("+v[i]['venta_id']+", "+v[i]['factura_id']+", "+JSON.stringify(v[i]['factura_enviada'])+")'><em class='fa fa-check'></em> Si </a>";
 
-                    html += "                                           <a href='#' class='btn btn-danger btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
+                    html += "                                           <a href='#' style='width: 80px;' class='btn btn-danger btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
                     html += "                                         </center>";
 
                     html += "                                     </div>";
@@ -6767,7 +6768,9 @@ function cargar_factura2(venta_id){
                     var cantidad = 0;
                     var total_descuento = 0;
                     var total_final = 0;
+                    var ocultar_boton = 0;
                     for (var i=0; i< registros.length; i++){
+                        
                         cont = cont+1;
                         cantidad += registros[i]['detallefact_cantidad'];
                         total_descuento += registros[i]['detallefact_descuento']; 
@@ -6780,7 +6783,17 @@ function cargar_factura2(venta_id){
                         html += "</td>";
                         html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
                         html += "<font style='size:7px; font-family: arial;'> ";
+
+                        
+                        
                         html += registros[i]['detallefact_descripcion'];
+                        
+                        //productos no homologados
+                        if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 )){
+                            html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'> Sin homologar </a>";                        
+                            ocultar_boton = 1;
+                        }
+                        
                         if(registros[i]['detallefact_preferencia'].length>0 && registros[i]['detallefact_preferencia']!='null' && registros[i]['detallefact_preferencia']!='-' ){
                             html += registros[i]['detallefact_preferencia']; }
 
@@ -6797,9 +6810,13 @@ function cargar_factura2(venta_id){
                         html += "</font></td>";
                         html += "<td></td>";
                         html += "<td>&nbsp;";
-                        html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                        //html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
                         html += "</td>";
                         html += "</tr>";
+                        
+                        if (Number(registros[i]["detallefact_subtotal"])<=0){
+                            ocultar_boton = 1;
+                        }
                     }
                     html += "</table><br>";
                            
@@ -6819,7 +6836,13 @@ function cargar_factura2(venta_id){
                         $("#botonaniadir").html("<a onclick='aniadirdetalleaux("+venta_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-plus'></span></a>");
                     }
                     
-                    $("#registrar_factura").html("<button class='btn btn-facebook btn-block' id='boton_asignar' onclick='registrar_factura("+venta_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+                    if(Number(ocultar_boton) == 0){   
+                       
+                        $("#registrar_factura").html("<button class='btn btn-facebook btn-block' id='boton_asignar' onclick='registrar_factura("+venta_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+                    }else{
+                        //$("#registrar_factura").html("<button class='btn btn-danger btn-block' id='boton_asignar' onclick='registrar_factura("+venta_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+                        $("#registrar_factura").html("<div style='font-size: 12px; color: red;'><b>ADVERTENCIA - No puede generar esta FACTURA</b>, Debe revisar que no existan productos sin homologar, o productos con totales en cero</div>");
+                    }
                     
                     /*if(click_show == 1){
                         $("#boton_modal_factura").click();
@@ -9373,6 +9396,54 @@ function seleccionar_almacen(){
 }
 
 
+function modal_enviowhatsapp(factura_id){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/seleccionar_almacen';
+    //let almacen = document.getElementById('select_almacen').value;
+    
+    
+    $("#factura_idwhats").val(factura_id);
+    $("#boton_whatsapp").click();
+
+}
+
+
+function enviar_por_whatsapp(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/enviar_factura_wp';
+    //let almacen = document.getElementById('select_almacen').value;
+    let factura_id = document.getElementById('factura_idwhats').value;
+    let cliente_celular = document.getElementById('numero_whatsapp').value;
+    
+    
+    
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{factura_id:factura_id, cliente_celular:cliente_celular},
+                success:function(respuesta){
+
+                    let res = JSON.parse(respuesta);                            
+
+                    if (res.length>0) {  
+                        
+//                        $("#nit").val(res[0]["almacen_codigo"]);
+//                        buscarcliente();  
+//
+//                        document.getElementById('facturado').checked = false;     
+                         location.href = res;   
+                    }
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+   
+}
+
+
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
@@ -9577,6 +9648,50 @@ function borrar_datos_cliente(){
 //            let boton2 = document.getElementById("imprimir_comanda");
             
             if (facturado == 1){ boton1.click(); } //Imprimir factura
+//            else{ boton.click(); }//Imprimir recibo
+//            boton2.click(); //imprimir comanda
+        }
+        
+        if(parametro_imprimirfactura==10){ //FACTURA POR WHATSAPP
+            
+            let boton1 = document.getElementById("imprimir_factura_pdf");
+            let boton3 = document.getElementById("enviar_factura_pdf");
+//            let boton = document.getElementById("imprimir");            
+//            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton3.click(); } //Envio solo whatsapp
+//            else{ boton.click(); }//Imprimir recibo
+//            boton2.click(); //imprimir comanda
+        }
+        if(parametro_imprimirfactura==12){ //IMPRIMIR RECIBO Y FACTURA POR WHATSAPP
+            
+            let boton1 = document.getElementById("imprimir_factura_pdf");
+            let boton3 = document.getElementById("enviar_factura_pdf");
+            let boton = document.getElementById("imprimir");            
+//            let boton2 = document.getElementById("imprimir_comanda");
+            
+            boton.click(); 
+            
+            if (facturado == 1){ 
+                boton3.click(); 
+            
+            } //Envio solo whatsapp
+//            else{ boton.click(); }//Imprimir recibo
+//            boton2.click(); //imprimir comanda
+        }
+
+        if(parametro_imprimirfactura==11){ //IMPRIMIR FACTURA Y FACTURA POR WHATSAPP
+            
+            let boton1 = document.getElementById("imprimir_factura_pdf");
+            let boton3 = document.getElementById("enviar_factura_pdf");
+            let boton = document.getElementById("imprimir_factura");            
+//            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ 
+                boton.click(); 
+                boton3.click(); 
+            
+            } //Envio solo whatsapp
 //            else{ boton.click(); }//Imprimir recibo
 //            boton2.click(); //imprimir comanda
         }

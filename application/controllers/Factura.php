@@ -2155,7 +2155,7 @@ class Factura extends CI_Controller{
         }
     }
     //monto, codigo de recepcion
-    function enviar_correoanulacion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
+/*    function enviar_correoanulacion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
     {
         
         if($correo != null || $correo != ""){
@@ -2200,9 +2200,6 @@ class Factura extends CI_Controller{
             
             
 
-            
-            
-            
             $html = '
             <!DOCTYPE html>
             <html lang="es">
@@ -2353,8 +2350,107 @@ class Factura extends CI_Controller{
         /*}else{                 
             show_404();
         }*/              
+       /* }
+    }*/
+    
+    
+    function enviar_correoanulacion($factura_id, $correo, $factura_numero, $factura_fecha, $total, $cod_autorizacion)
+{
+    if (!empty($correo)) {
+        $this->load->library('email');
+        $this->email->set_newline("\r\n");
+        $this->load->model('Configuracion_email_model');
+        $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+        $factura = $this->Factura_model->get_factura_anulada($factura_id);
+        if (!$factura) return false;
+
+        $cliente = $factura["factura_razonsocial"];
+        $cuf = $factura["factura_cuf"];
+
+        $config['protocol'] = $configuracion['email_protocolo'];
+        $config['smtp_host'] = $configuracion['email_host'];
+        $config['smtp_port'] = $configuracion['email_puerto'];
+        $config['smtp_user'] = $configuracion['email_usuario'];
+        $config['smtp_pass'] = $configuracion['email_clave'];
+        $config['smtp_from_name'] = $configuracion['email_nombre'];
+        $config['priority'] = $configuracion['email_prioridad'];
+        $config['charset'] = $configuracion['email_charset'];
+        $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+        $config['wordwrap'] = TRUE;
+        $config['newline'] = "\r\n";
+        $config['mailtype'] = $configuracion['email_tipo'];
+
+        $this->email->initialize($config);
+
+        $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+        $this->email->to($correo);
+        if (!empty($configuracion['email_copia'])) {
+            $this->email->cc($configuracion['email_copia']);
         }
+        $this->email->subject("Factura Digital, Anulación de su factura");
+
+        $la_fecha = date("d/m/Y", strtotime($factura_fecha));
+        $this->load->helper('numeros_helper');
+        $literal = num_to_letras($total, ' Bolivianos');
+
+        $html = "
+        <!DOCTYPE html>
+        <html lang='es'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Mensaje de correo electrónico</title>
+        </head>
+        <body>
+            <center>
+                <table>
+                    <tr>
+                        <td style='background: #D35400; color:white; font-family:Arial;'>
+                            <center>
+                                <p><b>{$this->empresa['empresa_nombre']}</b></p>
+                                <p>{$this->empresa['empresa_eslogan']}</p>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='background: gray; font-family:Arial;'>
+                            <h2>Confirmación de Anulación!</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='background: lightgray; font-family:Arial;'>
+                            <p>Señor(es): {$cliente}</p>
+                            <p>Mediante este mensaje le informamos que su factura fue ANULADA.</p>
+                            <h3>Datos de la factura</h3>
+                            <p>FACTURA Nº: {$factura_numero}<br>
+                            MONTO Bs: ".number_format($total,2,'.',',')."<br>
+                            FECHA: {$la_fecha}<br>
+                            COD. AUTORIZACION: {$cuf}</p>
+                            <p>¡Gracias por su preferencia!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='background: black; color: white; font-family:Arial; font-size:10pt; line-height: 10px'>
+                            <center>
+                                <a href='https://www.facebook.com/sisximpleman/' style='color: white; text-decoration: none;'><b>XIMPLEMAN</b></a>
+                                es un producto de 
+                                <a href='https://www.passwordbolivia.com' style='color: white; text-decoration: none;' target='_blank'><b>PASSWORD IHS</b></a>
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+
+        $this->email->message($html);
+
+        return $this->email->send();
     }
+    return false;
+}
+
+    
     
     //monto, codigo de recepcion
     function enviar_correoreversion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)

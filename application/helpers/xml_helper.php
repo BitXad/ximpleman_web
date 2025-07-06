@@ -1012,7 +1012,13 @@ $salto_linea='
                     && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 45 && $documento_sector != 51 && $documento_sector != 24){
                     
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
-                    $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                    
+
+                    if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                    }else{
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei xsi:nil="true">'.$valor_vacio.'</numeroImei>';
+                    }
                     
                 }
                 
@@ -1107,13 +1113,20 @@ $salto_linea='
                 if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
                     && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24){
                     
+                   
+                    
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
-                    $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
                     
-                if($documento_sector == 16){ //16 Hoteles
+                    if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                    }else{
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei  xsi:nil="true">'.$valor_vacio.'</numeroImei>';
+                    }
                     
-                    $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
-                }
+                    if($documento_sector == 16){ //16 Hoteles
+
+                        $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
+                    }
                 
 
                 

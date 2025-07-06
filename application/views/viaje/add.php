@@ -151,9 +151,8 @@
              <div class="col-md-4">
                <label for=" " class="control-label"> </label>
                 <div class="form-group">
-                   <button type="submit" class="btn btn-success">  
-                   <i class="fa fa-check"></i> Save 
-                        </button> 
+                   <button type="submit" class="btn btn-success">  <i class="fa fa-floppy-o"></i> Guardar </button> 
+                   <a href="<?php echo base_url("transporte/menu_principal"); ?>" class="btn btn-danger">  <i class="fa fa-floppy-o"></i> Cancelar </a> 
                </div>
              </div>
             <?php echo form_close(); ?>

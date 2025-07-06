@@ -677,3 +677,74 @@
   </div>
 </div>
 <!-- --------------- F I N  modal Advertencia ---------------------------------->
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO ENVIO WHATSAPP ------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div>
+    <button type="button" id="boton_whatsapp" class="btn btn-default" data-toggle="modal" data-target="#modalwhatsapp" >
+      Envio factura
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalwhatsapp" tabindex="-1" role="dialog" aria-labelledby="modalwhatsapp" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">ENVIAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                <input type="hidden" id="calcular_detalleven_id" disabled="true"/>
+    
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <center>
+                                
+                            <div class="col-md-12 form-group" hidden>
+
+                              <input type="text" class="form-control" value="" name="factura_idwhats" id="factura_idwhats" disabled="true">
+                            </div>
+                                
+                            <div class="col-md-6 form-group">
+                              <label for="cliente_celular">Número de Celular (Whatsapp)</label>
+                              <input type="number" step="1" class="form-control" value="" name="numero_whatsapp" id="numero_whatsapp">
+                            </div>
+                                
+                            <div class="col-md-6">
+                                <label for="elparametro_tipoemision" class="control-label">Opciones</label>
+                                <div class="form-group">
+                                    <select name="select_numerocliente" class="form-control" id="select_numerocliente" required>
+                                        <option value="1" selected>SOLO ENVIO</option>
+                                        <option value="2" >ENVIAR Y REEMPLAZAR NUMERO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            </center>
+                        </div>
+
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-success btn-block" data-dismiss="modal" onclick="enviar_por_whatsapp()"><fa class="fa fa-whatsapp"></fa> Enviar Factura</button>
+                            <button type="button" class="btn btn-danger btn-block" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+                
+
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL TOTAL ----------------------------------->
+<!------------------------------------------------------------------------------->
