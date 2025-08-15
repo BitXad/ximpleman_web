@@ -41,7 +41,7 @@ class Transporte extends CI_Controller{
             
             $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
             $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-            $viajes = $this->Vehiculo_model->get_viajes(); //viajes de la fecha para adelante
+            $viajes = $this->Vehiculo_model->get_viajes_hoy(); //viajes de la fecha para adelante
             $data['viajes'] = $viajes;
             
             $result = $this->Vehiculo_model->get_by_id($vehiculo_id);            

@@ -90,7 +90,9 @@ class Detalle_venta extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(178)) {
+            
             $data['page_title'] = "Recepcion de pedidos";        
             $data['_view'] = 'venta/recepcion';
             
@@ -99,6 +101,7 @@ class Detalle_venta extends CI_Controller{
             
             $this->load->view('layouts/main',$data);
         }
+        
     }
 
     function recepcion_comandas()
@@ -142,9 +145,13 @@ class Detalle_venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
         $destino = $this->input->post('destino');
-        $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
+        
+        $datos = $this->Detalle_venta_model->ventas_dia($estado);
+        $detalle = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
+
+        $data['datos'] = $datos;
+        $data['detalle'] = $detalle;
         //$data['datos'] = $this->Detalle_venta_model->ventas_cocina_dia($estado);
-        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
        
         echo json_encode($data);
               
@@ -251,16 +258,28 @@ class Detalle_venta extends CI_Controller{
 
     function despachar($venta_id)
     {
-            $venta_fechaentrega=date('Y-m-d'); 
-            $venta_horaentrega=date('H:i:s');
+        /* 1 PENDIENTE ** 2 TERMINADO ** 3 DEPACHADO *** 4 ENTREGADO */
+        $venta_fechaentrega=date('Y-m-d'); 
+        $venta_horaentrega=date('H:i:s');
+        $sql="UPDATE venta SET entrega_id=3, venta_fechaentrega='".$venta_fechaentrega."', venta_horaentrega='".$venta_horaentrega."' WHERE venta_id=".$venta_id." ";
+        $this->db->query($sql);
+        return true;
+    }
+
+    function pedido_terminado($venta_id)
+    {
+        /* 1 PENDIENTE ** 2 TERMINADO ** 3 DEPACHADO *** 4 ENTREGADO */
+        $venta_fechaentrega=date('Y-m-d'); 
+        $venta_horaentrega=date('H:i:s');
         $sql="UPDATE venta SET entrega_id=2, venta_fechaentrega='".$venta_fechaentrega."', venta_horaentrega='".$venta_horaentrega."' WHERE venta_id=".$venta_id." ";
-            $this->db->query($sql);
-           return true;
+        $this->db->query($sql);
+        return true;
     }
     
     function restablecer($venta_id)
     {
-            $sql="UPDATE venta SET entrega_id=1, venta_fechaentrega='0000-00-00', venta_horaentrega='00:00:00' WHERE venta_id=".$venta_id." ";
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $sql="UPDATE venta SET entrega_id=1, venta_fechaentrega=date({$now}), venta_horaentrega=time({$now}) WHERE venta_id={$venta_id}";
             $this->db->query($sql);
             return true;
     }
@@ -480,6 +499,26 @@ class Detalle_venta extends CI_Controller{
         //$data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
         $data['_view'] = 'detalle_venta/venta_proceso';
         $this->load->view('detalle_venta/venta_proceso',$data);
+        //**************** fin contenido ***************
+    }
+    
+    function despacho_fichas()
+    {
+        $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        //**************** inicio contenido ***************
+        $this->load->model('Producto_model');
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);   
+        $data['productos'] = $this->Producto_model->get_productos_imagen();
+        $this->load->model('Parametro_model');
+        $parametro_id = 1;
+        $parametros = $this->Parametro_model->get_parametro($parametro_id);
+        $data['logomonitor'] = $parametros['parametro_logomonitor'];
+        $data['fondomonitor'] = $parametros['parametro_fondomonitor'];
+        //$data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+        $data['_view'] = 'detalle_venta/despacho_fichas';
+        $this->load->view('detalle_venta/despacho_fichas',$data);
         //**************** fin contenido ***************
     }
     
@@ -727,5 +766,21 @@ class Detalle_venta extends CI_Controller{
         $data['_view'] = 'venta/reporte_venta1';
         $this->load->view('layouts/main',$data);
     }
+    
+    
+    function get_terminados()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $sql = "select * from venta where venta_fechaentrega = DATE(NOW()) and entrega_id = 2 
+                    order by venta_fechaentrega, venta_horaentrega desc";
+            $resultado = $this->Venta_model->consultar($sql);
+            echo json_encode($resultado);
+
+        }
+        else{
+        }        
+    }
+
     
 }

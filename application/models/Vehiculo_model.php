@@ -184,13 +184,17 @@ class Vehiculo_model extends CI_Model
         
     }
 
-    public function get_viajes() {
+    public function get_viajes_hoy() {
         
-        $sql = "select * from viaje v, ruta r
+        $sql = "select v.*, r.*,h.* from viaje v
+                left join ruta r on r.ruta_id = v.ruta_id
+                left join vehiculo h on h.vehiculo_id = v.vehiculo_id
                 where 
-                v.viaje_fechasalida >= date(now()) and
-                v.ruta_id = r.ruta_id";
-        return $this->db->query($sql)->result_array();
+                v.viaje_fechasalida = date(now())";
+        //echo $sql;
+        $res = $this->db->query($sql)->result_array();
+        //var_dump($res);
+        return $res;
         
     }
 

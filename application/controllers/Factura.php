@@ -808,6 +808,34 @@ class Factura extends CI_Controller{
         //**************** fin contenido ***************
         }
     }
+ 
+
+    function recibo_traspasoboucher($traspaso_id)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_traspaso($traspaso_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_traspaso($traspaso_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo Traspaso";
+
+        $data['parametro'] = $this->parametros;
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/recibo_boucher';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        }
+    }
 
     function comanda_boucher($venta_id)
     {
@@ -854,6 +882,34 @@ class Factura extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['page_title'] = "Recibo";
+
+        //$data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/recibo_carta';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        }
+    }
+    
+    function recibo_traspasocarta($traspaso_id)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_traspaso($traspaso_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_traspaso($traspaso_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['page_title'] = "Recibo Traspaso";
 
         //$data['parametro'] = $this->Parametro_model->get_parametros();
    
@@ -1981,6 +2037,52 @@ class Factura extends CI_Controller{
         }
     }   
     
+    function imprimir_traspaso($traspaso_id)
+    {
+        
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+            
+        //**************** inicio contenido ***************            
+            //$parametros = $this->Parametro_model->get_parametros();
+            
+            if (sizeof($this->parametros)>0){
+                
+                if ($this->parametros['parametro_notaentrega']==1){ // Si esta configurado para nota de entrega
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+                    {    
+                        if ($this->parametros['parametro_comprobante']==1) $this->recibo_traspasoboucher($traspaso_id);
+                        if ($this->parametros['parametro_comprobante']==2) $this->recibo_traspasoboucher($traspaso_id,1);
+                        
+                    }
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="NORMAL")
+                        $this->recibo_carta($venta_id);
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="OFICIO")
+                        $this->recibo_mediooficio($venta_id,1);
+                    
+                }elseif($this->parametros['parametro_notaentrega']==2){
+                    
+                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+                        
+                        $this->notae_boucher($venta_id);
+                    
+                    
+                    else
+                        $this->notae_carta($venta_id);
+                }else{
+                    
+                    $this->notapreimpreso_carta($venta_id);
+                }
+          
+            }
+        //**************** fin contenido ***************
+            
+        }
+    }   
+    
     /*
      * emitir factura   
      */
@@ -2154,6 +2256,7 @@ class Factura extends CI_Controller{
             show_404();
         }
     }
+    
     //monto, codigo de recepcion
 /*    function enviar_correoanulacion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
     {
@@ -2355,100 +2458,121 @@ class Factura extends CI_Controller{
     
     
     function enviar_correoanulacion($factura_id, $correo, $factura_numero, $factura_fecha, $total, $cod_autorizacion)
-{
-    if (!empty($correo)) {
-        $this->load->library('email');
-        $this->email->set_newline("\r\n");
-        $this->load->model('Configuracion_email_model');
-        $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
-        $factura = $this->Factura_model->get_factura_anulada($factura_id);
-        if (!$factura) return false;
+    {
+        if (!empty($correo)) {
+            $this->load->library('email');
+            $this->email->set_newline("\r\n");
+            $this->load->model('Configuracion_email_model');
+            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            $factura = $this->Factura_model->get_factura_anulada($factura_id);
+            
+            if (!$factura) return false;
 
-        $cliente = $factura["factura_razonsocial"];
-        $cuf = $factura["factura_cuf"];
+            $cliente = $factura["factura_razonsocial"];
+            
+            $cuf = htmlspecialchars($factura["factura_cuf"], ENT_QUOTES, 'UTF-8');
+            $cuf1 = substr($cuf, 0, 32);  // Primera mitad
+            $cuf2 = substr($cuf, 32);     // Segunda mitad (resto)
+            
+            $config['protocol'] = $configuracion['email_protocolo'];
+            $config['smtp_host'] = $configuracion['email_host'];
+            $config['smtp_port'] = $configuracion['email_puerto'];
+            $config['smtp_user'] = $configuracion['email_usuario'];
+            $config['smtp_pass'] = $configuracion['email_clave'];
+            $config['smtp_from_name'] = $configuracion['email_nombre'];
+            $config['priority'] = $configuracion['email_prioridad'];
+            $config['charset'] = $configuracion['email_charset'];
+            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+            $config['wordwrap'] = TRUE;
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = $configuracion['email_tipo'];
 
-        $config['protocol'] = $configuracion['email_protocolo'];
-        $config['smtp_host'] = $configuracion['email_host'];
-        $config['smtp_port'] = $configuracion['email_puerto'];
-        $config['smtp_user'] = $configuracion['email_usuario'];
-        $config['smtp_pass'] = $configuracion['email_clave'];
-        $config['smtp_from_name'] = $configuracion['email_nombre'];
-        $config['priority'] = $configuracion['email_prioridad'];
-        $config['charset'] = $configuracion['email_charset'];
-        $config['smtp_crypto'] = $configuracion['email_encriptacion'];
-        $config['wordwrap'] = TRUE;
-        $config['newline'] = "\r\n";
-        $config['mailtype'] = $configuracion['email_tipo'];
+            $this->email->initialize($config);
 
-        $this->email->initialize($config);
+            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+            $this->email->to($correo);
+            if (!empty($configuracion['email_copia'])) {
+                $this->email->cc($configuracion['email_copia']);
+            }
+            $this->email->subject("Factura Digital, Anulación de su factura");
 
-        $this->email->from($config['smtp_user'], $config['smtp_from_name']);
-        $this->email->to($correo);
-        if (!empty($configuracion['email_copia'])) {
-            $this->email->cc($configuracion['email_copia']);
+            $la_fecha = date("d/m/Y", strtotime($factura_fecha));
+            $this->load->helper('numeros_helper');
+            $literal = num_to_letras($total, ' Bolivianos');
+
+                $html = "
+                <!DOCTYPE html>
+                <html lang='es'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Mensaje de correo electrónico</title>
+                    <!-- Bootstrap CSS -->
+                    <link href='https://cdn.jsdelivr.net/npm/
+                    bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' 
+                    rel='stylesheet'>
+                </head>
+                <body>
+                    <center>
+                        <table class='table table-bordered'> 
+                            <tr>
+                                <td style='background: #D35400; color:white; 
+                                font-family:Arial;'>
+                                    <center>
+                                        <p><b>{$this->empresa['empresa_nombre']}</b></p>
+                                        <p>".$this->empresa['empresa_eslogan']."</p>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style='background: gray; font-family:Arial;'>
+                                    <h2>Confirmación de Anulación!</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style='background: lightgray; font-family:Arial;'>
+                                    <p>Señor(es): {$cliente}</p>
+                                    <p>Mediante este mensaje le informamos 
+                                     que la factura Nº {$factura_numero}, fue ANULADA.</p>
+                                    <br>    
+                                    {$cuf}
+                                    <br><p>¡Gracias por su preferencia!</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style='background: black; 
+                                color: white; 
+                                font-family:Arial; font-size:10pt; 
+                                line-height: 10px'>
+                                    <center><br>
+                                       <a href='https://www.facebook.com/sisximpleman/' 
+                                       style='color: white; text-decoration: none;'
+                                        <p><b>XIMPLEMAN</b>
+                                        </a>
+                                       es un producto de 
+                                       <a href='https://www.passwordbolivia.com' 
+                                       style='color: white; text-decoration: none;'
+                                        target='_blank'><b>PASSWORD IHS</b></a></p>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                    </center>
+
+                    <script src='https://cdn.jsdelivr.net/
+                    npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'>
+                    </script>
+                </body>
+                </html>";
+
+               // echo $html;
+            $this->email->message($html);
+
+            return $this->email->send();
         }
-        $this->email->subject("Factura Digital, Anulación de su factura");
-
-        $la_fecha = date("d/m/Y", strtotime($factura_fecha));
-        $this->load->helper('numeros_helper');
-        $literal = num_to_letras($total, ' Bolivianos');
-
-        $html = "
-        <!DOCTYPE html>
-        <html lang='es'>
-        <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>Mensaje de correo electrónico</title>
-        </head>
-        <body>
-            <center>
-                <table>
-                    <tr>
-                        <td style='background: #D35400; color:white; font-family:Arial;'>
-                            <center>
-                                <p><b>{$this->empresa['empresa_nombre']}</b></p>
-                                <p>{$this->empresa['empresa_eslogan']}</p>
-                            </center>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style='background: gray; font-family:Arial;'>
-                            <h2>Confirmación de Anulación!</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style='background: lightgray; font-family:Arial;'>
-                            <p>Señor(es): {$cliente}</p>
-                            <p>Mediante este mensaje le informamos que su factura fue ANULADA.</p>
-                            <h3>Datos de la factura</h3>
-                            <p>FACTURA Nº: {$factura_numero}<br>
-                            MONTO Bs: ".number_format($total,2,'.',',')."<br>
-                            FECHA: {$la_fecha}<br>
-                            COD. AUTORIZACION: {$cuf}</p>
-                            <p>¡Gracias por su preferencia!</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style='background: black; color: white; font-family:Arial; font-size:10pt; line-height: 10px'>
-                            <center>
-                                <a href='https://www.facebook.com/sisximpleman/' style='color: white; text-decoration: none;'><b>XIMPLEMAN</b></a>
-                                es un producto de 
-                                <a href='https://www.passwordbolivia.com' style='color: white; text-decoration: none;' target='_blank'><b>PASSWORD IHS</b></a>
-                            </center>
-                        </td>
-                    </tr>
-                </table>
-            </center>
-        </body>
-        </html>";
-
-        $this->email->message($html);
-
-        return $this->email->send();
+        return false;
     }
-    return false;
-}
 
     
     
@@ -2531,8 +2655,7 @@ class Factura extends CI_Controller{
                             <td style='background: lightgray; font-family:Arial;'>
                                 <p>Señor(es): ".$cliente."</p>
                                 <p>Mediante este mensaje le informamos 
-                                 que su factura anulada fué REVERTIDA.</p>
-                                <h3>Datos de la factura</h3>
+                                 que su factura anulada fué REVERTIDA.</p>                                
                                 <p>FACTURA Nº: ".$factura_numero."
                                 <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."</p>
                                 {$cuf}

@@ -10,6 +10,15 @@
         window.print(); 
     }  
 </script>
+
+<?php
+
+function valor_valido($valor) {
+    $valor = trim($valor);
+    return $valor !== "" && $valor !== "-" && strtolower($valor) !== "null" && $valor !== null;
+}
+
+?>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/cotizacion.css'); ?>" rel="stylesheet">
 <style type="text/css">
@@ -129,13 +138,17 @@
                     <input id="detallecot_id"  name="detallecot_id" type="hidden" class="form-control" value="<?php echo $d['detallecot_id']; ?>">
                 </td>
                 <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
-                <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
-                    Marca: <b><?php echo $d['producto_marca']; ?></b>
-                    <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
+                <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> 
+                    
+                    <?php 
+                        if (valor_valido($d['producto_marca'])){
+                            echo " / <b>Marca:</<b> ".$d['producto_marca'];
+                        }
+                    ?>
                     <?php
-                    if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){
-                        echo nl2br($d['detallecot_caracteristica']);
-                    }
+                        if (valor_valido($d['detallecot_caracteristica'])){
+                            echo nl2br($d['detallecot_caracteristica']);
+                        }
                     ?>
                 </td>
                 <td class="text-center">

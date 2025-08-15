@@ -692,7 +692,7 @@ if($cliente[0]['cliente_id'] >0){
                             </tr>
                         </table>
                         <div class="col-md-12">
-                            NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                            NOTA: <input type="text" style="padding: 0; font-size:10pt"  onKeyUp="this.value = this.value.toUpperCase();" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
                         </div>
                         <?php if($tipousuario_id == 1) { ?>
                         <div class="col-md-12">
@@ -891,7 +891,7 @@ if($cliente[0]['cliente_id'] >0){
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
       <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
+        <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre del producto, código o descripción">
       </div>
                                 
 			</div>
@@ -916,7 +916,7 @@ if($cliente[0]['cliente_id'] >0){
                     <tr>
                         <td><?php echo $cont ?></td>
                         <!--<td><?php //echo $p['pedido_id']; ?></td>-->
-                        <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
+                        <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']."ssada"; ?></b></font> <br>
                         <?php echo $p['cliente_nombrenegocio']; ?><br>
                         <?php echo $p['pedido_fecha']; ?><br>
                         

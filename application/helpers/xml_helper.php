@@ -163,6 +163,10 @@
         return json_encode($resultado, JSON_UNESCAPED_UNICODE);
     }
     
+    function escapeXML($cadena) {
+        return htmlspecialchars(trim($cadena), ENT_XML1 | ENT_QUOTES, 'UTF-8');
+    }
+
     /**
      * Crea la factura de compra venta 
      * 1 = COMPUTARIZADA
@@ -210,11 +214,11 @@
 
 
         
-        $razonSocial = htmlspecialchars($factura['factura_razonsocial'], ENT_XML1, 'UTF-8');
+        $razonSocial = escapeXML($factura['factura_razonsocial']);
+        //$razonSocial = htmlspecialchars($factura['factura_razonsocial'], ENT_XML1, 'UTF-8');
         //echo $razonSocial;
-        //$razonSocial = str_replace("&","&amp;",$razonSocial);
+        //$razonSocial = str_replace("&","&amp;",$factura['factura_razonsocial']);
 
-        //var_dump($razonSocial);
         
         if ($documento_sector == 23 ){ //23 factura prevalorada
             $razonSocial = "S/N";
@@ -337,7 +341,7 @@ $salto_linea='
             $zona =  $factura_datos['datos_zona'];
             $cabecera_facturaxml .= $salto_linea.'          <zona>'.$zona.'</zona>';            
             
-            $numero_medidor =  $factura_datos['datos_medidor'];;
+            $numero_medidor =  $factura_datos['datos_medidor'];
             $cabecera_facturaxml .= $salto_linea.'          <numeroMedidor>'.$numero_medidor.'</numeroMedidor>';
             
         }
@@ -345,6 +349,7 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <fechaEmision>'.$factura['factura_fechahora'].'</fechaEmision>';
         $cabecera_facturaxml .= $salto_linea.'          <nombreRazonSocial>'.$razonSocial.'</nombreRazonSocial>';        
         
+      
         if($documento_sector==13){ //13-Servicios Basicos
         
             if ($factura_datos['cliente_direccion']!='' && $factura_datos['cliente_direccion']!='null'){
@@ -387,7 +392,7 @@ $salto_linea='
         
         if ($documento_sector != 23){ //23- factura prevalorada
             
-            $cabecera_facturaxml .= $salto_linea.'          <codigoCliente>'.$factura['cliente_codigo'].'</codigoCliente>';
+            $cabecera_facturaxml .= $salto_linea.'          <codigoCliente>'. escapeXML($factura['cliente_codigo']).'</codigoCliente>';
             
             if ($documento_sector == 17){ //17 Fatura Clinicas y hospitales
                 $cabecera_facturaxml .= $salto_linea.'          <modalidadServicio>Post Operatorio</modalidadServicio>';
@@ -846,7 +851,8 @@ $salto_linea='
                     
             foreach ($detallefactura as $df){ //INICIO FOREACH DETALLE DE FACTURA
                 
-                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
+//                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
+                $detallefact_descripcion = escapeXML($df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
                 $numero_serie = $df['detallefact_preferencia'];
                 $valor_imei = $df['detallefact_caracteristicas'];
@@ -1048,7 +1054,8 @@ $salto_linea='
             
             foreach ($detalle_factura as $df){ //INICIO FOREACH DETALLE DE FACTURA
                 
-                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
+//                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
+                $detallefact_descripcion = escapeXML($df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
                 $numero_serie = $df['detallefact_preferencia'];
                 $valor_imei = $df['detallefact_caracteristicas'];
@@ -1163,6 +1170,9 @@ $salto_linea='
             }
             
             //firmador_XML($directorio, $archivo.$factura['factura_id']);
+            
+           // echo($factura_xml);
+            
             return $archivo_xml;
 
     }

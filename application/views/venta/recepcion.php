@@ -97,3 +97,5 @@
     </div>
 </div>
 
+<span id="numeros"></span><br>
+<input type="number" id="numero_contador" value="1"  /><button class="btn btn-sm btn-facebook" onclick="probar_audio();"><fa class="fa fa-volume-up"> </fa>  prueba</button>

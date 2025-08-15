@@ -216,109 +216,92 @@ input[type=number] { -moz-appearance:textfield; }
   
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12">
+    
    <div class="col-md-4" style="padding-left:0px;">
           
        <font size="1"><b>BUSCAR PRODUCTOS</b></font>
         <div class="box" style="border-color:black;">
-    
-                        
-      <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="cotizar" type="text" class="form-control" autocomplete="off" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="cotivalidar(event,4)">
-      </div>
-      <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria">
-    
- 
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+            <div class="box">
+                
+                <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <input id="cotizar" type="text" class="form-control" autocomplete="off" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="cotivalidar(event,4)">
+                  <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="cotivalidar(13,4)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                </div>
+                  <!-------------------- CATEGORIAS------------------------------------->
+                  <div class="container" id="categoria">
 
-</div>
-<!-------------------- FIN CATEGORIAS--------------------------------->
-                                
-            
-          
-                <table class="table table-striped" id="mitabla">
-                    
-                     <tr>
-                                                <th>#</th>
-                                                <th>Producto</th>
-                    </tr>
-                    <tbody class="buscar" id="tablaresultados">
-                    
-                        <!------ aqui se vacia los resultados de la busqueda mediante JS --->
-                    
-                    </tbody>
-                </table>
+
+                                  <!--------------------- indicador de resultados --------------------->
+                      <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+
+                                  <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+
+                  </div>
+                  <!-------------------- FIN CATEGORIAS--------------------------------->
+
+
+
+                          <table class="table table-striped" id="mitabla">
+
+                               <tr>
+                                                          <th>#</th>
+                                                          <th>Producto</th>
+                              </tr>
+                              <tbody class="buscar" id="tablaresultados">
+
+                                  <!------ aqui se vacia los resultados de la busqueda mediante JS --->
+
+                              </tbody>
+                          </table>
             </div>
             </div>
-
+    </div>
                         <!----------------------FIN TABLA--------------------------------------------------->
             
       
 
-<div class="col-md-8"> 
-        <font size="1"><b>DETALLE DE PRODUCTOS</b></font>
-        <div class="box" style="border-color:black;">
-<div class="box">
-            <!--<div class="box-body table-responsive">-->
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                            <th>#</th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Descuento</th>
-                            <th>Total</th>
-                    </tr>
-                    <tbody class="buscar2" id="detallecotiza">
+    <div class="col-md-8"> 
+            <font size="1"><b>DETALLE DE PRODUCTOS</b></font>
+            <div class="box" style="border-color:black;">
+                <div class="box">
+                        <div class="box-body table-responsive">
+                            <table class="table table-striped table-condensed" id="mitabla">
+                                <tr>
+                                        <th>#</th>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Descuento</th>
+                                        <th>Total</th>
+                                </tr>
+                                <tbody class="buscar2" id="detallecotiza">
 
-                </table>
-                
+                            </table>
+
+                        </div>
+
+                        <div class="col-md-12" align="right"> 
+                         <center>
+                                   <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                                       <i class="fa fa-money fa-4x"></i><br>
+                                      Finalizar<br>Cotización<br>
+                                   </a>
+
+
+                                   <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
+                                       <i class="fa fa-sign-out fa-4x"></i><br><br>
+                                      Cancelar<br>
+                                   </a>    
+
+                                   </center>
+                        </div> 
+
+
+                    </div>
+
             </div>
-    
-            <div class="col-md-12" align="right"> 
-             <center>
-                       <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                           <i class="fa fa-money fa-4x"></i><br>
-                          Finalizar<br>Cotización<br>
-                       </a>
-
-
-                       <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
-                           <i class="fa fa-sign-out fa-4x"></i><br><br>
-                          Cancelar<br>
-                       </a>    
-
-                       </center>
-            </div> 
-					
-
-        </div>
-
-            		 
-			
-					
-
     </div>
-                        
-<!-- <div class="col-md-12" align="right"> 
-  <center>
-            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-money fa-4x"></i><br>
-               Finalizar<br>Cotización<br>
-            </a>
-
-            
-            <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-sign-out fa-4x"></i><br><br>
-               Cancelar<br>
-            </a>    
-              
-            </center>
- </div>   -->
-</div>
 
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>
 </div>

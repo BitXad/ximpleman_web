@@ -220,7 +220,7 @@ insert into compra(
 ,`usuario_id`
 ,`moneda_id`
 ,`proveedor_id`
-,`forma_id`
+,`forma_id` 
 ,`compra_fecha`
 ,`compra_hora`
 ,`compra_subtotal`

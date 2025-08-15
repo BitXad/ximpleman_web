@@ -31,11 +31,11 @@ class Sincronizacion_model extends CI_Model{
      * get Codigos Nis for activity and secondary activity
      */
     function getCodigosNis(){
-        return $this->db->query(
-            "SELECT ps.*
-            from productos_servicios ps, dosificacion d 
-            where (ps.prodserv_codigoactividad = d.dosificacion_actividad or ps.prodserv_codigoactividad = d.dosificasion_actividadsec)"
-        )->result_array();
+//        $sql = "SELECT ps.*
+//            from productos_servicios ps, dosificacion d 
+//            where (ps.prodserv_codigoactividad = d.dosificacion_actividad or ps.prodserv_codigoactividad = d.dosificasion_actividadsec)";
+        $sql = "SELECT ps.* from productos_servicios ps";
+        return $this->db->query($sql)->result_array();
     }
     /**
      * Obtener todo los documentos de identidad

@@ -336,7 +336,10 @@ public function get_search_values_by_clm()
                     cdi_codigoclasificador = 1,                    
                     usuario_id = {$usuario_id},
                     pasaje_fecha = date({$now}),
-                    pasaje_hora = time({$now})
+                    pasaje_hora = time({$now}),
+                    pasaje_tieneequipaje = 0,
+                    pasaje_detalleequipaje = '',
+                    pasaje_fechahoraequipaje = {$now}                        
                     where  
                     viaje_id = {$viaje_id} and
                     pasaje_id = {$pasaje_id}";

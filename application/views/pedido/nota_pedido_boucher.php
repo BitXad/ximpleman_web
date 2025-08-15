@@ -345,7 +345,7 @@ border-bottom : 1px solid #aaa;
                 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
                 <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; 
                 if($pedido[0]['ingreso_monto'] > 0){
-                    echo "<br><b>RESERVA: </b>".$pedido[0]['ingreso_monto']." ".$pedido[0]['ingreso_moneda'];
+                    echo "<br><b>RESERVA: </b>".number_format($pedido[0]['ingreso_monto'],2,".",",")." ".$pedido[0]['ingreso_moneda'];
                 }
                 ?></font>
             </td>
@@ -389,8 +389,8 @@ border-bottom : 1px solid #aaa;
             </td>
         </tr>
         
-    <?php }else{?>
-        
+    <?php }else{ 
+        if($sistema["sistema_modulopedidos"]=="RESTAURANTE"){ ?>
         <tr>    
             <td  style="padding: 0" colspan="4">
             <center>DATOS PARA SU FACTURA</center>
@@ -408,6 +408,7 @@ border-bottom : 1px solid #aaa;
         </tr>
         
         
+    <?php } ?>
     <?php } ?>
         
     </table>

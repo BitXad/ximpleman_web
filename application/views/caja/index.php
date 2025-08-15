@@ -121,7 +121,7 @@
                             <td>
                                 <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
                                 <a href="<?php echo site_url('caja/cierre_cajadmin/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
-                                <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" title="Reporte cierre de caja"><span class="fa fa-print"></span></a> 
+                                <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" target="_blank" title="Reporte cierre de caja"><span class="fa fa-print"></span></a> 
                             </td>
                         </tr>
                         <?php } ?>

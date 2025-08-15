@@ -300,6 +300,15 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
+<input type="text" id="puede_facturar" value="0" hidden>
+<input type="text" id="motivo_puede_facturar" value="" hidden>
+<input type="text" id="parametro_vercantidades" value="<?php echo $parametro['parametro_vercantidades']; ?>" name="parametro_vercantidades"  hidden>
+<input type="text" id="parametro_comprarapida" value="<?php echo $parametro['parametro_comprarapida']; ?>" name="parametro_comprarapida"  hidden>
+<input type="text" id="parametro_actualizarprecios" value="<?php echo $parametro['parametro_actualizarprecios']; ?>" name="parametro_actualizarprecios"  hidden>
+<input type="text" id="vigencia_cufd" value="<?php echo (empty($cufd))?"01/01/2000":(($parametro['parametro_tiposistema'] != 1)?$cufd[0]["cufd_fechavigencia"]:""); ?>" hidden>
+<input type="text" id="parametro_generarcufd" value="<?php echo $parametro['parametro_generarcufd']; ?>" hidden>
+<input type="text" id="cufd_hoy" value="<?php  echo (empty($cufd))?0:(($cufd[0]['fecharegistro']==date("Y-m-d"))?1:0); ?>" hidden>
+
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <!--------------------- FIN CABECERA -------------------------->
 

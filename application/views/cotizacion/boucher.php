@@ -70,6 +70,15 @@ border-right : 1px solid #aaa;
 border-bottom : 1px solid #aaa;*/
 }
 </style>
+
+<?php
+
+function valor_valido($valor) {
+    $valor = trim($valor);
+    return $valor !== "" && $valor !== "-" && strtolower($valor) !== "null" && $valor !== null;
+}
+
+?>
 <!----------------------------- fin script buscador --------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
@@ -98,14 +107,8 @@ border-bottom : 1px solid #aaa;*/
                             <?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>
                         <?php } ?>
                     <!--<font size="1" face="Arial"><b><?php //echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
-                    <font size="1" face="Arial"></b>
-
-                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
-
-                        </b></font><br>
-                    <?php } ?>
-
+                    
+                    
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
@@ -127,17 +130,31 @@ border-bottom : 1px solid #aaa;*/
                             
                             <b>VALIDEZ:  </b><br>
                             <b>FORMA DE PAGO:  </b><br>
-                            <b>CHEQUE A NOMBRE:  </b><br>
+                            <?php if(valor_valido($cotizacion['cotizacion_chequenombre'])){ ?>
+                                <b>CHEQUE A NOMBRE:  </b><br>
+                            <?php } ?>
+                            <?php if(valor_valido($cotizacion['cotizacion_tiempoentrega'])){ ?>    
                             <b>TIEMPO DE ENTREGA: </b><br>
+                            <?php } ?>
+                            <?php if(valor_valido($cotizacion['cotizacion_lugarentrega'])){ ?>    
                             <b>LUGAR DE ENTREGA: </b>
+                            <?php } ?>
 
                         </td>
                         <td style="font-family: arial; font-size: 8pt; padding: 0;">
                             <?php echo  $cotizacion['cotizacion_validez']; ?> <br>
                             <?php echo $cotizacion['cotizacion_formapago']; ?> <br>
-                            <?php echo $cotizacion['cotizacion_chequenombre']; ?> <br>
-                            <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> <br>          
-                            <?php echo $cotizacion['cotizacion_lugarentrega']; ?> 
+                            <?php if(valor_valido($cotizacion['cotizacion_chequenombre'])){ ?>
+                              <?php echo $cotizacion['cotizacion_chequenombre']; ?> <br>
+                            <?php } ?>
+                            
+                            <?php if(valor_valido($cotizacion['cotizacion_tiempoentrega'])){ ?>  
+                                <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> <br>          
+                            <?php } ?>
+                                
+                            <?php if(valor_valido($cotizacion['cotizacion_lugarentrega'])){ ?> 
+                                <?php echo $cotizacion['cotizacion_lugarentrega']; ?> 
+                            <?php } ?>
                         </td>
                     </tr>
                 </table>
@@ -200,12 +217,13 @@ border-bottom : 1px solid #aaa;*/
                     ?>
                 </td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b>
-                      <?php if ($d['producto_marca']!=''){ ?>
+                      <?php if (valor_valido($d['producto_marca'])){ ?>
                         <br>Marca: <b><?php echo $d['producto_marca']; } ?></b>      
-                      <?php if ($d['producto_industria']!=''){ ?>                            
+                        
+                      <?php if (valor_valido($d['producto_industria'])){ ?>                            
                         - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
-                      <?php if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){ ?> 
-                         <?php //}else{ ?>
+                        
+                      <?php if (valor_valido($d['detallecot_caracteristica'])){ ?> 
                         <?php echo  $d['detallecot_caracteristica']; } ?>
                     </td>
                 <td align="right" style="padding: 0; padding-right: 3px"><?php echo number_format($d['detallecot_precio'],$decimales,'.',','); ?></td>

@@ -36,6 +36,32 @@ function buscar_por_fecha(){
 
 }
 
+
+function buscar_por_fecha_hora(){
+
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var hora_desde = document.getElementById('hora_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var hora_hasta = document.getElementById('hora_hasta').value;
+    var usuario = document.getElementById('buscarusuario_id').value;
+    
+    var fechadesde = fecha_desde+" "+hora_desde;
+    var fechahasta = fecha_hasta+" "+hora_hasta;
+    
+    $("#fecha1impresion").text('Desde: '+formato_fecha(fecha_desde)+' '+hora_desde);
+    $("#fecha2impresion").text('Hasta: '+formato_fecha(fecha_hasta)+' '+hora_hasta);
+    
+    buscarporfechahora(fechadesde, fechahasta, usuario);
+    
+        
+    try {
+        document.getElementById('registro_moneda').style.display = 'block';        
+    } catch (e) {
+        
+    }
+}
+
+//reporte de ingresos x ventas mediante mesas y pedidos
 function buscar_por_fechahora(){
 
     var fecha_desde = document.getElementById('fecha_desde').value;
@@ -540,10 +566,16 @@ function buscarporfechahora(fecha_desde, fecha_hasta, usuario){
                     
                     html += "<td style='text-align:right;'>";
                     
-                        
+                        // Ver si la venta fue realizada sin tener mesa registrada
                         if(Number(registros[i]["pedido_total"]).toFixed(decimales) === Number(registros[i]["pedido_id"]).toFixed(decimales)){
                             html += "<span class='btn btn-xs btn-danger no-print' title='La venta fue finalizada sin tener una mesa relacionada'> <fa class='fa fa-chain'></fa> INCONSISTENCIA</span>";
                             
+                        }else{
+                        
+                            // Ver si la venta fue realizada sin tener mesa registrada
+                            if(Number(registros[i]["pedido_total"]).toFixed(decimales) != Number(registros[i]["venta_total"]).toFixed(decimales)){
+                                html += "<span class='btn btn-xs btn-info no-print' title='Existe una diferencia entre la cuenta de la mesa y la venta realizada'> <fa class='fa fa-thumbs-down'></fa> DIFERENCIA</span>";                            
+                            }
                         }
                         html += "<a href='"+base_url+"pedido/imprimir/"+registros[i]["pedido_id"]+"' target='_blank' class='btn btn-success btn-xs no-print' title='Imprimir comanda'><fa class='fa fa-print'></fa></a>";
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]["venta_id"]+"' target='_blank' class='btn btn-warning btn-xs no-print' title='Imprimir recibo'><fa class='fa fa-print'></fa></a>";

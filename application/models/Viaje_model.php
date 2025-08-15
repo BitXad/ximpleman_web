@@ -8,6 +8,8 @@ class Viaje_model extends CI_Model
      function __construct()
       {
           parent::__construct();
+          
+          
       }
       /*
         * Get viaje by viaje_id 

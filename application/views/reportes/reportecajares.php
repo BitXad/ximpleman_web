@@ -34,6 +34,7 @@
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
+<input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja["caja_id"]; ?>" />
 
 <?php 
 
@@ -281,7 +282,7 @@ border-bottom : 1px solid #aaa;*/
                     <font size="1" face="<?= $fuente  ?>"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="<?= $fuente  ?>"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
                 
-                    <br><font size="3" face="arial"><b>REPORTE DE CAJA</b></font>
+                    <br><font size="3" face="arial"><b>REPORTE DE CAJA Nº 00<?php echo $caja["caja_id"]; ?></b></font>
             </center>        
                 
                    
@@ -289,12 +290,12 @@ border-bottom : 1px solid #aaa;*/
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
                 <!--<table style="width:<?php echo $ancho?>" >-->
                     <tr >
-                        <td style="font-family: arial; font-size: 8pt; padding: 0; align:right; border-top: dashed 1px #000; border-bottom: dashed 1px #000;" colspan="1"></td>
-                        <td style="font-family: <?= $fuente  ?>; font-size: 8pt; padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000; line-height: 12px;" colspan="4">
+                        <!--<td style="font-family: arial; font-size: 8pt; padding: 0; align:right; border-top: dashed 1px #000; border-bottom: dashed 1px #000;" colspan="1"></td>-->
+                        <td style="font-family: <?= $fuente  ?>; font-size: 8pt; padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000; line-height: 12px;" colspan="5">
                             <!--<br>-->
-                            <b>PUNTO DE VENTA:</b> <?php echo $punto_venta["puntoventa_nombre"]; ?><br>
-                            <b>CAJERO:</b> <?php echo $usuario_caja["usuario_nombre"]; ?>
-                           <br><b>FECHA INICIO:</b> 
+                            <b>PUNTO DE VENTA:</b> <?php echo $punto_venta["puntoventa_codigo"]." - ".$punto_venta["puntoventa_nombre"]; ?><br>
+                            <b>CAJERO:</b> <?php echo $usuario_caja["usuario_nombre"]."<sub>[".$usuario['usuario_id']."]</sub>"; ?>
+                           <br><b>FECHA INICIO:</b>
                                     <?php
                                     if (isset($caja)) {
                                         $fechaApertura = DateTime::createFromFormat('Y-m-d', $caja["caja_fechaapertura"]);
@@ -344,6 +345,7 @@ border-bottom : 1px solid #aaa;*/
 <!--</table>border-top: dashed 1px #000;
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
+       <?php if($tipousuario_id==1){ ?>
            <tr>
                
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>CANT</b></td>
@@ -354,6 +356,7 @@ border-bottom : 1px solid #aaa;*/
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>TOTAL</b></td>
                 
            </tr>
+       <?php } ?>
            <!--<tbody class="buscar" id="reportefechadeventa"></tbody>-->
              
            <input type="hidden" value="<?php echo sizeof($reporte); ?>" id="filas_detalle"/>
@@ -404,8 +407,8 @@ border-bottom : 1px solid #aaa;*/
             
         <td align="right" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 8pt; border-top: solid 1px #000; border-bottom: solid 1px #000;" colspan="4">
             
-            <b>TOTAL TRANSACC. POR VENTAS Bs.: <?php echo number_format($total,2,".",","); ?></b>
-            TOTAL DESCUENTOS POR VENTAS Bs.: <?php echo number_format($descuentos_globales[0]["descuentos"],2,".",","); ?>
+            <b>TOTAL TRANSAC. POR VENTAS Bs.:</b> <?php echo number_format($total,2,".",","); ?>
+            <br><b>TOTAL DESC. POR VENTAS Bs.:</b> <?php echo number_format($descuentos_globales[0]["descuentos"],2,".",","); ?>
 <!--            <br><b>EFECTIVO INICIAL Bs: 
                 <?php
                 if(isset($caja)){
@@ -598,12 +601,53 @@ border-bottom : 1px solid #aaa;*/
            <br><b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
         </td>           
         <!-- BITACORA -->    
-
+        
         <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
             <td colspan="5" style="padding: 0;">
                 <b>TRANSACCIONES OBSERVADAS</b>
             </td>
         </tr>
+        <?php if(count($efectivo)>0){ ?>
+                <tr>
+                    <td colspan="5">                
+                        <b>REGISTRO DE EFECTIVO</b>
+                        <?php $estilo1 = "padding:0; text-align:center; border: 1px solid black; width: 15px; background: lightgray"; ?>
+                        <?php $estilo2 = "padding:0; text-align:center; border: 1px solid black; width: 15px;"; ?>
+
+                        <table  class="table" style="width: <?php echo $ancho?>; margin-bottom: 0px;">
+                            <tr>
+                                <th style="<?= $estilo1 ?>">200</th>
+                                <th style="<?= $estilo1 ?>">100</th>
+                                <th style="<?= $estilo1 ?>">50</th>
+                                <th style="<?= $estilo1 ?>">20</th>
+                                <th style="<?= $estilo1 ?>">10</th>
+                                <th style="<?= $estilo1 ?>">5</th>
+                                <th style="<?= $estilo1 ?>">2</th>
+                                <th style="<?= $estilo1 ?>">1</th>
+                                <th style="<?= $estilo1 ?>">0.50</th>
+                                <th style="<?= $estilo1 ?>">0.20</th>
+                                <th style="<?= $estilo1 ?>">0.10</th>
+                            </tr>
+
+                        <?php foreach($efectivo as $e){ ?>
+                            <tr>
+                                <td style="<?= $estilo2 ?>"><?php echo (($e["caja_id"]==$caja["caja_id"])?">":"").$e["caja_corte200"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte10"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte50"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte20"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte10"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte5"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte2"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte100"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte050"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte020"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte010"]; ?></td>
+                            </tr>
+                        <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            <?php } ?>
         
         <tr>
             <td colspan="5" style="padding: 0; border-bottom: dashed 2px #000;">
@@ -635,7 +679,14 @@ border-bottom : 1px solid #aaa;*/
                USUARIO: <b></b> / TRANS: 
 
          </td>-->
-    </tr>    
+    </tr>   
+    
+    <tr class="no-print">
+          <td colspan="5">
+            <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#modaltransacciones"><i class="fa fa-bank"> </i> REPORTE TRANSFERENCIAS / QR</button>
+        </td>
+    </tr>  
+    
     
 </table>
 
@@ -643,13 +694,164 @@ border-bottom : 1px solid #aaa;*/
 </tr>    
 </table>
 
-
+                    
+                
+            
 
 <div class="col-md-12 no-print">
     <center>
         <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" onclick="$(document).ready(function(){window.onload = window.print();});"><i class="fa fa-print"> </i> Imprimir</button>        
-        <a href="<?php echo base_url("admin/dashb"); ?>" class="btn btn-info btn-sm" data-toggle="modal" ><i class="fa fa-calculator"> </i> Cerra caja</a>        
+        <!--<a href="<?php echo base_url("admin/dashb"); ?>" class="btn btn-info btn-sm" data-toggle="modal" ><i class="fa fa-calculator"> </i> Cerra caja</a>-->        
+        <button type="button" class="btn btn-facebook btn-sm" style="background: #000;" data-toggle="modal" data-target="#modalcaja"><i class="fa fa-recycle"> </i> Corregir Caja</button>        
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"> </i> Cerrar</button>        
     </center>
 </div>    
     
+
+
+
+
+<!--------------------- modal apertura de caja ---------------->
+
+<div id="modalcaja" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #00c0ef">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><fa class="fa fa-money"></fa><b> CORREGIR CAJA</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12 text-bold">
+          <span class="text-danger" id="elmensaje"></span>
+        </div>
+        <div class="col-md-6">
+            <center><label for="monto_caja" class="control-label"><fa class="fa fa-warning"></fa> ADVERTENCIA</label><br>Esta a punto de ejecutar la correccion de caja. ¿Desea continuar?</center>
+            <b>Monto inicial en caja Bs</b>
+            <div class="form-group">
+                <input type="number" name="monto_caja" id="monto_caja" value="0.00" class="form-control" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus="true"/>
+            </div>
+        </div>  
+
+        <div class="col-md-6">
+<!--            <label for="producto_marca" class="control-label"><p>Monto Registrado en Caja Bs</p></label>
+            <div class="form-group">
+                <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+            </div>-->
+            <button class="btn btn-warning btn-block" onclick="corregir_caja()"><fa class="fa fa-money"></fa> Corregir Caja</button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--------------------- modal transacciones QR ---------------->
+
+<div id="modaltransacciones" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #00c0ef">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><fa class="fa fa-money"></fa><b> REPORTE TRANSACCIONES</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12 text-bold">
+          <span class="text-danger" id="elmensaje"></span>
+        </div>
+        <div class="col-md-6">
+            <center><label for="monto_caja" class="control-label"><fa class="fa fa-warning"></fa> INSTRUCCIONES</label><br>Pegar en el campo de abajo el registro de transacciones Bancarias / QR
+            <div class="form-group">
+                <textarea type="texarea" name="transacciones" id="transacciones" value="" style="height: 200px;" class="form-control" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus="true">TRANSACCIONES QR</textarea>
+            </div>
+        </div>  
+
+        <div class="col-md-6">
+<!--            <label for="producto_marca" class="control-label"><p>Monto Registrado en Caja Bs</p></label>
+            <div class="form-group">
+                <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+            </div>-->
+            <button class="btn btn-warning btn-block" onclick="guardar_transacciones()"><fa class="fa fa-floppy-o"></fa> Guardar y Generar Reporte</button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--------------------- FIN modal transacciones QR ---------------->
+
+<script type="text/javascript">
+
+function corregir_caja()
+{
+    var base_url   = document.getElementById('base_url').value; 
+    var monto_caja = document.getElementById('monto_caja').value; 
+    var caja_id = document.getElementById('caja_id').value; 
+    var controlador = base_url+"caja/corregir_caja";
+
+    if(monto_caja==""){monto_caja=0;}
+    
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{monto_caja:monto_caja, caja_id:caja_id},
+        success: function(response){
+            var registros =  JSON.parse(response);
+            
+            if(registros!=''){
+                
+                $("#modalcaja").modal('hide');
+                window.location.href = base_url+"caja/cierre_caja/"+registros["caja_id"];
+                
+            }
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+}
+
+function guardar_transacciones()
+{
+    var base_url   = document.getElementById('base_url').value; 
+    var transacciones = document.getElementById('transacciones').value; 
+    var caja_id = document.getElementById('caja_id').value; 
+    var controlador = base_url+"caja/guardar_transacciones";
+
+    if(monto_caja==""){monto_caja=0;}
+    
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{transacciones:transacciones, caja_id:caja_id},
+        success: function(response){
+            var registros =  JSON.parse(response);
+            
+            if(registros){
+                
+                $("#modalcaja").modal('hide');
+                window.location.href = base_url+"reportes/reporte_transacciones/"+registros;
+                
+            }
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+}
+
+</script>
+

@@ -152,12 +152,160 @@ class Reportes extends CI_Controller{
     function reportecaja()
     {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $usuario_id = $this->session_data['usuario_id']; 
             $this->load->model('Tipo_transaccion_model');
             
+            //$caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+            $caja = $this->Caja_model->get_ultima_caja($usuario_id);
+            
+            $data['caja'] = $caja;
+            
+            //*******************************************************
+                $fecha1 = $caja["caja_fechaapertura"]; //date("Y-m-d"); //$this->input->post('fecha1');   
+                $hora1 = $caja["caja_horaapertura"];
+                $fecha2 =  date("Y-m-d"); //$this->input->post('fecha2'); 
+                $hora2 =  date("H:i:s");
+
+            //*******************************************************
+            
+            
+            $data['page_title'] = "Reporte de ventas agrupado";
+            
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $this->load->model('Usuario_model');
+            
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['usuario_caja'] = $this->Usuario_model->get_usuario($usuario_id);
+            $data['parametro'] = $this->parametros;
+            
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(1); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+//            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
+            //$data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
+            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fechahora($usuario_id,$fecha1,$hora1, $fecha2,$hora2);
+//            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
+            
+            
+            $data['efectivo'] = $this->Venta_model->Consultar("select * from caja where usuario_id = {$usuario_id} and caja_fechacierre = '{$caja["caja_fechacierre"]}' order by caja_id asc");
+            
+            
+            if ($caja!==null){
+                
+                $bitacora = $this->Caja_model->get_caja_id(is_numeric($caja["caja_id"])?$caja["caja_id"]:0);
+            }else
+                $bitacora = null;
+            
+            $data['bitacora'] = $bitacora;
+            
+            $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
+            
+            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
+                    MAX(factura_id)-MIN(factura_id) as ventas from factura
+                    where usuario_id = $usuario_id and factura_fecha = date({$now})";
+            $data['resumen'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(count(*)>0,count(*),0) as total_ventas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
+            $data['total_ventas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(count(*)>0,count(*),0) as ventas_validas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
+                    and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
+            $data['validas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(count(*)>0,count(*),0) as mal_emitidas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
+                    and factura_codigodescripcion != 'VALIDADA'";
+            $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(count(*)>0,count(*),0) as anuladas
+                    from factura
+                    where usuario_id = ".$usuario_id." 
+                    and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+            $data['anuladas'] = $this->Venta_model->consultar($sql);
+
+            //********************************************************************
+            /*
+            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
+                    FROM consreporte c
+                    WHERE
+                    c.usuario_id = {$usuario_id} and c.fecha>= date({$now}) and c.fecha<= date({$now})
+                    GROUP BY c.operacion,c.forma,c.transaccion,c.banco
+                    ORDER BY orden";
+            
+            $data['transacciones'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
+                    where usuario_id = {$usuario_id} and venta_fecha = date({$now})";
+            $data['descuentos_globales'] = $this->Venta_model->consultar($sql);*/
+                    
+            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
+                    FROM consreporte c
+                    WHERE
+                    c.usuario_id = {$usuario_id} and (c.fecha >= '{$fecha1}' and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}') 
+                    GROUP BY c.operacion,c.forma,c.transaccion,c.banco
+                    ORDER BY orden";
+            //echo $sql;
+            $data['transacciones'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
+                    where usuario_id = {$usuario_id} and venta_fecha >= '{$fecha1}' and CONCAT(venta_fecha, ' ', venta_hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}'";
+
+            $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
+            
+            
+//
+//                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+//                    $valfecha1 = $fecha1;
+//                    $valfecha2 = $fecha2;
+//                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+//                    $valfecha1 = $fecha1;
+//                    $valfecha2 = $fecha1;
+//                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+//                    $valfecha1 = $fecha2;
+//                    $valfecha2 = $fecha2;
+//                }else{
+//                    $fecha1 = null;
+//                    $fecha2 = null;
+//                }
+//
+//                if($usuario >  0){
+//                    $usuario_id = $usuario;
+//                }else{
+//                    $usuario_id = 0;
+//                }
+//                
+//                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
+//                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
+//            
+            
+            //********************************************************************
+            //$data['_view'] = 'reportes/reportecaja';
+            $data['_view'] = 'reportes/reportecajares';
+            
+            $this->load->view('layouts/main',$data);
+        //}
+    }
+    
+    function reporte_transacciones($caja_id)
+    {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        $data['sistema'] = $this->sistema;
+        //if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $usuario_id = $this->session_data['usuario_id']; 
+            $this->load->model('Tipo_transaccion_model');
+            $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
             
             //*******************************************************
                 $fecha1 = date("Y-m-d"); //$this->input->post('fecha1');   
@@ -194,86 +342,13 @@ class Reportes extends CI_Controller{
             
             $data['caja'] = $caja;
             
-            if ($caja!==null){
-                
-                $bitacora = $this->Caja_model->get_caja_id(is_numeric($caja["caja_id"])?$caja["caja_id"]:0);
-            }else
-                $bitacora = null;
             
-            $data['bitacora'] = $bitacora;
-            
-            $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
-            
-            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
-                    MAX(factura_id)-MIN(factura_id) as ventas from factura
-                    where usuario_id = $usuario_id and factura_fecha = date({$now})";
-            $data['resumen'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as total_ventas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
-            $data['total_ventas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as ventas_validas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
-                    and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
-            $data['validas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as mal_emitidas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
-                    and factura_codigodescripcion != 'VALIDADA'";
-            $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as anuladas
-                    from factura
-                    where usuario_id = ".$usuario_id." 
-                    and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
-            $data['anuladas'] = $this->Venta_model->consultar($sql);
-
             //********************************************************************
-            
-            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
-                    FROM consreporte c
-                    WHERE
-                    c.usuario_id = {$usuario_id} and c.fecha>= date({$now}) and c.fecha<= date({$now})
-                    GROUP BY c.operacion,c.forma,c.transaccion,c.banco
-                    ORDER BY orden";
-            $data['transacciones'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
-                    where usuario_id = {$usuario_id} and venta_fecha = date({$now})";
-            $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
-                    
-//
-//                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
-//                    $valfecha1 = $fecha1;
-//                    $valfecha2 = $fecha2;
-//                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
-//                    $valfecha1 = $fecha1;
-//                    $valfecha2 = $fecha1;
-//                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
-//                    $valfecha1 = $fecha2;
-//                    $valfecha2 = $fecha2;
-//                }else{
-//                    $fecha1 = null;
-//                    $fecha2 = null;
-//                }
-//
-//                if($usuario >  0){
-//                    $usuario_id = $usuario;
-//                }else{
-//                    $usuario_id = 0;
-//                }
-//                
-//                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
-//                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
-//            
+
             
             //********************************************************************
             //$data['_view'] = 'reportes/reportecaja';
-            $data['_view'] = 'reportes/reportecajares';
+            $data['_view'] = 'reportes/reportetransacciones';
             
             $this->load->view('layouts/main',$data);
         //}
@@ -285,15 +360,20 @@ class Reportes extends CI_Controller{
         $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $usuario_id = $this->session_data['usuario_id']; 
             $this->load->model('Tipo_transaccion_model');
+            //$usuario_id = $this->session_data['usuario_id']; 
             
-            
-            //*******************************************************
-                $fecha1 = date("Y-m-d"); //$this->input->post('fecha1');   
-                $fecha2 =  date("Y-m-d"); //$this->input->post('fecha2'); 
-                //$usuario = $this->input->post('usuario_id'); 
-                $usuario = $this->session_data['usuario_id']; 
+            //Filtramos los datos de la caja seleccionada en base al ID
+            $caja = $this->Caja_model->get_caja_por_id($caja_id); 
+            //*******************************************************                
+                $fecha1 = $caja["caja_fechaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
+                $hora1 = $caja["caja_horaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
+               
+                $fecha2 = $caja["caja_fechacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
+                $hora2 = $caja["caja_horacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
+                
+                $usuario = $caja["usuario_id"]; 
+                $usuario_id = $caja["usuario_id"]; 
 //                $valfecha1 = "";
 //                $valfecha2 = "";
                 //$usuario_id = "";
@@ -301,7 +381,7 @@ class Reportes extends CI_Controller{
             //*******************************************************
             
             
-            $data['page_title'] = "Reporte de ventas agrupado";
+            $data['page_title'] = "Reporte Cierre de Caja";
             
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
@@ -316,13 +396,17 @@ class Reportes extends CI_Controller{
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
 //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
-            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
+//            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
+            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fechahora($usuario_id,$fecha1,$hora1, $fecha2, $hora2);
 //            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
             
             //$caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
-            $caja = $this->Caja_model->get_caja_por_id($caja_id);
-            
+                       
             $data['caja'] = $caja;
+            
+            //Filtra las cajas que el usuario cerro en una sola fecha
+            $data['efectivo'] = $this->Venta_model->Consultar("select * from caja where usuario_id = {$caja["usuario_id"]} and caja_fechacierre = '{$caja["caja_fechacierre"]}' order by caja_id asc");
+            
             
             if ($caja!==null){
                 
@@ -367,13 +451,15 @@ class Reportes extends CI_Controller{
             $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
                     FROM consreporte c
                     WHERE
-                    c.usuario_id = {$usuario_id} and c.fecha>= date({$now}) and c.fecha<= date({$now})
+                    c.usuario_id = {$usuario_id} and (c.fecha >= '{$fecha1}' and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}') 
                     GROUP BY c.operacion,c.forma,c.transaccion,c.banco
                     ORDER BY orden";
+            //echo $sql;
             $data['transacciones'] = $this->Venta_model->consultar($sql);
             
             $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
-                    where usuario_id = {$usuario_id} and venta_fecha = date({$now})";
+                    where usuario_id = {$usuario_id} and venta_fecha >= '{$fecha1}' and CONCAT(venta_fecha, ' ', venta_hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}'";
+
             $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
                     
 //
@@ -866,7 +952,7 @@ function torta3($anio,$mes)
                 
                 $fechadesde = $this->input->post('fecha1');   
                 $fechahasta = $this->input->post('fecha2');
-                
+
                 $sql = "SELECT v.venta_fecha, v.venta_hora, v.venta_id, v.pedido_id, v.venta_total, c.cliente_nombre, c.cliente_razon, c.cliente_nit, p.mesa_id, p.pedido_total
                         FROM venta v
 

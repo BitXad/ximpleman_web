@@ -286,7 +286,7 @@ class Inventario_model extends CI_Model
         
         if (empty($producto)){ // Sino existe hasta aqui llega
             
-            return "ADVERTENCIA: No existe un producto con el código especificado...!";
+            return "ADVERTENCIA: No existe un producto con el código {$codigo}, verifique la existencia y vuelva a intentar...!";
             
         }else{
             

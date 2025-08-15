@@ -351,10 +351,13 @@ class Sincronizacion extends CI_Controller{
             $activities = $this->Actividad_model->get_all_activities();
             
             $transaccion = $resultados->RespuestaListaActividades->transaccion;
+            
             if($transaccion){
                 $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
                 //var_dump($listaActividades->codigoCaeb);
+                
                 if(isset($listaActividades->codigoCaeb)){
+                    
                     $params = array(
                         'actividad_codigocaeb' => $listaActividades->codigoCaeb,
                         'actividad_descripcion' => $listaActividades->descripcion,
@@ -365,7 +368,9 @@ class Sincronizacion extends CI_Controller{
                         $this->Actividad_model->update_activity($actividad_id,$params);
                     else
                         $this->Actividad_model->add_activity($params);
+                    
                 }else{
+                    
                     foreach($listaActividades as $list_actividad){
                         $params = array(
                             'actividad_codigocaeb' => $list_actividad->codigoCaeb,

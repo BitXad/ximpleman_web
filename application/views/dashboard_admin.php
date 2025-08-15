@@ -891,13 +891,7 @@
             <div class="box-header">
                 <i class="fa fa-book"></i>
                 <h3 class="box-title">Operaciones Observadas</h3>
-                <!--<a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
-                    <i class="fa fa-refresh"></i>
-                </a>
-                <a class="btn btn-danger btn-xs" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
-                    <i class="fa fa-trash"></i>
-                </a>-->
-                <!-- tools box -->
+
                 <div class="pull-right box-tools">
                     <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
                         <i class="fa fa-times"></i>
@@ -906,7 +900,7 @@
                 <!-- /. tools -->
             </div>
             <div class="box-body">
-                <div class="box-body no-padding">
+                <div class="box-body no-padding table-responsive">
                     <table class="table table-condensed">
                         <tr>
                             <th style="width: 10px">#</th>
@@ -1013,6 +1007,7 @@
         <div class="col-md-4">
             <!--<button class="btn btn-info btn-block" onclick="cerrar_caja()"><fa class="fa fa-money"></fa> Cierre de Caja</button>-->
             <a href="<?= base_url("caja/cierre_caja/".$caja[0]["caja_id"]) ?>" class="btn btn-info btn-block"><fa class="fa fa-money"></fa> Cierre de Caja</a>
+            <a href="<?= base_url("venta/ventas"); ?>" class="btn btn-success btn-block"><fa class="fa fa-cart-plus"></fa> ir a Ventas</a>            
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
@@ -1091,7 +1086,7 @@
         <div class="col-md-6">
             <label for="monto_caja" class="control-label"><p>Monto inicial en caja Bs</p></label>
             <div class="form-group">
-                <input type="text" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus="true"/>
+                <input type="number" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="registrar_caja(event);" autofocus="true"/>
             </div>
         </div>  
 

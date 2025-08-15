@@ -267,7 +267,11 @@ function cotivalidar(e,opcion) {
 
         } 
 
-    } 
+    }else{
+        if(e==13){
+            tablaresultados(1);
+        }
+    }
 
 }
 

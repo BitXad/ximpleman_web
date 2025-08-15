@@ -5066,7 +5066,7 @@ function tabla_ventas(filtro)
 //                    html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(decimales);
                     html += "                       </td>";
 //alert(v[i]["venta_numerotransmes"]);
-                    html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['venta_id']+((v[i]['venta_numeroventa']>0)?" / 00"+v[i]['venta_numeroventa']:"")+((v[i]['venta_numerotransmes']>0)?" / 00"+v[i]['venta_numerotransmes']:"")+"</b></font>";
+                    html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['traspaso_id']+((v[i]['venta_numeroventa']>0)?" / 00"+v[i]['venta_numeroventa']:"")+((v[i]['venta_numerotransmes']>0)?" / 00"+v[i]['venta_numerotransmes']:"")+"</b></font>";
                     html += "                           <br><img src='"+base_url+"resources/images/usuarios/thumb_"+v[i]['usuario_imagen']+"' class='img-circle' width='35' height='35'>";
                     html += "                           <br>Resp.: "+v[i]['usuario_nombre'];
                    
@@ -5124,7 +5124,7 @@ function tabla_ventas(filtro)
                     //html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a onclick='verificarmodificar("+v[i]['venta_id']+", "+v[i]['estado_id']+")' class='btn btn-facebook btn-xs no-print' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
-                    html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+v[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/imprimir_traspaso/"+v[i]['traspaso_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de traspaso' id='imprimir"+v[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
    
                     if(tipousuario_id == 1){
 //                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
@@ -5198,7 +5198,7 @@ function tabla_ventas(filtro)
                     html += "                                      <h4>";
                     html += "                                          ";
                     html += "                                          ¿Desea anular la transferencia? <b> <br>";
-                    html += "                                          Trans.: "+v[i]['venta_id']+"<br>";
+                    html += "                                          Trans. Nº: "+v[i]['traspaso_id']+"<br>";
 
 
                         html += "<input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='0' id='anular_factura"+v[i]['venta_id']+"' hidden>";
@@ -5211,7 +5211,7 @@ function tabla_ventas(filtro)
                     html += "                                     </div>";
                     html += "                                     <div class='modal-footer'>";
                     html += "                                         <center>";
-                    html += "                                           <a class='btn btn-success btn-xm' onclick='anular_traspaso("+v[i]['venta_id']+", "+v[i]['factura_id']+", "+JSON.stringify(v[i]['factura_enviada'])+")'><em class='fa fa-check'></em> Si </a>";
+                    html += "                                           <a class='btn btn-success btn-xm' onclick='anular_traspaso("+v[i]['traspaso_id']+", 0, 0)'><em class='fa fa-check'></em> Si </a>";
 
                     html += "                                           <a href='#' class='btn btn-danger btn-xm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
                     html += "                                         </center>";
@@ -8066,10 +8066,10 @@ function buscar_placa(e){
     }
 }
 
-function anular_traspaso(venta_id, factura_id = null, factura_enviada=null){
+function anular_traspaso(traspaso_id, factura_id = null, factura_enviada=null){
     
     let base_url = document.getElementById('base_url').value;
-    let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
+    //let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
     
 //    if(tiene_factura == 1){
 //        
@@ -8112,7 +8112,7 @@ function anular_traspaso(venta_id, factura_id = null, factura_enviada=null){
 //        }
 //        
 //    }else{
-        location.href = base_url+"venta/anular_traspaso/"+venta_id;
+        location.href = base_url+"venta/anular_traspaso/"+traspaso_id;
 //    }
 }
 

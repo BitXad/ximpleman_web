@@ -95,34 +95,44 @@
 
 <div class="box-header no-print">
 <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> </h3>
-            	<div class="box-tools">                    
-                    <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
-                    <select  class="btn btn-facebook btn-sm" id="select_ventas" onchange="buscar_ventas()">
-<!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
-                        <option value="1"><?php echo $sistema["sistema_moduloventas"]; ?> de Hoy</option>
-                        <option value="2"><?php echo $sistema["sistema_moduloventas"]; ?> de Ayer</option>
-                        <option value="3"><?php echo $sistema["sistema_moduloventas"]; ?> de la semana</option>
-                        <option value="4">Todos(as) las <?php echo $sistema["sistema_moduloventas"]; ?> </option>
-                        <option value="5"><?php echo $sistema["sistema_moduloventas"]; ?> por fecha</option>
-                        <option value="6"><?php echo $sistema["sistema_moduloventas"]; ?> Perdidas/Sin Detalle</option>
-                    </select>
-                    <?php } ?>
-                    <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
-                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> <?php echo $sistema["sistema_moduloventas"]; ?> </a>
-                    <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){    ?>
-                    <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
-                    <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-success btn-sm" title="Registro de eventos significativos" style="background-color: #8BC34A" target="_BLANK"><span class="fa fa-print"></span> Eventos Significativos</a>
-                    <?php } ?>
-                    <?php if($parametro['parametro_tiposistema']!= 1){    ?>
-                    <a href="<?php echo base_url("envio_contingencias"); ?>" class="btn btn-danger btn-sm" title="Enviar Facturas por Contingencia" target="_BLANK"><span class="fa fa-compress"></span> Facturas no enviadas</a>
-                    <?php } ?>
-                </div>
+
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
 <!--<form method="post">-->
+<div class="box-tools box-title" > 
+    <div class="col-md-12">
+
+            <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
+            <select  class="btn btn-facebook btn-sm" id="select_ventas" onchange="buscar_ventas()">
+<!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
+                <option value="1"><?php echo $sistema["sistema_moduloventas"]; ?> de Hoy</option>
+                <option value="2"><?php echo $sistema["sistema_moduloventas"]; ?> de Ayer</option>
+                <option value="3"><?php echo $sistema["sistema_moduloventas"]; ?> de la semana</option>
+                <option value="4">Todos(as) las <?php echo $sistema["sistema_moduloventas"]; ?> </option>
+                <option value="5"><?php echo $sistema["sistema_moduloventas"]; ?> por fecha</option>
+                <option value="6"><?php echo $sistema["sistema_moduloventas"]; ?> Perdidas/Sin Detalle</option>
+            </select>
+            <?php } ?>
+            <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
+            <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> <?php echo $sistema["sistema_moduloventas"]; ?> </a>
+            <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){    ?>
+            <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
+            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-success btn-sm" title="Registro de eventos significativos" style="background-color: #8BC34A" target="_BLANK"><span class="fa fa-print"></span> Eventos Significativos</a>
+            <?php } ?>
+            <?php if($parametro['parametro_tiposistema']!= 1){    ?>
+            <a href="<?php echo base_url("envio_contingencias"); ?>" class="btn btn-danger btn-sm" title="Enviar Facturas por Contingencia" target="_BLANK"><span class="fa fa-compress"></span> Facturas no enviadas</a>
+            <?php } ?>
+            <button class="btn btn-facebook btn-sm" id="excel" onclick="generarexcel()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
+
+    </div>
+</div>
+
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:none;'>
     <br>
-    <center>            
+    <center>    
+
+
+        
         <div class="col-md-2">
             Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" value="<?php echo date("Y-m-d");?>" name="fecha_desde" required="true">
         </div>
@@ -198,6 +208,7 @@
                     <tr>
 						<th>#</th>
 						<th>Cliente</th>
+						<!--<th>Código</th>-->
 						<th>Totales</th>						
 						<th>Trans.</th>
 						<th>Tipo</th>
@@ -685,7 +696,7 @@
 <!------------------------------------------------------------------------------->
 
 
-<div>
+<div hidden>
     <button type="button" id="boton_whatsapp" class="btn btn-default" data-toggle="modal" data-target="#modalwhatsapp" >
       Envio factura
     </button>

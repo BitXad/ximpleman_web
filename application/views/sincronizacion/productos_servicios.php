@@ -28,6 +28,8 @@
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre">
+            <!--<div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_nuevo()" title="Cliente nuevo"><span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span> Buscar</div>-->
+            <div style="border-color: #00a65a; background: #00a65a !important; color: white" class="btn btn-success input-group-addon" onclick="generarexcel()" title="Exportar lista de productos ho"><span class="fa fa-file-excel-o" aria-hidden="true" id="span_cliente_nuevo"></span> Excel</div>
         </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -170,3 +172,145 @@
 </div>
                 
 <!--<button type="button" class="btn btn-success" onclick="finalizarventa_sin()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+
+<script type="text/javascript">
+function generarexcel() {
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + 'inventario/generar_excel_homologados';
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {},
+        success: function(result) {
+            var productos = JSON.parse(result);
+
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet("Productos");
+
+            // Crear 3 filas manualmente
+            worksheet.getCell('A1').value = 'PRODUCTOS HOMOLOGADOS';
+            worksheet.getCell('A2').value = 'LISTA COMPLETA DE PRODUCTOS';
+
+            // Unir celdas A1:I1 y A2:I2
+            worksheet.mergeCells('A1:I1');
+            worksheet.mergeCells('A2:I2');
+
+            // Estilo para A1
+            worksheet.getCell('A1').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('A1').font = { name: 'Arial', size: 14, bold: true };
+
+            // Estilo para A2
+            worksheet.getCell('A2').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('A2').font = { name: 'Arial', size: 12, bold: true, italic: true };
+
+            // Fila 3 vacía (solo para dejar espacio visual)
+            worksheet.addRow([]);
+
+            // Cabecera (fila 4 visible, pero es la fila 4 en Excel)
+            const headers = [
+                "N°", "DESCRIPCIÓN", "UNIDAD", "CÓDIGO", "CÓDIGO SIN",
+                "DESCRIPCIÓN", "CÓDIGO ACTIVIDAD", "ACTIVIDAD", "TIPO"
+            ];
+            worksheet.addRow(headers);
+
+            // Definir el ancho de las columnas
+            worksheet.columns = [
+                { width: 5 },
+                { width: 30 },
+                { width: 10 },
+                { width: 15 },
+                { width: 15 },
+                { width: 30 },
+                { width: 20 },
+                { width: 25 },
+                { width: 15 }
+            ];
+
+            // Agregar los datos (desde la fila 5)
+            productos.forEach((prod, i) => {
+                worksheet.addRow([
+                    i + 1,
+                    prod.producto_nombre,
+                    prod.producto_unidad,
+                    prod.producto_codigo,
+                    prod.producto_codigosin,
+                    prod.prodserv_descripcion,
+                    prod.prodserv_codigoactividad,
+                    prod.actividad_descripcion,
+                    prod.actividad_tipoactividad
+                ]);
+            });
+
+            // Estilos y bordes
+            worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
+                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+                    // Bordes
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' },
+                    };
+
+                    // Fuente por defecto
+                    cell.font = {
+                        name: 'Arial',
+                        size: 8,
+                        bold: false
+                    };
+                    // Aplicar estilo general solo si NO es fila 1 ni 2 ni 4
+                    if (rowNumber == 1) {
+                        cell.font = {
+                            name: 'Arial',
+                            size: 14,
+                            bold: true,
+                        };
+                    }
+                    if (rowNumber == 2) {
+                        cell.font = {
+                            name: 'Arial',
+                            size: 10,
+                            bold: true,
+                            //italic: true,
+                        };
+                    }
+                    // Estilo especial para la fila 4 (cabecera)
+                    if (rowNumber === 4) {
+                        cell.font = {
+                            name: 'Arial',
+                            size: 9,
+                            bold: true,
+                            color: { argb: 'FFFFFFFF' }
+                        };
+                        cell.alignment = {
+                            horizontal: 'center',
+                            vertical: 'middle'
+                        };
+                        cell.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FF000000' } // fondo negro
+                        };
+                    }
+                });
+            });
+
+            // Descargar archivo
+            workbook.xlsx.writeBuffer().then(function (data) {
+                var reportitle = moment(Date.now()).format("DD-MM-YYYY_H_m_s");
+                var blob = new Blob([data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                });
+                saveAs(blob, "productoshomologados_" + reportitle + ".xlsx");
+            });
+        }
+    });
+}
+
+    
+</script>

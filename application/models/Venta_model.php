@@ -29,16 +29,17 @@ class Venta_model extends CI_Model
         return $venta;
     }
     
+
     /*
      * Get venta by venta_id
      */
-    function get_traspaso($venta_id)
+    function get_traspaso($traspaso_id)
     {
         $sql = "select * 
                 from traspaso v  
                 left join usuario u on u.usuario_id = v.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
-                where v.venta_id = ".$venta_id;
+                where v.traspaso_id = ".$traspaso_id;
         
         $venta = $this->db->query($sql)->row_array();
 
@@ -448,6 +449,20 @@ class Venta_model extends CI_Model
                 left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
                 where 
                 c.cliente_nit = '{$nit}'";
+       // echo $sql;
+       $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
+    
+    function buscar_por_codigo($codigo_cliente)
+    {
+
+//        $sql = "select * from cliente where cliente_nit = ".$nit;        
+        $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
+                left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
+                where 
+                c.cliente_codigo = '{$codigo_cliente}'";
        // echo $sql;
        $resultado = $this->db->query($sql)->result_array();
         
@@ -1092,8 +1107,13 @@ function get_busqueda($condicion)
                 LEFT OUTER JOIN cliente c ON c.cliente_id = v.cliente_id
                 LEFT OUTER JOIN pasaje p ON p.venta_id = v.venta_id
                 LEFT OUTER JOIN asientos a ON a.asiento_id  = p.asiento_id
-                where v.venta_id = {$venta_id} and v.estado_id = 52";
+                where v.venta_id = {$venta_id} and p.estado_id = 52";
         return $this->db->query($sql)->result_array();
+    }
+    function obtener_url_larga($short_code)
+    {
+        $query = $this->db->get_where('urls', ['short_code' => $short_code]);
+        return $query->row();
     }
     
 }

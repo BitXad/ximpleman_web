@@ -353,117 +353,101 @@
                                                         
                                         <div id="map"></div> <!-- mapa -->
                                         
-                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58"></script>
-                                        <script>      
-                                        //coordada inicial del mapa
-                                        var coordenadas= new google.maps.LatLng(-17.4038, -66.1635);
-                                        
-                                        //variable para globos de informacion
-                                        var infowindow = true;
-                                    
-                                        //puntos a ser marcados en el mapa
-                                        var puntos = [];
-                                            var punto;
-                                                <?php $i = 0;
-                                                
-                                                foreach($all_pedido as $p){ ?>
-                                                
-                                                    punto = ['<?= $p['cliente_nombre']; ?>','<?= $p['cliente_latitud']; ?>','<?= $p['cliente_longitud']; ?>','<?= $p['cliente_direccion']; ?>','<?= $p['pedido_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id'] ?>','<?= $p['venta_fechaentrega'] ?>', '<?= $p['venta_horaentrega'] ?>'];
-                                                    puntos['<?php echo $i; ?>'] = punto;
-                                                <?php $i++; } ?>       
-                                        //funcion para posicionar los marcadores en el mapa
-                                        function setMarkers(map, puntos) {    
-                                            //limpiamos el contenido del globo de informacion
-                                            var infowindow = new google.maps.InfoWindow({
-                                                content: ''
-                                            });
-                                    
-                                            //recorremos cada uno de los puntos
-                                            for (var i = 0; i < puntos.length; i++) {
-                                                
-                                            var place = puntos[i];
-                                            if(place[5] == 1){
-                                                var color_icon = '<?php echo base_url().'resources/images/blue.png'; ?>';
-                                            }else{
-                                                var color_icon = '<?php echo base_url().'resources/images/red.png'; ?>';
-                                            }
-                                            //propiedades del marcador
-                                            var marker = new google.maps.Marker({
-                                                position: new google.maps.LatLng(place[1], place[2]), //posicion
-                                                map: map,
-                                                scrollwheel: false,
-                                                animation: google.maps.Animation.DROP, //animacion           
-                                                nombre: place[0], //personalizado - nombre del punto
-                                                info: place[3], //personalizado - informacion adicional
-                                                link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional
-                                                ven_id:place[6],              
-                                                icon: color_icon,
-                                                estado: place[5],
-                                                entrega_fecha: place[9],
-                                                entrega_hora: place[10]
-                                            });
-                                            
-                                            //se agrega el evento click a cada marcador, asi despliega la
-                                            //informacion nada uno de los marcadores
-                                            google.maps.event.addListener(marker, 'click', function() {
-                                                //html de como vamos a visualizar el contenido del globo
-                                                
-                                                // var contenido='<div id="content" style="width: auto; height: auto;">' 
-                                                //                 +'<a class="mr-0" href="'+this.link+'"><h5>'+this.nombre +'</h5></a><button class="btn btn-sm btn-primary" onclick="entregado('+place[5]+')">Entregado</button>' +  this.info
-                                                //                 +'<button class="btn btn-sm btn-primary" onclick="entregado('+place[5]+')">Entregado</button>' 
-                                                //             + '</div>';
-                                                var contenido='<div id="content" style="width: auto; height: auto;">' 
-                                                                +'<a class="mr-0" href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' 
-                                                                if(this.estado == 1){
-                                                                    contenido += this.info
-                                                                    +'<br>'
-                                                                    +'<button class="btn btn-sm btn-warning" style="width: 100%; margin:auto" onclick="consolidar('+this.ven_id+')">Entregar</button>';
-                                                                }else{
-                                                                    contenido += '<span style="font-size:8pt;"><b>Fecha de entrega:</b> '+this.entrega_fecha+'<br><b>Hora:</b> '+this.entrega_hora+'</span>';
-                                                                }
-                                                contenido += '</div>';
-                                                infowindow.setContent(contenido); //asignar el contenido al globo
-                                                infowindow.open(map, this); //mostrarlo
-                                            });
-                                            }
-                                        }
-                                        // function entregado(estado){
-                                        //     var base_url    = document.getElementById('base_url').value;
-                                        //     var controlador = base_url+'detalle_venta/consolidar/'+venta;
+                                        <!-- Leaflet CSS y JS -->
+                                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                                        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-                                        //     console.log (estado)
-                                        //     // location.reload();
-                                        // }
-                                        
-                                        //funcion para inicializar el mapa
-                                        function initialize() {
-                                            //iniciamos un nuevo mapa el div 'map' y le asignamos propiedades
-                                            var map = new google.maps.Map(document.getElementById('map'), {
-                                            center: new google.maps.LatLng(-17.4038, -66.1635), //coordenada inicial
-                                            zoom: 14, //nivel de zoom
-                                            mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa      
-                                            
-                                            }); 
-                                            
-                                            //llamar a la funcion que escribe los marcadores
-                                            setMarkers(map, puntos);
-                                    
-                                        }
-                                        function consolidar(venta){
-                                            var base_url    = document.getElementById('base_url').value;
-                                            var controlador = base_url+'detalle_venta/consolidar/'+venta;
-                                            $.ajax({url: controlador,
-                                                type:"POST",
-                                                data:{},
-                                                success:function(resul){                
-                                                    // buscarventasdist();
-                                                    location.reload();
+                                        <script>
+                                            // Coordenadas iniciales del mapa
+                                            var coordenadas = [-17.4038, -66.1635];
+
+                                            // Crear el mapa en el div con id "map"
+                                            var map = L.map('map').setView(coordenadas, 14); // Zoom 14
+
+                                            // Cargar capa de OpenStreetMap
+                                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                maxZoom: 19,
+                                                attribution: '© OpenStreetMap contributors'
+                                            }).addTo(map);
+
+                                            // Arreglo de puntos desde PHP
+                                            var puntos = [];
+                                            <?php foreach($all_pedido as $p) { ?>
+                                                puntos.push([
+                                                    "<?= $p['cliente_nombre']; ?>",
+                                                    <?= $p['cliente_latitud']; ?>,
+                                                    <?= $p['cliente_longitud']; ?>,
+                                                    "<?= $p['cliente_direccion']; ?>",
+                                                    "<?= $p['pedido_id']; ?>",
+                                                    <?= $p['entrega_id'] ?>,
+                                                    "<?= $p['venta_id']; ?>",
+                                                    "<?= $p['venta_fechaentrega'] ?>",
+                                                    "<?= $p['venta_horaentrega'] ?>"
+                                                ]);
+                                            <?php } ?>
+
+                                            // Iconos personalizados
+                                            var iconBlue = L.icon({
+                                                iconUrl: '<?= base_url().'resources/images/blue.png'; ?>',
+                                                iconSize: [25, 41],
+                                                iconAnchor: [12, 41],
+                                                popupAnchor: [1, -34],
+                                            });
+
+                                            var iconRed = L.icon({
+                                                iconUrl: '<?= base_url().'resources/images/red.png'; ?>',
+                                                iconSize: [25, 41],
+                                                iconAnchor: [12, 41],
+                                                popupAnchor: [1, -34],
+                                            });
+
+                                            // Agregar marcadores
+                                            puntos.forEach(function(place) {
+                                                var nombre = place[0];
+                                                var lat = place[1];
+                                                var lon = place[2];
+                                                var direccion = place[3];
+                                                var pedidoId = place[4];
+                                                var estado = place[5];
+                                                var ventaId = place[6];
+                                                var fechaEntrega = place[7];
+                                                var horaEntrega = place[8];
+
+                                                var icono = estado == 1 ? iconBlue : iconRed;
+
+                                                var marker = L.marker([lat, lon], { icon: icono }).addTo(map);
+
+                                                var contenido = '<div>' +
+                                                                '<a href="<?= base_url().'pedido/comprobante/'; ?>' + pedidoId + '"><h5>' + nombre + '</h5></a>';
+
+                                                if (estado == 1) {
+                                                    contenido += direccion + '<br>' +
+                                                                 '<button class="btn btn-sm btn-warning" style="width: 100%;" onclick="consolidar(' + ventaId + ')">Entregar</button>';
+                                                } else {
+                                                    contenido += '<span style="font-size:8pt;"><b>Fecha de entrega:</b> ' + fechaEntrega +
+                                                                 '<br><b>Hora:</b> ' + horaEntrega + '</span>';
                                                 }
-                                            });   
-                                        }   
-                                    
-                                        initialize(); //inicializar el mapa
+
+                                                contenido += '</div>';
+
+                                                marker.bindPopup(contenido);
+                                            });
+
+                                            function consolidar(venta) {
+                                                var base_url = document.getElementById('base_url').value;
+                                                var controlador = base_url + 'detalle_venta/consolidar/' + venta;
+
+                                                $.ajax({
+                                                    url: controlador,
+                                                    type: "POST",
+                                                    data: {},
+                                                    success: function(resul) {
+                                                        location.reload();
+                                                    }
+                                                });
+                                            }
                                         </script>
+
                                         
                                     </td>
                                 </tr>
@@ -475,8 +459,9 @@
         </div>
     </section>
     <!-- ---------------------------------MAPA---------------------------------------- -->
-
-    <section class="col-lg-12 connectedSortable">
+    <?php $mostrar_grafico = 0; // 0  No mostrar, 1 mostrar  ?>
+    
+    <section class="col-lg-12 connectedSortable" <?php echo ($mostrar_grafico!=0)?"":"hidden"; ?>>
         <div class="box box-info">
             <div class="box-header">
                 <i class="fa fa-money"></i>
@@ -546,7 +531,7 @@
         <div class="col-md-4">
             <!--<button class="btn btn-info btn-block" onclick="cerrar_caja()"><fa class="fa fa-money"></fa> Cierre de Caja</button>-->
             <a href="<?= base_url("caja/cierre_caja/".$caja[0]["caja_id"]) ?>" class="btn btn-info btn-block"><fa class="fa fa-money"></fa> Cierre de Caja</a>
-            <a href="<?= base_url("venta/ventas") ?>" class="btn btn-facebook btn-block"><fa class="fa fa-cart-plus"></fa> Vender</a>
+            <a href="<?= base_url("venta/ventas"); ?>" class="btn btn-success btn-block"><fa class="fa fa-cart-plus"></fa> ir a Ventas</a>              
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
@@ -625,7 +610,7 @@
         <div class="col-md-6">
             <label for="monto_caja" class="control-label"><p>Monto inicial en caja Bs</p></label>
             <div class="form-group">
-                <input type="text" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                <input type="number" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="registrar_caja(event)"/>
             </div>
         </div>  
 

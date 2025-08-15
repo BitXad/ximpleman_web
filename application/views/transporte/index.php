@@ -85,20 +85,26 @@
 <body>
 <input type="hidden" name="cliente_id" value="0" class="form-control" id="cliente_id" >
 <div class="container">
-        <div class="panel panel-primary col-md-12">
+        <div class="panel panel-primary col-md-9">
             <!--<h6 class="fw-bold">DATOS DEL CLIENTE</h6>-->
             <div class="row g-2 align-items-center">
+                
+                <div class="col-md-3">
+                    <label class="form-label"><fa class="fa fa-calendar"></fa> FECHA</label> <br>
+                    <input type="date" class="form-control" value="<?php echo date("Y-m-d"); ?>" onchange="buscar_viajes()" id="calendario_viaje"/> 
+                    
+                </div>
+                
                 <div class="col-md-6">
                     
                     
-                    <label class="form-label"> <fa class="fa fa-bus"></fa> VIAJES PROGRAMADOS</label>
-                
-                    
+                    <label class="form-label"><fa class="fa fa-bus"></fa> VIAJES PROGRAMADOS</label>
+                                   
                     <select class="form-control" onchange="cargar_datosviaje();" id="select_viaje">
                         
                         <option selected value="0">- SELECCIONAR VIAJE -</option>
                         <?php foreach($viajes as $viaje){ ?>
-                            <option value="<?php echo $viaje["viaje_id"];  ?>"><?php echo $viaje["ruta_nombre"]." => ".$viaje["viaje_fechasalida"]." - ".$viaje["viaje_horasalida"]." (COD.: 00".$viaje["viaje_id"].")" ?></option>
+                            <option value="<?php echo $viaje["viaje_id"];  ?>"><?php echo "[".$viaje["vehiculo_placa"]."] ".$viaje["ruta_nombre"]." => ".$viaje["viaje_fechasalida"]." - ".$viaje["viaje_horasalida"]." (COD.: 00".$viaje["viaje_id"].")" ?></option>
                         <?php } ?>
                         
                         
@@ -107,22 +113,28 @@
                     <br>
                     <br>
                 </div>
+                
                 <div class="col-md-3">
                     <label class="form-label">OPERACIONES</label> <br>
                     <a href="<?php base_url("venta/ultimo_pasaje"); ?>" class="btn btn-success" target="_blank"><fa class="fa fa-print"> </fa> </a>
                     <a href="http://localhost/ximpleman_web/viaje" class="btn btn-warning"  target="_blank"><fa class="fa fa-cubes"> </fa> </a>
-                    <a href="http://localhost/ximpleman_web/viaje/reporte_manifiesto" class="btn btn-facebook"  target="_blank"><fa class="fa fa-list-ol"> </fa> </a>
+                    <button onclick="nomina_pasajeros()" class="btn btn-facebook" ><fa class="fa fa-list-ol"> </fa> </button>
+                    <!--<a href="http://localhost/ximpleman_web/viaje/reporte_manifiesto" class="btn btn-facebook"  target="_blank"><fa class="fa fa-list-ol"> </fa> </a>-->
                 </div>
-                <div class="col-md-3">
-                    <div id="tabla_resumen">
-                        
-                    </div>
-                <div class="col-md-3">
+                
+
         </div>
     </div>
+    <div class="panel panel-primary col-md-3">
+            <div class="col-md-12">
+                <div id="tabla_resumen">
+
+                </div>
+            </div>
+    
 </div>
 </div>
-</div>
+
 
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>-->    
           
@@ -834,7 +846,8 @@
     </div>
   </div>
 
-
+        <input type="text" value="0" id="venta_id">
+        <input type="hidden" value="0" id="pasaje_id2">
 <!-- Button trigger modal -->
 <div hidden>
     
@@ -844,7 +857,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalopciones" tabindex="-1" role="dialog" aria-labelledby="modaopciones" aria-hidden="true">
+<div class="modal fade" id="modalopciones" tabindex="-1" role="dialog" aria-labelledby="modalopciones" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
@@ -854,11 +867,11 @@
         </button>
         <h5 class="modal-title" id="exampleModalLongTitle">OPCIONES</h5>
         
-        <input type="hidden" value="0" id="venta_id">
-        <input type="hidden" value="0" id="pasaje_id2">
         
       </div>
        
+
+        
       <div class="modal-body">
           <div class="row">
                 <div class="col-md-12">
@@ -878,7 +891,7 @@
               
              
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-info btn-block form-control"> <fa class="fa fa-recycle"></fa> Cambiar Asiento</button>              
+                    <button class="btn btn-sm btn-info btn-block form-control" onclick="cargar_asiento()" data-dismiss="modal"> <fa class="fa fa-recycle"></fa> Cambiar Asiento</button>              
                     <br>
                 </div>
               
@@ -920,6 +933,14 @@
 <!-- ************************************************************************************* -->
 <!-- ************************************************************************************* -->
 
+
+<!-- Button trigger modal -->
+<div>
+    
+<button type="button" class="btn btn-primary" onclick="verificar_reserva()">
+  Verificar Reserva
+</button>
+</div>
 
 <!-- Button trigger modal -->
 <div hidden>
@@ -968,7 +989,7 @@
 <!-- ************************************************************************************* -->
 <!-- ************************************************************************************* -->
 <!-- Button trigger modal -->
-<div hidden>
+<div >
     
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalampliarreserva" id="boton_ampliarreserva">
   Modal Ampliar Reserva
@@ -1030,14 +1051,14 @@
 <!-- Button trigger modal -->
 <div>
     
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcambiarasiento">
+<button type="hidden" class="btn btn-primary" data-toggle="modal" data-target="#modalcambiarasiento">
   Modal Cambia Asiento
 </button>
     
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalcambiarasiento" tabindex="-1" role="dialog" aria-labelledby="modaleliminar" aria-hidden="true">
+<div class="modal fade" id="modalcambiarasiento" tabindex="-1" role="dialog" aria-labelledby="modalcambiarasiento" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
@@ -1049,6 +1070,9 @@
         
       </div>
        
+<!--        <input type="text" id="asiento_idcambio">
+        <input type="text" id="pasaje_idcambio">-->
+        
       <div class="modal-body">
           <div class="row">
 
@@ -1060,7 +1084,7 @@
 
                 <div class="col-md-6">
                     <label class="fw-bold"><fa class="fa fa-chain"></fa> Cambiar a:</label>
-                    <select class="form-control">
+                    <select class="form-control" id="select_asientoslibres">
                         <option>ASIENTO 5X, PASAJE 25</option>
                     </select>
                     
@@ -1073,7 +1097,66 @@
       <div class="modal-footer">
           <br>
         <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cerrar</button>
-        <button type="button" class="btn btn-primary"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+        <button type="button" class="btn btn-primary" onclick="cambiar_asiento()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- ************************************************************************************* -->
+<!-- Button trigger modal -->
+<div>
+    
+<button type="hidden" class="btn btn-primary" data-toggle="modal" data-target="#modalequipaje" id="boton_equipaje">
+  Modal Equipaje adicional
+</button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalequipaje" tabindex="-1" role="dialog" aria-labelledby="modalequipaje" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">REGISTRAR EQUIPAJE ADICIONAL</h5>
+        
+      </div>
+       
+<!--        <input type="text" id="asiento_idcambio">
+        <input type="text" id="pasaje_idcambio">-->
+        
+      <div class="modal-body">
+          <div class="row">
+
+                <div class="col-md-12">
+                    <label class="fw-bold"><fa class="fa fa-paperclip"></fa> Equipaje:</label>
+                    <input class="form-control" id="detalle_equipaje" value="" onKeyUp="this.value = this.value.toUpperCase();">
+                    
+               </div>
+<!--
+                <div class="col-md-6">
+                    <label class="fw-bold"><fa class="fa fa-chain"></fa> Cambiar a:</label>
+                    <select class="form-control" id="select_asientoslibres">
+                        <option>ASIENTO 5X, PASAJE 25</option>
+                    </select>
+                    
+               </div>-->
+
+              
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="registrar_equipaje()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
       </div>
     </div>
   </div>

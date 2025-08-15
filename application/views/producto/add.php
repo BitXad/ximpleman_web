@@ -170,8 +170,10 @@
                         <label for="producto_" class="control-label"><span class="text-danger">*</span>Codigo Producto SIN</label>
                         <div class="form-group">
                             <select name="cod_product_sin" id="cod_product_sin" class="form-control selectpicker" title="Actividad - Codigo NIS" data-hide-disabled="true" data-live-search="true">
-                                <?php foreach ($nis_codigos as $cod_nis){?>
-                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>"><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']}" ?></option>
+                                <?php foreach ($nis_codigos as $cod_nis){
+                                    $selected =  ($cod_nis['prodserv_codigoproducto'] == $producto['producto_codigosin']) ? "selected":"";
+                                    ?>
+                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>" <?= $selected ?>><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']} {$cod_nis['prodserv_descripcion']}" ?></option>
                                 <?php }?>
                             </select>
                         </div>

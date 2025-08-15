@@ -52,7 +52,7 @@
                               <br><b><?php echo $ayuda["ayuda_titulo"]; ?></b>
                               <br><small><?php echo $ayuda["ayuda_subtitulo"]; ?></small>                          
                               <?php echo "<br>".$ayuda["ayuda_texto"]; ?>
-                            </div>                
+                            </div>                 
                 <?php } 
                     if($ayuda["ayuda_tipo"]=="youtube"){?>
 

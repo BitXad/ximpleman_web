@@ -83,7 +83,7 @@
                                     <button class="btn btn-primary btn-xs" title="Sincronizar <?= strtolower($sincronizacion['sincronizacion_descripcion']) ?>" onclick="sincronizar(<?= $sincronizacion['sincronizacion_id'] ?>)">
                                         <i class="fa-solid fa-arrows-rotate"></i>
                                     </button>
-                                    <a class="btn btn-info btn-xs" title="Ver datos" href="<?= site_url("sincronizacion/show_sincronizacion/{$sincronizacion['sincronizacion_id']}") ?>">
+                                    <a class="btn btn-info btn-xs" title="Ver datos" href="<?= site_url("sincronizacion/show_sincronizacion/{$sincronizacion['sincronizacion_id']}") ?>" target="_blank">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </td>

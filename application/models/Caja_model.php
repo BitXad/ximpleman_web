@@ -16,17 +16,8 @@ class Caja_model extends CI_Model
      */
     function get_caja($caja_id)
     {
-                     
-        $caja = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `caja`
-
-            WHERE
-                `caja_id` = ?
-        ",array($caja_id))->row_array();
+        $sql = "SELECT * FROM `caja` WHERE `caja_id` = ?";                     
+        $caja = $this->db->query($sql,array($caja_id))->row_array();
 
         return $caja;
     }
@@ -171,13 +162,14 @@ class Caja_model extends CI_Model
     
     function get_ultima_caja($usuario_id)
     {
-        $caja = $this->db->query("
-            select c.*,u.* from caja c
-            left join usuario u on c.usuario_id = u.usuario_id
-            where 
-            c.usuario_id = ".$usuario_id." and
-            c.caja_id = (select max(caja_id) from caja where usuario_id = {$usuario_id})
-        ")->row_array();
+        $sql = "
+                    select c.*,u.* from caja c
+                    left join usuario u on c.usuario_id = u.usuario_id
+                    where 
+                    c.usuario_id = ".$usuario_id." and
+                    c.caja_id = (select max(caja_id) from caja where usuario_id = {$usuario_id})
+                ";
+        $caja = $this->db->query($sql)->row_array();
         return $caja;
     }
     

@@ -95,7 +95,7 @@ function calculardesc(){
    
    $("#venta_cambio").val(formato_numerico(venta_cambio.toFixed(decimales)));
    //$("#venta_efectivo").val(subtotal);
-   
+   //alert(venta_efectivo +" *** "+venta_cambio );
 }
 
 function calcularcambio(e){
@@ -112,12 +112,12 @@ function calcularcambio(e){
    $("#venta_cambio").val(venta_cambio.toFixed(decimales));
    
     $("#cambioy").val(venta_cambio.toFixed(decimales));
-   
-//    alert(venta_cambio.toFixed(venta_efectivo));
-//   
-   
+     
+   //alert(venta_efectivo +" **** "+venta_cambio );
    if (tecla==13){ 
-            $("#boton_finalizar").click();
+            //$("#boton_finalizar").click();
+            finalizarventa_sin();
+            $("#cancelar_venta").click();
    }
 }
 
@@ -259,7 +259,28 @@ function validar(e,opcion) {
 //            $("#codigo").focus();
 //            $("#codigo").select()();
 //        }
+
+        
+        if (opcion==15){   //si la pulsacion proviene del codigo
                 
+                cliente_codigo = document.getElementById('cliente_codigo').value;     
+                
+                if (cliente_codigo!=''){ //Si el nit esta vacio
+                    
+                        var codigo = document.getElementById("cliente_codigo").value; //Generamos codigo para el cliente
+                        //Si el nit es diferente de vacio                       
+                        buscar_por_codigo();
+
+                }else{
+                        alert("El Código no puede estar vacio..!");
+                        $("#cliente_codigo").focus();
+                        $("#cliente_codigo").select();
+                        
+                }
+                
+        }
+
+        
     }
     
     if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
@@ -443,6 +464,296 @@ function buscarcliente(){
                     $("#cliente_ci").val(nit);
                     $("#cliente_nombrenegocio").val("-");
                     $("#cliente_codigo").val("-");
+                    
+                    $("#telefono").val("");
+                    $("#cliente_nombre").val("");
+                    $("#cliente_direccion").val("-");
+                    $("#cliente_departamento").val("-");
+                    $("#cliente_celular").val("");
+                    $("#email").val("");
+                    $("#zona_id").val(0);
+                    $("#tipocliente_id").val(1);
+                    $("#venta_descuento").val(0);
+                    
+                    
+                    
+                    
+                    let tipo_sistema = document.getElementById('parametro_tiposistema').value;
+                    //let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
+                    let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
+                    
+                    if(tipo_sistema != 1){ //1 =SFV /2=elec en linea 3=comp. en linea
+                            //alert(dosificacion_modalidad);
+                            
+                        //if (dosificacion_modalidad == 1){ //modalidad 1= Elec.Enlinea 2=computarizada en linea
+                        if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
+                           // alert("pasa por aqui");
+                           let result;
+                           if (parametro_verificarconexion==1){ //1 si, 0 no                              
+                                result = verificar_conexion_enventas();
+                                
+                           }else{
+                                result = true;                               
+                             }
+                            
+                    
+                            let res = result;
+                            //alert(res);
+                            if(res){ //Si existe conexion
+                                
+                                let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
+                                
+                                    if(tipo_doc_identidad == 5){
+
+                                        if (parametro_factura != 3){ // (NO ES) 3 Sin Factura
+                                                verificarnit();
+                                    }else{
+                                            document.getElementById('loader_documento').style.display = 'none';
+                                    }
+                                    
+                                }else{
+                                    document.getElementById('loader_documento').style.display = 'none';
+                                }
+                                
+                            }else{
+                                alert("No hay comunicación con Impuestos");
+                                document.getElementById('loader_documento').style.display = 'none';
+                            }
+                        
+                        }else{ // Si es computarizado o electronica en linea
+                                document.getElementById('loader_documento').style.display = 'none';
+                                $('#razon_social').focus();
+                                //verificarnit();
+                                //$('#razon_social').select();
+                        }
+                    }else{
+                        document.getElementById('loader_documento').style.display = 'none';
+                        $('#razon_social').focus();
+                    }                    
+                    
+                    html = "<div id='mensajes'>";
+                    html += "</div>";
+                    $("#mensajes").html(html);
+                    
+                }
+                //document.getElementById('loader_documento').style.display = 'none';
+            },
+            error:function(respuesta){			
+                $("#razon_social").val('SIN NOMBRE');
+                document.getElementById('telefono').focus();
+                
+                $("#cliente_id").val(0);
+                document.getElementById('loader_documento').style.display = 'none';   
+                
+
+                
+            }                
+    }); 
+
+}
+
+
+function cliente_nuevo(){
+
+    var nit = "1234";
+    var razon_social = "SIN NOMBRE";
+    var cliente_id = "1";
+
+    
+    seleccionar_documento(1); // CI
+    seleccionar_servicio(1); // CI
+    
+    $("#pensionado").val(0);
+    $("#razon_social").val(razon_social);
+    $("#cliente_nombre").val(razon_social);
+    $("#cliente_codigo").val(nit);
+    
+    
+    $("#email").val("");
+    
+    if(documento_sector == 23){ // si es prevalorada
+        
+        $("#razon_social").val("S/N");
+        $("#cliente_nombre").val("S/N");
+        $("#cliente_codigo").val("N/A");
+        
+    }
+    
+    if(documento_sector == 12){ // si es prevalorada
+        
+        $("#datos_embase").val("");
+        $("#datos_codigopais").val(0);
+        $("#datos_autorizacionsc").val("0");
+        $("#datos_placa").val("");
+    }
+    
+    $("#nit").val(nit);
+    $("#cliente_id").val(cliente_id);
+    $("#cliente_ci").val(nit);
+    $("#cliente_nombrenegocio").val("-");
+    
+    $("#pedido_id").val("0");
+    $("#usuarioprev_id").val("0");
+    
+    $("#cliente_direccion").val("-");
+    $("#cliente_departamento").val("-");
+    $("#cliente_celular").val("-");
+    $("#tipocliente_id").val("1");
+    $("#cliente_telefono").val("-");
+    
+    $("#tiposerv_id").val("1");
+    $("#venta_numeromesa").val("0");
+    $("#venta_glosa").val("");  
+    
+    $("#venta_efectivo").val("0");
+    $("#venta_cambio").val("0");
+    $("#zona_id").val("0");
+    $("#venta_descuentoparc").val("0");
+    $("#venta_descuento").val("0");
+    $("#preferencia_id").val("0");
+    $("#cliente_complementoci").val("");
+    $("#venta_ice").val("0.00");
+    $("#venta_detalletransaccion").val("0");
+    $("#venta_giftcard").val("0.00");
+    $("#tipo_doc_identidad").val("1");
+    $("#cliente_valido").val("1");
+    $("#glosay").val("");
+    $("#puede_facturar").val("0");
+    $("#motivo_puede_facturar").val("");
+    $("#cuotas").val("1");
+    $("#modalidad").val("1");
+    $("#dia_pago").val("1");
+    $("#credito_interes").val("1");
+    $("#cuota_inicial").val("0");
+    
+    
+    document.getElementById("codigoexcepcion").checked = false;
+
+    
+    $("#razon_social").css("background-color", "gray");
+    $("#razon_social").attr("readonly","readonly");   
+    $("#nit").val("");
+    $("#nit").focus();
+    
+}
+
+function buscar_por_codigo(){
+
+    var base_url = document.getElementById('base_url').value;
+    var codigo_cliente = document.getElementById('cliente_codigo').value;
+    var parametro_factura = document.getElementById('parametro_factura').value;
+    var parametro_verificarconexion = document.getElementById('parametro_verificarconexion').value;
+    
+    /*
+    if (nit==''){ //Si el campo Nit esta vacio, genera NIT/Codigo automaticamente
+        var cod = generar_codigo();
+        $("#nit").val(cod);
+        $("#razon_social").focus();
+        $("#razon_social").select();
+        $("#zona_id").val(0);
+    }
+      */  
+    //Alistamos controlador para buscar al cliente
+    var controlador = base_url+'venta/buscar_por_codigo';
+    document.getElementById('loader_documento').style.display = 'block';
+    
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{codigo_cliente:codigo_cliente},
+            success:function(respuesta){
+                //Respuesta de la busqueda
+                var registros = eval(respuesta);
+                
+                if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema carga los datos
+                    
+                    $("#razon_social").val(registros[0]["cliente_razon"]);
+                    document.getElementById('telefono').focus();
+                    $("#telefono").val(registros[0]["cliente_telefono"]);
+                    $("#cliente_nombre").val(registros[0]["cliente_nombre"]);
+                    $("#cliente_ci").val(registros[0]["cliente_ci"]);
+                    $("#cliente_complementoci").val(registros[0]["cliente_complementoci"]);
+                    $("#cliente_nombrenegocio").val(registros[0]["cliente_nombrenegocio"]);
+                    $("#cliente_id").val(registros[0]["cliente_id"]);
+                    $("#cliente_codigo").val(registros[0]["cliente_codigo"]);
+                    $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(registros[0]["cliente_celular"]);
+                    $("#email").val(registros[0]["cliente_email"]);
+                    $("#tipocliente_id").val(1);
+                    $("#tipocliente_porcdesc").val(0);
+                    $("#tipocliente_montodesc").val(0);
+                    $("#tipo_doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
+                    $("#cliente_valido").val(1);
+                    
+                    //if (registros[0]["cliente_email"])
+                    /*
+                    if (registros[0]["cliente_montocredito"] != null && registros[0]["cliente_montocredito"] >=0){
+                        
+                        html = "<div id='mensajes'>";
+                        html += "<span class='btn btn-info btn-xs' style='font-size:10pt;'>";
+                        html += "<b>LIQ. PAGABLE Bs: </b>"+Number(registros[0]["cliente_liquidopagable"]).toFixed(2) ;
+                        html += " ** " ;
+                        html += "<b>MONTO MAX. CREDITO Bs: </b>"+Number(registros[0]["cliente_montocredito"]).toFixed(2) ;
+                        html += "</span>";
+                        html += "</div>";
+                        $("#mensajes").html(html);
+                    }
+                    
+                    */
+                    document.getElementById("codigoexcepcion").checked = (registros[0]["cliente_excepcion"] == 1); 
+                    
+                    if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
+                    {   //si tiene definido un tipo de cliente 
+                        
+                        $("#tipocliente_id").val(registros[0]["tipocliente_id"]); 
+                        
+                        if(registros[0]["tipocliente_montodesc"]>0){
+                            
+                            $("#tipo_descuento").val(1);
+                            $("#venta_descuento").val(registros[0]["tipocliente_montodesc"]);                            
+                            calculardesc();
+                        } 
+                        else{
+                            if(registros[0]["tipocliente_porcdesc"]>0){                                
+                                $("#tipo_descuento").val(2); 
+                                $("#venta_descuento").val(registros[0]["tipocliente_porcdesc"]);
+                                calculardesc();
+                            }
+                            else{
+                                $("#tipo_descuento").val(1); 
+                                $("#venta_descuento").val(0);                                
+                            }
+                            
+                        }
+                    
+                        $("#razon_social").focus();
+                    
+                    }
+                    else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
+                    {    $("#tipocliente_id").val(1); }
+                        
+                    if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >=0){
+                        $("#zona_id").val(registros[0]["zona_id"]);
+                    }else{
+                        $("#zona_id").val(0);
+                    }
+                    
+                    seleccionar_documento(registros[0]["cdi_codigoclasificador"]);
+                    
+                    document.getElementById('loader_documento').style.display = 'none';                    
+                    
+                }
+                else //Si el cliente es nuevo o no existe
+                {
+                    
+                    //$("#razon_social").val('SIN NOMBRECILLO');
+                    document.getElementById('razon_social').focus();
+                    $("#razon_social").val("");
+                    $("#cliente_id").val(0);
+                    $("#cliente_nombre").val("-");
+                    $("#cliente_ci").val("");
+                    $("#cliente_nombrenegocio").val("-");
+                    //$("#cliente_codigo").val("-");
                     
                     $("#telefono").val("");
                     $("#cliente_nombre").val("");
@@ -3105,16 +3416,21 @@ function tablaresultados(opcion)
                     for (var i = 0; i < x ; i++){
                         
                         var mimagen = "";
-                        
+                       
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                             
+                            //alert("con imagen: "+registros[i]["producto_foto"]);
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='20' height='20' />";
+                            
                             mimagen += "</a>";
+                            
                             
                             
                         }else{                        
                             
+                            //alert("sin imagen: "+registros[i]["producto_foto"]);
                             mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='30' height='30' />";
                             
                             
@@ -3333,21 +3649,22 @@ function tablaresultados(opcion)
                         html += "  <div class='modal-dialog' role='document'>";
                         html += "<br><br>";
                         html += "<div class='modal-content'>";
-                        html += "  <div class='modal-header'>";
+                        html += "  <div class='modal-header' style='background:lightgray;'><b><fa class='fa fa-cart-arrow-down'></fa> INGRESAR ITEMS AL DETALLE</b>";
                         html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
                         html += "  </div>";                        
                         html += "  <div class='modal-body' >";
                         
-                        html += "  <!----------------------------------------------------------------->";                    
+                        html += "  <!----------------------------------------------------------------->";      
+/*  CODIGO DEL ANTIGUO MODAL CANTIDAD                       
                         html += "       <table>"; // style='space-white: nowrap;'
-                        html += "       <tr style='border:0px;'>"; // style='space-white: nowrap;'
+//                        html += "       <tr style='border:0px;'>"; // style='space-white: nowrap;'
 //                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
 //                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
-                        html += "       </tr>"; // style='space-white: nowrap;'
+//                        html += "       </tr>"; // style='space-white: nowrap;'
                         html += "           <tr>";
                        
                       
-                        html += "               <td colspan='2'>";
+                        html += "               <td>";
                       
                      
                        html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
@@ -3357,16 +3674,47 @@ function tablaresultados(opcion)
                         html += "               </td>";
                         html += "          </tr>";
                         html += "       </table>";
+*/                        
+                        html += "       <!------------------------------------------------------------------->";
+                        
+                        html += "       <div class='row'>"; // style='space-white: nowrap;'
+//                        html += "       <tr style='border:0px;'>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       </tr>"; // style='space-white: nowrap;'
+                        
+                      
+                        html += "               <div class='col-md-6'>";                      
+                     
+                            html += "               <b style='font-size:14px;'>"+registros[i]["producto_nombre"]+"</b>";
+                            html += "               <br><small><b>UNIDAD:</b> "+registros[i]["producto_unidad"]+" | <b>MARCA:</b> "+registros[i]["producto_marca"]+" | <b>INDUSTRIA:</b> "+registros[i]["producto_industria"]+"</small>";
+                            
+                        html += "               </div>";
+                        
+                        html += "               <div class='col-md-6'>";                      
+                        html += "                   <b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+formato_numerico(registros[i]["existencia"])+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")' ></b>";
+                        html += "               </div>";                      
+                                                
+                        html += "       </div>";
                         
                         html += "       <!------------------------------------------------------------------->";
                         html += "  </div>";
                         
                         html += "  <div class='modal-footer aligncenter'>";
-                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
-                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+")' class='btn btn-facebook btn-foursquarexs' id='boton_cantidad_producto'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+                            
+                        html += "  <div class='row'>";
+                            html += "  <center>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+                                html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
+                                html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
+
+                                html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+")' class='btn btn-facebook btn-foursquarexs' id='boton_cantidad_producto'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+
+                                html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-times'></span></font><br><small>Cancelar</small></a>";
+
+                            html += "  </center>";
+                        html += "  </div>";                        
+                        
                         html += "  </div>";                        
                         html += "</div>";
                         
@@ -4088,7 +4436,7 @@ function registrarventa(cliente_id){
     let datos_puertodestino = document.getElementById('datos_puertodestino').value;
 
     //alert(datos_monedatransaccional+" ** "+datos_descripcionpaquetes+" ** "+datos_informacionadicional+" ** "+datos_descuentoadicional+" ** "+datos_lugardestino+" ** "+datos_puertodestino);
-    
+    //alert(venta_efectivo+" ***** "+venta_cambio);
     if (registroeventos_codigo>0){
         
         var fecha_cafc = document.getElementById('fecha_cafc').value;
@@ -5181,7 +5529,7 @@ function ventas_por_parametro()
         if (Number(parametro)>0)        
             filtro = " and v.venta_id = "+parametro;
         else
-            filtro = " and cliente_razon like '%"+parametro+"%' ";
+            filtro = " and (cliente_razon like '%"+parametro+"%') or (cliente_codigo='"+parametro+"') ";
         
         tabla_ventas(filtro);
     }
@@ -5243,6 +5591,8 @@ function tabla_ventas(filtro)
                     total_final += parseFloat(v[i]['venta_total']);
 
                     html += "                       <tr>";
+                    
+                    //CAMPO #
                     html += "                       <td "+margenes+" bgcolor='"+v[i]['estado_color']+"'>"+cont+"</td>";
                     
                     if (esMobil()){
@@ -5260,14 +5610,21 @@ function tabla_ventas(filtro)
                         
                         
                 
-                    html += "                       <td style='max-width: 5cm; padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
+                    //CAMPO CLIENTE
+
+                    html += "                       <td style='max-width: 5cm; padding:0;' bgcolor='"+v[i]['estado_color']+"'  class='celda-posicion-relative'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
                     html += "                           <br>Razón Soc.: "+v[i]['cliente_razon'];
                     html += "                           <br>NIT/CI: "+v[i]['cliente_nit']+", TIPO DOC.: ";
                     if(v[i]['cdi_codigoclasificador']!=null){ html += v[i]['cdi_codigoclasificador'];} else{ html += "NO ASIGNADO"; };
                     html += "                           <br>Telefono(s): "+v[i]['cliente_telefono'];
                     html += "                           <br>Nota: "+v[i]['venta_glosa'];
+                    html += "                           <span style='font-size: 10px;' class='span-superior-derecha'><b>"+v[i]['cliente_codigo']+"</b></span>";
                     html += "                       </td>";
 
+                    //CAMPO CODIGO
+//                    html += "<td style='max-width: 0.5cm; padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> "+v[i]['cliente_codigo']+"</b></font><sub></sub>";
+
+                    //CAMPO TOTALES
                     html += "                       <td style='withe-space:nowrap; padding:0;' align='right' bgcolor='"+v[i]['estado_color']+"'>";
                     html += "                           Sub Total "+parametro_moneda_descripcion+': '+Number(v[i]['venta_subtotal']).toFixed(decimales)+"<br>";
                     html += "                           Desc. "+parametro_moneda_descripcion+': '+Number(v[i]['venta_descuento']).toFixed(decimales)+"<br>";
@@ -5407,7 +5764,7 @@ function tabla_ventas(filtro)
                         html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
                     }
                     if(tipousuario_id == 1){
-                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
+                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar usuario vendedor'><span class='fa fa-user'></span></a>";
                     html += "<!------------------------ INICIO modal para cambiar usuario vendedor ------------------->";
                     html += "<div class='modal fade' id='modalusuario"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalusuarioLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
                     html += "<div class='modal-dialog' role='document'>";
@@ -5457,8 +5814,12 @@ function tabla_ventas(filtro)
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                         html += " <a href='"+base_url+"venta/facturaventapdf/"+v[i]['factura_id']+"' target='_blank' class='btn btn-danger btn-xs' title='Ver factura en PDF'><span class='fa fa-file-pdf'></span></a> ";
-                        html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
-                        html += " <a onclick='modal_enviowhatsapp("+v[i]['factura_id']+")' class='btn btn-success btn-xs' title='Enviar factura por whatsapp'><span class='fa fa-whatsapp'></span></a>";
+                        
+                        if(v[i]['factura_enviada'] == 1){
+                            html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";                       
+                            html += " <a onclick='modal_enviowhatsapp("+v[i]['factura_id']+","+(Number(v[i]['cliente_celular'])>0?v[i]['cliente_celular']:'')+")' class='btn btn-success btn-xs' title='Enviar factura por whatsapp'><span class='fa fa-whatsapp'></span></a>";
+                            
+                        }
                     }
                     else{
                         if(generar_factura == 1){
@@ -5489,7 +5850,7 @@ function tabla_ventas(filtro)
                     let archivoxml = dosificacion_documentosector+v[i]['factura_id']+".xml";
                     html += "                           <a href='"+base_url+"resources/xml/"+archivoxml+"' download='Descargar archivo "+archivoxml+"' title='Descargar archivo "+archivoxml+"' class='btn btn-xs btn-twitter'><fa class='fa fa-code'> </fa> </a>";
                     
-                    html += "                           <a href='"+base_url+"/venta/rehacer_venta/"+v[i]['venta_id']+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: black;' title='Rehacer Factura'><fa class='fa fa-recycle' aria-hidden='true'></fa></a>";
+                    html += "                           <a href='"+base_url+"venta/rehacer_venta/"+v[i]['venta_id']+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: black;' title='Rehacer Factura'><fa class='fa fa-recycle' aria-hidden='true'></fa></a>";
                     
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
@@ -5560,6 +5921,7 @@ function tabla_ventas(filtro)
                     html += "                   <tr>";
                     html += "                        <th></th>";
                     html += "                        <th>Totales</th>";
+//                    html += "                        <th></th>";
                     html += "                        <th><font size='3'> "+parametro_moneda_descripcion+": "+formato_numerico(total_final.toFixed(decimales))+"</font>";                    
                         
                     var total_final_extragera = 0;
@@ -9395,14 +9757,45 @@ function seleccionar_almacen(){
    
 }
 
+function ver_factura(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/ver_factura';
+   
+   
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){
 
-function modal_enviowhatsapp(factura_id){
+            let res = JSON.parse(respuesta);                            
+
+            if (res.length>0) {  
+                
+                    $("#numero_whatsapp").val(res[0]["cliente_celular"]);
+                    $("#factura_idwhats").val(res[0]["factura_id"]);
+                    $("#boton_whatsapp").click();
+                
+            }else{
+                alert("No tiene una factura emitida recientemente..!");
+            }
+        },
+        error:function(respuesta){
+            res = 0;
+        }
+    });     
+
+}
+
+
+function modal_enviowhatsapp(factura_id,telefono){
     
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'venta/seleccionar_almacen';
     //let almacen = document.getElementById('select_almacen').value;
     
     
+    $("#numero_whatsapp").val(telefono);
     $("#factura_idwhats").val(factura_id);
     $("#boton_whatsapp").click();
 
@@ -9418,7 +9811,8 @@ function enviar_por_whatsapp(){
     let cliente_celular = document.getElementById('numero_whatsapp').value;
     
     
-    
+    if(cliente_celular.length>=5){
+        
 
             $.ajax({url: controlador,
                 type:"POST",
@@ -9440,9 +9834,239 @@ function enviar_por_whatsapp(){
                     res = 0;
                 }
             });     
+    }else{
+        alert("ADVERTENCIA: No se puede realizar el envio, ingrese un numero valido y vuelva a intentar.");
+    }
    
 }
 
+
+function cambiar_actividad(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/cambiar_actividad';
+    let actividad = document.getElementById('select_actividad').value;
+    
+     
+    var r = confirm("ADVERTENCIA: Esta seguro de cambiar la actividad. \n ¿Desea Continuar?");
+
+    if (r == true) {
+        
+
+
+                $.ajax({url: controlador,
+                    type:"POST",
+                    data:{actividad: actividad},
+                    success:function(respuesta){
+
+                        let res = JSON.parse(respuesta);                            
+
+                        if(res){
+                            
+                            alert("Se cambió la actividad con éxito..!");
+                            location.reload();
+                        }
+
+                    },
+                    error:function(respuesta){
+                        res = 0;
+                    }
+                });
+
+            
+           
+    }
+    
+}
+
+
+function cambiar_lista_precios(){    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/cambiar_lista_precios';
+    let select = document.getElementById('select_precios').value;
+    
+     
+    var r = confirm("ADVERTENCIA: Esta operación modificará la lista de precios por defecto de forma temporal. \n ¿Desea Continuar?");
+
+    if (r == true) {
+        
+            if(Number(select)==0){
+
+                actualizar_inventario();
+
+            }else{
+
+                $.ajax({url: controlador,
+                    type:"POST",
+                    data:{select:select},
+                    success:function(respuesta){
+
+                        let res = JSON.parse(respuesta);                            
+
+                        if(res){
+                            alert("Los precios fueron modificados...!");
+                        }
+
+                    },
+                    error:function(respuesta){
+                        res = 0;
+                    }
+                });
+
+            }
+            
+            location.reload();
+    }
+    
+}
+
+
+function generarexcel(){
+    
+    var decimales = document.getElementById('decimales').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'inventario/generar_excel';    
+    
+
+     //parametro = document.getElementById('filtrar').value;   
+     //controlador = base_url+'ingreso/buscarallingreso/';
+    var showLabel = true;
+    
+    var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(result){
+                var factura = JSON.parse(result);
+                var tam = factura.length;
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var otramoneda_nombre = "";
+                var total_otram = Number(0);
+                html = "";
+                if (tam>0){
+                  /* **************INICIO Generar Excel JavaScript************** */
+                    var CSV = 'sep=,' + '\r\n\n';
+                    //This condition will generate the Label/Header
+                    if (showLabel) {
+                        var row = "";
+
+                        //This loop will extract the label from 1st index of on array
+                        
+
+                            //Now convert each value to string and comma-seprated
+                            
+                            row += 'N°' + ',';
+                            row += 'DESCRIPCION' + ',';
+                            row += 'CODIGO' + ',';
+                            row += 'MARCA' + ',';
+                            row += 'INDUSTRIA' + ',';
+                            row += 'CATEGORIA' + ',';
+                            row += 'UNIDAD' + ',';
+                            row += 'COSTO(' +nombre_moneda+ '),';
+                            row += 'SALDO' + ',';
+                            row += 'TOTAL(' +nombre_moneda+ '),';
+                            row += 'TOTAL(';
+                            if(lamoneda_id == 1){
+                                otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                            }
+                            row += otramoneda_nombre+ '),';
+       
+                        row = row.slice(0, -1);
+
+                        //append Label row with line break
+                        CSV += row + '\r\n';
+                    }
+                    
+                    //1st loop is to extract each row
+                    for (var i = 0; i < tam; i++) {
+                        var row = "";
+                        //2nd loop will extract each column and convert it in string comma-seprated
+                        
+                            row += 'i+1,';
+                            row += '"' +factura[i]["producto_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_codigo"]+ '",';
+                            row += '"' +factura[i]["producto_marca"]+ '",';
+                            row += '"' +factura[i]["producto_industria"]+ '",';
+                            row += '"' +factura[i]["categoria_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_unidad"]+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            if(lamoneda_id == 1){
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
+                           
+
+                        
+                        row.slice(0, row.length - 1);
+
+                        //add a line break after each row
+                        CSV += row + '\r\n';
+                    }
+                    
+                    if (CSV == '') {        
+                        alert("Invalid data");
+                        return;
+                    }
+                    
+                    //Generate a file name
+                    var fileName = "Inventario_";
+                    //this will remove the blank-spaces from the title and replace it with an underscore
+                    fileName += reportitle.replace(/ /g,"_");   
+
+                    //Initialize file format you want csv or xls
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                    // Now the little tricky part.
+                    // you can use either>> window.open(uri);
+                    // but this will not work in some browsers
+                    // or you will not get the correct file extension    
+
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");    
+                    link.href = uri;
+
+                    //set the visibility hidden so it will not effect on your web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
+
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    /* **************F I N  Generar Excel JavaScript************** */
+                   
+                   
+                   
+                   
+                   //document.getElementById('loader').style.display = 'none';
+            }
+         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_factura").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });   
+
+}
 
 function borrar_datos_cliente(){
     

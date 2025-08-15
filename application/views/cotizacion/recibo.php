@@ -12,6 +12,15 @@
         window.print(); 
     }  
 </script>  
+
+<?php
+
+function valor_valido($valor) {
+    $valor = trim($valor);
+    return $valor !== "" && $valor !== "-" && strtolower($valor) !== "null" && $valor !== null;
+}
+
+?>
 <!--<style type="text/css">
     input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
@@ -146,12 +155,20 @@ pre {
                 <tr>
                     <td><?php echo $cont ?></td>
                     <td><b><?php echo $d['producto_nombre']; ?></b>
-                        <?php if ($d['producto_marca']!=''){ ?>
-                        <br>Marca: <b><?php echo $d['producto_marca']; } ?></b>      
-                        <?php if ($d['producto_industria']!=''){ ?>                            
-                        - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
-                        <?php if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){ ?>
+
+                        <?php 
+                        $marca = trim($d['producto_marca']);
+                        if (valor_valido($marca)) {
+                        ?>
+                            <br>Marca: <b><?php echo $marca; ?></b>
+                        <?php } ?>
+                        
+                        <?php if (valor_valido($d['producto_industria'])){ ?>                            
+                            - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
+                        
+                        <?php if (valor_valido($d['detallecot_caracteristica'])){ ?>
                         <p style="font-size: 8px;">
+                            
                         <?php //}else{ ?>
                         <!--<pre style='margin-bottom: 0px; padding-top: 2px; padding-bottom: 3px; font-family: Arial; font-size:9px;'>-->
                             <?php  echo  nl2br($d['detallecot_caracteristica']); 

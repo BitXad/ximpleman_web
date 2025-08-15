@@ -2159,7 +2159,7 @@ function compra_rapida(){
 
     $costo_producto = "SELECT producto_costo FROM inventario WHERE producto_id=".$producto_id." ";
     $costo = $this->db->query($costo_producto)->result_array();
-    $producto_costo = $costo[0]['producto_costo'];
+    $producto_costo = $costo[0]['producto_ultimocosto'];
     $compra = array(
                         'estado_id' => 1,
                         'tipotrans_id' => 1,

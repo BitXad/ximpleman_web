@@ -54,21 +54,10 @@ class Tipo_transaccion_model extends CI_Model
         $limit_condition = "";
         if(isset($params) && !empty($params))
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+            $sql = "SELECT * FROM tipo_transaccion WHERE 1 = 1
+                    ORDER BY tipotrans_id DESC".$limit_condition;
         
-        $tipo_transaccion = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `tipo_transaccion`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `tipotrans_id` DESC
-
-            " . $limit_condition . "
-        ")->result_array();
+            $tipo_transaccion = $this->db->query($sql)->result_array();
 
         return $tipo_transaccion;
     }

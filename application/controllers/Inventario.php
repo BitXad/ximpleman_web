@@ -399,6 +399,23 @@ class Inventario extends CI_Controller{
 
     }
     
+
+    function generar_excel_homologados()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+
+        $sql = "select p.producto_nombre,p.producto_unidad, p.producto_codigo,p.producto_codigosin, s.prodserv_codigoproducto, s.prodserv_codigoactividad, s.prodserv_descripcion, a.actividad_descripcion, a.actividad_tipoactividad
+                from producto p
+                left join productos_servicios s on s.prodserv_codigoproducto = p.producto_codigosin
+                left join actividad a on a.actividad_codigocaeb = s.prodserv_codigoactividad
+                order by p.producto_nombre";
+        $resultado = $this->Venta_model->Consultar($sql);
+        
+        echo json_encode($resultado); 
+
+    }
+    
     /* muestra operaciones en proceso de venta!! */
     function operacion_enproceso()
     {

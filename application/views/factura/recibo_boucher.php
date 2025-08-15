@@ -142,6 +142,22 @@ border-bottom : 1px solid #aaa;
                             FECHA: <?php echo $fecha_d_m_a." ".$venta[0]['venta_hora']; ?> <br>
                             CODIGO: <?php echo $venta[0]['cliente_codigo']." /DOC. ID.: ".$venta[0]['cliente_nit']; ?> <br>
                             SEÑOR(ES): <?php echo $venta[0]['cliente_razon'].""; ?>
+                            
+                            <?php
+                                $direccion = $venta[0]['cliente_direccion'] ?? null;
+
+                                if (!empty(trim($direccion)) && $direccion !== "-") {
+                                    echo "<br>DIRECCION: " . htmlspecialchars($direccion);
+                                }
+                            ?>
+                            
+                            <?php
+                                $zona = $venta[0]['zona_nombre'] ?? null;
+
+                                if (!empty(trim($zona)) && $zona !== "-") {
+                                    echo "<br>ZONA: " . htmlspecialchars($zona);
+                                }
+                            ?>
                         <br>
                     </center>                      
                 </td>

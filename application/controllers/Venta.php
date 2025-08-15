@@ -246,7 +246,10 @@ class Venta extends CI_Controller{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }
         
-        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 3 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 12){
+        $mostrar_placa = 12; //Para Documento sector 12 (original)
+        $data['mostrar_placa'] = $mostrar_placa;
+        
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 3 || $data['dosificacion'][0]['docsec_codigoclasificador'] == $mostrar_placa){
             $sql = "select * from pais order by pais_descripcion";
             $data['paises'] = $this->Venta_model->consultar($sql);
             
@@ -294,18 +297,12 @@ class Venta extends CI_Controller{
         $data['cufd'] = [];
 
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
-       
 
                     $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia, date(cufd_fecharegistro) as fecharegistro from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
                     //echo $sql;
                     $cufd = $this->Venta_model->consultar($sql);
                     $data['cufd'] = !empty($cufd) ? $cufd : [];
 
-                    //echo date("Y-d-m");
-
-                    
                     $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
                             FROM
                               inventario i
@@ -316,40 +313,11 @@ class Venta extends CI_Controller{
                     
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
-                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
-//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-//                            where cufd_puntodeventa = 0 and
-//                            cufd_id in (select max(cufd_id) from cufd)";
-//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
-//
-//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
-//                        $dosificacion = new $Dosificacion();
-//                        $dosificacion->cufd();
-//                    
-//                    }
+                    $sql = "select * from actividad";
+                    $data['actividades'] = $this->Venta_model->consultar($sql);
                     
-            //}
+
         }
-        
-        /*
-                
-        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-            $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-                    where cufd_puntodeventa = 0 and
-                    cufd_id in (select max(cufd_id) from cufd)";
-            $vigencia_cufd = $this->Venta_model->consultar($sql);
-        
-            if ($vigencia_cufd>=3){
-                
-                
-         
-            }
-            
-        }
-        */
-        
-        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
@@ -383,6 +351,9 @@ class Venta extends CI_Controller{
         }else{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }
+
+        $mostrar_placa = 12; //Para Documento sector 12 (original)
+        $data['mostrar_placa'] = $mostrar_placa;
         
         if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12){
             $sql = "select * from pais order by pais_descripcion";
@@ -420,20 +391,15 @@ class Venta extends CI_Controller{
         $data['empresa_email'] = $this->empresa["empresa_email"];
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
         $data['ventas_guardadas'] = $this->Venta_model->consultar("select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d group by d.codigo_venta");
-        
-        
-        
-        
+        $data['cufd'] = [];
+
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
-       
 
-                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia, date(cufd_fecharegistro) as fecharegistro from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
                     //echo $sql;
-                    $data['cufd'] = $this->Venta_model->consultar($sql);
+                    $cufd = $this->Venta_model->consultar($sql);
+                    $data['cufd'] = !empty($cufd) ? $cufd : [];
 
-                    
                     $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
                             FROM
                               inventario i
@@ -444,20 +410,48 @@ class Venta extends CI_Controller{
                     
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
-                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
-//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-//                            where cufd_puntodeventa = 0 and
-//                            cufd_id in (select max(cufd_id) from cufd)";
-//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
-//
-//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
-//                        $dosificacion = new $Dosificacion();
-//                        $dosificacion->cufd();
-//                    
-//                    }
+                    $sql = "select * from actividad";
+                    $data['actividades'] = $this->Venta_model->consultar($sql);
                     
-            //}
+
         }
+        
+//        
+//        
+//        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
+//            
+//           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
+//       
+//
+//                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+//                    //echo $sql;
+//                    $data['cufd'] = $this->Venta_model->consultar($sql);
+//
+//                    
+//                    $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+//                            FROM
+//                              inventario i
+//                            WHERE
+//                              i.producto_codigosin = 0 or  i.producto_codigosin is null or
+//                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null
+//                            LIMIT 10";
+//                    
+//                    $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+//                    
+//                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
+////                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
+////                            where cufd_puntodeventa = 0 and
+////                            cufd_id in (select max(cufd_id) from cufd)";
+////                    $vigencia_cufd = $this->Venta_model->consultar($sql);
+////
+////                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
+////                        $dosificacion = new $Dosificacion();
+////                        $dosificacion->cufd();
+////                    
+////                    }
+//                    
+//            //}
+//        }
         
         /*
                 
@@ -489,6 +483,8 @@ class Venta extends CI_Controller{
     function ventas_cliente($cliente_id)
     {    
         
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        require_once(APPPATH.'controllers/Dosificacion.php');
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
         $data['sistema'] = $this->sistema;
@@ -544,14 +540,57 @@ class Venta extends CI_Controller{
         //echo $sql;
         $data['cufd'] = $this->Venta_model->consultar($sql);
         
-        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
-                FROM
-                  inventario i
-                WHERE
-                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
-                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
-        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+//        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+//                FROM
+//                  inventario i
+//                WHERE
+//                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
+//                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+//        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
+
+        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
+            
+           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
+       
+
+                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia, date(cufd_fecharegistro) as fecharegistro from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+                    //echo $sql;
+                    $cufd = $this->Venta_model->consultar($sql);
+                    $data['cufd'] = !empty($cufd) ? $cufd : [];
+
+                    //echo date("Y-d-m");
+
+                    
+                    $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                            FROM
+                              inventario i
+                            WHERE
+                              i.producto_codigosin = 0 or  i.producto_codigosin is null or
+                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null
+                            LIMIT 10";
+                    
+                    $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+                    
+                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
+//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
+//                            where cufd_puntodeventa = 0 and
+//                            cufd_id in (select max(cufd_id) from cufd)";
+//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
+//
+//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
+//                        $dosificacion = new $Dosificacion();
+//                        $dosificacion->cufd();
+//                    
+//                    }
+                    
+            //}
+        }        
+        
+        
+        
+        
+        
         
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
@@ -986,8 +1025,12 @@ class Venta extends CI_Controller{
                 $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
                     
                 $tabla_ventas = "venta";
+                $campo_llave = "venta_id";
+                
                 if($tipo_transaccion == 4){ //para traspaso demercaderia 
                     $tabla_ventas = "traspaso";
+                    $campo_llave = "traspaso_id";
+                    
                 }
                 
                 $sql = "insert into {$tabla_ventas}(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
@@ -1021,7 +1064,7 @@ class Venta extends CI_Controller{
                    
                 $sql =  "insert into detalle_venta
                 (producto_id,
-                  venta_id,
+                  {$campo_llave},
                   moneda_id,
                   detalleven_codigo,
                   detalleven_cantidad,
@@ -1058,7 +1101,7 @@ class Venta extends CI_Controller{
         
                 (SELECT 
                   producto_id,
-                  ".$venta_id." as venta_id,
+                  {$venta_id},
                   moneda_id,
                   detalleven_codigo,
                   detalleven_cantidad,
@@ -1302,8 +1345,10 @@ class Venta extends CI_Controller{
 //************************************************************************************
 
                 if($tipo_transaccion==4){
-                 
-                    $sql = "select * from almacenes where almacen_basedatos = '{$basededatos}'";
+                    
+                    //Almacen objetivo
+                    //$sql = "select * from almacenes where almacen_basedatos = '{$basededatos}'";
+                    $sql = "select * from almacenes where estado_id = 0";//0 Es el almacen enviador
                     $almacen = $this->Venta_model->consultar($sql);
                     $almacen = $almacen[0];
                     
@@ -2090,7 +2135,27 @@ class Venta extends CI_Controller{
                 
                 $bitacoracaja_fecha = "date({$now})";
                 $bitacoracaja_hora = "time({$now})";
-                $bitacoracaja_evento = "(select concat('BUSQUE PRODUCTO SIN EXISTENCIA => NOMBRE: ', p.producto_nombre,' *** COD. BARRA: ',p.producto_codigobarra,' *** PRECIO: ',round(p.producto_precio,2),' *** COSTO: ',round(p.producto_costo,2)) from producto p where p.producto_codigobarra = '{$codigo}')";
+                $bitacoracaja_evento = "(SELECT CONCAT(
+                                                    'BUSQUE PRODUCTO SIN STOCK DISPONIBLE => NOMBRE: ', 
+                                                    p.producto_nombre,
+                                                    ' *** COD. BARRA: ', p.producto_codigobarra,
+                                                    ' *** PRECIO: ', ROUND(p.producto_precio, 2),
+                                                    ' *** COSTO: ', ROUND(p.producto_costo, 2)
+                                                ) AS resultado
+                                                FROM producto p
+                                                WHERE p.producto_codigobarra = '{$codigo}'
+
+                                                UNION
+
+                                                SELECT CONCAT(
+                                                    'BUSQUE PRODUCTO NO REGISTRADO/INEXISTENTE => CODIGO: ', 
+                                                    '{$codigo}'
+                                                ) AS resultado
+                                                WHERE NOT EXISTS (
+                                                    SELECT 1 
+                                                    FROM producto p 
+                                                    WHERE p.producto_codigobarra = '{$codigo}'
+                                                ))";
                 $bitacoracaja_montoreg = 0;
                 $bitacoracaja_montocaja = 0;
                 $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
@@ -3744,6 +3809,30 @@ function edit($venta_id){
                 
                
     }
+    
+    function buscar_por_codigo()
+    {
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nit = $this->input->post('codigo_cliente');  
+                    /** @var Venta_model $this->Venta_model */
+                    $datos = $this->Venta_model->buscar_por_codigo($nit);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+        		
+        //**************** fin contenido ***************
+        }
+                
+               
+    }
     /*
      * Mostrar detalle de venta
      */
@@ -4386,7 +4475,7 @@ function anular_venta($venta_id){
     
 }
 
-function anular_traspaso($venta_id){
+function anular_traspaso($traspaso_id){
 
         $now = "'".date("Y-m-d H:i:s")."'";
         if($this->acceso(22)){
@@ -4395,16 +4484,16 @@ function anular_traspaso($venta_id){
         
         //**************** bitacora caja
         $usuario_id = $this->session_data['usuario_id'];
-        $venta = $this->Detalle_venta_model->get_traspaso($venta_id);
+        $venta = $this->Detalle_venta_model->get_traspaso($traspaso_id);
         $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
-        $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+        $sql =  "select count(*) as cantidad from detalle_venta where traspaso_id = ".$traspaso_id;
         $contx = $this->Venta_model->consultar($sql);
         $cont = $contx[0]['cantidad'];
         
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ANULE TRASPASO Nº 00".$venta_id." SUCURSAL: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
+        $bitacoracaja_evento = "ANULE TRASPASO Nº 00".$traspaso_id." SUCURSAL: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -4421,15 +4510,15 @@ function anular_traspaso($venta_id){
             
     
     //$sql =  "delete from detalle_venta where venta_id = ".$venta_id;
-    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0, detalleven_caracteristicas='', detalleven_preferencia='' where venta_id = ".$venta_id;
+    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0, detalleven_caracteristicas='', detalleven_preferencia='' where traspaso_id = ".$traspaso_id;
     $this->Venta_model->ejecutar($sql);
             
     //$sql =  "delete from venta where venta_id = ".$venta_id;
-    $sql =  "update traspaso set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+    $sql =  "update traspaso set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where traspaso_id = ".$traspaso_id;
     $this->Venta_model->ejecutar($sql);
     
     //$sql =  "delete from cuota where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
-    $sql =  "update cuota  set
+    /*$sql =  "update cuota  set
             cuota_numcuota = 0
             ,cuota_capital = 0
             ,cuota_interes = 0
@@ -4458,7 +4547,7 @@ function anular_traspaso($venta_id){
     $this->Venta_model->ejecutar($sql);
             
     $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
-    $this->Venta_model->ejecutar($sql);
+    $this->Venta_model->ejecutar($sql);*/
 //    
     
     $this->Inventario_model->actualizar_inventario(); 
@@ -11485,7 +11574,7 @@ function anular_traspaso($venta_id){
             'short_code' => $short_code
         ]);
 
-        return base_url('venta/u/' . $short_code);
+        return base_url('u/l/' . $short_code);
     }
 
     function obtener_url_larga($short_code)
@@ -11541,16 +11630,13 @@ function enviopdf(){
         $documento_nombre = $factura["documento_nombre"];
         $enlace = $this->crear_url_corta(base_url("resources/xml/{$documento_nombre}{$factura_id}.pdf"));
         
-        $mensaje = "*Saludos {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
+        $mensaje = "*Saludos Señor(es): {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
 
         // Codificar mensaje para URL
         $mensaje_url = urlencode($mensaje);
 
         // Construir link wa.me
         $link_whatsapp = "https://wa.me/{$telefono_cliente}?text={$mensaje_url}";
-
-        // Mostrar link o redirigir
-        //echo "<a href='$link_whatsapp' target='_blank'>Enviar por WhatsApp</a>";
 
         redirect($link_whatsapp);
     }    
@@ -11574,7 +11660,7 @@ function enviopdf(){
         $documento_nombre = $factura["documento_nombre"];
         $enlace = $this->crear_url_corta(base_url("resources/xml/{$documento_nombre}{$factura_id}.pdf"));
         
-        $mensaje = "*Saludos {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
+        $mensaje = "*Saludos Señor(es): {$nombre_cliente}*,\n\n Le enviamos su factura, que puede ser descargada desde el siguiente enlace:\n\n{$enlace}\n\n*{$nombre_empresa}*\nGracias por su preferencia...!";
 
         // Codificar mensaje para URL
         $mensaje_url = urlencode($mensaje);
@@ -11587,6 +11673,78 @@ function enviopdf(){
 
         //redirect($link_whatsapp);
         echo json_encode($link_whatsapp);
+    }    
+    
+    /*************** registrar_calculos ******************/
+    function cambiar_lista_precios(){
+
+        
+        if($this->input->is_ajax_request()){
+            $tipo_precio = $this->input->post("select");
+
+
+            if ($tipo_precio == 1){ $sql = "update inventario set producto_precio = producto_preciofactor"; }
+
+            if ($tipo_precio == 2){ $sql = "update inventario set producto_precio = producto_preciofactor1"; }
+
+            if ($tipo_precio == 3){ $sql = "update inventario set producto_precio = producto_preciofactor2"; }
+
+            if ($tipo_precio == 4){ $sql = "update inventario set producto_precio = producto_preciofactor3"; }
+
+            if ($tipo_precio == 5){ $sql = "update inventario set producto_precio = producto_preciofactor4"; }
+
+            $this->Venta_model->Ejecutar($sql);
+
+            echo json_encode(true);
+            
+        }else{echo json_encode(false);}
+    }    
+    
+    
+    /*************** registrar_calculos ******************/
+    function ver_factura(){
+
+        
+        if($this->input->is_ajax_request()){
+            
+            $sql = "select f.*, c.* from factura f, venta v, cliente c
+                    where f.venta_id in (select max(venta_id) from venta) and
+                    f.venta_id = v.venta_id and v.cliente_id = c.cliente_id";
+            $res = $this->Venta_model->Consultar($sql);
+
+            echo json_encode($res);
+            
+        }else{echo json_encode(false);}
+    }    
+    
+    /*************** registrar_calculos ******************/
+    function cambiar_actividad(){
+
+        
+        if($this->input->is_ajax_request()){
+            
+            $this->Inventario_model->actualizar_inventario();
+            $actividad = $this->input->post("actividad");
+            
+            // primero, cambiamos la actividad
+           $sql = "update dosificacion set dosificacion_actividad = '{$actividad}'";
+           $this->Venta_model->Ejecutar($sql);
+
+           //quitamos los productos que no sean de la actividad seleccionada
+           $sql = "delete from inventario
+                    where producto_codigosin not in
+                    (select p.prodserv_codigoproducto from productos_servicios p
+                    where p.prodserv_codigoactividad = '{$actividad}')";
+           $this->Venta_model->Ejecutar($sql);
+           
+           $sql = "select * from inventario
+                    where producto_codigosin not in
+                    (select p.prodserv_codigoproducto from productos_servicios p
+                    where p.prodserv_codigoactividad = '{$actividad}')";
+            //echo $sql;
+           echo json_encode(true);
+            
+        }else{echo json_encode(false);}
     }    
 
     

@@ -29,6 +29,7 @@ class Detalle_venta_model extends CI_Model
 //
 //        return $detalle_venta;
 //    }
+    
 function get_all_entrega()
     {
         $sql = "SELECT e.* FROM entrega e WHERE 1=1 ORDER BY `entrega_id` ASC";
@@ -36,10 +37,28 @@ function get_all_entrega()
         
         return $entrega;
     }
+    
 function ventas_dia($estado)
   {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "
+            (SELECT
+                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
+            FROM
+                venta v            
+            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
+            LEFT JOIN entrega e on v.entrega_id = e.entrega_id
+            LEFT JOIN cliente c on v.cliente_id = c.cliente_id
+            LEFT JOIN tipo_servicio ts on v.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN usuario u on u.usuario_id = v.usuario_id
+
+            WHERE
+            v.venta_fecha = date({$now})
+            and v.entrega_id= 2 
+            ORDER BY v.venta_id)
+            
+            union
+            (
             SELECT
                 v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
             FROM
@@ -52,9 +71,8 @@ function ventas_dia($estado)
 
             WHERE
             v.venta_fecha = date({$now})
-            and v.entrega_id=".$estado." 
-            ORDER BY v.venta_id  
-            
+            and v.entrega_id= ".$estado." 
+            ORDER BY v.venta_id  )
         ";
         //echo $sql;
         $detalle_venta = $this->db->query($sql)->result_array();
@@ -87,7 +105,7 @@ function ventas_cocina_dia($estado)
 
             WHERE
             v.venta_fecha = date({$now})
-            and v.entrega_id=".$estado."
+            and v.entrega_id= 2
             ORDER BY v.venta_id  )
 
             union
@@ -177,10 +195,29 @@ function ventas_cocina_dia($estado)
   function get_dventadia($estado,$destino,$usuario)
     {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-        $result = $this->db->query(
-                
-        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
-                d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
+//        $sql = "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
+//                d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
+//
+//        FROM detalle_venta d
+//        LEFT JOIN producto p ON d.producto_id=p.producto_id
+//        LEFT JOIN venta v ON d.venta_id=v.venta_id
+//        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
+//        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
+//        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
+//        LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
+//        WHERE v.venta_fecha = date({$now}) 
+//        and v.entrega_id=".$estado."
+//        and p.destino_id=".$destino."
+//        /*and u.usuario_id=".$usuario."*/
+//        ORDER BY d.venta_id";
+//        echo $sql;
+        
+
+        
+        $sql = "
+        (    
+        SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
+        d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
 
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
@@ -190,11 +227,36 @@ function ventas_cocina_dia($estado)
         LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
         LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
         WHERE v.venta_fecha = date({$now}) 
-        and v.entrega_id=".$estado."
-        and p.destino_id=".$destino."
-        /*and u.usuario_id=".$usuario."*/
-        ORDER BY d.venta_id
-        ")->result_array();
+        and v.entrega_id = {$estado}
+        and p.destino_id= {$destino}
+        ORDER BY d.venta_id)
+
+        union
+
+        (    
+        SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
+        d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
+
+        FROM detalle_venta d
+        LEFT JOIN producto p ON d.producto_id=p.producto_id
+        LEFT JOIN venta v ON d.venta_id=v.venta_id
+        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
+        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
+        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
+        LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
+        WHERE v.venta_fecha = date({$now}) 
+        and v.entrega_id = 2
+        and p.destino_id = {$destino}
+        ORDER BY d.venta_id)
+        
+        
+        
+
+        ";
+        
+        
+        //echo $sql;
+        $result = $this->db->query($sql)->result_array();
         return $result;        
     } 
 
@@ -277,28 +339,25 @@ function ventas_cocina_dia($estado)
         return $venta;
     }
 
-    function get_traspaso($venta_id)
+    function get_traspaso($traspaso_id)
     {
-        $sql = "select v.*,
-                c.tipocliente_id,c.categoriaclie_id,c.usuario_id,c.cliente_codigo,c.cliente_nombre,c.cliente_ci,
-                c.cliente_direccion,c.cliente_telefono,c.cliente_celular,c.cliente_foto,c.cliente_email,
-                c.cliente_nombrenegocio,c.cliente_aniversario,c.cliente_latitud,c.cliente_longitud,c.cliente_nit,
-                c.cliente_razon,c.cliente_departamento,c.zona_id,c.lun,c.mar,c.mie,c.jue,c.vie,c.sab,c.dom,
-                c.cliente_puntos, u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
-                r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
-                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id,
-                m.moneda_descripcion, ue.usuario_nombre as usuario_entrega
+            $sql = "select v.*, '' as forma_nombre,
+                    c.tipocliente_id, c.categoriaclie_id, c.usuario_id, c.cliente_codigo, c.cliente_nombre, c.cliente_ci,
+                    c.cliente_direccion, c.cliente_telefono, c.cliente_celular, c.cliente_foto, c.cliente_email,
+                    c.cliente_nombrenegocio, c.cliente_aniversario, c.cliente_latitud, c.cliente_longitud, c.cliente_nit,
+                    c.cliente_razon, c.cliente_departamento, c.zona_id, c.lun, c.mar, c.mie, c.jue, c.vie, c.sab, c.dom,
+                    c.cliente_puntos, u.usuario_nombre, t.tipotrans_nombre, z.zona_nombre,
+                    m.moneda_descripcion, ue.usuario_nombre as usuario_entrega
 
-                from traspaso v
-                left join cliente c on c.cliente_id = v.cliente_id
-                left join usuario u on u.usuario_id = v.usuario_id
-                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
-                left join zona z on z.zona_id = c.zona_id
-                left join credito r on r.venta_id = v.venta_id
-                left join moneda m on m.moneda_id = v.moneda_id
-                left join usuario ue on v.entrega_usuarioid = ue.usuario_id
-                where v.venta_id = ".$venta_id;
-                        
+                    from traspaso v
+                    left join cliente c on c.cliente_id = v.cliente_id
+                    left join usuario u on u.usuario_id = v.usuario_id
+                    left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                    left join zona z on z.zona_id = c.zona_id
+                    left join moneda m on m.moneda_id = v.moneda_id
+                    left join usuario ue on v.entrega_usuarioid = ue.usuario_id
+                    where v.traspaso_id = ".$traspaso_id;
+
         $venta = $this->db->query($sql)->result_array();        
         return $venta;
     }
@@ -361,6 +420,25 @@ function ventas_cocina_dia($estado)
         //echo $venta_id;
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
+    }
+    
+    function get_detalle_traspaso($traspaso_id)
+    {
+        $sql = "select d.*,  r.producto_nombre as preferencia_descripcion, r.producto_foto as preferencia_foto, 
+                clasificador_codigo, clasificador_nombre,p.*, cp.categoria_nombre, scp.subcategoria_nombre
+                from detalle_venta d
+                left join producto p on p.producto_id = d.producto_id
+                left join producto r on r.producto_id = d.preferencia_id
+                left join clasificador c on c.clasificador_id = d.clasificador_id
+                left join categoria_producto cp on p.categoria_id = cp.categoria_id
+                left join subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                
+                where d.producto_id = p.producto_id and traspaso_id = ".$traspaso_id;
+
+        
+        //echo $venta_id;
+        $detalle_traspaso = $this->db->query($sql)->result_array();        
+        return $detalle_traspaso;
     }
 
     function get_detalle_factura($venta_id)
@@ -873,6 +951,27 @@ function ventas_cocina_dia($estado)
                 group by vs.producto_id 
                 order by total_venta";
        // echo $sql; 
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+    
+    function get_resumenventas_fechahora($usuario_id,$fecha1,$hora1,$fecha2,$hora2)
+    { //aun no se reviso esto
+        $sql = "SELECT vs.producto_id, vs.producto_codigo, vs.producto_nombre, tt.tipotrans_nombre, 
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad, 
+                (sum(vs.detalleven_total) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(vs.detalleven_descuento*vs.detalleven_cantidad) as total_descuento, 
+                sum(vs.detalleven_total) as total_venta, (sum(vs.detalleven_costo*vs.detalleven_cantidad)) as total_costo, 
+                (sum(vs.detalleven_total)-SUM(vs.detalleven_costo*vs.detalleven_cantidad)) as total_utilidad, 
+                avg(vs.detalleven_tc) as tipo_cambio 
+                FROM ventas vs 
+                LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
+                WHERE 
+                CONCAT(vs.venta_fecha, ' ', vs.venta_hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}' 
+                AND vs.usuario_id = ".$usuario_id." 
+                group by vs.producto_id 
+                order by total_venta";
+        //echo $sql;
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }

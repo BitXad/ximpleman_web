@@ -135,7 +135,10 @@
                                     if($e['empresa_email']){
                                                 echo "<br><b>e-mail: </b>".$e['empresa_email'];
                                             } ?></td>
-                            <td><?php echo $e['empresa_telefono']; ?></td>
+                            <td><fa class="fa fa-home"></fa> <?php echo $e['empresa_telefono']; ?>
+                            <!--<br><fa class="fa fa-whatsapp"></fa> <?php echo $e['empresa_telefono']; ?><button class="btn btn-xs btn-success" title="Numero de teléfono para soporte"><fa class="fa fa-whatsapp"></fa></button>-->
+                            </td>
+                            
                             <td><?php echo $e['empresa_zona']; ?></td>
                             <td><?php echo $e['empresa_ubicacion']; ?></td>
                             <td><?php echo $e['empresa_departamento']; ?></td>

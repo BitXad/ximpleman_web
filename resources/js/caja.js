@@ -125,6 +125,25 @@ function solicitudCufd(punto_venta=0){
 //    }
 }
 
+function registrar_caja(e){
+
+    var tecla = (document.all) ? e.keyCode : e.which;
+    
+    if (e==13){
+
+          var tecla = e;
+
+    }else{
+      
+    var tecla = (document.all) ? e.keyCode : e.which;
+    
+    }
+  
+    if (tecla==13){
+        abrir_lacaja();
+    }  
+}
+
 function abrir_lacaja()
 {
     var base_url   = document.getElementById('base_url').value; 

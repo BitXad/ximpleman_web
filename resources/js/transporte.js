@@ -177,11 +177,11 @@ function cargar_tabla(viaje_id){
 //                        html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
                         html += "<button class='btn btn-xs btn-info' onclick='modal_datos("+JSON.stringify(registros[i])+")' style='padding:0;'><fa class='fa fa-address-card '> </fa> "+ registros[i]["pasaje_nombre"]+"</button>";
-                        
-                        if(registros[i]["pasaje_telefono"]!==null && registros[i]["pasaje_telefono"]!==""){
-                            
-                            html += " <span class='btn btn-xs btn-facebook' style='padding-top: 0px; padding-bottom: 0px;' title=' TELF/CEL: "+registros[i]["pasaje_telefono"]+"'><fa class='fa fa-phone'></fa></span>";
+                       
+                        if(registros[i]["pasaje_tieneequipaje"]==1){                       
+                            html += "<br><sub id='equipaje"+registros[i]["pasaje_id"]+"'>"+registros[i]["pasaje_detalleequipaje"]+"</sub>";
                         }
+                        
 
                         html += "</td>";
                         
@@ -195,6 +195,19 @@ function cargar_tabla(viaje_id){
                         html += "<td  style='text-align: right; font-size: 12px;'>"+Number(registros[i]["pasaje_precio"]).toFixed(2)+"</td>";
                         html += "<td>";
 //                            html += "<button class='btn btn-xs btn-success' onclick='modal_datos("+JSON.stringify(registros[i])+")'><fa class='fa fa-address-card '> </fa></button>";
+                           
+                        if(registros[i]["pasaje_telefono"]!==null && registros[i]["pasaje_telefono"]!==""){
+
+                                html += " <span class='btn btn-xs btn-facebook' style='padding-top: 0px; padding-bottom: 0px;' title=' TELF/CEL: "+registros[i]["pasaje_telefono"]+"'><fa class='fa fa-phone'></fa></span>";
+                            }
+                            if(registros[i]["pasaje_tieneequipaje"]==1){                       
+                                html += "<button class='btn btn-xs btn-warning' onclick='modificar_equipaje_adjunto("+registros[i]["pasaje_id"]+")' title='Modificar equipaje'><fa class='fa fa-pencil'> </fa></button>";
+                                html += " <span class='btn btn-xs btn-success' style='padding-top: 0px; padding-bottom: 0px;' title='Imprimir ticket'><fa class='fa fa-print'></fa></span>";
+                            }else{
+                                
+                                html += "<button class='btn btn-xs btn-warning' onclick='registrar_equipaje_adjunto("+registros[i]["pasaje_id"]+")'><fa class='fa fa-briefcase'> </fa></button>";
+                            }
+                            
                             html += "<button class='btn btn-xs btn-danger' onclick='quitar_pasaje("+registros[i]["pasaje_id"]+")'><fa class='fa fa-times'> </fa></button>";
                         html += "</td>";
                         html += "</tr>";
@@ -304,6 +317,53 @@ function quitar_pasaje(pasaje_id){
     
 }
 
+function registrar_equipaje_adjunto(pasaje_id){
+        
+    let viaje_id = document.getElementById('select_viaje').value;    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'vehiculo/quitar_pasaje/';
+    $("#pasaje_id2").val(pasaje_id);
+    document.getElementById('boton_equipaje').click();
+
+}
+
+function modificar_equipaje_adjunto(pasaje_id){
+        
+    let viaje_id = document.getElementById('select_viaje').value;    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'vehiculo/quitar_pasaje/';
+    var equipaje = document.getElementById('equipaje'+pasaje_id).textContent;
+     
+    $("#detalle_equipaje").val(equipaje);
+    $("#pasaje_id2").val(pasaje_id);
+    
+    
+    document.getElementById('boton_equipaje').click();
+//    $('#modalequipaje').modal('show'); 
+
+    /*var r = confirm("Esta apunto de quitar una reserva. \n ¿Desea Continuar?");
+    
+    if (r == true) {
+
+        $.ajax({url: controlador,
+                        type:"POST",
+                        data:{pasaje_id:pasaje_id, viaje_id:viaje_id},
+                        success:function(respuesta){     
+
+                           var registros =  JSON.parse(respuesta);
+
+
+                        },
+                        error:function(respuesta){
+
+                        }
+                });   
+        cargar_vehiculo(viaje_id);
+        cargar_vehiculo(viaje_id);
+    }
+    */
+}
+
 function esta_disponible(asiento_id){
  
     let viaje_id = document.getElementById('select_viaje').value;    
@@ -411,7 +471,9 @@ function modal_datos(datos){
         let option = document.createElement("option");
         option.value = Number(datos["viaje_precio1"]).toFixed(2);
         option.textContent = "Bs "+Number(datos["viaje_precio1"]).toFixed(2);
-        select.appendChild(option);
+//        option.selected = true;
+//        firstOptionAdded = true;
+        select.appendChild(option);        
         
     }
     
@@ -530,8 +592,7 @@ function finalizar_venta_pasaje(){
     let glosa = document.getElementById("glosa").value;   
     let cliente_id = document.getElementById("cliente_id").value;   
     let facturado = document.getElementById('facturado').checked;
-    
-    
+
     
     //alert(acuenta+" *** "+fechareserva+" *** "+horareserva);
        
@@ -591,14 +652,13 @@ function buscarcliente(){
                 var registros = eval(respuesta);
                 
                 if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema carga los datos
+
                     $("#complemento_ci").val(registros[0]["cliente_complementoci"]);
                     $("#razon_social").val(registros[0]["razon_social"]);
                     $("#cliente_id").val(registros[0]["cliente_id"]);
                     
                 }
-                
-                
-                
+
                 document.getElementById('loader_documento').style.display = 'none';
             },
             error:function(respuesta){			
@@ -610,7 +670,6 @@ function buscarcliente(){
     }); 
 
 }
-
 
 function mostrar_acuenta(){
     
@@ -634,13 +693,9 @@ function mostrar_acuenta(){
             const minutos = ('0' + fechaActual.getMinutes()).slice(-2);
             inputHora.value = `${horas}:${minutos}`;
 
-        document.getElementById('datos_reserva').style.display = 'block';
-        
-        
+        document.getElementById('datos_reserva').style.display = 'block';        
     }
-    
-    
-    
+
 }
 
 function pasajes_vendidos(){
@@ -720,17 +775,121 @@ function reimprimir_pasaje() {
 }
 
 
-function cargar_asiento(pasaje_id, asiento_id, pasaje_numero, asiento_numero){    
+function cargar_asiento(){    
     
-    let viaje_id = document.getElementById('select_viaje').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + "viaje/buscar_asientolibre/";
+    let pasaje_id = document.getElementById('pasaje_id2').value;
+    let venta_id = document.getElementById('venta_id').value;
     
-    document.getElementById('asiento_origen').value = "ASIENTO "+asiento_numero+", PASAJE: "+pasaje_numero;
+    //alert(pasaje_id+" ** "+venta_id);
+    
+    let select  = document.getElementById('select_asientoslibres');
+    
+    //document.getElementById('asiento_origen').value = "ASIENTO "+asiento_numero+", PASAJE: "+pasaje_numero;
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{venta_id:venta_id, pasaje_id:pasaje_id},
+            success:function(respuesta){     
+                
+                var resultado = JSON.parse(respuesta);
+                
+                let pasaje_actual = resultado["pasaje_actual"];
+                let datos = resultado["pasajes_libres"];
+                
+                if(datos.length>0){
+                    
+                    document.getElementById('asiento_origen').value = pasaje_actual[0]["asiento_numero"]+" - "+pasaje_actual[0]["asiento_descripcion"]+" [00"+pasaje_actual[0]["pasaje_id"]+"] *** Bs "+pasaje_actual[0]["pasaje_precio"];
+                    
+                    //alert(datos.length);
+                    //1. vaciar el select
+                    select.innerHTML = "";
 
+                    //2. agregamos una opcion por defecto
+                    let opcionDefault =  document.createElement("option");
+                    opcionDefault.value = "0";
+                    opcionDefault.textContent = "-- ASIENTOS LIBRES --";
+                    select.appendChild(opcionDefault);
+
+                    //3. agredar nuevas opciones
+                    for(let i=0; i<datos.length; i++ ){
+                       // alert(datos[i]["pasaje_id"]);
+                        let option = document.createElement("option");
+                        option.value = datos[i]["pasaje_id"];
+                        let dato_option = datos[i]["asiento_numero"]+" - "+datos[i]["asiento_descripcion"]+" [00"+datos[i]["pasaje_id"]+"] *** Bs "+datos[i]["pasaje_precio"];
+                        option.textContent = dato_option;
+                        select.appendChild(option);        
+                        
+                    }
+                                        
+                    $('#modalopciones').modal('hide');
+                    $('#modalcambiarasiento').modal('show');                    
+                    
+                }
+            
+
+            },
+            error:function(respuesta){
+
+            }
+    });   
+
+}
+
+function cambiar_asiento(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + "viaje/cambiar_asiento/";
+    let viaje_id = document.getElementById('select_viaje').value;    
+    let pasaje_origen = document.getElementById('pasaje_id2').value;    
+    let pasaje_destino  = document.getElementById('select_asientoslibres').value;
+    
+   // alert("desde: "+pasaje_origen+" *** hasta: "+pasaje_destino);
+   $.ajax({url: controlador,
+            type:"POST",
+            data:{pasaje_origen:pasaje_origen, pasaje_destino:pasaje_destino},
+            success:function(respuesta){     
+                
+                var resultado = JSON.parse(respuesta);
+                
+//                if(resultado){
+//                    alert("CAMBIO realizado con éxito...!");
+//                }
+                cargar_vehiculo(viaje_id);
+
+            },
+            error:function(respuesta){
+
+            }
+    });   
     
 }
 
-function cambiar_asiento(pasaje_id, asiento_id){
+function registrar_equipaje(){
     
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + "viaje/registrar_equipaje_adjunto/";
+    let pasaje_id = document.getElementById('pasaje_id2').value;    
+    let viaje_id = document.getElementById('select_viaje').value;   
+    let equipaje = document.getElementById('detalle_equipaje').value;    
+
+   // alert("desde: "+pasaje_origen+" *** hasta: "+pasaje_destino);
+   $.ajax({url: controlador,
+            type:"POST",
+            data:{pasaje_id:pasaje_id,equipaje:equipaje},
+            success:function(respuesta){     
+                
+                var resultado = JSON.parse(respuesta);
+                
+                if(resultado){
+                 //   alert("CAMBIO realizado con éxito...!");
+                    cargar_vehiculo(viaje_id);
+                }
+
+            },
+            error:function(respuesta){
+
+            }
+    });   
     
 }
 
@@ -852,6 +1011,19 @@ function anular_operacion(){
     }
 }
 
+function nomina_pasajeros(){
+        
+    let viaje_id = document.getElementById('select_viaje').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'viaje/nomina_pasajeros_viaje/';
+    let venta_id = document.getElementById('venta_id').value;    
+
+    var url = base_url + "viaje/nomina_pasajeros/" + viaje_id;
+
+    window.open(url, '_blank'); // Abre la URL en una nueva pestaña o ventana
+    
+}
+
 function mostrar_menu(venta_id,pasaje_id,pasaje_numero, pasaje_nombre, asiento_numero){
     
     //alert(venta_id+" *** "+pasaje_numero+" *** "+pasaje_nombre);
@@ -874,4 +1046,53 @@ function mostrar_cambiarfecha(venta_id,pasaje_id,pasaje_numero, pasaje_nombre, a
     $("#venta_id").val(venta_id);
     $("#pasaje_id2").val(pasaje_id);
     $('#boton_modalopciones').click();
+}
+
+
+function formato_fecha(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+
+function buscar_viajes() {
+    var operacion = document.getElementById('select_operacion').value;
+    var fecha_viaje = document.getElementById('calendario_viaje').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + 'viaje/buscar_viajes/';
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: { fecha_viaje: fecha_viaje },
+        success: function(respuesta) {
+            
+            var registros = JSON.parse(respuesta);
+
+            var select = document.getElementById('select_viaje');
+            select.innerHTML = ''; // Limpiar el select antes de llenar
+
+            if (registros.length > 0) {
+                registros.forEach(function(viaje) {
+                    var option = document.createElement('option');
+                    option.value = viaje.viaje_id;
+                    option.text = "["+viaje.vehiculo_placa+"] " + viaje.ruta_nombre + " => " + formato_fecha(viaje.viaje_fechasalida) + " - " + viaje.viaje_horasalida + " (COD.: 00" + viaje.viaje_id + ")";
+                    select.appendChild(option);
+                });
+
+                // Disparar evento para cargar datos del primer viaje seleccionado
+                cargar_datosviaje();
+            } else {
+                var option = document.createElement('option');
+                option.value = '';
+                option.text = 'No hay viajes disponibles';
+                select.appendChild(option);
+            }
+        },
+        error: function(error) {
+            console.error("Error al buscar viajes: ", error);
+        }
+    });
 }

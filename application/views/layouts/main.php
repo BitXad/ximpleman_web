@@ -966,6 +966,11 @@
                             <a href="<?php echo site_url('sucursales');?>"><i class="fa fa-cube"></i> Inventario por producto</a>
                         </li>
                         
+                        
+                        <li>
+                            <a href="<?php echo site_url('venta/traspasos');?>"><i class="fa fa-paper-plane"></i> Traspasos</a>
+                        </li>
+                        
               
                         
                     </ul>
@@ -1026,7 +1031,7 @@
                             <a href="<?php echo site_url('dosificacion/configurar');?>"><i class="fa fa-mercury"></i> Configurar Facturacion</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa fa-server"></i> Sincronizar</a>
+                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa fa-server"></i> Sincronizar y Homologar</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('eventos_significativos');?>"><i class="fa fa-calendar"></i> Eventos Significativos</a>
@@ -1243,7 +1248,7 @@
                 
                 <!<!-- Aqui entra el icono de whatsapp -->
                 
-                <a href="https://wa.me/59177417605" class="whatsapp-float" target="_blank">
+                <a href="https://wa.me/<?php echo $sistema["sistema_telefonosoporte"]; ?>" class="whatsapp-float" target="_blank">
                 <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png"/>
               </a>
               <style>

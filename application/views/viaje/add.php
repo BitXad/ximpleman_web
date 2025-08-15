@@ -123,7 +123,7 @@
              <div class="col-md-3">
                <label for="viaje_fechasalida" class="control-label"> <span class="text-danger"></span>FECHA PARTIDA</label>
                 <div class="form-group">
-                  <input type="text" name="viaje_fechasalida" value="<?php echo $this->input->post('viaje_fechasalida'); ?>" class="has-datepicker form-control" data-date-format='DD/MM/YYYY' id="viaje_fechasalida" />
+                  <input type="date" name="viaje_fechasalida" value="<?php echo $this->input->post('viaje_fechasalida'); ?>" class="form-control" data-date-format='DD/MM/YYYY' id="viaje_fechasalida" />
                    <span class="text-danger"><?php echo form_error('viaje_fechasalida');?></span>
                </div>
              </div>
@@ -137,7 +137,7 @@
              <div class="col-md-3">
                <label for="viaje_fechallegada" class="control-label"> <span class="text-danger"></span>FECHA LLEGADA</label>
                 <div class="form-group">
-                  <input type="text" name="viaje_fechallegada" value="<?php echo $this->input->post('viaje_fechallegada'); ?>" class="has-datepicker form-control" data-date-format='DD/MM/YYYY' id="viaje_fechallegada" />
+                    <input type="date" name="viaje_fechallegada" value="<?php echo $this->input->post('viaje_fechallegada'); ?>" class="form-control" data-date-format='DD/MM/YYYY' id="viaje_fechallegada" />
                    <span class="text-danger"><?php echo form_error('viaje_fechallegada');?></span>
                </div>
              </div>

@@ -25,21 +25,21 @@
 </style>
 
 <?php  
-    
+    //var_dump($caja);
     $oculto = "hidden"; //hidden para oculto, vacio para mostrar
 
-    $mostrar_fechas = 0; //1 mostrar fecha - 0 ocultar fechas
+    $mostrar_fechas = 1; //1 mostrar fecha - 0 ocultar fechas
     
     $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
-    $fecha_desde = date('Y-m-d');
-    $hora_desde = '00:00';
+    $fecha_desde = $caja["caja_fechaapertura"]; //date('Y-m-d');
+    $hora_desde =  $caja["caja_horaapertura"];//'00:00';
       
     $fecha_hasta = date('Y-m-d');
     $hora_hasta = '23:59';
 
     // Obtener la fecha y hora actual
     $fecha_actual = $ultima_venta["venta_fecha"]; //date('Y-m-d');
-    $hora_actual = date('H:i');
+    $hora_actual = date('H:i:s');
 
     // Fecha y hora de apertura de la caja (ejemplo)
     $caja_fechaapertura = $caja["caja_fechaapertura"]; // Esto debería ser la fecha de apertura de la caja
@@ -48,18 +48,18 @@
     // Si la fecha actual es la misma que la fecha de apertura de la caja y antes de la medianoche
     if ($fecha_actual == $caja_fechaapertura){// && $hora_actual > '02:00'&&$hora_actual < '23:59') {
         
-                $fecha_desde = $fecha_actual;
-                $hora_desde = '00:00'; //'16:00';
+                $fecha_desde = $caja["caja_fechaapertura"]; //$fecha_actual;
+                $hora_desde = $caja["caja_horaapertura"]; //'00:00'; //'16:00';
                 $fecha_hasta = $fecha_actual;
-                $hora_hasta = '23:59';
+                $hora_hasta = date('H:i:s'); //'23:59';
              
     } 
     // Si la fecha actual es un día después de la fecha de apertura de la caja
     else{
-        $fecha_desde = date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
-        $hora_desde = '00:00';//'16:00';
+        $fecha_desde = $caja["caja_fechaapertura"]; //date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
+        $hora_desde = $caja["caja_horaapertura"]; //'00:00';//'16:00';
         $fecha_hasta = $fecha_actual;
-        $hora_hasta = '23:59'; //02:00';
+        $hora_hasta = date('H:i:s'); //'23:59'; //02:00';
     }
     // En otro caso, si la fecha actual es el mismo día de la apertura de la caja, pero ya es pasada la medianoche
    /* else {
@@ -112,7 +112,8 @@
             
                         <div class="col-md-2">
                             <br>
-                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;" id="boton_buscar">
+                            <!--<button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;" id="boton_buscar">-->
+                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha_hora()" style="height: 34px;" id="boton_buscar">
                                 <span class="fa fa-search"></span> Iniciar
                             </button>
                             <br>
@@ -354,23 +355,23 @@
     </a>
 </div>
 
-<script>
-    function confirmarCerrarCaja() {
-        // Mostrar un cuadro de diálogo de confirmación
-        var confirmacion = confirm("¿Estás seguro de que quieres cerrar la caja?");
+            <script>
+                function confirmarCerrarCaja() {
+                    // Mostrar un cuadro de diálogo de confirmación
+                    var confirmacion = confirm("¿Estás seguro de que quieres cerrar la caja?");
 
-        // Si el usuario hace clic en "Aceptar" en el cuadro de diálogo
-        if (confirmacion) {
-            // Aquí puedes agregar la lógica para cerrar la caja
-            // Por ejemplo, puedes redirigir a la página de cierre de caja o enviar una solicitud al servidor
-            // window.location.href = "<?php echo site_url('ruta_para_cerrar_caja'); ?>";
-        } else {
-            // Si el usuario hace clic en "Cancelar" en el cuadro de diálogo
-            // Puedes no hacer nada o mostrar un mensaje de cancelación, según tus necesidades
-            // alert("Cierre de caja cancelado");
-        }
-    }
-</script>
+                    // Si el usuario hace clic en "Aceptar" en el cuadro de diálogo
+                    if (confirmacion) {
+                        // Aquí puedes agregar la lógica para cerrar la caja
+                        // Por ejemplo, puedes redirigir a la página de cierre de caja o enviar una solicitud al servidor
+                        // window.location.href = "<?php echo site_url('ruta_para_cerrar_caja'); ?>";
+                    } else {
+                        // Si el usuario hace clic en "Cancelar" en el cuadro de diálogo
+                        // Puedes no hacer nada o mostrar un mensaje de cancelación, según tus necesidades
+                        // alert("Cierre de caja cancelado");
+                    }
+                }
+            </script>
             
             
             <?php echo form_close(); ?>

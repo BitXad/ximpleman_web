@@ -292,6 +292,7 @@ class Caja extends CI_Controller{
         $this->form_validation->set_rules('caja_horacierre','Hora de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $usuario_id = $this->session_data['usuario_id'];
         
+        //obtenemos los datos de la caja en curso
         $caja = $this->Caja_model->get_caja_usuario($usuario_id);
         
         if($caja_id == $caja[0]["caja_id"]){
@@ -418,6 +419,161 @@ class Caja extends CI_Controller{
                 //$data['_view'] = 'caja/reportecaja_boucher';
                 redirect("reportes/reportecajaid/".$caja_id);
                 $this->load->view('layouts/main',$data);
+    }
+    
+    
+    function corregir_caja(){
+        
+        
+        if ($this->input->is_ajax_request()){
+
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];
+            $caja_apertura = $this->input->post("monto_caja");
+            $caja_anterior = $this->input->post("caja_id");
+
+            //Recuperar la caja a corregir
+            $caja_fallida = $this->Caja_model->get_caja($caja_anterior);
+            
+            
+            //Registro de caja en estado pendiente
+            $this->Caja_model->caja_pendiente($usuario_id);
+
+            //Obtenemos la caja pendiente
+            $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+
+            //Actualizamos la caja en estado abierta
+            $caja_id = $caja[0]["caja_id"];
+            $fecha_aper = $caja_fallida["caja_fechaapertura"]; //date('Y-m-d');
+            $hora_aper  = $caja_fallida["caja_horaapertura"];//date('H:i:s');
+            $params = array(
+                'estado_id' => 30,
+                'caja_apertura' => $caja_apertura,
+                'caja_fechaapertura' => $fecha_aper,
+                'caja_horaapertura' => $hora_aper,
+            );
+            
+            //**************** bitacora caja ********************
+            
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            $bitacoracaja_evento = "(select concat('CORREGI CAJA Nº: ','".$caja_id."','MONTO INICIAL: ',{$caja_fallida["caja_apertura"]}))";
+            //$usuario_id = esta mas arriba;
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$caja_id.")";
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "update caja set  caja_observaciones = concat('APERTURA DE CAJA Bs: ', caja_apertura), caja_apertura = 0  where caja_id = {$caja_anterior}";
+            $this->Venta_model->ejecutar($sql);
+            
+            //****************** fin bitacora caja *************** 
+            
+            $this->Caja_model->update_caja($caja_id,$params);
+            echo json_encode($caja_id);
+
+        }
+
+    }
+    
+    function guardar_transacciones(){
+        
+        
+        if ($this->input->is_ajax_request()){
+
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            $transacciones = $this->input->post("transacciones");
+            $caja_id = $this->input->post("caja_id");
+
+            //Registro de caja en estado pendiente
+            $caja =  $this->Caja_model->get_caja_id($caja_id);
+            $fecha_cierre = $caja[0]["caja_fechacierre"];
+            $usuario_id = $caja[0]["usuario_id"];
+            
+            $sql = "UPDATE caja
+                    SET 
+                    
+                    caja_transrealizadas = (
+                        SELECT GROUP_CONCAT(
+                            CONCAT(
+                                '<br>Venta:', v.venta_id,
+                                ' | Fecha:', v.venta_fecha,
+                                ' ', v.venta_hora,
+                                ' <br> Cliente:', c.cliente_nombre,
+                                ' | Total:', round(v.venta_total,2),
+                                ' | Forma:', f.forma_nombre
+                            ) SEPARATOR '\n'
+                        )
+                        FROM venta v
+                        JOIN forma_pago f ON v.forma_id = f.forma_id
+                        JOIN cliente c ON v.cliente_id = c.cliente_id
+                        WHERE 
+                            v.venta_fecha = '{$caja[0]["caja_fechacierre"]}' AND 
+                            v.forma_id > 1 AND 
+                            v.usuario_id = {$caja[0]["usuario_id"]} AND 
+                            v.estado_id = 1
+                    ),
+                    caja_transregistradas = '{$transacciones}'
+                    
+                    WHERE caja_id = {$caja_id}";
+            
+            //echo $sql;
+            $this->Venta_model->Ejecutar($sql);
+            
+            /*
+            $sql = "
+                UPDATE caja 
+                SET caja_transrealizadas = CONCAT(
+                    '\n<b>TOTAL TRANSFERENCIAS: ',
+                    (
+                        SELECT ROUND(SUM(v.venta_total), 2)
+                        FROM venta v
+                        WHERE 
+                            v.venta_fecha = '{$fecha_cierre}' AND 
+                            v.forma_id > 1 AND 
+                            v.usuario_id = {$usuario_id} AND 
+                            v.estado_id = 1
+                    ),'</b>'
+                )
+                WHERE caja_id = {$caja_id}";
+            //echo $sql;
+            $this->Venta_model->Ejecutar($sql);*/
+            
+            //**************** bitacora caja ********************
+            
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
+            $bitacoracaja_evento = "(select concat('REGISTRE TRANSACCIONES/QR Nº: ','".$caja_id."'))";
+            //$usuario_id = esta mas arriba;
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$caja_id.")";
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja *************** 
+            
+            //$this->Caja_model->update_caja($caja_id,$params);
+            echo json_encode($caja_id);
+
+        }
+
     }
     /*
      * cierre de una caja

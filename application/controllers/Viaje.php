@@ -18,6 +18,7 @@ class Viaje extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Moneda_model');
         $this->load->model('Viaje_model');
+        $this->load->model('Venta_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
@@ -51,46 +52,52 @@ public function index()
   */
  function add()
  {  
-     $data['sistema'] = $this->sistema;
-try{
-      $params = array(
-       'ayudante_id'=> $this->input->post('ayudante_id'),
-       'vehiculo_id'=> $this->input->post('vehiculo_id'),
-       'ruta_id'=> $this->input->post('ruta_id'),
-       'usuario_id'=> $this->input->post('usuario_id'),
-       'conductor_id'=> $this->input->post('conductor_id'),
-       'viaje_fechasalida'=> $this->input->post('viaje_fechasalida'),
-       'viaje_horasalida'=> $this->input->post('viaje_horasalida'),
-       'viaje_fechallegada'=> $this->input->post('viaje_fechallegada'),
-       'viaje_horallegada'=> $this->input->post('viaje_horallegada'),
-        );
-      
-       $this->load->library('upload');
-       $this->load->library('form_validation');
-       if(isset($_POST) && count($_POST) > 0)     
-        {  
-            $viaje_id= $this->Viaje_model->add_viaje($params);
-             $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Succesfully added.</div>');
-              redirect('viaje/index');
-        }
-        else
-        { 
-         $this->load->model('Ayudante_model');
-         $data['all_ayudante'] = $this->Ayudante_model->get_all_ayudante(); 
-         $this->load->model('Vehiculo_model');
-         $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo(); 
-         $this->load->model('Ruta_model');
-         $data['all_ruta'] = $this->Ruta_model->get_all_ruta(); 
-         $this->load->model('Usuario_model');
-         $data['all_usuario'] = $this->Usuario_model->get_all_usuario(); 
-         $this->load->model('Conductor_model');
-         $data['all_conductor'] = $this->Conductor_model->get_all_conductor(); 
-           $data['_view'] = 'viaje/add';
-            $this->load->view('layouts/main',$data);
-        }
-  } catch (Exception $ex) {
-    throw new Exception('Viaje Controller : Error in add function - ' . $ex);
-  }  
+    $usuario_id = $this->session_data['usuario_id']; 
+    $data['sistema'] = $this->sistema;
+        try{
+              $params = array(
+               'ayudante_id'=> $this->input->post('ayudante_id'),
+               'vehiculo_id'=> $this->input->post('vehiculo_id'),
+               'ruta_id'=> $this->input->post('ruta_id'),
+               'usuario_id'=> $usuario_id,
+               'conductor_id'=> $this->input->post('conductor_id'),
+               'viaje_fechasalida'=> $this->input->post('viaje_fechasalida'),
+               'viaje_horasalida'=> $this->input->post('viaje_horasalida'),
+               'viaje_fechallegada'=> $this->input->post('viaje_fechallegada'),
+               'viaje_horallegada'=> $this->input->post('viaje_horallegada'),
+                );
+
+                var_dump($params);
+
+
+               $this->load->library('upload');
+               $this->load->library('form_validation');
+               if(isset($_POST) && count($_POST) > 0)     
+                {  
+                    $viaje_id= $this->Viaje_model->add_viaje($params);
+                     $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Succesfully added.</div>');
+                      redirect('viaje/index');
+                }
+                else
+                { 
+                 $this->load->model('Ayudante_model');
+                 $data['all_ayudante'] = $this->Ayudante_model->get_all_ayudante(); 
+                 $this->load->model('Vehiculo_model');
+                 $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo(); 
+                 $this->load->model('Ruta_model');
+                 $data['all_ruta'] = $this->Ruta_model->get_all_ruta(); 
+                 $this->load->model('Usuario_model');
+                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario(); 
+                 $this->load->model('Conductor_model');
+                 $data['all_conductor'] = $this->Conductor_model->get_all_conductor();
+
+                   $data['_view'] = 'viaje/add';
+                    $this->load->view('layouts/main',$data);
+                }
+
+          } catch (Exception $ex) {
+            throw new Exception('Viaje Controller : Error in add function - ' . $ex);
+          }  
  }  
   /*
   * Editing a viaje
@@ -335,6 +342,33 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
           throw new Exception('Viaje Controller : Error in index function - ' . $ex);
       }  
     }
+
+    /*
+    * Listing of viaje
+     */
+    public function nomina_pasajeros_viaje()
+    {
+        
+      try{
+            $viaje_id = $this->input->post("viaje_id");
+            /*$data['sistema'] = $this->sistema;
+            $data['page_title'] = "Nomina Pasajeros";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+
+            $data['noof_page'] = 0;
+            $data['datos_viaje'] = $this->Viaje_model->get_datos_viaje($viaje_id);
+            $data['lista_pasajeros'] = $this->Viaje_model->get_lista_pasajeros($viaje_id);
+            $data['_view'] = 'viaje/nomina_pasajeros';
+            $this->load->view('layouts/main',$data);*/
+            
+            redirect("viaje/nomina_pasajeros/".$viaje_id);
+
+        } catch (Exception $ex) {
+          throw new Exception('Viaje Controller : Error in index function - ' . $ex);
+      }  
+    }
     /*
    * get search values by column- viaje
     */
@@ -366,5 +400,124 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
         $this->load->view('layouts/main',$data);
         
     }
+   
+    public function buscar_asientolibre() {
+        
+        
+        $pasaje_id = $this->input->post("pasaje_id");
+        
+        
+        
+        $sql = "select p.*, a.* from pasaje p, asientos a
+                where 
+                p.asiento_id = a.asiento_id and
+                p.estado_id = 50 and  p.viaje_id in (
+                select viaje_id from pasaje
+                where pasaje_id = {$pasaje_id})";
+        $pasajes_libres = $this->Venta_model->Consultar($sql);
+        
+        $sql = "select p.*, a.* from pasaje p, asientos a
+                where 
+                p.asiento_id = a.asiento_id and p.pasaje_id = {$pasaje_id}";
+        $pasaje_actual = $this->Venta_model->Consultar($sql);
+
+        $response = ['pasajes_libres' => $pasajes_libres,'pasaje_actual' => $pasaje_actual];
+        echo json_encode($response);
+        
+    }
+   
+    public function cambiar_asiento() {
+        
+        
+        $pasaje_origen = $this->input->post("pasaje_origen");
+        $pasaje_destino = $this->input->post("pasaje_destino");
+        
+        //1.- obtener datos del origen
+        $sql = "select * from pasaje where pasaje_id = {$pasaje_origen}";
+        $pasaje = $this->db->query($sql)->row_array();
+        
+        //2. Actualizamos el origen
+        $sql = "update pasaje set
+                factura_id = 0,
+                cliente_id = 0,
+                pasaje_nombre = '',
+                pasaje_telefono = '',
+                pasaje_documento = '',
+                estado_id = 50,
+                usuario_id = 0,
+                venta_id = 0,
+                cdi_codigoclasificador = 0
+                where pasaje_id = {$pasaje_origen}";
+        $this->Venta_model->Ejecutar($sql);
+        
+        //3. Actualizamos el origen
+        $sql = "update pasaje set
+                factura_id = {$pasaje["factura_id"]},
+                cliente_id = {$pasaje["cliente_id"]},
+                pasaje_nombre = '{$pasaje["pasaje_nombre"]}',
+                pasaje_telefono = '{$pasaje["pasaje_telefono"]}',
+                pasaje_documento = '{$pasaje["pasaje_documento"]}',
+                estado_id = 54,
+                usuario_id = {$pasaje["usuario_id"]},
+                venta_id = {$pasaje["venta_id"]},
+                cdi_codigoclasificador = {$pasaje["cdi_codigoclasificador"]}
+                where pasaje_id = {$pasaje_destino}";
+        $this->Venta_model->Ejecutar($sql);
+        
+        echo json_encode(true);
+        
+        
+        /*
+        //1. salvamos destino
+        $sql = "update pasaje set pasaje_id = 0 where pasaje_id = {$pasaje_destino}";
+        $this->Venta_model->Ejecutar($sql);
+        
+        //2. Colocamos el origen en vez del destino
+        $sql = "update pasaje set pasaje_id = {$pasaje_destino} where pasaje_id = {$pasaje_origen}";
+        $this->Venta_model->Ejecutar($sql);
+        
+        //2. Colocamos destino en lugar del origen
+        $sql = "update pasaje set pasaje_id = {$pasaje_origen} where pasaje_id = 0";
+        $this->Venta_model->Ejecutar($sql);*/
+        
+            
+        
+        
+        
+    }
+   
+    public function buscar_viajes() {
+        
+        
+            $fecha_viaje = $this->input->post("fecha_viaje");
+
+            $sql = "select v.*, r.*,h.* from viaje v
+                    left join ruta r on r.ruta_id = v.ruta_id
+                    left join vehiculo h on h.vehiculo_id = v.vehiculo_id
+                    where 
+                    v.viaje_fechasalida = '{$fecha_viaje}'";
+            $resultado = $this->Venta_model->Consultar($sql);
+
+            echo json_encode($resultado);
+        
+    }
+   
+    public function registrar_equipaje_adjunto() {
+        
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $pasaje_id = $this->input->post("pasaje_id");
+            $equipaje = $this->input->post("equipaje");
+
+            $sql = "update pasaje set 
+                    pasaje_tieneequipaje = 1,
+                    pasaje_detalleequipaje = '{$equipaje}',
+                    pasaje_fechahoraequipaje = {$now}
+                    where pasaje_id = {$pasaje_id}";
+            $this->Venta_model->Ejecutar($sql);
+
+            echo json_encode(true);
+        
+    }
+   
    
 }

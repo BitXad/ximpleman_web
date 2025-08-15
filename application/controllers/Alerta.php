@@ -3,10 +3,15 @@
 class Alerta extends CI_Controller{
 
 	private $sistema;
+        private $dosificacion;
+        
     public function __construct(){
         parent::__construct();
-		$this->load->model('Sistema_model');
-		$this->sistema = $this->Sistema_model->get_sistema();
+        $this->load->model('Sistema_model');
+        $this->load->model('Dosificacion_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $this->dosificacion = $dosificacion;
     }
 
     public function index(){
@@ -30,6 +35,7 @@ class Alerta extends CI_Controller{
         $dosif="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
         $token = $this->db->query($dosif)->row_array();
         $data['sistema'] = $this->sistema;
+        $data['dosificacion'] = $this->dosificacion;
         $data['diasdo'] = $token;
         
         $session_data = $this->session->userdata('logged_in');

@@ -342,6 +342,9 @@ border-bottom : 1px solid #aaa;*/
 <!--</table>border-top: dashed 1px #000;
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
+        <?php 
+        //echo "usuario:".$tipousuario_id;
+        if($tipousuario_id==1){ ?>
            <tr>
                
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>CANT</b></td>
@@ -352,6 +355,7 @@ border-bottom : 1px solid #aaa;*/
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>TOTAL</b></td>
                 
            </tr>
+        <?php } ?>
            <!--<tbody class="buscar" id="reportefechadeventa"></tbody>-->
              
            <input type="hidden" value="<?php echo sizeof($reporte); ?>" id="filas_detalle"/>
@@ -630,7 +634,7 @@ border-bottom : 1px solid #aaa;*/
 
          </td>-->
     </tr>    
-    
+
 </table>
 
 </td>    
