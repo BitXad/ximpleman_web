@@ -1,4 +1,5 @@
 <link href="<?php echo site_url('resources/css/formValidation.css')?>" rel="stylesheet">
+
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">

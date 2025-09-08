@@ -374,6 +374,7 @@ div {
                                 <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >COMERCIAL</option>
                                 <option value="1" <?php if($parametro['parametro_modulorestaurante']==1) echo 'selected'; ?> >RESTAURANTE</option>
                                 <option value="2" <?php if($parametro['parametro_modulorestaurante']==2) echo 'selected'; ?> >FARMACIA</option>
+                                <option value="3" <?php if($parametro['parametro_modulorestaurante']==3) echo 'selected'; ?> >TRANSPORTE</option>
                             </select>
                         </div>
                     </div>

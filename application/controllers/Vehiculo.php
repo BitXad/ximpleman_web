@@ -91,6 +91,8 @@ try{
         }
         else
         { 
+            
+           $data['tipo_movilidad'] = $this->Tipo_vehiculo_model->get_all_tipo_vehiculo();
            $data['_view'] = 'vehiculo/add';
             $this->load->view('layouts/main',$data);
         }

@@ -21,8 +21,8 @@ class Orden_compra extends CI_Controller{
         $this->load->model('Sincronizacion_model');
         $this->load->model('ProductosServicios_model');
         $this->load->model('Forma_pago_model');
-        //$this->load->model('Usuario_model');
-        //$this->load->model('Estado_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Estado_model');
         $this->load->helper('numeros_helper');
         
         if ($this->session->userdata('logged_in')) {
@@ -56,12 +56,14 @@ class Orden_compra extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->parametros;
+        
         if($this->acceso(1)) {
-            /*$data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
+            
+            $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $estado_tipo = 9;
-            $data['all_estado'] = $this->Estado_model->get_estado_tipo($estado_tipo);
-            */
+            $data['estado'] = $this->Estado_model->get_estado_tipo($estado_tipo);
+            
             $data['page_title'] = "Ordenes de Compra";
             $data['_view'] = 'orden_compra/index';
             $this->load->view('layouts/main',$data);

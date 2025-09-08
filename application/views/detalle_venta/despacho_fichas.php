@@ -106,7 +106,7 @@
 
 
 
-<img class="imagen-sombra-png" src="<?php echo base_url("resources/images/monitor/{$logo}?v=2"); ?>"  width="400" height="300">
+<img class="imagen-sombra-png" src="<?php echo base_url("resources/images/monitor/{$logo}?v=2"); ?>"  width="250" height="187">
         
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
         
@@ -120,15 +120,33 @@
             <div class="box">
                 <div class="box-body table-responsive" style="">
                     <center style="line-height: 130px; box-shadow: 5px 16px 20px rgba(0.5, 0.4, 0.4, 0.4); " >
-                        <span style="font-size: 80px; color: white; font-weight: bolder; padding: 0;">
+                        <span style="font-size: 80px; color: white; font-weight: bolder; padding: 0;                                 text-shadow:
+                                    -2px -2px 4px black,   /* sombra arriba izquierda */
+                                    2px -2px 4px black,    /* sombra arriba derecha */
+                                    -2px 2px 4px black,    /* sombra abajo izquierda */
+                                    2px 2px 4px black; ">
                             PEDIDO 
                         </span>
                         <br>
-                        <span style="font-size: 250px; color: white; font-weight: bolder;  padding: 0;" id="numero_pedido">
-                            42
-                        </span>
+                            <span style="
+                                font-size: 250px; 
+                                color: white; 
+                                font-weight: bolder;  
+                                padding: 0;
+                                text-shadow:
+                                    -2px -2px 4px black,   /* sombra arriba izquierda */
+                                    2px -2px 4px black,    /* sombra arriba derecha */
+                                    -2px 2px 4px black,    /* sombra abajo izquierda */
+                                    2px 2px 4px black;     /* sombra abajo derecha */
+                            " id="numero_pedido">
+                                00
+                            </span>
                         <br>
-                        <span style="font-size: 40px; color: white; font-weight: bolder; padding: 0;">
+                        <span style="font-size: 40px; color: white; font-weight: bolder; padding: 0;                                text-shadow:
+                                    -2px -2px 4px black,   /* sombra arriba izquierda */
+                                    2px -2px 4px black,    /* sombra arriba derecha */
+                                    -2px 2px 4px black,    /* sombra abajo izquierda */
+                                    2px 2px 4px black; ">
                             EN DESPACHO
                         </span>
                         

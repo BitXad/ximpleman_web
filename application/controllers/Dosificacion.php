@@ -171,12 +171,22 @@ class Dosificacion extends CI_Controller{
         if($this->acceso(151)){
             $data['page_title'] = "Dosificación";
         // check if the dosificacion exists before trying to edit it
-        $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        $dosificacion  = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        $data['dosificacion'] = $dosificacion;
 //        
-//        echo 
-//        "<br>LEYENDAS-1: ".$this->input->post('dosificacion_leyenda1').
-//        "<br>LEYENDAs-2: ".$this->input->post('dosificacion_leyenda2').
-//        "<br>LEYENDAs-3: ".$this->input->post('dosificacion_leyenda3');
+        /*echo 
+        "<br>LEYENDAS-1: ".$this->input->post('dosificacion_leyenda1').
+        "<br>LEYENDAs-2: ".$this->input->post('dosificacion_leyenda2').
+        "<br>LEYENDAs-3: ".$this->input->post('dosificacion_leyenda3');
+        "<br>LEYENDAs-4: ".$this->input->post('dosificacion_leyenda4');
+        "<br>LEYENDAs-5: ".$this->input->post('dosificacion_leyenda5');*/
+        /*
+        echo 
+        "<br>LEYENDAS-1: ".$dosificacion['dosificacion_leyenda1'].
+        "<br>LEYENDAs-2: ".$dosificacion['dosificacion_leyenda2'].
+        "<br>LEYENDAs-3: ".$dosificacion['dosificacion_leyenda3'].
+        "<br>LEYENDAs-4: ".$dosificacion['dosificacion_leyenda4'].
+        "<br>LEYENDAs-5: ".$dosificacion['dosificacion_leyenda5'];*/
         
         if(isset($data['dosificacion']['dosificacion_id']))
         {
@@ -271,6 +281,7 @@ class Dosificacion extends CI_Controller{
                     }
                 /* *********************F I N  ARCHIVO***************************** */
                 $params = array(
+                    
                     'estado_id' => $this->input->post('estado_id'),
                     'empresa_id' => $this->input->post('empresa_id'),
                     //'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),

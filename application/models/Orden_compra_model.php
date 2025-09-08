@@ -197,7 +197,7 @@ class Orden_compra_model extends CI_Model
             order by oc.ordencompra_id DESC
          ";
         
-        echo $sql;
+        //echo $sql;
         
         $compra = $this->db->query($sql)->result_array();
         

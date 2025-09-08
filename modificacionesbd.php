@@ -207,7 +207,7 @@ p.`producto_costo` * p.producto_orden,
 1,
 1,
 6.96
-from producto p);
+from producto p where p.producto_orden>0);
 
 INSERT INTO `proveedor` (`proveedor_id`, `estado_id`, `proveedor_codigo`, `proveedor_nombre`, `proveedor_foto`, `proveedor_contacto`, `proveedor_direccion`, `proveedor_telefono`, `proveedor_telefono2`, `proveedor_email`, `proveedor_nit`, `proveedor_razon`, `proveedor_autorizacion`) VALUES 
   (1,1,'INV410','INVENTARIO INICIAL',NULL,'','','','',NULL,'0','INVENTARIO INICIAL','1');

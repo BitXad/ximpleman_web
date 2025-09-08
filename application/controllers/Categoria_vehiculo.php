@@ -33,6 +33,7 @@ public function index()
   try{
       $data['noof_page'] = 0;
      $data['categoria_vehiculo'] = $this->Categoria_vehiculo_model->get_all_categoria_vehiculo();
+     $data['parametro'] = $this->parametros;
       $data['_view'] = 'categoria_vehiculo/index';
       $this->load->view('layouts/main',$data);
     } catch (Exception $ex) {
@@ -45,6 +46,7 @@ public function index()
  function add()
  {  
      $data['sistema'] = $this->sistema;
+     $data['parametro'] = $this->parametros;
 try{
       $params = array(
        'categoriavehiculo_nombre'=> $this->input->post('categoriavehiculo_nombre'),
@@ -72,6 +74,7 @@ try{
  public function edit($categoriavehiculo_id)
  {   
      $data['sistema'] = $this->sistema;
+     $data['parametro'] = $this->parametros;
   try{
    $data['categoria_vehiculo'] = $this->Categoria_vehiculo_model->get_categoria_vehiculo($categoriavehiculo_id);
        $this->load->library('upload');

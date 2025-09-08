@@ -149,43 +149,70 @@
                     <div class="col-md-3">
                         <label for="dosificacion_leyenda1" class="control-label">Leyenda1</label>
                         <div class="form-group">
-                            <input type="text" id="dosificacion_leyenda1" name="dosificacion_leyenda1" value="<?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?>" class="form-control"/>
+                            <input type="text" id="dosificacion_leyenda1" name="dosificacion_leyenda1" 
+                                value="<?php echo htmlspecialchars(
+                                    $this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1'], 
+                                    ENT_QUOTES, 
+                                    'UTF-8'
+                                ); ?>" 
+                                class="form-control"/>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="dosificacion_leyenda2" class="control-label">Leyenda2</label>
                         <div class="form-group">
-                            <input type="hidden" id="dosificacion_leyenda2_select" name="dosificacion_leyenda2_select" value="<?php echo ($this->input->post('dosificacion_leyenda2') ? $this->input->post('dosificacion_leyenda2') : $dosificacion['dosificacion_leyenda2']); ?>" class="form-control"/>
+                            <input type="hidden" id="dosificacion_leyenda2_select" name="dosificacion_leyenda2_select" 
+                                value="<?php echo htmlspecialchars(
+                                    $this->input->post('dosificacion_leyenda2') ? $this->input->post('dosificacion_leyenda2') : $dosificacion['dosificacion_leyenda2'], 
+                                    ENT_QUOTES, 
+                                    'UTF-8'
+                                ); ?>" 
+                                class="form-control"/>
                             <select name="dosificacion_leyenda2" id="dosificacion_leyenda2" class="form-control" size='1'></select>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="dosificacion_leyenda3" class="control-label">Leyenda3</label>
                         <div class="form-group">
-                            <input type="text" id="dosificacion_leyenda3" name="dosificacion_leyenda3" value="<?php echo ($this->input->post('dosificacion_leyenda3') ? $this->input->post('dosificacion_leyenda3') : $dosificacion['dosificacion_leyenda3']); ?>" class="form-control"/>
-                            <!--<select name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'></select>-->
-                            <!--<input name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'/>-->
+                            <input type="text" id="dosificacion_leyenda3" name="dosificacion_leyenda3" 
+                                value="<?php echo htmlspecialchars(
+                                    $this->input->post('dosificacion_leyenda3') ? $this->input->post('dosificacion_leyenda3') : $dosificacion['dosificacion_leyenda3'], 
+                                    ENT_QUOTES, 
+                                    'UTF-8'
+                                ); ?>" 
+                                class="form-control"/>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="dosificacion_leyenda4" class="control-label">Leyenda4</label>
                         <div class="form-group">
-                            <input type="text" id="dosificacion_leyenda4" name="dosificacion_leyenda4" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
-<!--                            <input type="hidden" id="dosificacion_leyenda4_select" name="dosificacion_leyenda4_select" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda4" id="dosificacion_leyenda4" class="form-control" size='1'></select>-->
+                            <input type="text" id="dosificacion_leyenda4" name="dosificacion_leyenda4" 
+                                value="<?php echo htmlspecialchars(
+                                    $this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4'], 
+                                    ENT_QUOTES, 
+                                    'UTF-8'
+                                ); ?>" 
+                                class="form-control"/>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <label for="dosificacion_leyenda5" class="control-label">Leyenda5</label>
                         <div class="form-group">
-                            <input type="text" id="dosificacion_leyenda5" name="dosificacion_leyenda5" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
-<!--                            <input type="hidden" id="dosificacion_leyenda5_select" name="dosificacion_leyenda5_select" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda5" id="dosificacion_leyenda5" class="form-control" size='1'></select>-->
+                            <input type="text" id="dosificacion_leyenda5" name="dosificacion_leyenda5" 
+                                value="<?php echo htmlspecialchars(
+                                    $this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5'], 
+                                    ENT_QUOTES, 
+                                    'UTF-8'
+                                ); ?>" 
+                                class="form-control"/>
                         </div>
                     </div>
+
+                    
                     <div class="col-md-3">
                         <label for="tipofac_codigo" class="control-label">Tipo Factura </label>
                         <div class="form-group">

@@ -44,7 +44,9 @@ function actualizar()
 
 function anunciar_mi_pedido(numero) {
    
+
     anunciar_pedido(numero);
+    
   
 }
 
@@ -133,7 +135,7 @@ function anunciar_pedido(numero) {
         if (i >= secuencia.length) return;
         let audio = new Audio(basePath + secuencia[i]);
         
-        audio.playbackRate = 1.4; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
+        audio.playbackRate = 1.2; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
         i++;
         audio.onended = reproducir;
         audio.play().catch(err => console.error("Error reproduciendo:", err));
@@ -143,15 +145,15 @@ function anunciar_pedido(numero) {
 
 }
 
-function probar_audio(){
-    numero_contador = document.getElementById("numero_contador").value;
-    document.getElementById('timbre').play();
-    anunciar_pedido(numero_contador);
-    
-    numero_contador = Number(numero_contador) + 1;
-    document.getElementById("numero_contador").value = numero_contador;
-    
-}
+//function probar_audio(){
+//    numero_contador = document.getElementById("numero_contador").value;
+//    document.getElementById('timbre').play();
+//    anunciar_pedido(numero_contador);
+//    
+//    numero_contador = Number(numero_contador) + 1;
+//    document.getElementById("numero_contador").value = numero_contador;
+//    
+//}
 
 function sleep(milliseconds) {
  var start = new Date().getTime();
@@ -161,3 +163,46 @@ function sleep(milliseconds) {
   }
  }
 }
+//
+//
+//window.addEventListener("keydown", e => {
+//  console.log("KEY:", e.key, "CODE:", e.code, "KEYCODE:", e.keyCode);
+//});
+//window.addEventListener("keydown", function(e) {
+//    switch(e.code) {
+//        case "F13": // G1
+//            console.log("G1 = Flecha Arriba");
+//            moverArriba();
+//            break;
+//        case "F14": // G2
+//            console.log("G2 = Flecha Abajo");
+//            moverAbajo();
+//            break;
+//        case "F15": // G3
+//            console.log("G3 = Enter");
+//            activarSeleccion();
+//            break;
+//        case "F16": // G4
+//            console.log("G4 = Escape");
+//            cancelarAccion();
+//            break;
+//        // Opcional: G5–G8
+//        case "F17": console.log("G5 libre"); break;
+//        case "F18": console.log("G6 libre"); break;
+//        case "F19": console.log("G7 libre"); break;
+//        case "F20": console.log("G8 libre"); break;
+//    }
+//});
+//
+//function moverArriba() {
+//   // aquí tu lógica para moverte arriba en la tabla
+//}
+//function moverAbajo() {
+//   // aquí tu lógica para moverte abajo en la tabla
+//}
+//function activarSeleccion() {
+//   // simular Enter sobre la fila seleccionada
+//}
+//function cancelarAccion() {
+//   // simular Escape o cancelar selección
+//}

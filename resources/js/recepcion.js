@@ -1,12 +1,8 @@
  $(document).on("ready",inicio_recepcion);
 function inicio_recepcion(){
-    
-      
+          
        	recepcion(1); 
-
-
-        
-setInterval('actualizar()',15000);
+        setInterval('actualizar()',15000);
           //aca podemos mandar fecha 
 }
 function actualizar()
@@ -24,7 +20,7 @@ function actualizar()
 
                var registros =  JSON.parse(resul);
 
-               var n = registros.length; //tamaÃ±o de
+               var n = registros.length; //tamaño
 
     if (n>ventas) {
 
@@ -89,12 +85,12 @@ function recepcion(estado)
 
                    
                     html = "";
-                    let color = "background:lightgray;";
+                    let color = "";//"background:lightgray;";
                     
                	for (var i = 0; i < n ; i++){
                     
                         if (Number(ventas[i]["entrega_id"]) != 1){
-                            color = "background:lightgray;";
+                            color = ""; // "background:lightgray;";
                         }else{
                              color = "";
                         }
@@ -172,7 +168,7 @@ function recepcion(estado)
                         
                         if (ventas[i]["entrega_id"]==1 || ventas[i]["entrega_id"]==2) {
                             //ventas[i]["entrega_nombre"]
-                        html += "<td align='center' style='"+color+"'> <button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR' onclick='pedido_terminado("+ventas[i]["venta_id"]+")'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </button>";
+                        html += "<td align='center' style='"+color+"'> <button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR' onclick='pedido_terminado("+ventas[i]["venta_id"]+"); anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </button>";
                         
                         html += "<br><br><button class='btn btn-info btn-xs' onclick='anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='1'><span class='fa fa-volume-up'></span> ANUNCIAR PEDIDO</font></button>";
                         
@@ -190,7 +186,7 @@ function recepcion(estado)
                         
                         html += "<center>";                        
                         html += "<h3><b> <span class='fa fa-cutlery'></span></b>";
-                        html += "   DESPACHA PEDIDO Nº<b> "+ventas[i]["venta_numeroventa"]+"</b><br> <fa class='fa fa-user'></fa> <b>"+ventas[i]["cliente_nombre"]+" </b>";
+                        html += "   DESPACHAR PEDIDO Nº<b> "+ventas[i]["venta_numeroventa"]+"</b><br> <fa class='fa fa-user'></fa> <b>"+ventas[i]["cliente_nombre"]+" </b>";
                         html += "<br><small>** "+ventas[i]["tiposerv_descripcion"]+" **</small>";
                         html += "</h3>";
                         
@@ -203,7 +199,7 @@ function recepcion(estado)
                         html += "<div class='modal-footer aligncenter'>";
                         
                             html += "<center>";
-                            html += "<button type='button' onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal' style='width:100px;'><span class='fa fa-check'></span> Si </button>";
+                            html += "<button type='button'  onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal' style='width:100px;'><span class='fa fa-check'></span> Si </button>";
                             html += "<button class='btn btn-danger' data-dismiss='modal' style='width:100px;'><span class='fa fa-times'></span> No </button>";
                             html += "</center>";
 
@@ -291,6 +287,9 @@ function pedido_terminado(venta)
 {   var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+'detalle_venta/pedido_terminado/'+venta;
     
+    document.getElementById('venta_id').value = venta;
+    
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{},
@@ -327,10 +326,10 @@ function restablecer(venta)
 
 function anunciar_mi_pedido(numero) {
    
+    //   alert(numero);
     anunciar_pedido(numero);
   
 }
-
 
 function anunciar_pedido(numero) {
      
@@ -416,7 +415,7 @@ function anunciar_pedido(numero) {
         if (i >= secuencia.length) return;
         let audio = new Audio(basePath + secuencia[i]);
         
-        audio.playbackRate = 1.0; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
+        audio.playbackRate = 1.2; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
         i++;
         audio.onended = reproducir;
         audio.play().catch(err => console.error("Error reproduciendo:", err));
@@ -434,14 +433,4 @@ function probar_audio(){
     numero_contador = Number(numero_contador) + 1;
     document.getElementById("numero_contador").value = numero_contador;
     
-}
-
-
-function sleep(milliseconds) {
- var start = new Date().getTime();
- for (var i = 0; i < 1e7; i++) {
-  if ((new Date().getTime() - start) > milliseconds) {
-   break;
-  }
- }
 }

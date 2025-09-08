@@ -42,7 +42,8 @@ class Verificar extends CI_Controller
                 $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
                 $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                 $this->load->model('Parametro_model');
-                $parametro = $this->Parametro_model->get_parametros();
+                $parametro = $this->Parametro_model->get_parametro($result->parametro_id);
+                $parametro = [$parametro];
                 
                 $sess_array = array(
                     'usuario_login' => $result->usuario_login,
@@ -54,6 +55,7 @@ class Verificar extends CI_Controller
                     'usuario_imagen' => $usuario_imagen,
                     'usuario_email' => $result->usuario_email,
                     'usuario_clave' => $result->usuario_clave,
+                    'parametro_id' => $result->parametro_id,
                     'thumb' => $thumb,
                     'rol' => $rolusuario,
                     'puntoventa_codigo' => $result->puntoventa_codigo,

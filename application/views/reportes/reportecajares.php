@@ -494,7 +494,7 @@ border-bottom : 1px solid #aaa;*/
     
     <tr>
         
-        <td nowrap style="padding: 0; font-family: <?= $fuente  ?>; font-size: 12px; border-top: solid 2px #000; border-bottom: solid 2px #000; text-align: right;" colspan="4">
+        <td nowrap style="padding: 0; font-family: <?= $fuente  ?>; font-size: 14px; border-top: solid 2px #000; text-align: right;" colspan="4">
             <?php
             $apertura_decaja = 0;
             if(isset($caja)){
@@ -543,12 +543,12 @@ border-bottom : 1px solid #aaa;*/
         </tr>-->
 
 
-        <tr>
-            <!--<td align="center" style="padding: 0; border-top: solid 2px #000;" colspan="2"><b>TOTAL</b></td>-->
-            <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"><?php echo $moneda['moneda_descripcion']." ".$money; ?></td>-->
+<!--        <tr>
+            <td align="center" style="padding: 0; border-top: solid 2px #000;" colspan="2"><b>TOTAL</b></td>
+            <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"><?php echo $moneda['moneda_descripcion']." ".$money; ?></td>
             <td colspan="4" align="right" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 12px; border-top: solid 2px #000; border-bottom: solid 2px #000; "><b><?php echo "EFECTIVO REGISTRADO Bs: ".number_format($totaldinero,2,'.',','); ?></b></td>
-            <!--<td align="right" style="padding: 0; border-top: solid 2px #000;"> </td>-->
-        </tr>
+            <td align="right" style="padding: 0; border-top: solid 2px #000;"> </td>
+        </tr>-->
 
 <!--        <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
 
@@ -578,7 +578,7 @@ border-bottom : 1px solid #aaa;*/
     </tr>    -->
     
     <tr>
-        <td colspan="4" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 14px; border-top: solid 2px #000; border-bottom: solid 2px #000; text-align: right;">
+        <td colspan="4" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 14px; border-bottom: solid 2px #000; text-align: right;">
             
             
             
@@ -592,13 +592,13 @@ border-bottom : 1px solid #aaa;*/
                 
                 $caja_diferencia = $caja["caja_diferencia"];?>
             
-                <b>EFECT.REG.X CAJA Bs: <?php echo number_format($caja["caja_cierre"],2,".",","); ?> </b>
+                <b>EFECTIVO REGISTRADO Bs: <?php echo number_format($caja["caja_cierre"],2,".",","); ?> </b>
                 
                 
             <?php
             }
             ?>
-           <br><b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
+           <br><b>DIFERENCIA <?php echo ($caja_diferencia > 0)?"SOBRANTE":""; ?><?php echo ($caja_diferencia < 0)?"FALTANTE":""; ?> Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
         </td>           
         <!-- BITACORA -->    
         
@@ -631,14 +631,14 @@ border-bottom : 1px solid #aaa;*/
 
                         <?php foreach($efectivo as $e){ ?>
                             <tr>
-                                <td style="<?= $estilo2 ?>"><?php echo (($e["caja_id"]==$caja["caja_id"])?">":"").$e["caja_corte200"]; ?></td>
-                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte10"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo (($e["caja_id"]==$caja["caja_id"])?"*":"").$e["caja_corte200"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte100"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte50"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte20"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte10"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte5"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte2"]; ?></td>
-                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte100"]; ?></td>
+                                <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte1"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte050"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte020"]; ?></td>
                                 <td style="<?= $estilo2 ?>"><?php echo $e["caja_corte010"]; ?></td>

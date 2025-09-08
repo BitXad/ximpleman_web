@@ -2002,12 +2002,14 @@ window.onkeydown = compruebaTecla;
             <!-- =====================================================-->
             
             <?php 
+            
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
                 if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //en esta linea debe ser == 23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
+                
             ?> 
             
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
@@ -4153,6 +4155,21 @@ Gasto de Seguro:2000
                         <div class="col-md-12">
                             <center>
                                 
+                            <div class="col-md-12">
+                                <center>
+
+
+                                <div class="col-md-12 form-group">
+                                  <label for="sumatoria_total">Total Final</label>
+                                  <input type="text" class="form-control" value="0.00" name="sumatoria_total" id="sumatoria_total" onkeyup="calcular_digitos()">
+                                </div>
+
+
+
+
+                                </center>
+                            </div>
+                                
                             <div class="col-md-12 form-group" hidden>
                               <!--<label for="calcular_producto">producto</label>-->
                               <input type="text" class="form-control" value="HELADO DE CAMARONES DULCES 180G - 65431334654" name="calcular_producto" id="calcular_producto" disabled="true">
@@ -4160,7 +4177,7 @@ Gasto de Seguro:2000
                                 
                             <div class="col-md-4 form-group">
                               <label for="calcular_total">Total Final</label>
-                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_total" id="calcular_total" onkeyup="calcular_portotal()">
+                              <input style="font-size:20px; font-weight: bold;" type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_total" id="calcular_total" onkeyup="calcular_portotal()">
                             </div>
                                
                             <div class="col-md-4 form-group">
@@ -4391,3 +4408,24 @@ function abrir_lacaja()
     </div>
 </div>
 <!------------------------ F I N  modal para envio de facturas a correos ------------------->
+
+
+
+<script>
+document.getElementById("sumatoria_total").addEventListener("input", function() {
+    let expresion = this.value;
+
+    // Validar solo números, + y - (eliminar otros caracteres)
+    expresion = expresion.replace(/[^0-9+\-]/g, "");
+
+    try {
+        // Evaluar la expresión matemática de forma segura
+        let resultado = eval(expresion);
+
+        // Mostrar el resultado en el otro input
+        document.getElementById("calcular_total").value = isNaN(resultado) ? "" : resultado;
+    } catch (e) {
+        document.getElementById("calcular_total").value = "";
+    }
+});
+</script>

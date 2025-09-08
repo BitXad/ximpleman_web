@@ -31,6 +31,8 @@ class Conductor extends CI_Controller{
 public function index()
 {
      $data['sistema'] = $this->sistema;
+     $data['parametro'] = $this->parametros;
+     
   try{
       $data['noof_page'] = 0;
      $data['conductor'] = $this->Conductor_model->get_all_conductor();
@@ -46,6 +48,7 @@ public function index()
  function add()
  {  
      $data['sistema'] = $this->sistema;
+     $data['parametro'] = $this->parametros;
 try{
       $params = array(
        'conductor_nombres'=> $this->input->post('conductor_nombres'),

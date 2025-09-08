@@ -319,12 +319,32 @@ class Venta extends CI_Controller{
 
         }
         
+        //Reiniciar numero de venta diaria
+            $this->reiniciar_ventas();
+        
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
         		
         //**************** fin contenido ***************
         }        
     }
+    
+    function reiniciar_ventas(){
+        
+        $now = "'".date("Y-m-d H:i:s")."'";
+        $parametro_id = $this->session_data['parametro_id'];
+        $sql = "UPDATE parametros 
+                SET parametro_numeroventa = 0
+                WHERE parametro_id = 1
+                AND NOT EXISTS (
+                    SELECT 1 
+                    FROM venta 
+                    WHERE venta_fecha = DATE({$now})
+                );";
+        $this->Venta_model->ejecutar($sql);
+        
+    }
+    
     
     function ventas_pedido($pedido_id)
     {    
@@ -586,12 +606,7 @@ class Venta extends CI_Controller{
                     
             //}
         }        
-        
-        
-        
-        
-        
-        
+
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
         		
@@ -1539,9 +1554,9 @@ class Venta extends CI_Controller{
                         
                     //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                         
+                        $codigo_actividadcaeb = $factura_actividad;
                         if($this->parametros['parametro_tiposistema'] == 1){
                             
-                            $codigo_actividadcaeb = $factura_actividad;
                             $la_actividad = $this->Actividad_model->get_descripcioncaeb($codigo_actividadcaeb);
                             
                             // sistema de facturacion antiguo
@@ -1568,11 +1583,21 @@ class Venta extends CI_Controller{
                         }else{ //Facturacion eletronica / computarizada en linea
                             
                                 //Sistema de facturacion nuevo
-                                $leyendas = $this->Venta_model->consultar("select * from leyenda order by leyenda_codigoactividad");
-                                $valor = rand(0,7);
-                                $valor = ($valor>=7)?6:$valor;
-                                
-                                $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                                    $leyendas = $this->Venta_model->consultar("
+                                        SELECT * 
+                                        FROM leyenda 
+                                        WHERE leyenda_codigoactividad = {$codigo_actividadcaeb}
+                                    ");
+
+                                    $cantidad_leyendas = count($leyendas);
+
+                                    if ($cantidad_leyendas > 0) {
+                                        // rand usa 0 hasta (n-1)
+                                        $valor = rand(0, $cantidad_leyendas - 1);
+                                        $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                                    } else {
+                                        $factura_leyenda2 = "Sin leyenda disponible";
+                                    }
                         
                                 $registroeventos_id = 0;
                                 if ($tipo_emision == 2){ //1 en linea, 2 fuera de linea 3 masiva    
@@ -2045,6 +2070,7 @@ class Venta extends CI_Controller{
                     echo json_encode("");
                 }
                 
+                //echo json_encode(true);
             //} //Fin del for de N facturas
         }
 
@@ -5689,10 +5715,22 @@ function anular_traspaso($traspaso_id){
                         $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".$factura_leyenda2."',".$forma_id.")";
             }else{
                 
-                        $leyendas = $this->Venta_model->consultar("select * from leyenda");
-                        $valor = rand(0,7);
-                        $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
-                   
+                        $codigo_actividadcaeb = $factura_actividad;
+                        $leyendas = $this->Venta_model->consultar("
+                            SELECT * 
+                            FROM leyenda 
+                            WHERE leyenda_codigoactividad = {$codigo_actividadcaeb}
+                        ");
+
+                        $cantidad_leyendas = count($leyendas);
+
+                        if ($cantidad_leyendas > 0) {
+                            // rand usa 0 hasta (n-1)
+                            $valor = rand(0, $cantidad_leyendas - 1);
+                            $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                        } else {
+                            $factura_leyenda2 = "Sin leyenda disponible";
+                        }
                         if ($tipo_emision==2){    
                           $factura_leyenda3 =  $factura_leyenda5;
                           $factura_cafc = $dosificacion['dosificacion_ruta'];
@@ -6070,9 +6108,9 @@ function anular_traspaso($traspaso_id){
                         
                     //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                         
+                        $codigo_actividadcaeb = $factura_actividad;
                         if($this->parametros['parametro_tiposistema'] == 1){
                             
-                            $codigo_actividadcaeb = $factura_actividad;
                             $la_actividad = $this->Actividad_model->get_descripcioncaeb($codigo_actividadcaeb);
                             
                             // sistema de facturacion antiguo
@@ -6099,11 +6137,21 @@ function anular_traspaso($traspaso_id){
                         }else{
                             
                                 //Sistema de facturacion nuevo
-                                $leyendas = $this->Venta_model->consultar("select * from leyenda order by leyenda_codigoactividad");
-                                $valor = rand(0,7);
-                                $valor = ($valor>=7)?6:$valor;
-                                
-                                $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                                    $leyendas = $this->Venta_model->consultar("
+                                        SELECT * 
+                                        FROM leyenda 
+                                        WHERE leyenda_codigoactividad = {$codigo_actividadcaeb}
+                                    ");
+
+                                    $cantidad_leyendas = count($leyendas);
+
+                                    if ($cantidad_leyendas > 0) {
+                                        // rand usa 0 hasta (n-1)
+                                        $valor = rand(0, $cantidad_leyendas - 1);
+                                        $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                                    } else {
+                                        $factura_leyenda2 = "Sin leyenda disponible";
+                                    }
                         
                                 $registroeventos_id = 0;
                                 if ($tipo_emision == 2){ //1 en linea, 2 fuera de linea 3 masiva    
@@ -11549,11 +11597,21 @@ function anular_traspaso($traspaso_id){
         $precio = $this->input->post("precio");
         $cantidad = $this->input->post("cantidad");
         $total = $this->input->post("total");
+        $sumatoria_total = $this->input->post("sumatoria_total");
 
+        $datos = $sumatoria_total;
+        $sumatoria_total = "";
+        preg_match_all('/[+-]\d+/', $datos, $matches);
+
+        // Recorrer y mostrar en el formato deseado
+        foreach ($matches[0] as $num) {
+            $sumatoria_total .= $num . " = \n";
+        }
         $sql = "update detalle_venta_aux set 
                 detalleven_total = {$total},
                 detalleven_cantidad = {$cantidad},
-                detalleven_precio = {$precio}
+                detalleven_precio = {$precio},
+                detalleven_caracteristicas = '{$sumatoria_total}'
                 where detalleven_id = {$detalleven_id}";
         
         //echo $sql;

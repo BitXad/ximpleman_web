@@ -3,6 +3,14 @@
 <!-- DataTables -->
 <script src="<?php echo base_url('resources/plugins/datatables.net');  ?>/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url('resources/plugins/datatables.net-bs');  ?>/js/dataTables.bootstrap.min.js"></script>
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+
+ <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
+<!-------------------------------------------------------->
+
+
  <script>
                   $(function () {
                     $('#example1').DataTable()
@@ -20,20 +28,19 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Vehiculo  Listing</h3>
+                <h3 class="box-title">Vehiculos</h3>
               <div class="box-tools">
                 <a href="<?php echo site_url('vehiculo/add'); ?>" class="btn btn-success btn-sm">Add</a> 
                 </div>
    <?php echo $this->session->flashdata('alert_msg');?>
             <div class="box-body table-responsive no-padding">
-                <table id="example1" class="table table-striped">
+                <table  class="table table-striped" id="mitabla">
                     <thead>
                     <tr>
                     <th>#</th>
-                    <th>ID</th>
                     <th>APELLIDOS PROPIETARIO</th>
                     <th>NOMBRES PROPIETARIO</th>
-                    <th>ESTADO</th>
+                    <!--<th>ESTADO</th>-->
                     <th>TIPO MOVILIDAD</th>
                     <th>CATEGORIA VEHICULO</th>
                     <th>ASIENTO</th>
@@ -72,10 +79,10 @@
            foreach($vehiculo as $v){ ?>
                     <tr>
                     <td><?php echo $i++; ?></td>
-                    <td><?php echo $v['vehiculo_id']; ?></td>
+                    <!--<td><?php echo $v['vehiculo_id']; ?></td>-->
                     <td><?php echo $v['vehiculo_apellidospropietario']; ?></td>
                     <td><?php echo $v['vehiculo_nombrespropietario']; ?></td>
-                    <td><?php echo $v['estado_id']; ?></td>
+                    <!--<td><?php echo $v['estado_id']; ?></td>-->
                     <td><?php echo $v['tipomovilidad_id']; ?></td>
                     <td><?php echo $v['categoriavehiculo_id']; ?></td>
                     <td><?php echo $v['asiento_id']; ?></td>
@@ -104,11 +111,11 @@
                     <td><?php echo $v['vehiculo_fechatarjeta']; ?></td>
                     <td><?php echo $v['vehiculo_tarjetacirculacion']; ?></td>
                     <td><?php echo $v['vehiculo_imagen']; ?></td>
-                     <td><a href="<?php echo site_url('vehiculo/edit/'.$v['vehiculo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                         <a
+                    <td><a href="<?php echo site_url('vehiculo/edit/'.$v['vehiculo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
+                        <a
                             onclick="return confirm('Are you sure You want to delete?')"
-                             href="<?php echo site_url('vehiculo/remove/'.$v['vehiculo_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
-                     </td>
+                            href="<?php echo site_url('vehiculo/remove/'.$v['vehiculo_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                    </td>
                     </tr>
                      <?php }
                     

@@ -46,26 +46,7 @@ class Parametro_model extends CI_Model
      */
     function get_all_parametro()
     {
-         
-//        $limit_condition = "";
-//        if(isset($params) && !empty($params))
-//            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-//        
-//        $parametros = $this->db->query("
-//           SELECT
-//                *
-//
-//            FROM
-//                `parametros`
-//
-//            WHERE
-//                1 = 1
-//
-//            ORDER BY `parametro_id` DESC
-//
-//            " . $limit_condition . "
-//        ")->result_array();
-//        return $parametros;
+
 
         if (isset($this->session_data['usuario_id'])){
         

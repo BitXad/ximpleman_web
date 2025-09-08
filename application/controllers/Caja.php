@@ -343,6 +343,14 @@ class Caja extends CI_Controller{
                 );
 
                 $this->Caja_model->update_caja($caja_id, $params);
+                
+                //no aseguramos de cerrar las mesas abiertas
+                $sql = "update pedido set estado_id = 13 where usuario_id = {$usuario_id}";
+                $this->Venta_model->ejecutar($sql);
+               
+                $sql = "update mesa set estado_id = 38";
+                $this->Venta_model->ejecutar($sql);
+                
                
                 //redirect('caja/reporte_caja/'.$caja_id);
                 redirect('reportes/reportecaja/');

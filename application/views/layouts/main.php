@@ -395,6 +395,43 @@
                         
                     </ul>
                 </li>
+                <li <?php  echo( (isset($parametro["parametro_modulorestaurante"])?$parametro["parametro_modulorestaurante"]:0) == 3)?"":"hidden"; ?>>
+                    
+                    <a href="#"><i class="fa fa-truck"></i> <span>Transporte</span></a>
+                    <ul class="treeview-menu">
+
+                        
+                        <li>
+                            <a href="<?php echo site_url('transporte');?>"><i class="fa fa-ticket"></i> Venta de Pasajes</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('vehiculo');?>"><i class="fa fa-bus"></i> Vehiculos</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-map"></i> Viajes</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-map-marker"></i> Paradas</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('pensionados/despachos');?>"><i class="fa fa-users"></i> Conductores</a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url('pensionados');?>"><i class="fa fa-user"></i> Ayudantes</a>
+                        </li>
+                                                
+                        <li>
+                            <a href="<?php echo site_url('reportes/reporteingresos');?>"><i class="fa fa-road"></i> Rutas</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
                 <li>
                     <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
                     <ul class="treeview-menu">

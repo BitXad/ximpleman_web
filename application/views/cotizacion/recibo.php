@@ -20,6 +20,7 @@ function valor_valido($valor) {
     return $valor !== "" && $valor !== "-" && strtolower($valor) !== "null" && $valor !== null;
 }
 
+$mostrar_imagen = 1; //1 mostrar imagenes - 0 no mostrar imagenes
 ?>
 <!--<style type="text/css">
     input[type=number]::-webkit-inner-spin-button, 
@@ -131,6 +132,10 @@ pre {
             <table class="table table-striped " id="mitabla" style="padding: 0px;">
                 <tr>
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Item</th>
+                    <?php if($mostrar_imagen==1){ ?>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black; width: 90px;">Imagen</th>
+                    <?php } ?>
+                    
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Producto<br>Descripcion</th>
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Unidad</th>
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Precio<br>Unit.</th>
@@ -139,6 +144,7 @@ pre {
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Desc.</th>
                     <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Precio<br>Total</th>
                 </tr>
+                
                 <tbody class="">
                     <?php
                     $cont = 0;
@@ -154,6 +160,9 @@ pre {
                     ?>
                 <tr>
                     <td><?php echo $cont ?></td>
+                    <?php if($mostrar_imagen==1){ ?>
+                        <td><img src="<?php echo base_url('resources/images/productos/').$d['producto_foto']; ?>" width="80" height="60" style="padding-bottom: 2px"></td>
+                    <?php } ?>
                     <td><b><?php echo $d['producto_nombre']; ?></b>
 
                         <?php 
@@ -210,7 +219,7 @@ pre {
 
                 
                 <tr>
-                    <td colspan="4" rowspan="3" style="background-color: lightgray !important; -webkit-print-color-adjust: exact;">
+                    <td colspan="<?= ($mostrar_imagen==1)?5:4;  ?>" rowspan="3" style="background-color: lightgray !important; -webkit-print-color-adjust: exact;">
                         <center>  
                             <b><br>LITERAL: <?php echo num_to_letras($totalfinal); ?></b>
                         </center>

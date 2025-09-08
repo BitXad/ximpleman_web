@@ -442,7 +442,7 @@ function tablaresultados(opcion)
 //                       html += "<br><font size='3'><b><input type='text' class='btn btn-danger btn-xs' style='background-color: black' id='input_existencia"+registros[i]["producto_id"]+"' value='DISP: "+existencia+" "+registros[i]["producto_unidad"]+"' readonly='true'></b></font>";
                         
                        
-                       if(! esMobil()){
+//                       if(! esMobil()){
                             if (parseFloat(registros[i]["existencia"])>0){
                                 
                                 /*
@@ -465,7 +465,7 @@ function tablaresultados(opcion)
                                   html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";*/
                                   html += "</div>";   
                             }            
-                        }
+//                        }
                       
                         //html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
                         

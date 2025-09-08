@@ -1708,7 +1708,7 @@ class Factura extends CI_Controller{
                     }
                     
                     $correo = $this->input->post("factura_correo");
-                    $res = $this->enviar_correoanulacion($factura_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
+                    $res = $this->enviar_correoanulacion($factura_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf, $codigo_motivo);
                     
                 }else{
                         
@@ -2257,209 +2257,17 @@ class Factura extends CI_Controller{
         }
     }
     
-    //monto, codigo de recepcion
-/*    function enviar_correoanulacion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
+    
+    function enviar_correoanulacion($factura_id, $correo, $factura_numero, $factura_fecha, $total, $factura_cuf, $codigoMotivo)
     {
+        $motivo="";
+        if($codigoMotivo==1){ $motivo = "FACTURA MAL EMITIDA";}
+        if($codigoMotivo==2){ $motivo = "NOTA DE CREDITO-DEBITO MAL EMITIDA";}
+        if($codigoMotivo==3){ $motivo = "DATOS DE EMISION INCORRECTOS";}
+        if($codigoMotivo==4){ $motivo = "FACTURA O NOTA DE CREDITO-DEBITO DEVUELTA";}
         
-        if($correo != null || $correo != ""){
-        //if ($this->input->is_ajax_request()) {
-            $this->load->library('email');
-            $this->email->set_newline("\r\n");
-            $this->load->model('Configuracion_email_model');
-            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
-            $factura = $this->Factura_model->get_factura_anulada($factura_id);
-            
-            //var_dump($factura);
-            $cliente = $factura["factura_razonsocial"];
-            $cuf = $factura["factura_cuf"];
-            
-            
-            $config['protocol'] = $configuracion['email_protocolo'];
-            $config['smtp_host'] = $configuracion['email_host'];
-            $config['smtp_port'] = $configuracion['email_puerto'];
-            $config['smtp_user'] = $configuracion['email_usuario'];
-            $config['smtp_pass'] = $configuracion['email_clave'];
-            $config['smtp_from_name'] = $configuracion['email_nombre'];
-            $config['priority'] = $configuracion['email_prioridad'];
-            $config['charset'] = $configuracion['email_charset'];
-            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
-            $config['wordwrap'] = TRUE;
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = $configuracion['email_tipo'];
-            $email_copia = '';
-
-            $this->email->initialize($config);
-
-            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
-            $this->email->to($correo);
-            $this->email->cc($configuracion['email_copia']);
-    //            $this->email->bcc($attributes['cc']);
-            $this->email->subject("Factura Digital, Anulación de su factura");
-
-            $la_fecha = date("d/m/Y", strtotime($factura_fecha));
-            
-            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-            $literal =  num_to_letras($total,' Bolivianos');
-            
-            
-
-            $html = '
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Mensaje de correo electrónico</title>
-                <!-- Bootstrap CSS -->
-                <link href="https://cdn.jsdelivr.net/npm/
-                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
-                rel="stylesheet">
-            </head>
-            <body>
-                <center>
-                    <table class="table table-bordered"> 
-                        <tr>
-                            <td style="background: #D35400; color:white; 
-                            font-family:Arial;">
-                                <center>
-                                    <p><b>'.$this->empresa["empresa_nombre"].'</b></p>
-                                    <p>'.$this->empresa["empresa_eslogan"].'</p>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="background: gray; font-family:Arial;">
-                                <h2>Confirmación de Anulación!</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="background: lightgray; font-family:Arial;">
-                                <p>Señor(es): '.$cliente.'</p>
-                                <p>Mediante este mensaje le informamos 
-                                 que su factura fue ANULADA.</p>
-                                <h3>Datos de la factura</h3>
-                                <p>FACTURA Nº: '.$factura_numero.'
-                                MONTO Bs: '.number_format($total,2,".",",").'</p>
-                                <p>¡Gracias por su preferencia!</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="background: black; 
-                            color: white; 
-                            font-family:Arial; font-size:10pt; 
-                            line-height: 10px">
-                                <center><br>
-                                   <a href="https://www.facebook.com/sisximpleman/" 
-                                   style="color: white; text-decoration: none;"
-                                    <p><b>XIMPLEMAN</b>
-                                    </a>
-                                   es un producto de 
-                                   <a href="https://www.passwordbolivia.com" 
-                                   style="color: white; text-decoration: none;"
-                                    target="_blank"><b>PASSWORD IHS</b></a></p>
-                                </center>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-
-                <script src="https://cdn.jsdelivr.net/
-                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
-                </script>
-            </body>
-            </html>';
-            
-            
-            $html = "
-            <!DOCTYPE html>
-            <html lang='es'>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Mensaje de correo electrónico</title>
-                <!-- Bootstrap CSS -->
-                <link href='https://cdn.jsdelivr.net/npm/
-                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' 
-                rel='stylesheet'>
-            </head>
-            <body>
-                <center>
-                    <table class='table table-bordered'> 
-                        <tr>
-                            <td style='background: #D35400; color:white; 
-                            font-family:Arial;'>
-                                <center>
-                                    <p><b>".$this->empresa['empresa_nombre']."</b></p>
-                                    <p>".$this->empresa['empresa_eslogan']."</p>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style='background: gray; font-family:Arial;'>
-                                <h2>Confirmación de Anulación!</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style='background: lightgray; font-family:Arial;'>
-                                <p>Señor(es): ".$cliente."</p>
-                                <p>Mediante este mensaje le informamos 
-                                 que su factura fue ANULADA.</p>
-                                <h3>Datos de la factura</h3>
-                                <p>FACTURA Nº: ".$factura_numero."
-                                <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."
-                                <br>COD. AUTORIZACION:</p>
-                                {$cuf}
-                                <p>¡Gracias por su preferencia!</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style='background: black; 
-                            color: white; 
-                            font-family:Arial; font-size:10pt; 
-                            line-height: 10px'>
-                                <center><br>
-                                   <a href='https://www.facebook.com/sisximpleman/' 
-                                   style='color: white; text-decoration: none;'
-                                    <p><b>XIMPLEMAN</b>
-                                    </a>
-                                   es un producto de 
-                                   <a href='https://www.passwordbolivia.com' 
-                                   style='color: white; text-decoration: none;'
-                                    target='_blank'><b>PASSWORD IHS</b></a></p>
-                                </center>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-
-                <script src='https://cdn.jsdelivr.net/
-                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'>
-                </script>
-            </body>
-            </html>";
-
-            //echo $html;
-            $this->email->message($html);
-
-            if($this->email->send()) {
-                $resultado = true;        
-            } else {
-                $resultado = false;
-            }
-            return $resultado;
-            //echo json_encode($resultado);
-        /*}else{                 
-            show_404();
-        }*/              
-       /* }
-    }*/
-    
-    
-    function enviar_correoanulacion($factura_id, $correo, $factura_numero, $factura_fecha, $total, $cod_autorizacion)
-    {
         if (!empty($correo)) {
+            
             $this->load->library('email');
             $this->email->set_newline("\r\n");
             $this->load->model('Configuracion_email_model');
@@ -2536,7 +2344,7 @@ class Factura extends CI_Controller{
                                      que la factura Nº {$factura_numero}, fue ANULADA.</p>
                                     <br>    
                                     {$cuf}
-                                    <br><p>¡Gracias por su preferencia!</p>
+                                    <br><p>Motivo: {$motivo}</p>
                                 </td>
                             </tr>
 
