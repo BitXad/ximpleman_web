@@ -69,7 +69,7 @@
                     <th>LIM. TARJETA</th>
                     <th>TARJETA CIRCULACION</th>
                     <th>IMAGEN</th>
-                    <th>Action</th>
+                    <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,19 +108,22 @@
                     <td><?php echo $v['vehiculo_tiposervicio']; ?></td>
                     <td><?php echo $v['vehiculo_asientos']; ?></td>
                     <td><?php echo $v['vehiculo_ruat']; ?></td>
-                    <td><?php echo $v['vehiculo_fechatarjeta']; ?></td>
+                    <td><?php echo date("d/m/Y", strtotime($v['vehiculo_fechatarjeta'])); ?></td>
                     <td><?php echo $v['vehiculo_tarjetacirculacion']; ?></td>
                     <td><?php echo $v['vehiculo_imagen']; ?></td>
-                    <td><a href="<?php echo site_url('vehiculo/edit/'.$v['vehiculo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
+                    <td><a href="<?php echo site_url('vehiculo/edit/'.$v['vehiculo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
+                        
                         <a
-                            onclick="return confirm('Are you sure You want to delete?')"
-                            href="<?php echo site_url('vehiculo/remove/'.$v['vehiculo_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                            onclick="return confirm('Esta a punto de eliminar un vehiculo. Esta seguro?')"
+                            href="<?php echo site_url('vehiculo/remove/'.$v['vehiculo_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> </a>
+                        
+                        <a href="<?php echo site_url('vehiculo/edit/'.$v['vehiculo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
                     </td>
                     </tr>
                      <?php }
                     
                            }else{
-                                  echo 'No data found';
+                                  echo 'No se econtraron datos...!';
                              }
 
           ?>

@@ -532,99 +532,100 @@ if($cliente[0]['cliente_id'] >0){
 					<span aria-hidden="true">&times;</span>
 				</button>
                             
-                        <div class="container">
+                                
                             
-                                <center>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        
-                                    
-                                    <div class="col-md-2" style="padding: 0;">
-<!--                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
-                                        <?php                                                     
-                                            $fecha = date('Y-m-d'); 
-                                            $hora = date('H:i:s');                                                                                         
-                                        ?>
-                                        
-                                        <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
-                                        <!--<h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>-->
-                                        <div hidden>                                            
-                                            <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;" >
-                                                <?php
-                                                    foreach($forma_pago as $forma){ ?>
-                                                        <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
-                                                <?php } ?>
-
-                                             </select>
-                                        </div>
-                                        
-                                        <h5 class="modal-title" id="myModalLabel"><b>FECHA ENTREGA</b></h5>
-                                        <?php 
-                                            $ahora = time();
-                                            $unDiaEnSegundos = 24 * 60 * 60;
-                                            $manana = $ahora + $unDiaEnSegundos;
-                                            $mananaLegible = date("Y-m-d", $manana);
-                                            # ahoraLegible únicamente es para demostrar
-                                            //$ahoraLegible = date("Y-m-d H:i:s", $ahora);
-                                        ?>
-                                        <input type="date" id="pedido_fechaentrega" name="pedido_fechaentrega" value="<?php echo $mananaLegible; ?>" class="btn btn-default btn-xs" style="width: 120px;">
-                                    </div>
-                                        
-                                    <div class="col-md-2" style="padding: 0;">                                      
-                                        <h5 class="modal-title" id="myModalLabel"><b>HORA ENTREGA</b></h5>
-                                        <input type="time" id="pedido_horaentrega" name="pedido_horaentrega"  value="<?php echo date('H:i:s'); ?>" class="btn btn-default btn-xs" style="width: 120px;">
-                                    </div>
-                                    
-                                    <div class="col-md-2" style="padding: 0;">
-                                        <center>
-                                            
-                                        <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
-                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
-                                            <?php
-                                                foreach($tipo_transaccion as $tipo){ ?>
-                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
-                                            <?php } ?>
- 
-                                         </select>
-                                        </center>
-                                    </div>
-                                    
-                                    <?php 
-                                            $ocultar = "none";
-                                        if ($parametro[0]["parametro_modulorestaurante"]==1){    
-                                            $ocultar = "block";
-                                            
-                                    } ?>   
-                                    <div class="col-md-2" style="padding: 0; display: <?php echo $ocultar; ?>">
-                                        <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
-                                        <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
-                                                
-                                            <?php
-                                                foreach($tipo_servicio as $ts){ ?>
-                                                    <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
-                                            <?php } ?>
- 
-                                         </select>
-                                        <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
-                                                
-                                                    <option value="0">MESA</option>
-                                            <?php $mesas = 30;
-                                                for($x = 1; $x<=$mesas; $x++ ){ ?>
-                                                    <option value="<?php echo $x; ?>"><?php echo $x; ?></option>
-                                            <?php } ?>
- 
-                                         </select>
-                                        
-                                    </div>
-                                    
-                                    
-                                </div>                                    
-                                                                                             
-			</div>
 			</div>
                             
 			<div class="modal-body">
-                            
+                            <div class="container">
+
+
+                                        <div class="row">
+                                            <!--<div class="col-md-12">-->
+
+
+                                            <div class="col-md-2" style="padding: 0;">
+        <!--                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
+                                                <?php                                                     
+                                                    $fecha = date('Y-m-d'); 
+                                                    $hora = date('H:i:s');                                                                                         
+                                                ?>
+
+                                                <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
+                                                <!--<h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>-->
+                                                <div hidden>                                            
+                                                    <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;" >
+                                                        <?php
+                                                            foreach($forma_pago as $forma){ ?>
+                                                                <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
+                                                        <?php } ?>
+
+                                                     </select>
+                                                </div>
+
+                                                <h5 class="modal-title" id="myModalLabel"><b>FECHA ENTREGA</b></h5>
+                                                <?php 
+                                                    $ahora = time();
+                                                    $unDiaEnSegundos = 24 * 60 * 60;
+                                                    $manana = $ahora + $unDiaEnSegundos;
+                                                    $mananaLegible = date("Y-m-d", $manana);
+                                                    # ahoraLegible únicamente es para demostrar
+                                                    //$ahoraLegible = date("Y-m-d H:i:s", $ahora);
+                                                ?>
+                                                <input type="date" id="pedido_fechaentrega" name="pedido_fechaentrega" value="<?php echo $mananaLegible; ?>" class="btn btn-default btn-xs" style="width: 120px;">
+                                            </div>
+
+                                            <div class="col-md-2" style="padding: 0;">                                      
+                                                <h5 class="modal-title" id="myModalLabel"><b>HORA ENTREGA</b></h5>
+                                                <input type="time" id="pedido_horaentrega" name="pedido_horaentrega"  value="<?php echo date('H:i:s'); ?>" class="btn btn-default btn-xs" style="width: 120px;">
+                                            </div>
+
+                                            <div class="col-md-2" style="padding: 0;">
+                                                <center>
+
+                                                <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
+                                                <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
+                                                    <?php
+                                                        foreach($tipo_transaccion as $tipo){ ?>
+                                                            <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                                    <?php } ?>
+
+                                                 </select>
+                                                </center>
+                                            </div>
+
+                                            <?php 
+                                                    $ocultar = "none";
+                                                if ($parametro[0]["parametro_modulorestaurante"]==1){    
+                                                    $ocultar = "block";
+
+                                            } ?>   
+                                                <br>
+
+
+                                        <div class="col-md-4" style="padding: 0; display: <?php echo $ocultar; ?>">
+                                            <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
+                                            <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
+
+                                                <?php
+                                                    foreach($tipo_servicio as $ts){ ?>
+                                                        <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
+                                                <?php } ?>
+
+                                             </select>
+                                            <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
+
+                                                        <option value="0">MESA</option>
+                                                <?php $mesas = 30;
+                                                    for($x = 1; $x<=$mesas; $x++ ){ ?>
+                                                        <option value="<?php echo $x; ?>"><?php echo $x; ?></option>
+                                                <?php } ?>
+
+                                             </select>
+
+                                        </div>
+                                </div>
+                                </div>
 <!----------- tabla detalle cuenta ----------------------------------->
 
                 

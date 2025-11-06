@@ -281,6 +281,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 <input type="text" id="credito_id" value="0" name="credito_id" hidden>
+<input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="punto_venta" value="<?php echo 0; ?>" hidden>
+
+
+
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>

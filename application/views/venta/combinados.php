@@ -152,7 +152,7 @@
                                       <div class="modal-dialog" role="document">
                                             <br><br>
                                         <div class="modal-content">
-                                          <div class="modal-header"><b style="font-size: 14px;">Asignar Productos</b>
+                                          <div class="modal-header" style="background: #lightgray"><b style="font-size: 14px;">Asignar Productos</b>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             

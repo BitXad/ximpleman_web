@@ -155,9 +155,9 @@ function actualizacaracteristicas(e,detalle_id,producto_id,cotizacion_id) {
 }
 
 function totality(total_detalle){
-    var decimales = document.getElementById(decimales).value; 
+    var decimales = document.getElementById('decimales').value; 
     var totalfinal = Number(total_detalle).toFixed(decimales);
-    $("#cotizacion_total").val(totalfinal.toFixed(decimales));
+    $("#cotizacion_total").val(Number(totalfinal).toFixed(decimales));
 }
 
 function detallecota(cotizacion_id,producto_id){
@@ -233,19 +233,24 @@ function cotivalidar(e,opcion) {
 
   tecla = (document.all) ? e.keyCode : e.which;
 
-  
+    if (e==13){
 
-    if (tecla==13){ 
+          var tecla = e;
 
+    }else{
+      
+    var tecla = (document.all) ? e.keyCode : e.which;
+    
+    }
     
 
+    if (tecla==13){ 
+        
         if (opcion==1){             
 
             buscarcliente();            
 
         }
-
-
 
         if (opcion==2){   
 
@@ -596,8 +601,6 @@ function tablaresultados(opcion)
 
     }
 
-    
-
     if (opcion == 2){
 
         controlador = base_url+'venta/buscarcategorias/';
@@ -605,10 +608,6 @@ function tablaresultados(opcion)
         parametro = document.getElementById('categoria_prod').value;
 
     }
-
-    
-
-
 
     $.ajax({url: controlador,
 
@@ -618,9 +617,6 @@ function tablaresultados(opcion)
 
            success:function(respuesta){     
 
-               
-
-                            
 
                 $("#encontrados").val("- 0 -");
 
@@ -630,9 +626,6 @@ function tablaresultados(opcion)
 
                if (registros != null){
 
-                   
-
-                   
 
                     var cont = 0;
 

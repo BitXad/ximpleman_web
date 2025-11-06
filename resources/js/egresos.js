@@ -6,6 +6,7 @@ function inicio(){
     fechadeegreso(filtro);
 }
 
+let _egresosDatos = [];
 
 function now_sql() {
   const fecha = new Date();
@@ -104,10 +105,14 @@ function fechadeegreso(filtro){
             categ:categ,
             categoria:categoria,
         },
-        success:function(resul){         
+        success:function(resul){
+            
             $("#pillados").val("- 0 -");
             var registros = JSON.parse(resul);
+            _egresosDatos = Array.isArray(registros) ? registros : []; // NUEVO
+            
             if (registros != null){
+                
                 var nombre_moneda = document.getElementById('nombre_moneda').value;
                 var lamoneda_id = document.getElementById('lamoneda_id').value;
                 var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
@@ -271,4 +276,163 @@ function numberFormat(numero){
     }else{
         return resultado;
     }
+}
+
+/* ========= Exportar Egresos a Excel (CSV) ========= */
+function exportEgresosExcel(){
+  if(!_egresosDatos || _egresosDatos.length === 0){
+    alert("No hay datos para exportar. Realiza primero una consulta o filtro.");
+    return;
+  }
+
+  // Datos de moneda (como en la vista)
+  var nombre_moneda = document.getElementById('nombre_moneda').value;
+  var lamoneda_id   = document.getElementById('lamoneda_id').value;
+  var lamoneda      = JSON.parse(document.getElementById('lamoneda').value);
+
+  let otraMonedaNombre = "";
+  if (Array.isArray(lamoneda) && lamoneda.length >= 2){
+    otraMonedaNombre = (String(lamoneda_id) === "1")
+      ? lamoneda[1]['moneda_descripcion']
+      : lamoneda[0]['moneda_descripcion'];
+  }
+
+  // Cabecera Excel-friendly
+  let CSV = 'sep=,' + '\r\n';
+
+  // Encabezados (ahora con FECHA y HORA separados)
+  const headers = [
+    'N°',
+    'NOMBRE',
+    '# RECIBO',
+    'FECHA',
+    'HORA',
+    'CATEGORIA',
+    'CONCEPTO',
+    `MONTO (${nombre_moneda})`,
+    `MONTO EQ. (${otraMonedaNombre})`,
+    'MONEDA',
+    'FORMA DE PAGO',
+    'GLOSA',
+    'BANCO',
+    'CUENTA',
+    'USUARIO'
+  ];
+  CSV += headers.join(',') + '\r\n';
+
+  // Cuerpo
+  let totalBase = 0, totalEq = 0;
+  for(let i=0;i<_egresosDatos.length;i++){
+    const r = _egresosDatos[i] || {};
+
+    const monto = toNumber(r["egreso_monto"]);
+    const tc    = toNumber(r["egreso_tc"]);
+    // mismo criterio que la vista para la moneda equivalente
+    let eq = 0;
+    if (String(lamoneda_id) === "1") {
+      eq = tc ? (monto / tc) : 0;
+    } else {
+      eq = monto * tc;
+    }
+    totalBase += monto;
+    totalEq   += eq;
+
+    // separar fecha/hora desde egreso_fecha (soporta "YYYY-MM-DD HH:MM:SS" o ISO)
+    const [fechaSolo, horaSola] = splitDateTime(r["egreso_fecha"]);
+
+    const fila = [
+      i+1,
+      safeCSV(r["egreso_nombre"]),
+      safeCSV(r["egreso_numero"]),
+      safeCSV(fechaSolo),               // FECHA
+      safeCSV(horaSola),                // HORA
+      safeCSV(r["egreso_categoria"]),
+      safeCSV(r["egreso_concepto"]),
+      fixed2(monto),
+      fixed2(eq),
+      safeCSV(r["egreso_moneda"] || r["moneda_descripcion"] || ''),
+      safeCSV(r["forma_nombre"] || ''),
+      safeCSV(r["egreso_glosa"] || ''),
+      safeCSV(r["banco_nombre"] || ''),
+      safeCSV(r["banco_numcuenta"] || ''),
+      safeCSV(r["usuario_nombre"] || '')
+    ];
+    CSV += fila.join(',') + '\r\n';
+  }
+
+  // Fila de totales (se desplaza una columna más por la nueva columna HORA)
+  CSV += [
+    '', '', '', '', '', 'TOTAL',
+    fixed2(totalBase),
+    fixed2(totalEq),
+    nombre_moneda,
+    '', '', '', '', '', ''
+  ].join(',') + '\r\n';
+
+  // Descargar
+  const nombre = "Egresos_" + timeStamp();
+  const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(CSV);
+  const link = document.createElement("a");
+  link.href = uri;
+  link.style.display = "none";
+  link.download = nombre + ".csv";   // Si prefieres .xls, cambia a ".xls"
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+/* ===== Helpers compartidos ===== */
+function safeCSV(val){
+  if (val === null || val === undefined) return '';
+  let s = String(val).replace(/\r?\n|\r/g, ' ').replace(/"/g, '""');
+  if (/[",]/.test(s)) s = `"${s}"`;
+  return s;
+}
+function toNumber(v){
+  const n = Number(v);
+  return isNaN(n) ? 0 : n;
+}
+function fixed2(n){
+  return (toNumber(n)).toFixed(2);
+}
+function timeStamp(){
+  const d = new Date();
+  const pad = (x)=> (x<10?'0':'')+x;
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+}
+
+/* Nuevo helper: separa fecha/hora de un campo combinado */
+function splitDateTime(val){
+  if (!val && val !== 0) return ['',''];
+  let s = String(val).trim();
+
+  // Quitar 'Z' final si viene en ISO
+  if (s.endsWith('Z')) s = s.slice(0, -1);
+
+  // Separadores comunes: espacio o 'T'
+  if (s.includes('T')){
+    const [d, t] = s.split('T');
+    return [d || '', cleanTime(t || '')];
+  }
+  if (s.includes(' ')){
+    const idx = s.indexOf(' ');
+    const d = s.slice(0, idx);
+    const t = s.slice(idx+1);
+    return [d || '', cleanTime(t || '')];
+  }
+
+  // Si solo vino fecha o solo hora
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return [s, ''];
+  if (/^\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(s)) return ['', cleanTime(s)];
+
+  // Si viene con offset "YYYY-MM-DDTHH:MM:SS+00:00" sin 'T'
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})(.+)$/);
+  if (m) return [m[1], cleanTime(m[2].trim())];
+
+  return [s, '']; // fallback: todo como fecha
+}
+function cleanTime(t){
+  // Remueve milisegundos largos tipo .000 o .000000
+  t = t.replace(/\.\d+$/, '');
+  return t;
 }

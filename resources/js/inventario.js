@@ -2119,9 +2119,13 @@ function mostrar_kardex(producto_id){
                     html += "            <td style='padding:0'>";
                     
                     //Nº de ingreso
-                    if (k[i]['num_ingreso']!=0){ 
+                    if (k[i]['num_ingreso']!=0){  
                         html += k[i]['num_ingreso'];
-                        html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print'><fa class='fa fa-print'></fa> </a>";
+                        if (k[i]['estado']==1){
+                            html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print' title='RECIBO DE COMPRA'><fa class='fa fa-print'></fa> </a>";
+                        }else{    
+                            html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='COMPRA ANULADA' style='background: gray;'><fa class='fa fa-print'></fa> </a>";
+                        }
                     }
                     
                     html += "</td>";
@@ -2147,10 +2151,29 @@ function mostrar_kardex(producto_id){
                         
                     //Nº Doc Venta
                     html += "            <td style='padding:0'>";
-                        if (k[i]['num_salida']!=0){
+                    
+                        //if (k[i]['num_salida']!=0){
+                        if (k[i]['tipo']==2){ //ventas            
                             html += Number(k[i]['num_salida']);
-                            html += "<a href='"+base_url+"factura/imprimir_recibo/"+k[i]['num_salida']+"' target='_blank' class='btn btn-xs btn-success no-print'><fa class='fa fa-print'></fa> </a>";
+                            html += "<a href='"+base_url+"factura/imprimir_recibo/"+k[i]['num_salida']+"' target='_blank' class='btn btn-xs btn-success no-print' title='NOTA DE VENTA'><fa class='fa fa-print'></fa> </a>";
                         }  
+                        if (k[i]['tipo']==3){ //traspasos
+                            html += k[i]['num_salida'];
+                            html += "<a href='"+base_url+"factura/imprimir_traspaso/"+k[i]['num_salida']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='NOTA DE TRASPASO'><fa class='fa fa-print'></fa> </a>";
+                        }
+                        
+                        if (k[i]['tipo']==5){ //Pedidos
+                            html += k[i]['num_salida'];
+                            html += "<a href='"+base_url+"pedido/imprimir/"+k[i]['num_salida']+"' target='_blank' class='btn btn-xs btn-warning no-print' title='PEDIDO/PREVENTA PENDIENTE'><fa class='fa fa-print'></fa> </a>";
+                        }
+                        
+                        
+                        if (k[i]['tipo']==6){ //ventas huerfanas
+                            html += k[i]['num_salida'];
+                            html += "<button  class='btn btn-xs btn-danger no-print' title='OPERACION DE VENTA FALLIDA' onclick='eliminar_registrohuerfano("+k[i]['id']+")'><fa class='fa fa-trash'></fa> </button>";
+                        }
+                        
+                        
                     html += "</td>";
                         
                         
@@ -2830,6 +2853,7 @@ function actualizar_productos(){
 
 }
 
+
 function mostrar_saldos(){
     
     var base_url = document.getElementById('base_url').value;
@@ -2857,4 +2881,40 @@ function mostrar_saldos(){
         }
     });      
 
+}
+
+function eliminar_registrohuerfano(detalleven_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var producto_id = document.getElementById('producto_id').value;
+    var controlador = base_url+"inventario/eliminar_registrohuerfano/";
+
+    
+    //alert("base de datos: "+base_datos+" operacion: "+operacion)
+    
+//    document.getElementById('loaderindex').style.display = 'block'; //muestra el bloque del loader
+     
+    var r = confirm("ADVERTENCIA: Esta operación eliminara el registro venta. \n ¿Desea Continuar?");
+
+    if (r == true) {
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{detalleven_id: detalleven_id},
+            success:function(respuesta){
+
+                var res =  JSON.parse(respuesta);
+
+                if(res){
+                        mostrar_kardex(producto_id);      
+                }            
+
+            },
+            complete: function (jqXHR, textStatus) {
+                //document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+        }); 
+        
+    }
 }

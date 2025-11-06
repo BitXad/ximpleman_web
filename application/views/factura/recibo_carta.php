@@ -138,13 +138,14 @@ border-bottom : 1px solid #aaa;
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
-                <font size="3" face="arial"><b><?php echo $parametro[0]["parametro_tituldoc"]; ?></b></font> <br>
-                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b><?php echo (isset($venta[0]['traspaso_id']))?"TRASPASO":$parametro[0]["parametro_tituldoc"]; ?></b></font> <br>
+                
+                <font size="3" face="arial"><b>Nº 00<?php echo (isset($venta[0]['traspaso_id']))?$venta[0]['traspaso_id']:$venta[0]['venta_id']; ?></b></font> <br>
                 <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>
                     <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                     T.C. <?php echo number_format($moneda['moneda_tc'],$decimales,".",","); ?></b></font> <br>
                     <?php } ?>
-                <!--<font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>-->
+               
             </center>
         </td>
         
@@ -159,7 +160,7 @@ border-bottom : 1px solid #aaa;
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." / NIT: ".$venta[0]['cliente_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
+                    <b><?php echo (isset($venta[0]['traspaso_id']))?"SUCURSAL/DEP.: ":"SEÑOR(ES): "; ?></b><?php echo $venta[0]['cliente_razon'].""; ?><br>
                     <b>DIRECCIÓN: </b><?php echo $venta[0]['cliente_direccion'].""; ?><br>
                     <b>ZONA: </b><?php echo $venta[0]['zona_nombre'].""; ?>
                     <?php
@@ -333,7 +334,7 @@ border-bottom : 1px solid #aaa;
         </td>
         <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
 
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
+            <?php echo (isset($venta[0]['traspaso_id']))?"":"GRACIAS POR SU PREFERENCIA...!!!"; ?>  
 
         </td>
         <td align="right"  style="padding: 0;  line-height: 10px; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
@@ -420,7 +421,7 @@ border-bottom : 1px solid #aaa;
             </b>
             </font>
             <?php } ?>
-            <font size="1">
+            <font size="1" <?php echo (isset($venta[0]['traspaso_id']))?"hidden":""; ?>>
                 <?php echo "EFECTIVO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
                 <?php echo "CAMBIO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>
             </font>

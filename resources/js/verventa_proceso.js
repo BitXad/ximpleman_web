@@ -2,12 +2,14 @@ $(document).on("ready",inicio);
 function inicio(){
     tabladetalle_productos();
 }
+
 $(document).ready(function() {
     function volveraleer() {
        tabladetalle_productos();
     }
     setInterval(volveraleer, 1000);
 });
+
 
 function numberFormat(numero){
     // Variable que contendra el resultado final
@@ -53,7 +55,10 @@ function tabladetalle_productos(){
            type:"POST",
            data:{},
             success:function(resul){
-                var registros =  JSON.parse(resul);
+                var resultados =  JSON.parse(resul);                
+                var registros = resultados['datos'];
+                var temporal = resultados['temporal'];
+                
                 if (registros != null){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     var cant_total = 0;
@@ -86,13 +91,13 @@ function tabladetalle_productos(){
                         }else if(n== 10){
                             ancho = "25";
                             alto = "25";
-                            letra = "2";
+                            letra = "3";
                             espacio = "0";
                            // altoletra = "23px;";
                         }else if(n>= 11){
                             ancho = "20";
                             alto = "20";
-                            letra = "2";
+                            letra = "3";
                             espacio = "0";
                           //  altoletra = "18px;";
                         }
@@ -155,6 +160,12 @@ function tabladetalle_productos(){
                         html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(decimales))+"</b></font></h4>          ";
                     $("#verventa_detalle").html(html);
                     $("#estotal").html(html2);
+                    
+                    html = "";
+                    html = "<span>"+temporal[0]['temporal_dato']+"</span>";
+                    
+                    $("#datos_cliente").html(html);
+                        
                     
             }
                 

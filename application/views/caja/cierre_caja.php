@@ -26,9 +26,9 @@
 
 <?php  
     //var_dump($caja);
-    $oculto = "hidden"; //hidden para oculto, vacio para mostrar
+    $oculto = "hidden";//"hidden"; //hidden para oculto, vacio para mostrar
 
-    $mostrar_fechas = 1; //1 mostrar fecha - 0 ocultar fechas
+    $mostrar_fechas = 0; //1 mostrar fecha - 0 ocultar fechas
     
     $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
     $fecha_desde = $caja["caja_fechaapertura"]; //date('Y-m-d');
@@ -51,7 +51,7 @@
                 $fecha_desde = $caja["caja_fechaapertura"]; //$fecha_actual;
                 $hora_desde = $caja["caja_horaapertura"]; //'00:00'; //'16:00';
                 $fecha_hasta = $fecha_actual;
-                $hora_hasta = date('H:i:s'); //'23:59';
+                $hora_hasta = '23:59';
              
     } 
     // Si la fecha actual es un día después de la fecha de apertura de la caja
@@ -156,10 +156,6 @@
 
             </div>
 
-            
-            
-            
-                 
           	<div class="box-body" id="registro_moneda" style="display: none;">
                     
                     <div class="row clearfix">
@@ -171,6 +167,7 @@
                                 <input type="text" name="saldo_caja" value="0.00" class="form-control" id="saldo_caja" />
                             </div>
                         </div>
+                        
                         <div class="col-md-6" <?= $oculto; ?>>
                             <label for="caja_diferencia" class="control-label">Caja Diferencia</label>
                             <div class="form-group">
@@ -301,14 +298,30 @@
                             </div>
                                 <span id="span_corte005" class="btn btn-facebook btn-xs btn-block">00.00</span>
                         </div>
-                    </div>
-                        <div class="col-md-3">
+                        
+                        <div class="col-md-6">
+                            <center><label for="monto_caja" class="control-label"><fa class="fa fa-warning"></fa> INSTRUCCIONES</label><br>Pegar en el campo de abajo el registro de transacciones Bancarias / QR
+                            <div class="form-group">
+                                <textarea type="texarea" name="transacciones" id="transacciones" value="" style="height: 100px;" class="form-control" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus="true">
+TRANSACCIONES QR:0.00
+TARJETAS DE DEBITO/CREDITO: 0.00
+TRASNFERENCIAS BANCARIAS: 0.00
+BILLETERA MOVIL: 0.00
+                                
+                                </textarea>
+                            </div>
+                        </div>  
+                        
+                        
+                        <div class="col-md-6">
                             <label for="caja_cierre" class="control-label"><span class="text-danger">*</span>Monto Bs</label>
                             <div class="form-group">
                                 <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" style="background-color: yellow; font-size:20px;"/>
                                 <button class="btn btn-primary btn-xs" type="button" onclick="verificar_caja()" onfocus="true"><fa class="fa fa-spinner"> </fa> Verificar</button>
                             </div>
                         </div>
+                    </div>
+                    
 
                     <div class="col-md-6" <?= $oculto; ?>>
                             <label for="caja_estado" class="control-label"><span class="text-danger">*</span>Estado</label>
@@ -338,6 +351,9 @@
                                 <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : date('H:i:s')); ?>" class="form-control" id="caja_horacierre" required />
                             </div>
                         </div>
+                    
+
+
                     
                 </div>
                     <!--<div>

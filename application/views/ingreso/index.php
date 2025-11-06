@@ -101,6 +101,13 @@
             <a href="<?php echo site_url('ingreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Ingreso</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeingreso(null)" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            
+            
+            <!-- NUEVO: botón Exportar -->
+            <button type="button" class="btn btn-success btn-foursquarexs" onclick="exportIngresosExcel()">
+              <font size="5"><span class="fa fa-file-excel-o"></span></font><br><small>Exportar</small>
+            </button>
+            
         </center>            
     </div>
 </div>

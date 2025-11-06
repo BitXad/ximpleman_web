@@ -244,6 +244,10 @@ function vermodal(cadena) {
 //  document.getElementById("miModal").style.display = "none";
 //}
 
+// almacén del último resultado para exportar
+let _bitacoraDatos = [];
+
+// (tu función original, solo agrego _bitacoraDatos = resp;)
 function operaciones_observadas(opcion)
 {
     var base_url = document.getElementById('base_url').value;
@@ -253,56 +257,116 @@ function operaciones_observadas(opcion)
     let fechaactual = fecha_actual();
     
     if(opcion==1){ //ventas de hoy
-        condicion = " b.bitacoracaja_fecha = '"+fechaactual+"'"
+        condicion = " b.bitacoracaja_fecha = '"+fechaactual+"'";
     }
     
-    if(opcion==2){ //ventas de hoy
-        
-        let fecha = document.getElementById("calendario_bitacora").value;
-        
-        condicion = " b.bitacoracaja_fecha = '"+fecha+"'"
+    if(opcion==2){ //ventas por rango de fechas
+        let fecha1 = document.getElementById("calendario_bitacora1").value;
+        let fecha2 = document.getElementById("calendario_bitacora2").value;
+        condicion = " b.bitacoracaja_fecha >= '"+fecha1+"' and b.bitacoracaja_fecha <= '"+fecha2+"'";
     }
     
-    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{condicion:condicion},
-            success:function(respuesta){
-                
-                var resp = JSON.parse(respuesta);
-                
-                let cad = "";
-                let html = "";
-                                
-                for(var i=0; i<resp.length; i++){
-   
-                    html += "<tr style='font-size:12px;'>";
-                    html += "<td>"+(i+1)+"</td>";
-//                    html += "<td><textarea style='width: 200px; height: 50px;' disabled>"+resp[i]["bitacoracaja_evento"]+"</textarea></td>";
-//                    html += "<td style='max-width: 300px; font-size: 10px;'>"+resp[i]["bitacoracaja_evento"]+"</td>";
-                    cad = (resp[i]["bitacoracaja_evento"]==null)?"SIN ESPECIFICAR":resp[i]["bitacoracaja_evento"];
-                    //alert(cad);
-                    html += "<td style='font-size: 10px;'>"+cad.substring(0,30)+"... <button class='btn btn-warning btn-xs' title='"+cad+"' onclick='vermodal("+JSON.stringify(cad)+")'>...</button></td>";
-                    html += "<td>"+formato_fecha(resp[i]["bitacoracaja_fecha"])+"</td>";
-                    html += "<td>"+resp[i]["bitacoracaja_hora"]+"</td>";
-                    html += "<td>"+resp[i]["usuario_nombre"]+"</td>";
-                    
-                    html += "</tr>";
-                    
-                    
-                }
-                
-                $("#tabla_operacionesobservadas").html(html);
-                
-            },
-            error:function(respuesta){
-               // alert("Algo salio mal...!!!");
-               html = "";
-               $("#tablaresultados").html(html);
-            },
-            complete: function (jqXHR, textStatus) {
-                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
-                //tabla_inventario();
-            }   
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{condicion:condicion},
+        success:function(respuesta){
+            var resp = JSON.parse(respuesta) || [];
+            _bitacoraDatos = resp; // << guardar para exportar
+
+            let html = "";
+            for(var i=0; i<resp.length; i++){
+                let cad = (resp[i]["bitacoracaja_evento"]==null) ? "SIN ESPECIFICAR" : resp[i]["bitacoracaja_evento"];
+                html += "<tr style='font-size:12px;'>";
+                html += "<td>"+(i+1)+"</td>";
+                html += "<td style='font-size: 10px;'>"+cad.substring(0,30)+"... <button class='btn btn-warning btn-xs' title='"+cad+"' onclick='vermodal("+JSON.stringify(cad)+")'>...</button></td>";
+                html += "<td>"+formato_fecha(resp[i]["bitacoracaja_fecha"])+"</td>";
+                html += "<td>"+(resp[i]["bitacoracaja_hora"]||"")+"</td>";
+                html += "<td>"+(resp[i]["usuario_nombre"]||"")+"</td>";
+                html += "</tr>";
+            }
+            $("#tabla_operacionesobservadas").html(html);
+        },
+        error:function(){
+            $("#tablaresultados").html("");
+        },
+        complete: function () {
+            document.getElementById('loader') && (document.getElementById('loader').style.display = 'none');
+        }
     });
+}
+
+/* ===== Exportación a Excel (CSV) ===== */
+function exportarOperacionesExcel(){
+    if(!_bitacoraDatos || _bitacoraDatos.length === 0){
+        alert("No hay datos para exportar. Realiza primero una búsqueda por fechas.");
+        return;
+    }
+
+    const fecha1 = document.getElementById("calendario_bitacora1").value || "";
+    const fecha2 = document.getElementById("calendario_bitacora2").value || "";
+
+    // Encabezado Excel-friendly (+ separador)
+    let CSV = 'sep=,' + '\r\n';
+    // Títulos (TODOS los campos de bitacora_caja + usuario_nombre)
+    let headers = [
+        'bitacoracaja_id',
+        'bitacoracaja_fecha',
+        'bitacoracaja_hora',
+        'bitacoracaja_evento',
+        'usuario_id',
+        'usuario_nombre',
+        'bitacoracaja_montoreg',
+        'bitacoracaja_montocaja',
+        'bitacoracaja_tipo',
+        'caja_id'
+    ];
+    CSV += headers.join(',') + '\r\n';
+
+    // Filas
+    for(let i=0;i<_bitacoraDatos.length;i++){
+        const r = _bitacoraDatos[i];
+
+        // Sanitizar cada valor para CSV
+        const fila = [
+            r["bitacoracaja_id"],
+            safeCSV(r["bitacoracaja_fecha"]),
+            safeCSV(r["bitacoracaja_hora"]),
+            safeCSV(fullEvento(r["bitacoracaja_evento"])),
+            r["usuario_id"],
+            safeCSV(r["usuario_nombre"]),
+            safeCSV(r["bitacoracaja_montoreg"]),
+            safeCSV(r["bitacoracaja_montocaja"]),
+            r["bitacoracaja_tipo"],
+            r["caja_id"]
+        ];
+        CSV += fila.join(',') + '\r\n';
+    }
+
+    // Generar nombre de archivo
+    const nombre = `Operaciones_${fecha1}_a_${fecha2}`.replace(/\s+/g,'_');
+    const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(CSV);
+
+    // Descargar
+    const link = document.createElement("a");
+    link.href = uri;
+    link.style.display = "none";
+    link.download = nombre + ".csv"; // Excel lo abre sin problema
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+/* Helpers para CSV */
+function safeCSV(val){
+    if (val === null || val === undefined) return '';
+    // Convertir a string y limpiar saltos/comas problemáticas
+    let s = String(val).replace(/\r?\n|\r/g, ' ').replace(/"/g,'""');
+    // Encerrar en comillas si contiene coma o comillas
+    if (/[",]/.test(s)) s = `"${s}"`;
+    return s;
+}
+function fullEvento(txt){
+    if(!txt) return 'SIN ESPECIFICAR';
+    return String(txt);
 }

@@ -1001,7 +1001,9 @@ class Inventario_model extends CI_Model
                   c.compra_hora as hora,
                   '' as detalleobs,
                   d.detallecomp_tc as tipo_cambio,
-                  d.detallecomp_id as id
+                  d.detallecomp_id as id,
+                  c.estado_id as estado,
+                  1 as tipo
                 from
                   compra c,
                   detalle_compra d
@@ -1027,7 +1029,9 @@ class Inventario_model extends CI_Model
                   v.venta_hora as hora,
                   '' as detalleobs,
                   t.detalleven_tc as tipo_cambio,
-                  t.detalleven_id as id
+                  t.detalleven_id as id,
+                  v.estado_id as estado,
+                  2 as tipo
                 from
                   venta v,
                   detalle_venta t
@@ -1036,7 +1040,91 @@ class Inventario_model extends CI_Model
                   v.venta_id = t.venta_id and 
                   v.venta_fecha >= '".$desde."' and 
                   v.venta_fecha <= '".$hasta."'
-                  
+                      
+                union
+
+                select 
+                  v.venta_fecha as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.traspaso_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_costo as costov_unit,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
+                  v.venta_hora as hora,
+                  '' as detalleobs,
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id,
+                  v.estado_id as estado,
+                  3 as tipo
+                from
+                  traspaso v,
+                  detalle_venta t
+                where
+                  t.producto_id = ".$producto_id." and 
+                  v.traspaso_id = t.traspaso_id and 
+                  v.venta_fecha >= '".$desde."' and 
+                  v.venta_fecha <= '".$hasta."'
+                      
+                union
+
+                select 
+                  date(v.pedido_fecha) as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.pedido_id as num_salida,
+                  t.detalleped_cantidad as unidad_vend,
+                  t.detalleped_costo as costov_unit,
+                  (t.detalleped_cantidad * t.detalleped_costo) as importe_salida,
+                  time(v.pedido_fecha) as hora,
+                  '' as detalleobs,
+                  t.detalleped_tc as tipo_cambio,
+                  t.detalleped_id as id,
+                  v.estado_id as estado,
+                  5 as tipo
+                from
+                  pedido v,
+                  detalle_pedido t
+                where
+                  v.estado_id = 11 and
+                  t.producto_id = ".$producto_id." and 
+                  v.pedido_id = t.pedido_id and 
+                  date(v.pedido_fecha) >= '".$desde."' and 
+                  date(v.pedido_fecha) <= '".$hasta."'
+                      
+                union
+
+                SELECT 
+                    date(now()) AS fecha,
+                    0 AS num_ingreso,
+                    0 AS unidad_comp,
+                    0 AS costoc_unit,
+                    0 AS importe_ingreso,
+                    0 AS num_salida,
+                    t.detalleven_cantidad AS unidad_vend,
+                    t.detalleven_costo AS costov_unit,
+                    (t.detalleven_cantidad * t.detalleven_costo) AS importe_salida,
+                    time(now()) AS hora,
+                    '' AS detalleobs,
+                    t.detalleven_tc AS tipo_cambio,
+                    t.detalleven_id AS id,
+                    1 as estado,
+                    6 as tipo
+                FROM 
+                    detalle_venta t
+                LEFT JOIN 
+                    venta v ON v.venta_id = t.venta_id
+                WHERE 
+                    t.producto_id = ".$producto_id." 
+                    AND (v.venta_id IS NULL) 
+                    AND (t.traspaso_id IS NULL) 
+                    AND (t.produccion_id IS NULL) 
+                    AND (t.detalleserv_id IS NULL) 
+                      
                 union
                 
                 select 
@@ -1052,7 +1140,9 @@ class Inventario_model extends CI_Model
                   ds.detalleserv_horaterminado as hora,
                   concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
                   t.detalleven_tc as tipo_cambio,
-                  t.detalleven_id as id
+                  t.detalleven_id as id,
+                  1 as estado,
+                  4 as tipo
                 from
                   detalle_serv ds,
                   detalle_venta t
@@ -1088,7 +1178,9 @@ class Inventario_model extends CI_Model
                   c.compra_hora as hora,
                   '' as detalleobs,
                   d.detallecomp_tc as tipo_cambio,
-                  d.detallecomp_id as id
+                  d.detallecomp_id as id,
+                  c.estado_id as estado,
+                  1 as tipo
                 from
                   compra c,
                   detalle_compra d
@@ -1110,11 +1202,13 @@ class Inventario_model extends CI_Model
                   v.venta_id as num_salida,
                   t.detalleven_cantidad as unidad_vend,
                   t.detalleven_precio as costov_unit,
-                  (t.detalleven_cantidad * t.detalleven_precio) as importe_salida,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
                   v.venta_hora as hora,
                   '' as detalleobs,
                   t.detalleven_tc as tipo_cambio,
-                  t.detalleven_id as id
+                  t.detalleven_id as id,
+                  v.estado_id as estado,
+                  2 as tipo
                 from
                   venta v,
                   detalle_venta t
@@ -1123,7 +1217,91 @@ class Inventario_model extends CI_Model
                   v.venta_id = t.venta_id and 
                   v.venta_fecha >= '".$desde."' and 
                   v.venta_fecha <= '".$hasta."'
-                  
+                      
+                union
+
+                select 
+                  v.venta_fecha as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.traspaso_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_precio as costov_unit,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
+                  v.venta_hora as hora,
+                  '' as detalleobs,
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id,
+                  v.estado_id as estado,
+                  3 as tipo
+                from
+                  traspaso v,
+                  detalle_venta t
+                where
+                  t.producto_id = ".$producto_id." and 
+                  v.traspaso_id = t.traspaso_id and 
+                  v.venta_fecha >= '".$desde."' and 
+                  v.venta_fecha <= '".$hasta."'
+                      
+                union
+
+                select 
+                  date(v.pedido_fecha) as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.pedido_id as num_salida,
+                  t.detalleped_cantidad as unidad_vend,
+                  t.detalleped_precio as costov_unit,
+                  (t.detalleped_cantidad * t.detalleped_costo) as importe_salida,
+                  time(v.pedido_fecha) as hora,
+                  '' as detalleobs,
+                  t.detalleped_tc as tipo_cambio,
+                  t.detalleped_id as id,
+                  v.estado_id as estado,
+                  5 as tipo
+                from
+                  pedido v,
+                  detalle_pedido t
+                where
+                  v.estado_id = 11 and
+                  t.producto_id = ".$producto_id." and 
+                  v.pedido_id = t.pedido_id and 
+                  date(v.pedido_fecha) >= '".$desde."' and 
+                  date(v.pedido_fecha) <= '".$hasta."'
+                      
+                union
+
+                SELECT 
+                    date(now()) AS fecha,
+                    0 AS num_ingreso,
+                    0 AS unidad_comp,
+                    0 AS costoc_unit,
+                    0 AS importe_ingreso,
+                    0 AS num_salida,
+                    t.detalleven_cantidad AS unidad_vend,
+                    t.detalleven_precio AS costov_unit,
+                    (t.detalleven_cantidad * t.detalleven_costo) AS importe_salida,
+                    time(now()) AS hora,
+                    '' AS detalleobs,
+                    t.detalleven_tc AS tipo_cambio,
+                    t.detalleven_id AS id,
+                    1 as estado,
+                    6 as tipo
+                FROM 
+                    detalle_venta t
+                LEFT JOIN 
+                    venta v ON v.venta_id = t.venta_id
+                WHERE 
+                    t.producto_id = ".$producto_id." 
+                    AND (v.venta_id IS NULL) 
+                    AND (t.traspaso_id IS NULL) 
+                    AND (t.produccion_id IS NULL) 
+                    AND (t.detalleserv_id IS NULL)
+                      
                 union
                 
                 select 
@@ -1139,7 +1317,9 @@ class Inventario_model extends CI_Model
                   ds.detalleserv_horaterminado as hora,
                   concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
                   t.detalleven_tc as tipo_cambio,
-                  t.detalleven_id as id
+                  t.detalleven_id as id,
+                  1 as estado,
+                  4 as tipo
                 from
                   detalle_serv ds,
                   detalle_venta t

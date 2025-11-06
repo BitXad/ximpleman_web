@@ -366,7 +366,11 @@
                         if($rolusuario[174-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Recepción</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('detalle_venta/despacho_fichas');?>" target="_blank"><i class="fa fa-tv"></i> Despacho</a>
                         </li>
                         
                         <li>
@@ -399,7 +403,6 @@
                     
                     <a href="#"><i class="fa fa-truck"></i> <span>Transporte</span></a>
                     <ul class="treeview-menu">
-
                         
                         <li>
                             <a href="<?php echo site_url('transporte');?>"><i class="fa fa-ticket"></i> Venta de Pasajes</a>
@@ -410,23 +413,23 @@
                         </li>
                         
                         <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-map"></i> Viajes</a>
+                            <a href="<?php echo site_url('viaje');?>"><i class="fa fa-map"></i> Viajes</a>
                         </li>
                         
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-map-marker"></i> Paradas</a>
+                            <a href="<?php echo site_url('parada');?>"><i class="fa fa-map-marker"></i> Paradas</a>
                         </li>
                         
                         <li>
-                            <a href="<?php echo site_url('pensionados/despachos');?>"><i class="fa fa-users"></i> Conductores</a>
+                            <a href="<?php echo site_url('conductor');?>"><i class="fa fa-users"></i> Conductores</a>
                         </li>
 
                         <li>
-                            <a href="<?php echo site_url('pensionados');?>"><i class="fa fa-user"></i> Ayudantes</a>
+                            <a href="<?php echo site_url('ayudante');?>"><i class="fa fa-user"></i> Ayudantes</a>
                         </li>
                                                 
                         <li>
-                            <a href="<?php echo site_url('reportes/reporteingresos');?>"><i class="fa fa-road"></i> Rutas</a>
+                            <a href="<?php echo site_url('ruta');?>"><i class="fa fa-road"></i> Rutas</a>
                         </li>
                         
                         

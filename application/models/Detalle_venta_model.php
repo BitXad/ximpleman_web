@@ -41,24 +41,8 @@ function get_all_entrega()
 function ventas_dia($estado)
   {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-        $sql = "
-            (SELECT
-                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
-            FROM
-                venta v            
-            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
-            LEFT JOIN entrega e on v.entrega_id = e.entrega_id
-            LEFT JOIN cliente c on v.cliente_id = c.cliente_id
-            LEFT JOIN tipo_servicio ts on v.tiposerv_id = ts.tiposerv_id
-            LEFT JOIN usuario u on u.usuario_id = v.usuario_id
 
-            WHERE
-            v.venta_fecha = date({$now})
-            and v.entrega_id= 2 
-            ORDER BY v.venta_id)
-            
-            union
-            (
+        $sql = "
             SELECT
                 v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
             FROM
@@ -71,14 +55,97 @@ function ventas_dia($estado)
 
             WHERE
             v.venta_fecha = date({$now})
-            and v.entrega_id= ".$estado." 
-            ORDER BY v.venta_id  )
-        ";
+            and (v.entrega_id = ".$estado." or v.entrega_id = 2)
+            
+            ORDER BY v.venta_id";
+
         //echo $sql;
         $detalle_venta = $this->db->query($sql)->result_array();
 
         return $detalle_venta;
   }
+    
+//function ventas_dia_mes($estado)
+//  {
+//        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+//
+//        $sql = "
+//            SELECT
+//                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
+//            FROM
+//                venta v            
+//            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
+//            LEFT JOIN entrega e on v.entrega_id = e.entrega_id
+//            LEFT JOIN cliente c on v.cliente_id = c.cliente_id
+//            LEFT JOIN tipo_servicio ts on v.tiposerv_id = ts.tiposerv_id
+//            LEFT JOIN usuario u on u.usuario_id = v.usuario_id
+//
+//            WHERE
+//            v.venta_fecha = date({$now})
+//            and (v.entrega_id = ".$estado." or v.entrega_id = 2)
+//            and tiposerv_id = 2
+//            ORDER BY v.venta_id";
+//
+//        //echo $sql;
+//        $detalle_venta = $this->db->query($sql)->result_array();
+//
+//        return $detalle_venta;
+//  }
+
+  function ventas_dia_mesa($estado)
+  {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+        $sql = "
+            SELECT
+                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
+            FROM
+                venta v            
+            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
+            LEFT JOIN entrega e on v.entrega_id = e.entrega_id
+            LEFT JOIN cliente c on v.cliente_id = c.cliente_id
+            LEFT JOIN tipo_servicio ts on v.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN usuario u on u.usuario_id = v.usuario_id
+
+            WHERE
+            v.venta_fecha = date({$now})
+            and (v.entrega_id = ".$estado." or v.entrega_id = 2)
+            and v.tiposerv_id = 2
+            ORDER BY v.venta_id";
+
+        //echo $sql;
+        $detalle_venta = $this->db->query($sql)->result_array();
+
+        return $detalle_venta;
+  }
+  
+  
+  function get_dventadia_mesa($estado,$destino,$usuario)
+    {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
+        $sql = "
+  
+        SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
+        d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
+
+        FROM detalle_venta d
+        LEFT JOIN producto p ON d.producto_id=p.producto_id
+        LEFT JOIN venta v ON d.venta_id=v.venta_id
+        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
+        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
+        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
+        LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
+        WHERE v.venta_fecha = date({$now}) 
+        and (v.entrega_id = {$estado} or v.entrega_id = 2)
+        and p.destino_id= {$destino} and v.tiposerv_id = 2
+        ORDER BY d.venta_id";
+        
+        
+       // echo $sql;
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    } 
   
 function ventas_cocina_dia($estado)
   {
@@ -195,27 +262,10 @@ function ventas_cocina_dia($estado)
   function get_dventadia($estado,$destino,$usuario)
     {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-//        $sql = "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
-//                d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
-//
-//        FROM detalle_venta d
-//        LEFT JOIN producto p ON d.producto_id=p.producto_id
-//        LEFT JOIN venta v ON d.venta_id=v.venta_id
-//        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
-//        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
-//        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
-//        LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
-//        WHERE v.venta_fecha = date({$now}) 
-//        and v.entrega_id=".$estado."
-//        and p.destino_id=".$destino."
-//        /*and u.usuario_id=".$usuario."*/
-//        ORDER BY d.venta_id";
-//        echo $sql;
-        
 
         
         $sql = "
-        (    
+
         SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
         d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
 
@@ -227,32 +277,10 @@ function ventas_cocina_dia($estado)
         LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
         LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
         WHERE v.venta_fecha = date({$now}) 
-        and v.entrega_id = {$estado}
+        
+        and (v.entrega_id = {$estado} or v.entrega_id = 2)        
         and p.destino_id= {$destino}
-        ORDER BY d.venta_id)
-
-        union
-
-        (    
-        SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
-        d.detalleven_unidadfactor, l.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
-
-        FROM detalle_venta d
-        LEFT JOIN producto p ON d.producto_id=p.producto_id
-        LEFT JOIN venta v ON d.venta_id=v.venta_id
-        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
-        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
-        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
-        LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
-        WHERE v.venta_fecha = date({$now}) 
-        and v.entrega_id = 2
-        and p.destino_id = {$destino}
-        ORDER BY d.venta_id)
-        
-        
-        
-
-        ";
+        ORDER BY d.venta_id";
         
         
         //echo $sql;

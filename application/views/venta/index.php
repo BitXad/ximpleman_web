@@ -80,7 +80,7 @@
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 <input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
-
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($usuario); ?>' />
@@ -481,7 +481,9 @@
                 <span style="font-size: 11pt">Venta Num.: <span class="text-bold" id="num_venta"></span></span>
                 <input type="hidden" name="nunmventa_id" class="form-control" id="nunmventa_id" />
             </div>
+            
             <div class="modal-body" style="padding-bottom: 0px !important">
+                
                 <div class="col-md-6">
                     <label for="modif_fecha" class="control-label">Modificar Fecha</label>
                     <div class="form-group">
@@ -539,6 +541,7 @@
         window.open(`${base_url}modelo_contrato/generar_contrato/${venta}/${contrato}`, '_blank');
     }
 </script>
+
 <!------------------------ FIN modal para Modificar fecha de una venta ------------------->
 
 
@@ -759,3 +762,68 @@
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL TOTAL ----------------------------------->
 <!------------------------------------------------------------------------------->
+
+
+<script type="text/javascript">
+/**
+ * Exporta la tabla #mitabla a un .xls manteniendo el contenido actual que ya cargaste vía JS.
+ * No modifica la tabla original ni su funcionamiento.
+ */
+function generarexcel() {
+    try {
+        var tabla = document.getElementById('mitabla');
+        if (!tabla) {
+            alert('No se encontró la tabla del reporte.');
+            return;
+        }
+
+        // Clonar la tabla para no tocar el DOM original
+        var clone = tabla.cloneNode(true);
+
+        // (Opcional) Si quieres excluir la última columna de acciones, descomenta este bloque:
+        // for (var r = 0; r < clone.rows.length; r++) {
+        //     clone.rows[r].deleteCell(clone.rows[r].cells.length - 1);
+        // }
+
+        // Construir HTML mínimo para Excel
+        var html  = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ';
+            html += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
+            html += 'xmlns="http://www.w3.org/TR/REC-html40">';
+            html += '<head><meta charset="UTF-8">';
+            // Estilos simples para que se vean bordes en Excel (no afecta tu vista original)
+            html += '<style>table, th, td { border: 1px solid #000; border-collapse: collapse; } th, td { padding: 4px; } </style>';
+            html += '</head><body>';
+            html += clone.outerHTML;
+            html += '</body></html>';
+
+        // Nombre de archivo con rango/selector si están presentes
+        var desde = (document.getElementById('fecha_desde') || {}).value || '';
+        var hasta = (document.getElementById('fecha_hasta') || {}).value || '';
+        var selectEl = document.getElementById('select_ventas');
+        var etiqueta = '';
+        if (selectEl && selectEl.selectedIndex >= 0) {
+            etiqueta = selectEl.options[selectEl.selectedIndex].text || '';
+        }
+
+        var partesNombre = ['ventas'];
+        if (etiqueta) partesNombre.push(etiqueta.replace(/\s+/g,'_'));
+        if (desde)   partesNombre.push('desde_' + desde);
+        if (hasta)   partesNombre.push('hasta_' + hasta);
+        var filename = partesNombre.join('_').replace(/[^\w\-\.]/g, '_') + '.xls';
+
+        // Crear Blob y descargar
+        var blob = new Blob(['\ufeff', html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        var url  = URL.createObjectURL(blob);
+        var a    = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (e) {
+        console.error(e);
+        alert('No se pudo generar el Excel. Revisa la consola para más detalles.');
+    }
+}
+</script>

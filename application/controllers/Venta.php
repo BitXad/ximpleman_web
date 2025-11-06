@@ -335,11 +335,11 @@ class Venta extends CI_Controller{
         $parametro_id = $this->session_data['parametro_id'];
         $sql = "UPDATE parametros 
                 SET parametro_numeroventa = 0
-                WHERE parametro_id = 1
-                AND NOT EXISTS (
+                WHERE 
+                    NOT EXISTS (
                     SELECT 1 
                     FROM venta 
-                    WHERE venta_fecha = DATE({$now})
+                    WHERE venta_fecha = DATE({$now}) 
                 );";
         $this->Venta_model->ejecutar($sql);
         
@@ -846,6 +846,8 @@ class Venta extends CI_Controller{
                 $cliente_id    = $this->input->post('cliente_id');
                 $factura_servicio    = $this->input->post('factura_servicio');
                 $registrar_pensionado    = $this->input->post('pensionado');
+                $pago_alternativo    = $this->input->post('pago_alternativo');
+                $pago_efectivo    = $this->input->post('pago_efectivo');
                 $factura_glosa    = $venta_glosa;
                 
                 
@@ -1052,7 +1054,7 @@ class Venta extends CI_Controller{
                        "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuentoparcial,venta_descuento,venta_total,".
                        "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
                        "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
-                       "venta_ice, venta_giftcard, venta_detalletransaccion,venta_numeroventa,venta_numerotransmes) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes})";
+                       "venta_ice, venta_giftcard, venta_detalletransaccion,venta_numeroventa,venta_numerotransmes, venta_pagoalternativo, venta_pagoefectivo) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes},{$pago_alternativo},{$pago_efectivo})";
                
                 
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
@@ -2824,6 +2826,7 @@ function edit($venta_id){
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
         
+
         
         
         //**************** inicio contenido ***************     
@@ -2838,40 +2841,30 @@ function edit($venta_id){
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
 
         
-                if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
-       
+        $data['cufd'] = [];
 
+        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
 
-
-                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia, date(cufd_fecharegistro) as fecharegistro from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
                     //echo $sql;
-                    $data['cufd'] = $this->Venta_model->consultar($sql);
+                    $cufd = $this->Venta_model->consultar($sql);
+                    $data['cufd'] = !empty($cufd) ? $cufd : [];
 
-                    $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                    $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
                             FROM
                               inventario i
                             WHERE
                               i.producto_codigosin = 0 or  i.producto_codigosin is null or
-                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null
+                            LIMIT 10";
+                    
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
-                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
-//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-//                            where cufd_puntodeventa = 0 and
-//                            cufd_id in (select max(cufd_id) from cufd)";
-//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
-//
-//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
-//                        $dosificacion = new $Dosificacion();
-//                        $dosificacion->cufd();
-//                    
-//                    }
+                    $sql = "select * from actividad";
+                    $data['actividades'] = $this->Venta_model->consultar($sql);
                     
-            //}
+
         }
-        
         
 
         //**************** bitacora caja
@@ -10841,7 +10834,7 @@ function anular_traspaso($traspaso_id){
                 $bitacoracaja_fecha = "date({$now})";
                 $bitacoracaja_hora = "time({$now})";
                 $bitacoracaja_evento = "(select  concat('ELIMINE VENTA FALLIDA: ID ->',venta_id,' * FORMA PAGO: ',forma_id,' * TRANSAC.: ',tipotrans_id,' * USUARIO: ',usuario_id,' * CLIENTE: ',cliente_id,' * MONEDA: ',moneda_id,' * ESTADO: ',estado_id,' * FECHA:',venta_fecha,' * ',venta_hora,' * SUBTOTAL: ',round(venta_subtotal,2),' * DESC.: ',round(venta_descuentoparcial,2),' * DESC.TOT.: ',round(venta_descuento,2),' * TOTAL: ',round(venta_total,2),' * EFECT.: ',round(venta_efectivo,2),' * CAMBIO: ',round(venta_cambio,2),' * GLOSA: ',venta_glosa) as ven from venta where venta_id = {$venta_id})";
-//                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montoreg = 0;
                 $bitacoracaja_montocaja = 0;
                 $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
 
@@ -11805,5 +11798,22 @@ function enviopdf(){
         }else{echo json_encode(false);}
     }    
 
+    function guardar_temporal(){
+        
+        if($this->input->is_ajax_request()){   
+            
+            $nit = $this->input->post("nit");
+            $razon_social = $this->input->post("razon_social");
+            
+            $cadena = "<b>NIT/CI:</b> {$nit} <br><b>RAZON SOCIAL:</b> {$razon_social}";
+            
+            $sql = "update temporal set temporal_dato='{$cadena}'";
+            $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+        }
+        
+    }
+    
     
 }

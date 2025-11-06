@@ -9,6 +9,7 @@ class Detalle_venta extends CI_Controller{
     private $session_data = "";
     private $sistema;
     private $parametros;
+    private $parallevar;
     
     function __construct()
     {
@@ -32,6 +33,8 @@ class Detalle_venta extends CI_Controller{
         
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
+        
+        $this->para_llevar = 1; //solo Para llevar 1 *** todas las ventas 0
         
     }
     /* *****Funcion que verifica el acceso al sistema**** */
@@ -146,8 +149,24 @@ class Detalle_venta extends CI_Controller{
         $estado = $this->input->post('estado');
         $destino = $this->input->post('destino');
         
-        $datos = $this->Detalle_venta_model->ventas_dia($estado);
-        $detalle = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
+        
+        if($this->para_llevar==1){
+
+            //Ventas del dia mostrara todas las ventas
+            $datos = $this->Detalle_venta_model->ventas_dia_mesa($estado);
+
+            //Mostrara el detalle de la venta
+            $detalle = $this->Detalle_venta_model->get_dventadia_mesa($estado,$destino,$usuario_id);
+            
+        }else{
+            
+            //Ventas del dia mostrara todas las ventas
+            $datos = $this->Detalle_venta_model->ventas_dia($estado);
+
+            //Mostrara el detalle de la venta
+            $detalle = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
+            
+        }
 
         $data['datos'] = $datos;
         $data['detalle'] = $detalle;
@@ -249,8 +268,24 @@ class Detalle_venta extends CI_Controller{
     function actualizar()
     {
         
+        $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
-        $datos = $this->Detalle_venta_model->ventas_dia($estado);
+        
+        if($this->para_llevar==1){
+            
+            $datos = $this->Detalle_venta_model->ventas_dia_mesa($estado);
+            
+        }else{
+            
+            $datos = $this->Detalle_venta_model->ventas_dia($estado);
+            
+        }
+
+        
+//        $estado = $this->input->post('estado');
+//        $datos = $this->Detalle_venta_model->ventas_dia($estado);
        
         echo json_encode($datos);
               
@@ -527,8 +562,15 @@ class Detalle_venta extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
             $usuario_id = $this->session_data['usuario_id'];
+            
+            $temporal = $this->Venta_model->Consultar("select * from temporal");
             $datos = $this->Venta_model->get_detalle_auxfoto($usuario_id);
-             echo json_encode($datos);
+            
+            $informacion = array(
+                                'datos'     => $datos,
+                                'temporal'  => $temporal
+                            );            
+             echo json_encode($informacion);
         }
         else{
             echo json_encode("null");
@@ -775,11 +817,87 @@ class Detalle_venta extends CI_Controller{
             $sql = "select * from venta where venta_fechaentrega = DATE(NOW()) and entrega_id = 2 
                     order by venta_fechaentrega, venta_horaentrega desc";
             $resultado = $this->Venta_model->consultar($sql);
+            
             echo json_encode($resultado);
 
         }
         else{
         }        
+    }
+    
+//    function get_numero()
+//    {
+//        
+//        if ($this->input->is_ajax_request()) {
+//            
+//            $sql = "select * from temporal where temporal_estadonumero=1";
+//            $resultado = $this->Venta_model->consultar($sql);
+//            echo json_encode($resultado);
+//
+//        }
+//    }    
+    
+    function get_numero()
+    {
+        
+        if ($this->input->is_ajax_request()) {
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            
+            $sql = "select * from temporal where temporal_estadonumero=1";
+            $temporal = $this->Venta_model->consultar($sql);
+                    
+           
+            
+            if($this->para_llevar == 1){ $parallevar =  "and v.tiposerv_id = 2"; }
+            else{ $parallevar =  ""; }
+            
+            $sql = "SELECT v.*
+                    FROM venta v         
+                    WHERE v.venta_fecha = date($now) 
+                    and v.entrega_id = 2 {$parallevar}
+                    ORDER BY v.venta_id LIMIT 5";
+            $terminados = $this->Venta_model->consultar($sql);
+
+            
+            $resultado = array(
+                                'terminados'     => $terminados,
+                                'temporal'  => $temporal
+                            );  
+            
+            
+            echo json_encode($resultado);
+
+        }
+    }    
+    
+    function set_numero()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $numero = $this->input->post("numero");
+            $repeticiones = $this->input->post("repeticiones");
+            $estado = 1;
+            
+            $sql = "update temporal set temporal_numero = {$numero}, temporal_cantidad = {$repeticiones}, temporal_estadonumero = {$estado}";
+            $resultado = $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+
+        }
+    }
+    
+    function set_estado_temporal()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $estado = $this->input->post("estado");
+            
+            $sql = "update temporal set temporal_estadonumero = {$estado}";
+            $resultado = $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+
+        }
     }
 
     

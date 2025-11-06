@@ -460,5 +460,19 @@ class Inventario extends CI_Controller{
 		
     }
     
+    function eliminar_registrohuerfano()
+    {
+        
+        if($this->input->is_ajax_request()){
+            
+            $detalleven_id = $this->input->post("detalleven_id");
+            $sql="delete from detalle_venta where detalleven_id = {$detalleven_id}";
+            $this->Venta_model->ejecutar($sql);
+           
+            echo json_encode(true);
+            
+        }
+
+    }
     
 }

@@ -915,12 +915,24 @@ function index($a = null)
             $data['page_title'] = "Cliente";
             $data['tipousuario_id'] =  $this->session_data['tipousuario_id'];
             $data['usuario_id'] =  $this->session_data['usuario_id'];
+             $data['cdis']  = $this->Sincronizacion_model->getall_docs_ident();
             
             $this->load->library('form_validation');
 
-            //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
+//            $this->form_validation->set_rules('cliente_codigo','Cliente Codigo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+//            $this->form_validation->set_rules('cliente_nit','NIT/CI Cliente','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+//            $this->form_validation->set_rules('cliente_ci','CI del Cliente','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+//            $this->form_validation->set_rules('cliente_razon','Razon Social','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            //$this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');
+            
+//            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('cliente_ci', 'C.I.', 'trim|required',
+                ['required' => 'El %s es obligatorio.']);
+
+            $this->form_validation->set_rules('cliente_nit', 'NIT', 'trim|required',
+                ['required' => 'El %s es obligatorio.']);
+            //$this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');   
 
             if($this->form_validation->run())     
             {
@@ -1046,6 +1058,9 @@ function index($a = null)
                                 'sab' => $sab,
                                 'dom' => $dom,
                                 'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
+                                'cliente_montocredito' => 0,
+                                'cliente_liquidopagable' => 0,
+                                'cdi_codigoclasificador' => $this->input->post('doc_clasificador'),
                     );
 
     //            $cliente_id = $this->Cliente_model->add_cliente($params);

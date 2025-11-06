@@ -1,40 +1,41 @@
  $(document).on("ready",inicio_recepcion);
 function inicio_recepcion(){
           
-       	recepcion(1); 
-        setInterval('actualizar()',15000);
+       	//recepcion(1); 
+        setInterval('actualizar()',2000);
           //aca podemos mandar fecha 
 }
 function actualizar()
 {
     var estado = 1;
     var ventas = document.getElementById('ventas').value;
+    var destino    = document.getElementById('destino_id').value;
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_venta/actualizar";
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{estado:estado},
+           data:{estado:estado, destino:destino},
 
            success:function(resul){                
 
                var registros =  JSON.parse(resul);
-
                var n = registros.length; //tamaño
 
-    if (n>ventas) {
+                   
+                if (n>ventas) { // si n es mayor significa que se debe activar la repecion de productos
+                    //alert('ingresa aqui');
+                    recepcion(1);
+                }   
+                   
+     
 
-    recepcion(1);
+            },error:function(resul){
 
-    }   
-
-      },
-        error:function(resul){
-
-        }
+            }
 
     });   
-
+//recepcion(1);
 }
 
 function buscar_por_entrega()
@@ -54,7 +55,7 @@ function recepcion(estado)
     var controlador = base_url+"detalle_venta/recepcionhoy";
     var clasificador = "";
     
-    document.getElementById('oculto').style.display = 'block';
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{estado:estado,destino:destino},
@@ -80,6 +81,8 @@ function recepcion(estado)
                 
                 
            if(d>0){ 
+               
+            document.getElementById('oculto').style.display = 'block';
             document.getElementById('timbre').play();
                if (ventas != null){
 
@@ -89,11 +92,19 @@ function recepcion(estado)
                     
                	for (var i = 0; i < n ; i++){
                     
-                        if (Number(ventas[i]["entrega_id"]) != 1){
+                       /* if (Number(ventas[i]["entrega_id"]) != 1){
                             color = ""; // "background:lightgray;";
                         }else{
                              color = "";
+                        }*/
+                           
+                        if (Number(ventas[i]["entrega_id"]) == 2){                            
+                            color = "background: gray;";
+                        }else{
+                            color = " ";                            
                         }
+                           
+                           
                            
                         html += "<tr style='border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;'>";
                         //#
@@ -163,17 +174,27 @@ function recepcion(estado)
                         if(ventas[i]["entrega_id"]==1){                            
                             html += "<br><span class='btn btn-facebook btn-xs'> "+ventas[i]["entrega_nombre"]+"</span></td>";
                         }else{
-                            html += "<br><span class='btn btn-danger btn-xs'> "+ventas[i]["entrega_nombre"]+"</span></td>";                            
+                            html += "<br><span class='btn btn-danger btn-xs'> "+ventas[i]["entrega_nombre"]+"</span></td>";         
                         }
                         
                         if (ventas[i]["entrega_id"]==1 || ventas[i]["entrega_id"]==2) {
                             //ventas[i]["entrega_nombre"]
-                        html += "<td align='center' style='"+color+"'> <button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR' onclick='pedido_terminado("+ventas[i]["venta_id"]+"); anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </button>";
+//                        html += "<td align='center' style='"+color+"'> <button class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR' onclick='pedido_terminado("+ventas[i]["venta_id"]+"); anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </button>";
                         
-                        html += "<br><br><button class='btn btn-info btn-xs' onclick='anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='1'><span class='fa fa-volume-up'></span> ANUNCIAR PEDIDO</font></button>";
+                            if(ventas[i]["entrega_id"]==1){ //Pasar a terminado
+                                
+                               html += "<td align='center' style='"+color+"'> <br><button class='btn btn-warning btn-xs' title='PEDIDO LISTO' onclick='pedido_terminado("+ventas[i]["venta_id"]+"); anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='5'><span class='fa fa-cutlery'></span></font><br> PEDIDO TERMINADO </button>";
+                            }
+                            if(ventas[i]["entrega_id"]==2){ //Pasar a entregado
+                                
+                                html += "<td align='center' style='"+color+"'> <button class='btn btn-danger btn-xs' title='ENTREGAR PEDIDO' onclick='pedido_entregado("+ventas[i]["venta_id"]+");'><font size='5'><span class='fa fa-cutlery'></span> <span class='fa fa-truck'></span></font><br> ENTREGAR PEDIDO </button>";
+                                html += "<br><br><button class='btn btn-info btn-xs' onclick='anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='1'><span class='fa fa-volume-up'></span> ANUNCIAR PEDIDO</font></button>";
+
+                            }
+                        
                         
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
-                        html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                        html += "<div class='modal fade' id='myModal"+ventas[i]["venta_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+ventas[i]["venta_id"]+"'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br><br>";
                         html += "<div class='modal-content'>";
@@ -190,7 +211,7 @@ function recepcion(estado)
                         html += "<br><small>** "+ventas[i]["tiposerv_descripcion"]+" **</small>";
                         html += "</h3>";
                         
-                        html += "<br><button class='btn btn-info btn-xs' onclick='anunciar_mi_pedido("+ventas[i]["venta_numeroventa"]+")'><font size='1'><span class='fa fa-volume-up'></span> ANUNCIAR PEDIDO</font></button>";
+                        html += "<br><button class='btn btn-info btn-xs' onclick='anunciar_mi_pedido("+ventas[i]["venta_id"]+")'><font size='1'><span class='fa fa-volume-up'></span> ANUNCIAR PEDIDO</font></button>";
                         
                         html += "</center>";
                         
@@ -199,8 +220,8 @@ function recepcion(estado)
                         html += "<div class='modal-footer aligncenter'>";
                         
                             html += "<center>";
-                            html += "<button type='button'  onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal' style='width:100px;'><span class='fa fa-check'></span> Si </button>";
-                            html += "<button class='btn btn-danger' data-dismiss='modal' style='width:100px;'><span class='fa fa-times'></span> No </button>";
+                            html += "<button type='button'  onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal' style='width:130px;'><span class='fa fa-check'></span> Si</button>";
+                            html += "<button class='btn btn-danger' data-dismiss='modal' style='width:130px;'><span class='fa fa-times'></span> No </button>";
                             html += "</center>";
 
                         html += "</div>";
@@ -255,12 +276,20 @@ function recepcion(estado)
                    $("#ventas").val(cantidadtotal);
                    
             }
-          } document.getElementById('oculto').style.display = 'none';      
+            
+          }else{
+              html = "";
+              $("#tabla_recepcion").html(html);
+          } 
+          
+               
+               document.getElementById('oculto').style.display = 'none';
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");
            html = "";
            $("#tabla_recepcion").html(html);
+           document.getElementById('oculto').style.display = 'none';
         }
         
     });   
@@ -294,14 +323,57 @@ function pedido_terminado(venta)
            type:"POST",
            data:{},
           
-           success:function(resul){                
+           success:function(resul){            
                 
-            //recepcion(1);
+            recepcion(1);
+            
+            
       }
     });   
 
 }
 
+function set_numero(numero)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/set_numero/';
+    var cantidad = 1;
+    
+    
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{numero:numero, cantidad:cantidad },
+          
+           success:function(resul){                
+                
+      }
+    });   
+
+}
+
+function pedido_entregado(venta)
+{   var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/despachar/'+venta;
+    
+    
+    var r = confirm("ADVERTENCIA: Esta a punto de entregar el pedido. ¿Desea continuar?");
+    
+    if (r == true) {
+        
+        $.ajax({url: controlador,
+               type:"POST",
+               data:{},
+
+               success:function(resul){                
+                 //location.reload();
+                recepcion(1);
+          }
+        });   
+        
+    }
+
+}
 
 function restablecer(venta)
 {
@@ -324,11 +396,23 @@ function restablecer(venta)
 
 }
 
-function anunciar_mi_pedido(numero) {
-   
-    //   alert(numero);
-    anunciar_pedido(numero);
-  
+function anunciar_mi_pedido(venta) {   
+    
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/set_numero';
+    var numero = venta;
+    var repeticiones = 3;
+            
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{numero: numero, repeticiones: repeticiones},
+          
+           success:function(resul){                
+                recepcion(1);
+                
+      }
+    });   
+
 }
 
 function anunciar_pedido(numero) {

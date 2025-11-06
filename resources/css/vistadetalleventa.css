@@ -69,7 +69,7 @@ body
 .nav>li>a:focus, .nav>li>a:hover 
 {
     color: #e7480f;
-    background-color: #eee;
+    background-color: #000000;
 }
 .nav>li>a
 {

@@ -10,6 +10,12 @@ class Transporte extends CI_Controller{
         $this->load->model('Viaje_model');
         $this->load->model('Sincronizacion_model');
         $this->load->model('Forma_pago_model');
+        $this->load->model('Sistema_model');
+        $this->load->model('Parametro_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -35,6 +41,8 @@ class Transporte extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
             $vehiculo_id = 1;
 //        if($this->acceso(24)){
             $data['page_title'] = "Transporte";

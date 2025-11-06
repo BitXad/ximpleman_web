@@ -329,7 +329,7 @@ $actualizar_precios = 1;
 <input type="text" id="parametro_vercantidades" value="<?php echo $parametro['parametro_vercantidades']; ?>" name="parametro_vercantidades"  hidden>
 <input type="text" id="parametro_comprarapida" value="<?php echo $parametro['parametro_comprarapida']; ?>" name="parametro_comprarapida"  hidden>
 <input type="text" id="parametro_actualizarprecios" value="<?php echo $parametro['parametro_actualizarprecios']; ?>" name="parametro_actualizarprecios"  hidden>
-<input type="text" id="vigencia_cufd" value="<?php echo ($parametro['parametro_tiposistema'] != 1)?$cufd[0]["cufd_fechavigencia"]:""; ?>" hidden>
+<input type="text" id="vigencia_cufd" value="<?php echo ($parametro['parametro_tiposistema'] != 1)?"":""; ?>" hidden>
 <input type="text" id="parametro_generarcufd" value="<?php echo $parametro['parametro_generarcufd']; ?>" hidden>
 <input type="text" id="cufd_hoy" value="1" hidden>
 

@@ -123,14 +123,14 @@
         // Ruta al archivo .p12
         $archivop12 = $dosificacion["dosificacion_contenedorp12"];
         $clavep12 = $dosificacion["dosificacion_clavep12"];
-        $p12File = base_url("resources/xml/certificadoxs/{$archivop12}");
+        $p12File = base_url("resources/xml/certificados/{$archivop12}");
 
         // Contraseña del archivo .p12
         $password = $clavep12;
-
+       
         // Leer el contenido del archivo .p12
         $p12Content = file_get_contents($p12File);
-
+        //echo $p12Content;
         // Array para almacenar la información extraída
         $certs = [];
 
@@ -223,7 +223,7 @@
                     }else{
                         
                         if ($now > $validTo) { echo "❌ El certificado (Firma Digital) ha expirado.\n";
-                        } else { echo "<h3>📜 El certificado (Firma Digital) ✅ está vigente.\n </h3>";   }
+                        } else { echo "<h3>📜 El certificado (Firma Digital) ✅ está vigente.\n </h3>";  echo "<br>Certificado válido desde: {$validFromStr}, válido hasta: {$validToStr}\n";   }
                         
                     }
 

@@ -1,57 +1,264 @@
- $(document).on("ready",inicio_recepcion);
+// Global: registro de anuncios
+// estructura: { [numeroPedido]: { count: 0, last: timestampMs } }
+const anuncios = {};
+const MAX_REPITENCIAS = 3;      // repetir 3 veces
+const RESET_AFTER_MS = 2 * 60 * 1000; // si pasan 2 minutos sin actividad, permitimos anunciar de nuevo
+
+$(document).on("ready", inicio_recepcion);
+
 function inicio_recepcion(){
-    
-      
-//recepcion(1); 
-setInterval('actualizar()',7000);
-          //aca podemos mandar fecha 
+    //recepcion(1); 
+    setInterval(actualizarnumero, 4000); // usar la referencia a la función en vez de string
+    //aca podemos mandar fecha 
 }
 
 function actualizar()
 {
     var estado = 1;
-    //var ventas = document.getElementById('ventas').value;
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_venta/get_terminados"; //ver pedido terminados listos para entrega
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {estado: estado},
+        success: function(resul){
+            try {
+                var registros = JSON.parse(resul);
+            } catch (e) {
+                console.error("Respuesta no válida JSON:", e, resul);
+                return;
+            }
+
+            var n = registros.length;
+            if (n > 0) {
+                const pedido = registros[0]["venta_numeroventa"];
+                document.getElementById("numero_pedido").textContent = pedido;
+                // Lógica para limitar repeticiones
+                manejar_anuncio(pedido);
+            }else{
+                document.getElementById("numero_pedido").textContent = '--';
+            }
+        },
+        error: function(resul){
+            console.error("Error AJAX:", resul);
+            document.getElementById("numero_pedido").textContent = '--';
+        }
+    });
+}
+
+
+function parar_reproduccion() {   
     
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/set_estado_temporal';    
+    var estado = 0;    
+            
     $.ajax({url: controlador,
            type:"POST",
-           data:{estado:estado},
-
+           data:{estado: estado},
+          
            success:function(resul){                
+                
+                
+      }
+    });   
 
-               var registros =  JSON.parse(resul);
+}
 
-               var n = registros.length; //tamaÃ±o de
-               let pedido = 0;
-            if (n>0) {
-                //recepcion(1);
-                pedido = registros[0]["venta_numeroventa"];
-                //alert(pedido);
+function actualizarnumero()
+{
+    //var estado = 1;
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"detalle_venta/get_numero"; //ver pedido terminados listos para entrega
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {},
+        success: function(resul){
+            try
+            {
+                var resultados = JSON.parse(resul);
+                
+                registros = resultados['temporal'];
+                terminados = resultados['terminados'];
+                
+                
+                
+            } catch (e) {
+                
+                console.error("Respuesta no válida JSON:", e, resul);
+                return;
+                
+            }
+
+            var n = registros.length;
+            if (n > 0) {
+                
+                const pedido = registros[0]["temporal_numero"];
+                const repeticiones = registros[0]["temporal_cantidad"];
+                
                 document.getElementById("numero_pedido").textContent = pedido;
-                anunciar_mi_pedido(pedido);
-            }   
+                // Lógica para limitar repeticiones   
+                
+                for (let i = 0; i < repeticiones; i++) {
+                    setTimeout(() => {
+                        anunciar_numero(pedido);
+//                        if (i === repeticiones - 1) {
+//                            parar_reproduccion();
+//                        }
+                    }, i * 6000); // 2000 ms = 2 segundos entre cada anuncio
+                }
+                parar_reproduccion();
+//                setTimeout(() => {
+//                    parar_reproduccion();
+//                    },2000)
+//                
+            }else{
+               // document.getElementById("numero_pedido").textContent = '--';
+            }
+            
+            html = '';
+            
+            if(terminados.length>=1){
+                
+                for (let i = 0; i < terminados.length; i++) {
+                    
+                    html += "<td style='border: 2px solid black; padding: 5px; width: 20px; text-align: center; font-family: Arial Black; text-shadow: 1px 1px 2px #000000; '>"+terminados[i]["venta_numeroventa"]+"<small style='font-size:10px;'><br>EN DESPACHO</small></td>";
+                
+                }
+                
+                let limite = 5;
+                if(terminados.length<5){
+                    
+                        for (let i = 0; i < (limite - terminados.length); i++) {
 
-              },
-                error:function(resul){
+                            html += "<td style='border: 2px solid black; padding: 5px; width: 20px; text-align: center;'></td>";
+
+                        }
 
                 }
-
-            });   
-
+                
+                $("#mifila").html(html);
+            }
+        },
+        error: function(resul){
+            console.error("Error AJAX:", resul);
+           // document.getElementById("numero_pedido").textContent = '--';
+        }
+    });
+       
 }
 
+/**
+ * Maneja el conteo y decide si anunciar el pedido.
+ */
+function manejar_anuncio(numero) {
+    numero = String(numero);
+    const ahora = Date.now();
+
+    // Limpiar registros viejos
+    for (const key in anuncios) {
+        if (Object.prototype.hasOwnProperty.call(anuncios, key)) {
+            if (ahora - anuncios[key].last > RESET_AFTER_MS) {
+                delete anuncios[key];
+            }
+        }
+    }
+
+    // Si no existe el registro, crearlo
+    if (!anuncios[numero]) {
+        anuncios[numero] = { count: 0, last: ahora };
+    }
+
+    // Actualizar timestamp
+    anuncios[numero].last = ahora;
+
+    // Si ya anunció menos de MAX_REPITENCIAS, anunciar otra vez
+    if (anuncios[numero].count < MAX_REPITENCIAS) {
+        anuncios[numero].count++;
+        anunciar_mi_pedido(numero);
+    } else {
+        // opcional: log o acción al superar límite
+        console.log(`Pedido ${numero} ya anunciado ${anuncios[numero].count} veces — no se anuncia más.`);
+    }
+
+    // Opcional: si quieres ver en pantalla cuántas veces fue anunciado:
+    // document.getElementById("numero_contador_anuncios").textContent = anuncios[numero].count;
+}
 
 function anunciar_mi_pedido(numero) {
-   
-
     anunciar_pedido(numero);
+}
+
+function anunciar_pedido(numero) {
     
-  
+    var base_url    = document.getElementById('base_url').value;
+    var basePath = base_url + 'resources/sonidos/numeros/'; // Ruta en CodeIgniter
+    numero = parseInt(numero);
+
+    // Construir secuencia de archivos
+    const secuencia = ["pedido.mp3"]; // Siempre inicia con "pedido.mp3"
+
+    function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+    if (isNaN(numero)) {
+        console.error("Número inválido:", numero);
+        return;
+    }
+
+    if (numero >= 1000) {
+        if (numero === 1000) { secuencia.push("1000.mp3"); }
+        else { secuencia.push("numero_invalido.mp3"); }
+    } else {
+        let centenas = Math.floor(numero / 100);
+        let decenas = Math.floor((numero % 100) / 10);
+        let unidades = numero % 10;
+        let resto = numero % 100;
+
+        $("#numeros").text(centenas + " ** " + decenas + " ** " + unidades + " ** " + resto);
+
+        // Centenas
+        if (centenas > 0) {
+            if (numero === 100) { secuencia.push("100.mp3"); }
+            else if (centenas === 1) { secuencia.push("100to.mp3"); }
+            else { secuencia.push((centenas * 100) + ".mp3"); }
+        }
+
+        // Decenas y unidades
+        if (resto > 0) {
+            if (resto <= 20) {
+                secuencia.push((resto < 10 ? pad2(resto) : String(resto)) + ".mp3");
+            } else if (resto < 30) {
+                secuencia.push("20y.mp3");
+                if (unidades > 0) secuencia.push(pad2(unidades) + ".mp3");
+            } else {
+                if (decenas > 0) secuencia.push((decenas * 10) + ".mp3");
+                if (unidades > 0) {
+                    secuencia.push("y.mp3");
+                    secuencia.push(pad2(unidades) + ".mp3");
+                }
+            }
+        }
+    }
+
+    // Reproducir audios secuencialmente
+    let i = 0;
+    function reproducir() {
+        if (i >= secuencia.length) return;
+        let audio = new Audio(basePath + secuencia[i]);
+        audio.playbackRate = 1;
+        i++;
+        audio.onended = reproducir;
+        audio.play().catch(err => console.error("Error reproduciendo:", err));
+    }
+    reproducir();
 }
 
 
-function anunciar_pedido(numero) {
+
+function anunciar_numero(numero) {
      
     var base_url    = document.getElementById('base_url').value;
     var basePath = base_url+'resources/sonidos/numeros/'; // Ruta en CodeIgniter
@@ -135,7 +342,7 @@ function anunciar_pedido(numero) {
         if (i >= secuencia.length) return;
         let audio = new Audio(basePath + secuencia[i]);
         
-        audio.playbackRate = 1.2; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
+        audio.playbackRate = 1; // 1.0 = normal, 2.0 = doble de rápido, 0.5 = mitad de velocidad
         i++;
         audio.onended = reproducir;
         audio.play().catch(err => console.error("Error reproduciendo:", err));
@@ -144,65 +351,3 @@ function anunciar_pedido(numero) {
     reproducir();
 
 }
-
-//function probar_audio(){
-//    numero_contador = document.getElementById("numero_contador").value;
-//    document.getElementById('timbre').play();
-//    anunciar_pedido(numero_contador);
-//    
-//    numero_contador = Number(numero_contador) + 1;
-//    document.getElementById("numero_contador").value = numero_contador;
-//    
-//}
-
-function sleep(milliseconds) {
- var start = new Date().getTime();
- for (var i = 0; i < 1e7; i++) {
-  if ((new Date().getTime() - start) > milliseconds) {
-   break;
-  }
- }
-}
-//
-//
-//window.addEventListener("keydown", e => {
-//  console.log("KEY:", e.key, "CODE:", e.code, "KEYCODE:", e.keyCode);
-//});
-//window.addEventListener("keydown", function(e) {
-//    switch(e.code) {
-//        case "F13": // G1
-//            console.log("G1 = Flecha Arriba");
-//            moverArriba();
-//            break;
-//        case "F14": // G2
-//            console.log("G2 = Flecha Abajo");
-//            moverAbajo();
-//            break;
-//        case "F15": // G3
-//            console.log("G3 = Enter");
-//            activarSeleccion();
-//            break;
-//        case "F16": // G4
-//            console.log("G4 = Escape");
-//            cancelarAccion();
-//            break;
-//        // Opcional: G5–G8
-//        case "F17": console.log("G5 libre"); break;
-//        case "F18": console.log("G6 libre"); break;
-//        case "F19": console.log("G7 libre"); break;
-//        case "F20": console.log("G8 libre"); break;
-//    }
-//});
-//
-//function moverArriba() {
-//   // aquí tu lógica para moverte arriba en la tabla
-//}
-//function moverAbajo() {
-//   // aquí tu lógica para moverte abajo en la tabla
-//}
-//function activarSeleccion() {
-//   // simular Enter sobre la fila seleccionada
-//}
-//function cancelarAccion() {
-//   // simular Escape o cancelar selección
-//}

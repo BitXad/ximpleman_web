@@ -949,8 +949,9 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
     function reporte_general($filtro)
     {
         $reporte = $this->db->query(
-        "SELECT vs.*, fa.factura_id, fa.factura_numero, cr.credito_cuotainicial
+        "SELECT vs.*, fa.factura_id, fa.factura_numero, cr.credito_cuotainicial, fp.*
                 FROM ventas vs
+                LEFT JOIN forma_pago fp on vs.forma_id = fp.forma_id
                 LEFT JOIN factura fa on vs.venta_id = fa.venta_id
                 LEFT JOIN credito cr on vs.venta_id = cr.venta_id
                 WHERE  ".$filtro."

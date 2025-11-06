@@ -886,35 +886,78 @@
     
 <!---------------------------- BITACORA --------------------------------->
 
-    <section class="col-lg-5 connectedSortable">
-        <div class="box box-info">
-            <div class="box-header">
-                <i class="fa fa-book"></i>
-                <h3 class="box-title">Operaciones Observadas</h3>
+<section class="col-lg-5 connectedSortable">
+  <div class="box box-info">
+    <div class="box-header">
+      <i class="fa fa-book"></i>
+      <h3 class="box-title">Operaciones Observadas <button class="btn btn-success btn-xs" onclick="exportarOperacionesExcel()" title="Exportar a excel">
+          <i class="fa fa-file-excel-o"></i> 
+        </button></h3>
 
-                <div class="pull-right box-tools">
-                    <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <!-- /. tools -->
-            </div>
-            <div class="box-body">
-                <div class="box-body no-padding table-responsive">
-                    <table class="table table-condensed">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Operacion <input type="date" id="calendario_bitacora" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;"></th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Responsable</th>
-                        </tr>
-                        <tbody id="tabla_operacionesobservadas"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="pull-right box-tools">
+        <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="box-body">
+      <div class="box-body no-padding table-responsive">
+        <table class="table table-condensed" id="tabla_operacionesobservadas_excel">
+          <tr>
+            <th style="width: 10px">#</th>
+            <th>
+              Operacion
+              <input type="date" id="calendario_bitacora1" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;">
+              <input type="date" id="calendario_bitacora2" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;">
+            </th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Responsable</th>
+          </tr>
+          <tbody id="tabla_operacionesobservadas"></tbody>
+        </table>
+      </div>
+
+      <!-- Botón Exportar -->
+<!--      <div class="text-center" style="margin-top:10px;">
+        <button class="btn btn-success btn-sm" onclick="exportarOperacionesExcel()">
+          <i class="fa fa-file-excel-o"></i> Exportar a Excel
+        </button>
+      </div>-->
+    </div>
+  </div>
+</section>
+
+
+<script>
+    // ✅ Función de exportación a Excel sin afectar el formato
+    function exportarExcel() {
+        // Obtener el rango de fechas
+        const desde = document.getElementById("calendario_bitacora1").value;
+        const hasta = document.getElementById("calendario_bitacora2").value;
+        const nombreArchivo = `Operaciones_${desde}_a_${hasta}.xls`;
+
+        // Obtener la tabla completa
+        const tabla = document.getElementById("tabla_operacionesobservadas_excel").outerHTML;
+
+        // Crear archivo Excel
+        const blob = new Blob(
+            ['\ufeff', tabla],
+            { type: 'application/vnd.ms-excel;charset=utf-8;' }
+        );
+
+        // Crear enlace de descarga
+        const enlace = document.createElement("a");
+        enlace.href = URL.createObjectURL(blob);
+        enlace.download = nombreArchivo;
+        enlace.style.display = "none";
+        document.body.appendChild(enlace);
+        enlace.click();
+        document.body.removeChild(enlace);
+    }
+</script>
+
     
     
     <!------------------------- temporal -------------->

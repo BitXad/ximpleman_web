@@ -87,6 +87,8 @@ function reporte_general(){
                         if(filtrar == 1 || filtrar == 2){
                             html += "<td align='center'>";
                             html += registros[i]["tipotrans_nombre"];
+                            html += "<br>";
+                            html += registros[i]["forma_nombre"];
                             html += "</td>";
                         }
                         if(filtrar == 1 || filtrar == 2){
@@ -124,11 +126,16 @@ function reporte_general(){
                             html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+" </td>";
                             html += "<td align='right'> "+numberFormat(Number(utilidad).toFixed(decimales))+" </td>"; 
                         }
+                        
                         if(filtrar == 1 || filtrar == 2){
                             html += "<td align='center'>";
                             html += registros[i]["cliente_nombre"];
                             html += "</td>"; 
                         }
+                        html += "<td align='center'>";
+                        html += registros[i]["cliente_codigo"];
+                        html += "</td>"; 
+                        
                         html += "<td align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td class='no-print'>";
                         if(filtrar == 1){ //para ventas
@@ -504,9 +511,11 @@ function generarexcel_reportegrl(){
                 row += 'Nro.' + ',';
                 row += 'PRODUCTO' + ',';
                 row += 'FECHA VENTA' + ',';
+                row += 'HORA VENTA' + ',';
                 row += 'NUM. VENTA' + ',';
                 row += 'NUM. DOC.' + ',';
                 row += 'TIPO VENTA' + ',';
+                row += 'FORMA PAGO' + ',';
                 row += 'CUOTA INIC.(' +nombre_moneda+ '),';
                 row += 'UNIDAD' + ',';
                 row += 'CANT.' + ',';
@@ -525,6 +534,7 @@ function generarexcel_reportegrl(){
                     row += 'UTILIDAD(' +nombre_moneda+ '),';
                 }
                 row += 'CLIENTE' + ',';
+                row += 'CODIGO CLIENTE' + ',';
                 row += 'CAJERO' + ',';
                 row = row.slice(0, -1);
                 //append Label row with line break
@@ -542,10 +552,12 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += (i+1)+',';
                 row += '"' +registros[i]["producto_nombre"]+ '",';
-                row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+ '",';
+                row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+ '",';
+                row += '"' +registros[i]["venta_hora"]+ '",';
                 row += '"' +registros[i]["venta_id"]+ '",';
                 row += '"' +Number(registros[i]["factura_id"])+ '",';
                 row += '"' +registros[i]["tipotrans_nombre"]+ '",';
+                row += '"' +registros[i]["forma_nombre"]+ '",';
                 row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(decimales))+ '",';
                 row += '"' +registros[i]["producto_unidad"]+ '",';
                 row += '"' +registros[i]["detalleven_cantidad"]+ '",';
@@ -565,6 +577,7 @@ function generarexcel_reportegrl(){
                     row += '"' +numberFormat(Number(utilidad).toFixed(decimales))+ '",';
                 }
                 row += '"' +registros[i]["cliente_nombre"]+ '",';
+                row += '"' +registros[i]["cliente_codigo"]+ '",';
                 row += '"' +registros[i]["usuario_nombre"]+ '",';
                 row.slice(0, row.length - 1);
                 //add a line break after each row

@@ -97,7 +97,7 @@ function calculardesc(){
    //$("#venta_efectivo").val(subtotal);
    //alert(venta_efectivo +" *** "+venta_cambio );
 }
-
+/*
 function calcularcambio(e){
     
    var decimales = Number(document.getElementById('parametro_decimales').value);
@@ -114,12 +114,41 @@ function calcularcambio(e){
     $("#cambioy").val(venta_cambio.toFixed(decimales));
      
    //alert(venta_efectivo +" **** "+venta_cambio );
-   if (tecla==13){ 
+   /*if (tecla==13){ 
             //$("#boton_finalizar").click();
             finalizarventa_sin();
             $("#cancelar_venta").click();
    }
+   
+    if (tecla==13){ 
+        $("#boton_finalizar").click();
+   }
 }
+*/
+
+
+function calcularcambio(e){
+    
+   var decimales = Number(document.getElementById('parametro_decimales').value);
+   
+   tecla = (document.all) ? e.keyCode : e.which; 
+   
+   var venta_efectivo = document.getElementById('venta_efectivo').value;
+   var venta_totalfinal = document.getElementById('venta_totalfinal').value;
+   
+   var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
+   //alert(venta_cambio);
+   $("#venta_cambio").val(venta_cambio.toFixed(decimales));
+   
+    $("#cambioy").val(venta_cambio.toFixed(decimales));
+   
+   
+   
+   if (tecla==13){ 
+        $("#boton_finalizar").click();
+   }
+}
+
 
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
 function validar(e,opcion) {
@@ -315,6 +344,14 @@ function seleccionar(opcion) {
         
         if (opcion==6){
             document.getElementById('venta_giftcard').select();
+        }
+        
+        if (opcion==7){
+            document.getElementById('pago_alternativo').select();
+        }
+        
+        if (opcion==8){
+            document.getElementById('cliente_codigo').select();
         }
 }
 
@@ -666,6 +703,7 @@ function buscar_por_codigo(){
                 
                 if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema carga los datos
                     
+                    $("#nit").val(registros[0]["cliente_nit"]);
                     $("#razon_social").val(registros[0]["cliente_razon"]);
                     document.getElementById('telefono').focus();
                     $("#telefono").val(registros[0]["cliente_telefono"]);
@@ -863,15 +901,22 @@ function formato_cantidad(cantidad){
 function cufd_vigente() {
     // Reemplazar el espacio por 'T' para que sea un formato ISO válido
     let fechaStr = document.getElementById("vigencia_cufd").value;
+    let parametro_tipoemision = document.getElementById("parametro_tipoemision").value;
     const fechaComparar = new Date(fechaStr.replace(" ", "T"));
     const fechaActual = new Date();
 
     // Comparar fechas
-    if(fechaActual > fechaComparar){
-        $("#puede_facturar").val(3); //3 cufd FUERA DE VIGENCIA
-        let error = document.getElementById("motivo_puede_facturar").value + " *** CUFD FUERA DE VIGENCIA ";
-        $("#motivo_puede_facturar").val(error); //2 conflicto de precios por ser cero
+    if(parametro_tipoemision==1){ //si es en linea
+        
+        if(fechaActual > fechaComparar){
+            $("#puede_facturar").val(3); //3 cufd FUERA DE VIGENCIA
+            let error = document.getElementById("motivo_puede_facturar").value + " *** CUFD FUERA DE VIGENCIA ";
+            $("#motivo_puede_facturar").val(error); //2 conflicto de precios por ser cero
+        }
     }
+    
+  
+    
     //return fechaActual > fechaComparar ? 1 : 0;
 }
 
@@ -1363,42 +1408,31 @@ function porcentaje_descuento(detalleven_id){
 
 
 //muestra la tabla detalle de venta auxiliar
+
 function tabladetalle(subtotal,descuento,totalfinal)
 {
     var decimales = Number(document.getElementById('parametro_decimales').value);
     parametro_moneda_descripcion = document.getElementById("parametro_moneda_descripcion").value;
-    var venta_efectivo = document.getElementById('venta_efectivo').value;
-    var venta_cambio = document.getElementById('venta_cambio').value;
    
-   
-   
-    var efectivo = totalfinal - descuento;
+    efectivo = totalfinal - descuento;
     $("#venta_total").val(subtotal.toFixed(decimales));
     $("#venta_descuento").val(descuento.toFixed(decimales));
     $("#venta_subtotal").val(subtotal.toFixed(decimales));
-    
-    /*
     $("#venta_efectivo").val(efectivo.toFixed(decimales));
-    $("#venta_cambio").val("0.00");*/
+    $("#venta_cambio").val("0.00");
     
-    if (Number(venta_efectivo)>0){
-            $("#venta_efectivo").val(venta_efectivo.toFixed(decimales));        
-    }else{        
-        $("#venta_efectivo").val(efectivo.toFixed(decimales));
-    }
-    
-    if (Number(venta_cambio)>0){
-        $("#venta_cambio").val(venta_cambio.toFixed(decimales));        
-    }else{        
-        $("#venta_cambio").val("0.00");
-    }
-
+    $("#totaly").val(subtotal.toFixed(decimales));
+    $("#cobradoy").val("0.00");
+    $("#cambioy").val(subtotal.toFixed(decimales));
     
     
     
 
     var venta_totalfinal = parseFloat(totalfinal - descuento);
     $("#venta_totalfinal").val(venta_totalfinal.toFixed(decimales));
+    $("#venta_efectivo").val(venta_totalfinal.toFixed(decimales));
+    $("#pago_alternativo").val("0.00");
+    $("#pago_efectivo").val(venta_totalfinal.toFixed(decimales));
     
     html = "";
     html += "<div class='box' hidden>";
@@ -1428,7 +1462,72 @@ function tabladetalle(subtotal,descuento,totalfinal)
     $("#detallecuenta").html(html);
     
 }
+/*
+function tabladetalle(subtotal,descuento,totalfinal)
+{
+    var decimales = Number(document.getElementById('parametro_decimales').value);
+    parametro_moneda_descripcion = document.getElementById("parametro_moneda_descripcion").value;
+    var venta_efectivo = document.getElementById('venta_efectivo').value;
+    var venta_cambio = document.getElementById('venta_cambio').value;
+     
+    var efectivo = totalfinal - descuento;
+    $("#venta_total").val(subtotal.toFixed(decimales));
+    $("#venta_descuento").val(descuento.toFixed(decimales));
+    $("#venta_subtotal").val(subtotal.toFixed(decimales));
+    $("#venta_efectivo").val(efectivo.toFixed(decimales));
+    $("#venta_cambio").val("0.00");
+        
+    $("#totaly").val(subtotal.toFixed(decimales));
+    $("#cobradoy").val("0.00");
+    $("#cambioy").val(subtotal.toFixed(decimales)); 
 
+    
+    if (Number(venta_efectivo)>0){
+            $("#venta_efectivo").val(venta_efectivo.toFixed(decimales));        
+    }else{        
+        $("#venta_efectivo").val(efectivo.toFixed(decimales));
+    }
+    
+    if (Number(venta_cambio)>0){
+        $("#venta_cambio").val(venta_cambio.toFixed(decimales));        
+    }else{        
+        $("#venta_cambio").val("0.00");
+    }
+
+    
+    var venta_totalfinal = parseFloat(totalfinal - descuento);
+    $("#venta_totalfinal").val(venta_totalfinal.toFixed(decimales));
+
+    
+    html = "";
+    html += "<div class='box' hidden>";
+    html += "        <div class='box-body table-responsive table-condensed'>";
+    html += "            <table class='table table-striped table-condensed' id='miotratabla'>";
+    html += "<tr>";
+    html += "    <th> Descripción</th>";
+    html += "    <th> Total </th> "; 
+    html += "</tr>";
+    html += "<tr>";
+    html += "    <td>Sub Total "+parametro_moneda_descripcion+"</td>";
+    html += "    <td align='right'>"+subtotal.toFixed(decimales)+"</td>";
+    html += "</tr> ";
+    html += "<tr>";
+    html += "    <td>Descuento "+parametro_moneda_descripcion+"</td>";
+    html += "    <td align='right'>"+descuento.toFixed(decimales)+"</td>  ";  
+    html += "</tr>";
+    html += "<tr>";
+    html += "    <th><b>TOTAL FINAL "+parametro_moneda_descripcion+"</b></th>";
+    html += "    <th align='right'><font size='5'> "+totalfinal.toFixed(decimales)+"</font></th>";
+    html += "</tr>";
+    html += "           </table>";
+    html += "   </div>";
+    html += "   </div>";
+
+
+    $("#detallecuenta").html(html);
+    
+}
+*/
 //muestra la tabla detalle de venta auxiliar
 function tabladetalle_espera()
 {
@@ -3630,7 +3729,7 @@ function tablaresultados(opcion)
                                            "<em style='font-size:20px;' class='fa fa-cart-arrow-down'></em></button>";                             
                             }else{
 
-                                 html += "<center><small style='font-size:8px;'>SIN<br>EXISTENCIA</small></center>";
+                                 html += "<center><small style='font-size:8px;'>SIN<br>EXISTENCIA</small><br><b style='color:red;'>"+existencia+"</b></center>";
                             
                             }
                         }
@@ -4451,6 +4550,9 @@ function registrarventa(cliente_id){
     let datos_lugardestino = document.getElementById('datos_lugardestino').value;
     let datos_direccioncomprador = document.getElementById('datos_direccioncomprador').value;
     let datos_puertodestino = document.getElementById('datos_puertodestino').value;
+    
+    let pago_alternativo = document.getElementById('pago_alternativo').value;
+    let pago_efectivo = document.getElementById('pago_efectivo').value;
 
     if (registroeventos_codigo>0){
         
@@ -4552,7 +4654,8 @@ function registrarventa(cliente_id){
                 datos_costosgastosinternacionales : datos_costosgastosinternacionales,datos_totalgastosinternacionales : datos_totalgastosinternacionales,
                 datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
                 datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
-                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional
+                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional,
+                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4675,7 +4778,8 @@ function registrarventa(cliente_id){
                 datos_costosgastosinternacionales : datos_costosgastosinternacionales,datos_totalgastosinternacionales : datos_totalgastosinternacionales,
                 datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
                 datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
-                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional
+                datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional,
+                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4759,6 +4863,8 @@ function registrarventa(cliente_id){
             }
         });          
     }
+    
+    //tablaresultados(1);
         
 } 
 
@@ -5535,7 +5641,7 @@ function ventas_por_parametro()
     if (parametro!=''){
         
         if (Number(parametro)>0)        
-            filtro = " and v.venta_id = "+parametro;
+            filtro = " and (v.venta_id = "+parametro+") or (cliente_codigo='"+parametro+"') ";
         else
             filtro = " and (cliente_razon like '%"+parametro+"%') or (cliente_codigo='"+parametro+"') ";
         
@@ -6944,7 +7050,7 @@ function focus_cantidad(producto_id){
 function pedidos_pendientes()
 {    
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/pedido/mostrar_pedidos';
+    var controlador = base_url+'pedido/mostrar_pedidos';
     var parametro = document.getElementById('filtrar3').value;
     var moneda_principal = document.getElementById('parametro_moneda_descripcion').value;
     
@@ -6975,7 +7081,7 @@ function pedidos_pendientes()
                         html += "     ";
                         html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
                         if (p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!=""){                        
-                            html += "     <br>"+p[i]['cliente_nombrenegocio'];
+                            html += "     <br>"+p[i]['cliente_nombrenegocio']+"  <b style='color:red'>"+p[i]["pedido_glosa"]+"</b>";
                         }
                         html += "     <br>"+p[i]['pedido_fecha'];
                         html += "     <br><small><b>PREV./RESPONSABLE:</b> "+p[i]['usuario_nombre']+"</small>";
@@ -7790,6 +7896,7 @@ function registrarpuntos(cliente_id, venta_total){
 function mostrar(forma_id,venta_detalletransaccion){
     let forma = $(`#${forma_id}`).val();
     $(`#${venta_detalletransaccion}`).css('display',forma != 1 ? 'block':'none');
+    
 }
 
 /* verifica si el nit/ci es correcto */
@@ -7943,10 +8050,14 @@ function enviarfactura_porcorreo(){
     var controlador = base_url+'venta/enviarfactura_porcorreo';
     
     var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+    
+    alert(venta_id+" *** "+factura_id+" *** "+elcorreo);
+    
     let res = pattern.test(elcorreo);
     if(!res){
         alert("El correo electrónico es invalido, por favor verifique sus datos!.");
     }else{
+        
         document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
         $.ajax({url: controlador,
                 type:"POST",
@@ -8492,7 +8603,7 @@ function finalizarventa_sin(){
                         
                         if ($('#facturado').is(':checked')){ //Si es venta facturada
 
-                            tablaproductos();
+                            //tablaproductos();
                             
                             let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
                             let venta_total = document.getElementById('venta_total').value;
@@ -9060,6 +9171,10 @@ function transcribir(){
 
 
 function seleccionar_documento(id){
+    
+    if (id == null || id === undefined || id === '') {
+        id = 1;
+    }
     
     var boton = document.getElementById("documento"+id);
     boton.style = "color: white";
@@ -10084,6 +10199,34 @@ function generarexcel(){
     });   
 
 }
+
+function guardar_temporal(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/guardar_temporal';
+    let nit = document.getElementById('nit').value;
+    let razon_social = document.getElementById('razon_social').value;
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{nit:nit, razon_social:razon_social},
+        success:function(respuesta){
+
+            let res = JSON.parse(respuesta);                            
+
+            if(res){
+                //alert("Los precios fueron modificados...!");
+            }
+
+        },
+        error:function(respuesta){
+            //alert("AVISO: Verifique que tenga habilitada la tabla parametro_temporal...!");
+        }
+    });
+
+
+}
+
 
 function borrar_datos_cliente(){
     

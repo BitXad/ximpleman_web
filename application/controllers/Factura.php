@@ -837,6 +837,35 @@ class Factura extends CI_Controller{
         }
     }
 
+//    function recibo_traspasocarta($traspaso_id)
+//    {
+//        $data['sistema'] = $this->sistema;
+//        
+//        if($this->acceso(21)){
+//        //**************** inicio contenido ***************           
+//    
+//            $usuario_id = $this->session_data['usuario_id'];
+//
+//            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+//            $data['venta'] = $this->Detalle_venta_model->get_traspaso($traspaso_id);
+//            $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($traspaso_id);        
+//            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+//            $data['parametro'] = $this->Parametro_model->get_parametros();
+//            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+//            $data['page_title'] = "Recibo";
+//
+//            //$data['parametro'] = $this->Parametro_model->get_parametros();
+//
+//            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+//
+//            $data['_view'] = 'factura/recibo_carta';
+//            $this->load->view('layouts/main',$data);       
+//
+//        		
+//        //**************** fin contenido ***************
+//        }
+//    }
+    
     function comanda_boucher($venta_id)
     {
         $data['sistema'] = $this->sistema;
@@ -860,6 +889,36 @@ class Factura extends CI_Controller{
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
   
         $data['_view'] = 'factura/comanda_boucher';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        }
+    }   
+    
+    function ticket_boucher($venta_id)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta_comanda($venta_id);
+        //$data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+        //var_dump($this->Detalle_venta_model->get_detalle_venta($venta_id));
+        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicios();        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/ticket_boucher';
         $this->load->view('layouts/main',$data);       
 
         		
@@ -901,22 +960,19 @@ class Factura extends CI_Controller{
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
-        $usuario_id = $this->session_data['usuario_id'];
-        
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_traspaso($traspaso_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_traspaso($traspaso_id);        
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['page_title'] = "Recibo Traspaso";
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['venta'] = $this->Detalle_venta_model->get_traspaso($traspaso_id);
+            $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_traspaso($traspaso_id);        
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['page_title'] = "Recibo Traspaso";
 
-        //$data['parametro'] = $this->Parametro_model->get_parametros();
-   
-        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-  
-        $data['_view'] = 'factura/recibo_carta';
-        $this->load->view('layouts/main',$data);       
+            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+
+            $data['_view'] = 'factura/recibo_carta';
+            $this->load->view('layouts/main',$data);       
 
         		
         //**************** fin contenido ***************
@@ -2056,22 +2112,27 @@ class Factura extends CI_Controller{
                         if ($this->parametros['parametro_comprobante']==2) $this->recibo_traspasoboucher($traspaso_id,1);
                         
                     }
-                    
-                    if ($this->parametros['parametro_tipoimpresora']=="NORMAL")
-                        $this->recibo_carta($venta_id);
-                    
-                    if ($this->parametros['parametro_tipoimpresora']=="OFICIO")
-                        $this->recibo_mediooficio($venta_id,1);
-                    
-                }elseif($this->parametros['parametro_notaentrega']==2){
-                    
-                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+                    else{
+                        if ($this->parametros['parametro_comprobante']==1) $this->recibo_traspasocarta($traspaso_id);
+                        if ($this->parametros['parametro_comprobante']==2) $this->recibo_traspasocarta($traspaso_id,1);
                         
-                        $this->notae_boucher($venta_id);
-                    
-                    
-                    else
-                        $this->notae_carta($venta_id);
+                    }
+//                    
+//                    if ($this->parametros['parametro_tipoimpresora']=="NORMAL")
+//                        $this->recibo_carta($venta_id);
+//                    
+//                    if ($this->parametros['parametro_tipoimpresora']=="OFICIO")
+//                        $this->recibo_mediooficio($venta_id,1);
+//                    
+//                }elseif($this->parametros['parametro_notaentrega']==2){
+//                    
+//                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+//                        
+//                        $this->notae_boucher($venta_id);
+//                    
+//                    
+//                    else
+//                        $this->notae_carta($venta_id);
                 }else{
                     
                     $this->notapreimpreso_carta($venta_id);

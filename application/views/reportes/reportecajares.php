@@ -295,7 +295,7 @@ border-bottom : 1px solid #aaa;*/
                             <!--<br>-->
                             <b>PUNTO DE VENTA:</b> <?php echo $punto_venta["puntoventa_codigo"]." - ".$punto_venta["puntoventa_nombre"]; ?><br>
                             <b>CAJERO:</b> <?php echo $usuario_caja["usuario_nombre"]."<sub>[".$usuario['usuario_id']."]</sub>"; ?>
-                           <br><b>FECHA INICIO:</b>
+                           <br><b>FECHA APERTURA:</b>
                                     <?php
                                     if (isset($caja)) {
                                         $fechaApertura = DateTime::createFromFormat('Y-m-d', $caja["caja_fechaapertura"]);
@@ -306,7 +306,7 @@ border-bottom : 1px solid #aaa;*/
                                     }
                                     ?>
 
-                                    <br><b>FECHA FIN:</b> 
+                                    <br><b>FECHA CIERRE:</b> 
                                     <?php
                                     if (isset($caja)) {
                                         if ($caja["caja_fechacierre"] != null) {
@@ -651,16 +651,44 @@ border-bottom : 1px solid #aaa;*/
         
         <tr>
             <td colspan="5" style="padding: 0; border-bottom: dashed 2px #000;">
-        <?php 
-        $cont = 0;
-        if($bitacora!==null){
-        foreach($bitacora as $c){ ?>
-                <?php 
-                echo "<small> <b>".$c["bitacoracaja_hora"]."</b> - ". substr($c["bitacoracaja_evento"] ?? '', 0, 20)."...</small>"; 
-                ?>
-        <?php } }
+                
+           
+<!--                <a class="btn btn-primary" data-toggle="collapse" href="#collapseOperaciones" role="button" aria-expanded="false" aria-controls="collapseOperaciones">
+                  Link with href
+                </a>-->
+                <button class="btn btn-primary no-print" type="button" data-toggle="collapse" data-target="#collapseOperaciones" aria-expanded="false" aria-controls="collapseOperaciones">
+                    <fa class="fa fa-list-alt"></fa> OPERACIONES OBSERVADAS
+                </button>
+       
+              <div class="collapse" id="collapseOperaciones">
+                <div class="card card-body">
+                    
+                        <?php 
+                        $cont = 0;
+                        if($bitacora!==null){
+                        foreach($bitacora as $c){ ?>
+
+                                <?php 
+                                echo "<small> <b>".$c["bitacoracaja_hora"]."</b> - ". substr($c["bitacoracaja_evento"] ?? '', 0, 20)."...</small>"; 
+                                ?>
+                        <?php } }
+
+                        ?>
+
+                </div>
+              </div>
+                
+                
+                
+            </td>
+        </tr>
         
-        ?>
+        <tr   style="font-size: 8pt; padding: 0;">
+            <td colspan="5" style="padding: 0; line-height: 12px; border-top: dashed 1px #000; border-bottom: dashed 1px #000; text-align: right;">
+                <br><b>TRANSACCIONES REGISTRADAS</b><br>
+                <small> 
+                    <?php if(isset($caja)){ echo nl2br($caja["caja_transregistradas"]);} ?>
+                </small>
             </td>
         </tr>
 
@@ -668,8 +696,8 @@ border-bottom : 1px solid #aaa;*/
         <!-- FIN BITACORA -->    
     
 
-    <tr   style="border-top-style: dashed 1px #000; border-top-width: 2px; border-bottom-style: dashed 1px #000; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
-        <td colspan="5" style="padding: 0; text-align: center; line-height: 12px;">
+    <tr   style="border-top-style: dashed 1px #000; border-top-width: 2px; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+        <td colspan="5" style="padding: 0; text-align: center; line-height: 12px; ">
             <small>Declaro veracidad de la información de este documento, y la total responsabilidad de las operaciones realizadas.</small>
             <br><br><br><br><br>
             <?php if(isset($caja)){ echo $caja["usuario_nombre"];} ?><br>CAJERO(A)

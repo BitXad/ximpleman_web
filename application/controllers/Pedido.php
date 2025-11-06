@@ -93,6 +93,7 @@ class Pedido extends CI_Controller{
         
         $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
+        $data['parametro'] = $this->parametros;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
         //$data['usuarios'] = $this->Venta_model->get_usuarios(); corregido mediante left join
@@ -778,6 +779,10 @@ class Pedido extends CI_Controller{
             if($this->input->post('select_forma_pago') != 1){
                 $el_banco = $this->input->post('banco_id');
             }
+            
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $ingreso_fecha = date("Y-m-d H:i:s"); 
+            
             $params = array(
                 'usuario_id' => $usuario_id,
                 'ingreso_categoria' => "",
@@ -786,7 +791,7 @@ class Pedido extends CI_Controller{
                 'ingreso_monto' => $total_final,
                 'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
                 'ingreso_concepto' => $glosa, //$this->input->post('ingreso_concepto'),
-                'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+                'ingreso_fecha' => $ingreso_fecha, //$this->input->post('ingreso_fecha'),
                 'ingreso_tc' => $ingreso_tc,
                 'forma_id' => $this->input->post('select_forma_pago'),
                 'ingreso_glosa' => $this->input->post('ingreso_glosa'),

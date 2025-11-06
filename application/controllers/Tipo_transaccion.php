@@ -7,15 +7,21 @@
 class Tipo_transaccion extends CI_Controller{
     
     private $sistema;
+    private $parametros;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
     }
@@ -36,7 +42,10 @@ class Tipo_transaccion extends CI_Controller{
      */
     function index()
     {
+        
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(133)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;

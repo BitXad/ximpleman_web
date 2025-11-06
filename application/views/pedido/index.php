@@ -42,6 +42,8 @@
 <input type="hidden" id="pedido_titulo" name="pedido_titulo" value="<?php echo $pedido_titulo; ?>">
 <input type="text" id="sistema_moduloventas" value="<?php echo $sistema['sistema_moduloventas']; ?>" name="sistema_moduloventas"  hidden>
 <input type="text" id="sistema_modulopedidos" value="<?php echo $sistema['sistema_modulopedidos']; ?>" name="sistema_modulopedidos"  hidden>
+<?php $decimales = $parametro["parametro_decimales"]; ?>
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $decimales; ?>">
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
@@ -277,13 +279,25 @@
                 <input type="hidden" name="numpedido_id" class="form-control" id="numpedido_id" />
             </div>
             <div class="modal-body" style="padding-bottom: 0px !important">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label for="modif_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <!--<input type="date" name="modif_fecha" class="form-control" id="modif_fecha" />-->
+                        <select class="form-control" id="select_fecha" >
+                            <option value="1">FECHA DE REGISTRO</option>
+                            <option value="2">FECHA LIMITE/ENTREGA</option>
+                            
+                        </select>
+                    </div>
+                </div>                
+                
+                <div class="col-md-4">
                     <label for="modif_fechapedido" class="control-label">Modificar Fecha</label>
                     <div class="form-group">
                         <input type="date" name="modif_fechapedido" class="form-control" id="modif_fechapedido" />
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="modif_horapedido" class="control-label">Modificar hora</label>
                     <div class="form-group">
                         <input type="time" step="any" name="modif_horapedido" class="form-control" id="modif_horapedido" />

@@ -4,14 +4,14 @@
  * www.crudigniter.com
  */
  
-class Producto_precios extends CI_Controller{
+class Unidad extends CI_Controller{
     
     private $sistema;
     
     function __construct(){
         
         parent::__construct();
-        $this->load->model('Producto_precios_model');
+        $this->load->model('Unidad_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -41,9 +41,9 @@ class Producto_precios extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
-            $data['unidad'] = $this->Producto_precios_model->get_all_unidad();
+            $data['unidad'] = $this->Unidad_model->get_all_unidad();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $data['page_title'] = "Producto_precios";
+            $data['page_title'] = "Unidades de manejo";
             $data['_view'] = 'unidad/index';
             $this->load->view('layouts/main',$data);
         }
@@ -66,12 +66,12 @@ class Producto_precios extends CI_Controller{
 				'unidad_nombre' => $this->input->post('unidad_nombre'),
             );
             
-            $unidad_id = $this->Producto_precios_model->add_unidad($params);
+            $unidad_id = $this->Unidad_model->add_unidad($params);
             redirect('unidad/index');
         }
         else
         {
-            $data['page_title'] = "Producto_precios";
+            $data['page_title'] = "Unidad";
             $data['_view'] = 'unidad/add';
             $this->load->view('layouts/main',$data);
         }
@@ -87,7 +87,7 @@ class Producto_precios extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
         // check if the tipo_servicio exists before trying to edit it
-        $data['unidad'] = $this->Producto_precios_model->get_unidad($unidad_id);
+        $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
         
         if(isset($data['unidad']['unidad_id']))
         {
@@ -99,18 +99,18 @@ class Producto_precios extends CI_Controller{
                             'unidad_nombre' => $this->input->post('unidad_nombre'),
                 );
 
-                $this->Producto_precios_model->update_unidad($unidad_id,$params);            
+                $this->Unidad_model->update_unidad($unidad_id,$params);            
                 redirect('unidad/index');
             }
             else
             {
-                $data['page_title'] = "Producto_precios";
+                $data['page_title'] = "Unidad";
                 $data['_view'] = 'unidad/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
         else
-            show_error('La Producto_precios que estas intentando editar no existe.');
+            show_error('La Unidad que estas intentando editar no existe.');
         }
            
     } 
@@ -122,9 +122,9 @@ class Producto_precios extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
-            $data['unidad'] = $this->Producto_precios_model->get_unidad($unidad_id);
+            $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
             if(isset($data['unidad']['unidad_id'])){
-                $this->Producto_precios_model->delete_unidad($unidad_id);
+                $this->Unidad_model->delete_unidad($unidad_id);
                 redirect('unidad/index');
             }else{
                 show_error('La unidad que estas intentando eliminar no existe.');
@@ -139,7 +139,7 @@ class Producto_precios extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $nombre_unidad = $this->input->post('nombre_unidad');
-            $datos = $this->Producto_precios_model->get_unidad_usada($nombre_unidad);
+            $datos = $this->Unidad_model->get_unidad_usada($nombre_unidad);
             echo json_encode($datos);
         }
         else

@@ -565,7 +565,7 @@ $salto_linea='
         if ($documento_sector == 23){  //23- factura prevalorada 
             $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
             
-            if ($num_tarjeta==0)
+            if ($num_tarjeta==0||$num_tarjeta=="")
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta xsi:nil="true"/>';
                 else
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
@@ -578,7 +578,7 @@ $salto_linea='
            /***
             if ($documento_sector == 6){ //6-AServicio Turismo Hospedaje 
                 ***/
-                if ($num_tarjeta==0)
+                if ($num_tarjeta==0||$num_tarjeta=="")
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta xsi:nil="true"/>';
                 else
                     $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';

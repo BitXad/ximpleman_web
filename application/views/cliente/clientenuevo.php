@@ -92,7 +92,8 @@ function toggle(source) {
             <?php echo form_open('cliente/clientenuevo/0'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
-                                        <div class="col-md-5">
+                            
+                                        <div class="col-md-4">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
 							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -102,10 +103,14 @@ function toggle(source) {
 					<div class="col-md-2">
 						<label for="cliente_ci" class="control-label">C.I.</label>
 						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+							<input type="text" name="cliente_ci"
+                                                        value="<?php echo $this->input->post('cliente_ci'); ?>"
+                                                        class="form-control" id="cliente_ci" required
+                                                        onkeyup="var s=this.selectionStart,e=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(s,e);" />
+
 						</div>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
 							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
@@ -130,7 +135,7 @@ function toggle(source) {
 							<input type="text" name="cliente_celular" value="<?php echo $this->input->post('cliente_celular'); ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<label for="cliente_foto" class="control-label">Foto</label>
 						<div class="form-group">
                                                     <input type="file" name="cliente_foto" value="<?php echo $this->input->post('cliente_foto'); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
@@ -142,13 +147,13 @@ function toggle(source) {
                                                     <input type="date" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_email" class="control-label">Email</label>
 						<div class="form-group">
                                                     <input type="email" name="cliente_email" value="<?php echo $this->input->post('cliente_email'); ?>" class="form-control" id="cliente_email" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger"></span>Nombre Negocio</label>
 						<div class="form-group">
                                                     <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
@@ -235,13 +240,25 @@ function toggle(source) {
                                                     <input type="number" step="any" name="cliente_longitud" value="<?php echo $this->input->post('cliente_longitud'); ?>" class="form-control" id="cliente_longitud" />
 						</div>
 					</div>
+                                        <div class="col-md-2">
+                                                <label for="doc_clasificador" class="control-label">Tipo de documento</label>
+                                                <div class="form-group">
+                                                    <select name="doc_clasificador" id="doc_clasificador" class="form-control">
+                                                        <?php foreach($cdis as $cdi){ ?>
+                                                            <option value="<?=$cdi['cdi_codigoclasificador']?>"><?= $cdi['cdi_descripcion'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                        </div>
 					<div class="col-md-2">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
+                                                    <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit"
+                                                    value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : ''); ?>"
+                                                    class="form-control" id="cliente_nit" required />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="cliente_razon" class="control-label">Razón</label>
 						<div class="form-group">
 							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
@@ -287,7 +304,7 @@ function toggle(source) {
 								<?php 
 								foreach($zona as $categoria_clientezona)
 								{
-									$selected = ($categoria_clientezona['zona_id'] == $this->input->post('zona_id')) ? ' selected="selected"' : "";
+									$selected = ($categoria_clientezona['zona_id'] == 1) ? ' selected="selected"' : "";
 
 									echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
 								} 
@@ -350,3 +367,39 @@ function toggle(source) {
       	</div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+  $(function(){
+    const $form = $('form').first();
+    const $ci   = $('#cliente_ci');
+    const $nit  = $('#cliente_nit');
+
+    // limpiar mensajes al escribir
+    $ci.on('input', function(){ this.setCustomValidity(''); });
+    $nit.on('input', function(){ this.setCustomValidity(''); });
+
+    $form.on('submit', function(e){
+      const ci  = ($ci.val()  || '').trim();
+      const nit = ($nit.val() || '').trim();
+
+      let valido = true;
+
+      if(!ci){
+        $ci[0].setCustomValidity('El C.I. es obligatorio.');
+        $ci[0].reportValidity();
+        valido = false;
+      }
+      if(!nit){
+        $nit[0].setCustomValidity('El NIT es obligatorio.');
+        if(valido){ $nit[0].reportValidity(); } // solo enfoca si no falló CI
+        valido = false;
+      }
+
+      if(!valido){
+        e.preventDefault();
+        return false;
+      }
+    });
+  });
+</script>

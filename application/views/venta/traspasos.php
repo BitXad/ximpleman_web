@@ -228,7 +228,7 @@
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>Asignar Detalle</b></h4>
-                                <b>ADVERTENCIA: El Detalle actual, remplazara algun invenario asignado previamente.</b>                                
+                                <b>ADVERTENCIA: El Detalle actual, remplazara algun inventario asignado previamente.</b>                                
                             </center>
 
                                 

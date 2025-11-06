@@ -16,21 +16,28 @@
         <?php $decimales = $parametro['parametro_decimales']; ?>
     </head>
     <?php
-    if($fondomonitor == "" || $fondomonitor == null){
-        $fondomonitor = "fondo_vistadetalleventa.jpeg";
-    }
-    if($logomonitor == "" || $logomonitor == null){
-        $logomonitor = "default.png";
-    }
+        $fondomonitor = "fondo_vistadetalleventa.jpg";
+ 
+        $logomonitor = "logo.png";
+        
     ?>
 <body style="width: 98%; background: url('<?php echo base_url("resources/images/monitor/".$fondomonitor); ?>');">
     
 <div class="box-header">
     <center>
         <!--<h3 class="box-title">PEDIDO</h3>-->        
-        <img src="<?php echo base_url("resources/images/empresas/".$empresa[0]["empresa_imagen"]); ?>" width="260" height="130">
+        <img src="<?php echo base_url("resources/images/monitor/".$logomonitor); ?>" width="260" height="130">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
     </center>
+
+    <div class="col-md-12" style="color: white; font-size:24px;">
+        
+        <center>
+            <div class="col-md-12" id="datos_cliente"><span></span></div>
+            <!--<div class="col-md-12"><b>RAZON SOC.: </b>CONSTRUNCIORA FULANITO MENDEZ SRL</div>-->            
+        </center>         
+
+    </div>
 </div>
     
 <div class="row">
@@ -52,6 +59,10 @@
                     </table>
 
                 </div>
+                            
+                <div class="col-md-12" id="estotal" style="text-align: center">
+
+                </div>
             </div>
             
         </div>
@@ -61,7 +72,7 @@
                 <div class="box-body table-responsive">
                     <table class='table table-condensed'>
                         <tr>    
-                            <td style="padding: 0; border-top: 0px; border-bottom: 0px">        
+                            <td style="padding: 0; border: none;">        
                                 <center>
                                 <h4 style="color: white;"><font size="4"><b> <?php echo "- OFERTAS -"; ?></b></font></h4>
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -101,6 +112,7 @@
    
                                                     <?php
                                                     $producto_imagen = $producto['producto_foto'];
+                                                    
                                                     if($producto['producto_foto'] == "null" || $producto['producto_foto'] == "")
                                                     {
                                                         $producto_imagen = "producto.jpg";
@@ -112,12 +124,12 @@
                                                     
                                                     ?>
                                                     
-                                                        <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
                                                     <?php } ?>
+                                                        <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
                                                         
                                                     <div class="carousel-inner">
                                                         <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],$decimales,".",",") ?></b></font></h3>
-                                                        <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
+                                                        <p  style="color: #FF6501;"><font size="4"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
                                                     </div>
                                                     <!--</div>-->
                                                 </div>
@@ -151,18 +163,8 @@
                     
                 </div>
             </div>
-            <div class="col-md-12" style="color: white; font-size:24px;">
-                <center>
-                    <div class="col-md-12"><b>NIT: </b>141349024</div>
-                    <div class="col-md-12"><b>RAZON SOC.: </b>CONSTRUNCIORA FULANITO MENDEZ SRL</div>
 
-                </center>         
 
-            </div>
-            
-            <div class="col-md-12" id="estotal" style="text-align: center">
-                
-            </div>
         </div>
     </div>
 </div>
@@ -171,4 +173,4 @@
         <marquee>Desarrollado por <b>PASSWORD SRL</b> Ingenieria Hardware & Software. Contactos: <b>4511518</b> - <b>77417605</b></marquee>
     </footer>
 </html>
-<input type="text" id="input2" name="input2" value="<?= $this->session->userdata('codigo_usuario') ?>">
+<!--<input type="text" id="input2" name="input2" value="<?= $this->session->userdata('codigo_usuario') ?>">-->

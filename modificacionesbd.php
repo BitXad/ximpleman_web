@@ -969,6 +969,7 @@ truncate venta_pasaje;
 truncate viaje;
 truncate viaje_conductor;
 truncate zona;
+truncate temporal;
 
  * 
  * 

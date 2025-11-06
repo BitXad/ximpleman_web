@@ -7,16 +7,22 @@
 class Proveedor extends CI_Controller{
     
     private $sistema;
+    private $parametros;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Proveedor_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in')
             ;
         }else {
             redirect('', 'refresh');
         }
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];        
+        
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
@@ -39,7 +45,11 @@ class Proveedor extends CI_Controller{
      
     function index()
     {
+        
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
+        
         if($this->acceso(110)) {
                 $usuario_id = $this->session_data['usuario_id'];
                 $data['rol'] = $this->session_data['rol'];

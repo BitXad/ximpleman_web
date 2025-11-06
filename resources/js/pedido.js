@@ -37,6 +37,7 @@ function tabla_pedidos(filtro)
 {
     var base_url        = document.getElementById('base_url').value;
     var esrol           = document.getElementById('esrol').value;
+    var decimales = document.getElementById('decimales').value;
     var esrolconsolidar = document.getElementById('esrolconsolidar').value;
     let pedido_titulo   = document.getElementById('pedido_titulo').value;
     let sistema_modulopedidos   = document.getElementById('sistema_modulopedidos').value;
@@ -117,7 +118,7 @@ function tabla_pedidos(filtro)
                     
                 
                 html += "<br>";
-                html += "    "+p[i]["cliente_nombrenegocio"];
+                html += p[i]["cliente_nombrenegocio"]+" <b style='color:red'>"+p[i]["pedido_glosa"]+"</b>";
                 html += "<br>  ";
                 
                 fecha_pedido = p[i]["pedido_fecha"];
@@ -128,7 +129,7 @@ function tabla_pedidos(filtro)
                 
                 html += "    "+ formato_fecha(fecha_pedido)+" - "+hora_pedido+"";
                 if(p[i]["ingreso_monto"] >0){
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Reserva: </b>"+p[i]["ingreso_monto"]+" "+p[i]["ingreso_moneda"];
+                    html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Reserva "+p[i]["ingreso_moneda"]+" </b>"+Number(p[i]["ingreso_monto"]).toFixed(decimales);
                 }
                 
                 html += "     ";
@@ -152,7 +153,7 @@ function tabla_pedidos(filtro)
 
                 html += "    <td bgcolor='"+p[i]["estado_color"]+"' style='line-height: 10px; padding:"+padding+";'> ";
                 html += "        <center> ";        
-                html += "        <font size='1'> ";        
+                html += "        <font size='1'> ";
                 html += "        "+formato_fecha(p[i]["pedido_fechaentrega"])+'<br>'+p[i]["pedido_horaentrega"];
                 
                 html += "        <br> <small>"+nombreusuario+"</small>"

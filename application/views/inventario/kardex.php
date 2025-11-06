@@ -34,7 +34,8 @@
 
 <!----------------------------- fin script buscador --------------------------------------->
     <?php $decimales = $parametro['parametro_decimales']; ?>
-    <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+<input type="text" id="producto_id" value="<?php echo $producto_id;?>" name="producto_id"  hidden>
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">

@@ -7,11 +7,12 @@
 class Producto_preferencia extends CI_Controller{
     
     private $sistema;
-
+    private $parametros;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Producto_preferencia_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -19,6 +20,10 @@ class Producto_preferencia extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];        
+        
 
     }
     
@@ -40,6 +45,8 @@ class Producto_preferencia extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(190)){
             $data['page_title'] = "Producto - Preferencia";
             $params['limit'] = RECORDS_PER_PAGE; 

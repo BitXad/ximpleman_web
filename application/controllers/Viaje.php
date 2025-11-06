@@ -36,6 +36,7 @@ class Viaje extends CI_Controller{
 public function index()
 {
      $data['sistema'] = $this->sistema;
+     $data['parametro'] = $this->parametros;
   try{
       $data['noof_page'] = 0;
 //     $data['viaje'] = $this->Viaje_model->get_all_with_asso_viaje();

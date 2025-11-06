@@ -8,6 +8,7 @@ class Subcategoria_producto extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
     function __construct()
     {
         parent::__construct();
@@ -20,6 +21,11 @@ class Subcategoria_producto extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+                
+        $this->load->model('Parametro_model');
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -39,6 +45,7 @@ class Subcategoria_producto extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(118)){
             $data['page_title'] = "Subcategoria Producto";
             

@@ -1,35 +1,27 @@
-<!----------------------------- script buscador --------------------------------------->
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>   
-<!----------------------------- fin script buscador --------------------------------------->
-<!------------------ ESTILO DE LAS TABLAS ----------------->
+<!-- ---------------- ESTILO DE LAS TABLAS --------------- -->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<!-------------------------------------------------------->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
 <div class="box-header">
     <font size='4' face='Arial'><b>Zonas</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($categoria_clientezona); ?></font>
     <div class="box-tools no-print">
-        <a href="<?php echo site_url('categoria_clientezona/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Zonas</a>
+        <a href="<?php echo site_url('categoria_clientezona/add'); ?>" class="btn btn-success btn-sm">
+            <fa class='fa fa-pencil-square-o'></fa> Registrar Zonas
+        </a>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+        <div class="input-group no-print">
+            <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese zona">
         </div>
         <!--------------------- fin parametro de buscador --------------------->
+
         <div class="box">
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
@@ -42,80 +34,120 @@
                         </tr>
                     </thead>
                     <tbody class="buscar">
-                        <?php $i = 0;
-                            $cont = 0;
-                            foreach($categoria_clientezona as $c){
-                                    $cont = $cont+1;
-                        ?>
+                        <?php $i = 0; $cont = 0;
+                        foreach($categoria_clientezona as $c){ 
+                            $cont++; ?>
                         <tr>
                             <td><?php echo $cont; ?></td>
                             <td><?php echo $c['zona_nombre']; ?></td>
                             <td style="background-color: #<?php echo $c['estado_color'];?>"><?php echo $c['estado_descripcion']; ?></td>
                             <td class="no-print">
-                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                <!-- Modal de eliminación -->
+                                <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>">
+                                    <span class="fa fa-trash"></span>
+                                </a>
+
                                 <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                     <div class="modal-dialog" role="document">
                                         <br><br>
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">x</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
-                                                <!------------------------------------------------------------------->
-                                                <h3><b> <span class="fa fa-trash"></span></b>
-                                                    ¿Desea eliminar la categoria cliente zona <b> <?php echo $c['zona_nombre']; ?></b>?
+                                                <h3>
+                                                    <b><span class="fa fa-trash"></span></b>
+                                                    ¿Desea eliminar la categoria cliente zona <b><?php echo $c['zona_nombre']; ?></b>?
                                                 </h3>
-                                                <!------------------------------------------------------------------->
                                             </div>
                                             <div class="modal-footer aligncenter">
-                                                <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['zona_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                                <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['zona_id']); ?>" class="btn btn-success">
+                                                    <span class="fa fa-check"></span> Si
+                                                </a>
+                                                <a href="#" class="btn btn-danger" data-dismiss="modal">
+                                                    <span class="fa fa-times"></span> No
+                                                </a>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
-                                </div>
-                            <!------------------------ FIN modal para confirmar eliminación ------------------->
-                            <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['zona_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
-                                <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
+
+                                <!-- Botón Editar -->
+                                <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['zona_id']); ?>" class="btn btn-info btn-xs" title="Editar">
+                                    <span class="fa fa-pencil"></span>
+                                </a>
                             </td>
                         </tr>
-                        <?php $i++;  } ?>
+                        <?php $i++; } ?>
                     </tbody>
                 </table>
-                                
             </div>
         </div>
     </div>
 </div>
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+
+<!-- Scripts -->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+
 <script>
-    $(document).ready(function() {
-        $('#mitabla').DataTable({
-            language: {
-                processing:     "Tratamiento en curso...",
-                search:         "Buscar ",
-                lengthMenu:     "Mostrar _MENU_ elementos ",
-                info:           "Visualización del artículo _START_ a _END_ en _TOTAL_ elementos",
-                infoEmpty:      "Visualización del elemento 0 a 0 de 0 elementos",
-                infoFiltered:   "(filtro de _MAX_ elementos en total)",
-                infoPostFix:    "",
-                loadingRecords: "Cargando...",
-                zeroRecords:    "No hay elementos para mostrar",
-                emptyTable:     "No hay datos disponibles en la tabla.",
-                paginate: {
-                    first:      "primero",
-                    previous:   "Anterior",
-                    next:       "Siguiente",
-                    last:       "Último"
-                },
-                aria: {
-                    sortAscending:  ": activar para ordenar la columna en orden ascendente",
-                    sortDescending: ": activar para ordenar la columna en orden descendente"
-                }
+$(document).ready(function() {
+    // Buscador en tiempo real
+    $('#filtrar').keyup(function () {
+        var rex = new RegExp($(this).val(), 'i');
+        $('.buscar tr').hide();
+        $('.buscar tr').filter(function () {
+            return rex.test($(this).text());
+        }).show();
+    });
+
+    // Inicializar DataTables con exportación
+    $('#mitabla').DataTable({
+        dom: 'Blfrtip',
+        buttons: [
+            { extend: 'copy', text: '<i class="fas fa-copy"></i>' },
+            { extend: 'excel', text: '<i class="fas fa-file-excel"></i>' },
+            { extend: 'csv', text: '<i class="fas fa-file-csv"></i>' },
+            { extend: 'print', text: '<i class="fas fa-print"></i>' }
+        ],
+        pageLength: 50,
+        language: {
+            processing:     "Tratamiento en curso...",
+            search:         "Buscar ",
+            lengthMenu:     "Mostrar _MENU_ elementos ",
+            info:           "Visualización del artículo _START_ a _END_ en _TOTAL_ elementos",
+            infoEmpty:      "Visualización del elemento 0 a 0 de 0 elementos",
+            infoFiltered:   "(filtro de _MAX_ elementos en total)",
+            loadingRecords: "Cargando...",
+            zeroRecords:    "No hay elementos para mostrar",
+            emptyTable:     "No hay datos disponibles en la tabla.",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Último"
+            },
+            aria: {
+                sortAscending:  ": activar para ordenar la columna en orden ascendente",
+                sortDescending: ": activar para ordenar la columna en orden descendente"
             }
-        });
-    } );
+        }
+    });
+});
 </script>
 
+<style type="text/css" media="print">
+    .dataTables_wrapper .dt-buttons,
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_paginate,
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_info {
+        display: none !important;
+    }
+    .no-print { display: none !important; }
+</style>

@@ -72,6 +72,7 @@ function mostrar_ocultar(){
 function mostrar_formapago(){
     
     var forma_id = document.getElementById('forma_pago').value;    
+    var decimales = document.getElementById('parametro_decimales').value;    
     var result = <?php echo json_encode($forma_pago); ?>;
     var html = "";
     
@@ -80,13 +81,21 @@ function mostrar_formapago(){
     var mostrarimagen = "";
     var encontrado = 0;
     
-    if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297){
-        $("#venta_detalletransaccion").val("1234000000005678");
+    const formasValidas = [
+      2,10,16,17,18,19,20,39,40,41,42,43,82,83,84,85,86,87,88,89,
+      134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,
+      153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,
+      172,173,174,175,176,177,297
+    ];
+
+    if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297)
+    {
+      $("#venta_detalletransaccion").val("1234000000005678");
+    } else {
+      $("#venta_detalletransaccion").val("0");
     }
-    else{
-        $("#venta_detalletransaccion").val("0");        
-    }
-    
+
+
     for(var i=0; i<tam ;i++)
     {
         if(forma_id == dato[i]["forma_id"]){
@@ -112,10 +121,41 @@ function mostrar_formapago(){
     if (encontrado==0)
         document.getElementById('imagenqr').style.display = 'none';
     
-    //alert(mostrarimagen);
-////                <div class="col-md-12" style="display:none" id="imagenqr">
-//               
-//    $("#imagenqr").html(html);
+    
+// Obtenemos las filas por ID
+    const filaAlternativo = document.getElementById('filaAlternativo');
+    const filaEfectivo    = document.getElementById('filaEfectivo');
+    //const boton           = document.getElementById('btnToggleFilas');
+
+    // Si forma_id == 1, ocultamos las filas
+    let venta_totalfinal    = document.getElementById('venta_totalfinal').value;
+    
+    var select = document.getElementById("forma_pago");
+
+    // Obtener el texto de la opción seleccionada
+    var textoSeleccionado = select.options[select.selectedIndex].text;
+    document.getElementById("span_alternativo").textContent = textoSeleccionado;        
+    
+    if (forma_id == 1) {
+    
+        $("#pago_alternativo").val("0.00");
+        $("#pago_efectivo").val(Number(venta_totalfinal).toFixed(decimales));        
+    
+        filaAlternativo.style.display = 'none';
+        filaEfectivo.style.display    = 'none';
+        
+        
+        //boton.textContent = 'Mostrar Pagos';
+    } else {
+    
+        $("#pago_alternativo").val(Number(venta_totalfinal).toFixed(decimales));     
+        $("#pago_efectivo").val("0.00");
+        // En cualquier otro caso, mostramos las filas
+        filaAlternativo.style.display = 'table-row';
+        filaEfectivo.style.display    = 'table-row';
+        //boton.textContent = 'Ocultar Pagos';
+    }
+
 
 }
 
@@ -472,7 +512,7 @@ window.onkeydown = compruebaTecla;
                                 
                 <?php } ?>
                 <!--<input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />-->
-                <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
+                        <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?>  <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
                 <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_nuevo()" title="Cliente nuevo"><span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span></div>
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
             
@@ -484,7 +524,7 @@ window.onkeydown = compruebaTecla;
             <label for="razon social" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">RAZON SOCIAL</label>
             <div class="input-group" <?php echo $estilo_div; ?>>
                 
-                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly />
+                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly  <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
                 <datalist id="listaclientes"></datalist>
                 <div style="border-color: orange; background: orange !important; color: white" class="btn btn-facebook input-group-addon" title="Buscar por nombre de cliente"><span class="fa fa-unlock" aria-hidden="true" id="bucar_cliente" onclick="buscar_nombre();"></span></div>
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
@@ -770,7 +810,7 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_codigo" class="control-label"  <?php echo $estilo_label; ?>>CÓDIGO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_codigo" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();" onkeypress="validar(event,15)"/>
+                <input type="text" name="cliente_codigo" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();" onkeypress="validar(event,15)" onclick="seleccionar(8)"/>
             </div>
         </div>
         
@@ -2090,6 +2130,29 @@ window.onkeydown = compruebaTecla;
                         </td>
                 </tr>
                 
+         
+                    
+                        <tr id="filaAlternativo"  style="display: none; padding: 0; border-top: 2px solid black; border-bottom: 2px solid black;">
+                            <td style="padding: 0; background: lightgray;"><b><span id="span_alternativo">Alternativo</span> <?php echo $parametro['moneda_descripcion']; ?></b></td>
+                            <td align="right" style="padding: 0; background: lightgray;">
+                                <input class="btn" style="padding:0; background-color:#edde34; font-size:20px;"
+                                       id="pago_alternativo" size="<?php echo $ancho_boton; ?>" name="pago_alternativo"
+                                       value="<?php echo $efectivo; ?>" 
+                                       onclick="seleccionar(7)" autocomplete="off">
+                            </td>
+                        </tr>
+
+                        <tr id="filaEfectivo" style="display: none; padding: 0; border-top: 2px solid black; border-bottom: 2px solid black;">
+                            <td style="padding: 0;  background: lightgray;"><b>PAGO EN EFECTIVO <?php echo $parametro['moneda_descripcion']; ?></b></td>
+                            <td align="right" style="padding: 0; background: lightgray;">
+                                <input class="btn" style="padding:0; background-color:lightgray; font-size:20px;"
+                                       id="pago_efectivo" size="<?php echo $ancho_boton; ?>" name="pago_efectivo"
+                                       value="<?php echo $efectivo; ?>" onkeyup="calcularpago(event)"
+                                       onclick="seleccionar(8)" autocomplete="off" readonly="true">
+                            </td>
+                        </tr>
+                
+                
                 <tr style="padding: 0">                      
                     <td style="padding: 0"><b>Cambio <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0;">
@@ -2459,7 +2522,7 @@ window.onkeydown = compruebaTecla;
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>PREFERENCIAS</b></h4>
-                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                             
                             </center>
 
                             <input id="detalleven_id" value="0" hidden>
@@ -2537,7 +2600,7 @@ window.onkeydown = compruebaTecla;
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><fa class="fa fa-"></fa> <b>INGRESO RAPIDO</b></h4>
-                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            
                             </center>
                             
                     </div>
@@ -2605,7 +2668,7 @@ window.onkeydown = compruebaTecla;
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>ACTUALIZAR PRECIOS</b></h4>
-                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            
                             </center>
                             
                     </div>
@@ -2686,7 +2749,7 @@ window.onkeydown = compruebaTecla;
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>COMBOS Y PROMOCIONES</b></h4>
-                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                              
                                 
                                 <!--<input type="text" id="parametro" class="form-control btn-default" onkeyup="buscar(event)">-->
                             </center>
@@ -4409,23 +4472,27 @@ function abrir_lacaja()
 </div>
 <!------------------------ F I N  modal para envio de facturas a correos ------------------->
 
-
-
 <script>
-document.getElementById("sumatoria_total").addEventListener("input", function() {
-    let expresion = this.value;
+document.getElementById("pago_alternativo").addEventListener("input", calcularPagoEfectivo);
 
-    // Validar solo números, + y - (eliminar otros caracteres)
-    expresion = expresion.replace(/[^0-9+\-]/g, "");
+function calcularPagoEfectivo() {
+    const total = parseFloat(document.getElementById("venta_totalfinal").value) || 0;
+    const alternativo = parseFloat(document.getElementById("pago_alternativo").value) || 0;
+    const inputAlternativo = document.getElementById("pago_alternativo");
+    const inputEfectivo = document.getElementById("pago_efectivo");
 
-    try {
-        // Evaluar la expresión matemática de forma segura
-        let resultado = eval(expresion);
-
-        // Mostrar el resultado en el otro input
-        document.getElementById("calcular_total").value = isNaN(resultado) ? "" : resultado;
-    } catch (e) {
-        document.getElementById("calcular_total").value = "";
+    // Validar que alternativo no sea mayor al total
+    if (alternativo > total) {
+        alert("⚠️ El monto alternativo no puede ser mayor al total de la venta.");
+        inputAlternativo.value = total.toFixed(2); // ajusta automáticamente
+        inputEfectivo.value = "0.00";
+        inputAlternativo.focus();
+        inputAlternativo.select();
+        return;
     }
-});
+
+    // Calcular pago efectivo
+    const efectivo = total - alternativo;
+    inputEfectivo.value = efectivo.toFixed(2);
+}
 </script>

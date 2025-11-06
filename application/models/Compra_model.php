@@ -87,13 +87,14 @@ class Compra_model extends CI_Model
     {
         $compra = $this->db->query("
             SELECT
-                c.*, p.*, t.*, f.*, mo.*, u.*
+                c.*, p.*, t.*, f.*, mo.*, u.*, e.*
 
             FROM
-                compra c, proveedor p, tipo_transaccion t, forma_pago f, moneda mo, usuario u
+                compra c, proveedor p, tipo_transaccion t, forma_pago f, moneda mo, usuario u, estado e
 
             WHERE
-                c.proveedor_id=p.proveedor_id and c.tipotrans_id=t.tipotrans_id and c.forma_id=f.forma_id and c.moneda_id=mo.moneda_id and c.usuario_id=u.usuario_id and c.compra_id=".$compra_id."
+                c.proveedor_id=p.proveedor_id and c.tipotrans_id=t.tipotrans_id and c.forma_id=f.forma_id and c.moneda_id=mo.moneda_id and c.usuario_id=u.usuario_id and c.compra_id=".$compra_id." and
+                    e.estado_id = c.estado_id
                 ORDER BY `compra_id` DESC
          ")->result_array();
 

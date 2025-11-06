@@ -160,4 +160,9 @@ class Ingreso_model extends CI_Model
         $this->db->query($sql);
         return $this->db->insert_id();
     }
+    
+    public function get_all_ingresos_count()
+{
+    return $this->db->count_all('ingresos');
+}
 }

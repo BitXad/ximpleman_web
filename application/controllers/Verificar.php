@@ -68,6 +68,11 @@ class Verificar extends CI_Controller
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
                 $dosificacion = $this->db->query($dosif)->row_array();
                 
+                
+                
+                
+                
+                
                 //print "<pre>"; print_r( $session_data); print "</pre>";
                 if($parametro[0]["parametro_tiposistema"] == 1){
                     

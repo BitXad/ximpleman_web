@@ -33,13 +33,11 @@
  @page { 
         size: landscape;
     }
-     
 </style>
-<!----------------------------- fin script buscador --------------------------------------->
-<!------------------ ESTILO DE LAS TABLAS ----------------->
+
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
-<!-------------------------------------------------------->
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
@@ -47,6 +45,7 @@
 <input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="resproducto" id="resproducto" />
+
 <div class="cuerpo" style="font-family: Arial;">
     <div class="columna_derecha">
         <center> 
@@ -65,16 +64,12 @@
         <center>
             <h3 class="box-title"><u>REPORTE GENERAL</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
-            <!--<b>VENTAS REALIZADAS</b>-->
         </center>
     </div>
 </div>
+
 <div class="row">
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <!--<div class="col-md-4 no-print" >                     
-            Cliente:
-            <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
-        </div>-->
         <div class="col-md-2 no-print">
             <label for="filtrar" class="control-label"> Filtrar: </label>
             <select class="btn btn-primary btn-sm form-control" name="filtrar" id="filtrar" onchange="tipode_reporte()" required>
@@ -120,26 +115,7 @@
                 <?php } ?>
             </select>
         </div>
-        <!--<div class="col-md-2 no-print" id="serv_responsable" style="display: none">
-            <label for="responsable_id" class="control-label"> Responsable: </label>
-            <select class="btn btn-primary btn-sm form-control" name="responsable_id" id="responsable_id" >
-                <option value="0">TODOS</option>
-                <?php /*foreach($all_usuario as $usuario){
-                    $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
-                ?>
-                <option value="<?php echo $usuario['usuario_id']; ?>" <?php echo $selected; ?>><?php echo $usuario['usuario_nombre']; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div class="col-md-2 no-print" id="serv_recepcionadopor" style="display: none">
-            <label for="recepcionadopor_id" class="control-label"> Recepcionado por: </label>
-            <select class="btn btn-primary btn-sm form-control" name="recepcionadopor_id" id="recepcionadopor_id" >
-                <option value="0">TODOS</option>
-                <?php foreach($all_usuario as $usuario){?>
-                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                <?php }*/ ?>
-            </select>
-        </div>-->
+
         <div class="col-md-2 no-print">
             <label for="exportar" class="control-label"> &nbsp; </label>
             <div class="form-group" style="display: flex; margin-bottom: 0px">
@@ -148,6 +124,7 @@
                 <a class="btn btn-info" onclick="mostrar_menosfventa()" style="display: none" id="boton_menosfventa" title="Mostrar menos Filtros"><span class="fa fa-search-minus"></span></a>
             </div>
         </div>
+
         <span id="masdeventas" style="display: none">
             <div class="col-md-2 no-print" id="prod_tipotrans" style="display: block">
                 <label for="tipotrans_id" class="control-label"> Tipo Trans: </label>
@@ -256,12 +233,13 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
+                <!-- Exportar a Excel (nuevo: implementado con SheetJS) -->
                 <a onclick="generarexcel_reportegrl()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
             </div>
         </div>
+
         <div id="tablas" style="visibility: block">  
             <div class="col-md-6 no-print" id="tablareproducto_ojo" hidden></div>
-            <!--<div class="col-md-6 no-print" id="tablarecliente"></div>-->
             <div class="col-md-6 no-print" id="tablareproveedor"></div>
             <input id="producto" type="hidden" class="form-control" >
             <input id="cliente" type="hidden" class="form-control" > 
@@ -272,11 +250,13 @@
      <span id="hasta"></span>
    <div id="labusqueda"></div>
 </div>
+
 <div class="row no-print" id='loader'  style='display:none;'>
     <center>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
     </center>
 </div>
+
 <div class="box" style="padding: 0;">
     <div class="box-body table-responsive" >
         <table class="table table-striped table-condensed" id="mitabla" >
@@ -293,7 +273,7 @@
                 <th>PRECIO<br>UNIT.(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>DESC(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>PRECIO<br>TOTAL(<?php echo $parametro['moneda_descripcion']; ?>)</th>
-                <th>PRECIO<br>TOTAL(<?php //$lamoneda[0]['moneda_descripcion']; 
+                <th>PRECIO<br>TOTAL(<?php 
                                         if($parametro["moneda_id"] == 1){
                                             echo $lamoneda[1]['moneda_descripcion'];
                                         }else{
@@ -306,6 +286,7 @@
                 <th>UTILID.<br>(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <?php } ?>
                 <th id="titulo_seis">CLIENTE</th>
+                <th id="titulo_seis">CODIGO<br>CLIENTE</th>
                 <th id="titulo_siete">CAJERO</th>
                 <th class="no-print"></th>
             </tr>
@@ -313,74 +294,7 @@
         </table>
     </div>
 </div>
+
 <center>
     <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
-    <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
-</center>
-
-<!------------------------ INICIO modal para Seleccionar a un cliente ------------------->
-<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
-    <div class="modal-dialog" role="document">
-        <br><br>
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">Buscar Cliente</span>
-                <div class="col-md-12" style="padding-left: 0px">
-                    <div class="input-group">
-                        <span class="input-group-addon"> Buscar </span>
-                        <input id="buscar_elcliente" name="buscar_elcliente" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="buscarcliente(event)" autofocus>
-                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablarecliente()"><span class="fa fa-search"></span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body" style="padding-bottom: 0px !important">
-                <div class="row no-print" id='loader_bcliente'  style='display:none;'>
-                <center>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
-                </center>
-            </div>
-                <!------------------------------------------------------------------->
-                <div class="col-md-12 no-print" id="tablarecliente"></div>
-                <!------------------------------------------------------------------->
-            </div>
-            <div class="modal-footer aligncenter">
-                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!------------------------ FIN modal para Seleccionar a un cliente ------------------->
-<!------------------------ INICIO modal para Seleccionar a un producto ------------------->
-<div class="modal fade" id="modalbuscarproducto" tabindex="-1" role="dialog" aria-labelledby="modalbuscarproductolabel">
-    <div class="modal-dialog" role="document">
-        <br><br>
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">Buscar Producto</span>
-                <div class="col-md-12" style="padding-left: 0px">
-                    <div class="input-group">
-                        <span class="input-group-addon"> Buscar </span>
-                        <input id="buscar_elproducto" name="buscar_elproducto" type="text" class="form-control" placeholder="Ingrese el nombre del producto o codigo"  onkeypress="buscarproducto(event)" autofocus>
-                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body" style="padding-bottom: 0px !important">
-                <div class="row no-print" id='loader_bproducto'  style='display:none;'>
-                <center>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
-                </center>
-            </div>
-                <!------------------------------------------------------------------->
-                <div class="col-md-12 no-print" id="tablareproducto"></div>
-                <!------------------------------------------------------------------->
-            </div>
-            <div class="modal-footer aligncenter">
-                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!------------------------ FIN modal para Seleccionar a un producto ------------------->
+    <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</

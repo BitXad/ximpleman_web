@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa de Asientos</title>
   <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">-->
-  
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>  
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
 
  <!--Styles for datatables--> 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
@@ -17,6 +17,9 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> 
  <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> 
  <script src="<?php echo base_url('resources/js/transporte.js'); ?>" type="text/javascript"></script>
+<script src="<?php // echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
+<script src="<?php // echo base_url('resources/js/emision_paquetes.js'); ?>" type="text/javascript"></script>
+<script src="<?php // echo base_url('resources/js/funciones_ventaifactura.js'); ?>" type="text/javascript"></script>
  
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden><!-- comment -->
   <style>
@@ -80,7 +83,12 @@
   });
 </script>
   
-  
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
+<input type="text" id="nit" value="0" name="nit"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+<input type="hidden" name="usuario_id" id="usuario_id" value='<?php echo $usuario_id; ?>' />
+
 </head>
 <body>
 <input type="hidden" name="cliente_id" value="0" class="form-control" id="cliente_id" >
@@ -423,7 +431,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modal_finalizar" tabindex="-1" role="dialog" aria-labelledby="modal_finalizar" aria-hidden="true">
+<div class="modal fade" id="modal_finalizar" tabindex="-1" role="dialog" aria-labelledby="modal_finalizar">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
@@ -440,7 +448,7 @@
 
                         <div class="col-md-4">
                           <label for="documento" class="form-label">TIPO DOC:</label>
-                          <select id="select_documento" class="form-control">                  
+                          <select id="doc_identidad" class="form-control">                  
                               <?php foreach($docs_identidad as $di){ ?> 
 
                                      <option value="<?= $di['cdi_codigoclasificador'] ?>" <?php echo ($di['cdi_codigoclasificador'] ==1 )?"selected":""; ?> > <?= $di['cdi_descripcion'] ?></option>
@@ -452,7 +460,7 @@
                         <div class="col-md-5">
                           <label for="documento" class="form-label">DOCUMENTO</label>
                             <div class="input-group">
-                            <input class="form-control" type="text" id="numero_documento" onKeyUp="this.value = this.value.toUpperCase();" value="0"><!-- comment -->
+                            <input class="form-control" type="text" id="generar_nit" onKeyUp="this.value = this.value.toUpperCase();" value="0" onkeypress="validar_laentrada(event,1)" ><!-- comment -->
                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon"  title="Buscar por número de documento" onclick="buscarcliente()"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente" ></span></div>
                             </div>
                         </div>
@@ -463,11 +471,24 @@
                             <input class="form-control" type="text" id="complemento_ci" onKeyUp="this.value = this.value.toUpperCase();"><!-- comment -->
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                           <label for="razon_social" class="form-label">RAZON SOCIAL</label>
-                          <input class="form-control" type="text" id="razon_social" onKeyUp="this.value = this.value.toUpperCase();" value="SIN NOMBRE"><!-- comment -->
+                          <input class="form-control" type="text" id="generar_razon" onKeyUp="this.value = this.value.toUpperCase();" value="SIN NOMBRE"><!-- comment -->
                         </div>
             
+                        <div class="col-md-6">                            
+                            <label for="razon_social" class="form-label">CORREO ELECTRONICO:</label>
+                            <input type="email" name="elemail"  style="font-size:10pt;"  class="form-control btn btn-xs btn-warning" id="elemail" onclick="this.select()" onkeypress="validar(event,13)"/>
+                        </div>
+
+                        <div class="col-md-12" id='loader_generarfactura' style='display: none;'>
+                            <center>
+                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                            </center>
+                        </div>
+                        <div hidden>                
+                            <input type="checkbox" class="form-check-input" name="codigoexcepcion" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                        </div>            
 
                         <div class="col-md-5">
                           <label for="documento" class="form-label">OPERACION:</label>
@@ -491,7 +512,7 @@
 
                         <div class="col-md-3">
                             <label for="complemento" class="form-label">MAS INF..</label><br>
-                            <input type="checkbox"  id="facturado" value="1" name="facturado">
+                            <input type="checkbox"  id="parametro_factura" value="1" name="facturado">
                         </div>
             
                         <div class="col-md-12"><br></div>
@@ -1161,3 +1182,43 @@
     </div>
   </div>
 </div>
+
+<!-- --------------- INICIO modal Advertencia ---------------------------------->
+<button type="hidden" class="btn btn-primary" data-toggle="modal" data-target="#modal_mensajeadvertencia" id="modal_botonadvertencia">
+  Mensaje Advertencia
+</button>
+    
+<!-- --------------- INICIO modal Advertencia ---------------------------------->
+<!-- --------------- INICIO modal Advertencia ---------------------------------->
+<div id="modal_mensajeadvertencia" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #CC660E">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> ADVERTENCIA</b></h2>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-8">
+            <label for="monto_caja" class="control-label">
+                <h2 class="modal-title">
+                    <fa class="btn btn-default fa fa-exclamation-triangle fa-2x"> </fa><b><span id="mensajeadvertencia"></span></b>
+                </h2>
+            </label>
+        </div>  
+          
+        <div class="col-md-4">
+            <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
+            <button class="btn btn-success btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia" style="line-height: 10px;"><fa class="fa fa-save"></fa> <b>FORZAR FACTURA</b><br><small>CON COD. DE EXCEPCIÓN</small></button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"  style="line-height: 10px;"><fa class="fa fa-times"></fa> <b>CORREGIR NIT</b><br><small>CAMBIAR TIPO DOC.</small></button>
+            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="seleccionar_ci()"  style="line-height: 10px;"><fa class="fa fa-recycle"></fa> <b>EL DOC. ES C.I.</b><br><small>CAMBIAR A C.I.</small></button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------- F I N  modal Advertencia ---------------------------------->
+<!-- --------------- F I N  modal Advertencia ---------------------------------->

@@ -5171,18 +5171,13 @@ function tabla_ventas(filtro)
                     }
                     
 
-                    
-                    if (v[i]['venta_tipodoc']==1){
-                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
-                        html += " <a href='"+base_url+"venta/facturaventapdf/"+v[i]['factura_id']+"' target='_blank' class='btn btn-danger btn-xs' title='Ver factura en PDF'><span class='fa fa-file-pdf'></span></a> ";
-//                        html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
-                    }
 
-                    html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
+
+                    html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['traspaso_id']+"'  title='Anular traspaso'><em class='fa fa-ban'></em></button>";
                     
  
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
-                    html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
+                    html += "                               <div class='modal fade' id='myModal"+v[i]['traspaso_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['traspaso_id']+"' style='font-family: Arial'>";
                     html += "                                 <div class='modal-dialog' role='document'>";
                     html += "                                       <br><br>";
                     html += "                                   <div class='modal-content'>";
@@ -5198,10 +5193,10 @@ function tabla_ventas(filtro)
                     html += "                                      <h4>";
                     html += "                                          ";
                     html += "                                          ¿Desea anular la transferencia? <b> <br>";
-                    html += "                                          Trans. Nº: "+v[i]['traspaso_id']+"<br>";
+                    html += "                                          Traspaso. Nº: "+v[i]['traspaso_id']+"<br>";
 
 
-                        html += "<input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='0' id='anular_factura"+v[i]['venta_id']+"' hidden>";
+                        html += "<input type='checkbox' name='anular_factura"+v[i]['traspaso_id']+"' value='0' id='anular_factura"+v[i]['traspaso_id']+"' hidden>";
                         
                     html += "                                      </h4>";
                     html += "                                      <!------------------------------------------------------------------->";

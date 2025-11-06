@@ -240,50 +240,93 @@ border-bottom:1px solid black;
                     <td><?php echo number_format(($dc['detallecomp_descuento']!==null)?$dc['detallecomp_descuento']:0,'2','.',',');?></td>
                     <td><?php echo number_format(($dc['detallecomp_descglobal']!==null)?$dc['detallecomp_descglobal']:0,'2','.',',');?></td>
                     <td><?php echo number_format(($dc['detallecomp_total']!==null)?$dc['detallecomp_total']:0,'2','.',',');?></td>
+                    
                     <td>
                         <?php echo $dc['detallecomp_fechavencimiento']; ?>
                         <?php if($dc['detallecomp_numerolote']!=""){ echo "<br>LOTE: ".$dc['detallecomp_numerolote']; } ?>
                         
                     </td>
                           
-            </tr> 
+            </tr>     
+                        
+            <?php
+                if($compra[0]['estado_id']==3){ //si esta anulado ?>
+            
+                    <tr>
+                        <td colspan="11">
+                            <center>                        
+                                <font size="3" face="arial"><b><?php echo $compra[0]['estado_descripcion']; ?></b></font><br>
+                            </center>                      
+                        </td>
+                    </tr>
                     
+            <?php    } ?>
+            
+            
                            <?php } ?>
+            <tr>
+                <th colspan="2" style="text-align: left;">
+                    TOTALES 
+                </th>
+                
+                <th style="text-align: left;"> </th>
+                <th style="text-align: left;"> </th>
+                <th style="text-align: left;"> </th>
+                <th style="text-align: left;"> </th>
+                <th style="text-align: right;"><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></th>
+                <th style="text-align: right;"><?php echo number_format( $compra[0]['compra_descuento'],'2','.',',');?></th>
+                <th style="text-align: right;"><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></th>
+                <th style="text-align: right;"><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></th>
+                <th style="text-align: right;"> </th>
+                
+                
+                
+                
+            </tr>
+
+                
 
 </table>
  
 </div>
-   <hr style="border:1px solid black;width: 18cm; margin: 0;padding: 0">
-   <font size="1" face="arial"><b>Nota.- </b><?php echo $compra[0]['compra_glosa'];?></font> 
+   <!--<hr style="border:1px solid black; width: 18cm; margin: 0;padding: 0">-->
         
         
 
 <div class="box-body table-responsive"> 
+                <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
+                        
+                    <tr>
+                        <td style="text-align: left;">                        
+                        <font size="1" face="arial"><b>Nota.- </b><?php echo $compra[0]['compra_glosa'];?></font> 
+                        </td>
+                        
+                    </tr>
+<!--                             <tr>
+                                 <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
+                             </tr>                      
+                             <tr>
+                                <td>TOTAL DESCUENTO</td><td><?php echo number_format( $compra[0]['compra_descuento'],'2','.',',');?></td>
+                             </tr>
+                             <tr>
+                                 <td>DESC. GLOBAL</td><td><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></td>
+                             </tr>
+                             <tr>
+                                 <td><b>TOTAL FINAL  <?php echo $compra[0]['moneda_descripcion'];?>.</b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],'2','.',',');?></b></td>
+                             </tr>-->
+                             <?php if ($compra[0]['tipotrans_id']==2) { ?>
+                             <tr>
+                                  COMPRA A CREDITO:
+                                 <td><b>A CUENTA</b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b></td>
+                             </tr>
+                             <tr>
+                                 <td><b>SALDO</b></td> <td><b><?php echo  number_format($credito['credito_monto'],'2','.',',');?></b></td>
+                             </tr> 
+                             <?php } ?>  
 
-       <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
-                    <tr>
-                        <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
-                    </tr>                      
-                    <tr>
-                       <td>TOTAL DESCUENTO</td><td><?php echo number_format( $compra[0]['compra_descuento'],'2','.',',');?></td>
-                    </tr>
-                    <tr>
-                        <td>DESC. GLOBAL</td><td><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></td>
-                    </tr>
-                    <tr>
-                        <td><b>TOTAL FINAL  <?php echo $compra[0]['moneda_descripcion'];?>.</b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],'2','.',',');?></b></td>
-                    </tr>
-                    <?php if ($compra[0]['tipotrans_id']==2) { ?>
-                    <tr>
-                        <td><b>A CUENTA</b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b></td>
-                    </tr>
-                    <tr>
-                        <td><b>SALDO</b></td> <td><b><?php echo  number_format($credito['credito_monto'],'2','.',',');?></b></td>
-                    </tr> 
-                    <?php } ?>  
-                                 
- 
-</table>
+
+             </table>
+
 
 </div>
 <br>

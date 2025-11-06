@@ -3,6 +3,7 @@
 class Ubicacion extends CI_Controller{
     
     private $sistema;
+    private $parametros;
     
     function __construct()
     {
@@ -15,7 +16,11 @@ class Ubicacion extends CI_Controller{
             redirect('', 'refresh');
         }
         $this->load->model('Sistema_model');
+        $this->load->model('Parametro_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     }
     private function acceso($id_rol){
         
@@ -35,6 +40,7 @@ class Ubicacion extends CI_Controller{
     function index(){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(136)){
             $data['ubicacion'] = $this->Ubicacion_model->get_all_ubicacion();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];

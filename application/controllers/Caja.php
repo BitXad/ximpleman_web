@@ -340,6 +340,7 @@ class Caja extends CI_Controller{
                     'caja_corte005' => $this->input->post('caja_corte005'),
                     'caja_efectivo' => $this->input->post('caja_efectivo'),
                     'caja_credito' => $this->input->post('caja_credito'),
+                    'caja_transregistradas' => $this->input->post('transacciones'),
                 );
 
                 $this->Caja_model->update_caja($caja_id, $params);
