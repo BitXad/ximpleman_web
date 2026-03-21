@@ -147,6 +147,7 @@ border-bottom : 1px solid #aaa;
                         <tr><td colspan="2" style="text-align: right;"><b>LICENCIA COND. : </b></td><td colspan="3"> <?php echo $datos_viaje[0]['conductor_licencia']; ?> </td></tr>
                         <tr><td colspan="2" style="text-align: right;"><b>COND. RELEVO : </b></td><td colspan="3"> <?php echo $datos_viaje[0]['relevo_nombres']." ".$datos_viaje[0]['relevo_apellidos']; ?> </td></tr>
                         <tr><td colspan="2" style="text-align: right;"><b>LIC. RELEVO : </b></td><td colspan="3"z> <?php echo $datos_viaje[0]['relevo_licencia']; ?> </td></tr>
+                        <tr><td colspan="2" style="text-align: right;"><b>AYUDANTE: </b></td><td colspan="3"z> <?php echo $datos_viaje[0]['ayudante_apellidos']." ".$datos_viaje[0]['ayudante_nombres']; ?> </td></tr>
                     </table>
                     
 

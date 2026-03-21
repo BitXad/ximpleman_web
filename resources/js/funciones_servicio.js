@@ -1373,7 +1373,7 @@ function fechadeservicio(elfiltro, busquedade){
                         res1 +="<tr>";
                         res1 +="<th style='padding: 1px'><div class='text-right'>Buscar Insumos: </div></th>";
                         res1 +="<td colspan='2' style='padding: 1px'>";
-                        res1 += "<input type='search' name='insumosproducto_id"+registros[i]['detalleserv_id']+"' id='insumosproducto_id"+registros[i]['detalleserv_id']+"' list='listainsumos"+registros[i]['detalleserv_id']+"' style='width: 100%' placeholder='Ingrese el nombre, código del Insumo' onkeypress='buscar_verificarenter(event, "+registros[i]['detalleserv_id']+")' onchange='seleccionar_insumo("+registros[i]['detalleserv_id']+")' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' autocomplete='off' />";
+                        res1 += "<input type='search' name='insumosproducto_id"+registros[i]['detalleserv_id']+"' id='insumosproducto_id"+registros[i]['detalleserv_id']+"' list='listainsumos"+registros[i]['detalleserv_id']+"' style='width: 100%; background: yellow;' placeholder='Ingrese el nombre, código del Insumo' onkeypress='buscar_verificarenter(event, "+registros[i]['detalleserv_id']+")' onchange='seleccionar_insumo("+registros[i]['detalleserv_id']+")' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' autocomplete='off' />";
                         res1 += "<datalist id='listainsumos"+registros[i]['detalleserv_id']+"'>";
                         res1 += "</datalist>";
                         res1 += "<input type='hidden' name='esteproducto_id"+registros[i]['detalleserv_id']+"' id='esteproducto_id"+registros[i]['detalleserv_id']+"' />";
@@ -2166,6 +2166,7 @@ function fechadeservicio(elfiltro, busquedade){
                         }
                         html += "<br>N° "+registros[i]['servicio_id'];
                         html += "</div>";
+                        html += "<input type='hidden' value='"+registros[i]['detalleserv_id']+"' id='detalleserv_id'>";
                         //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         html += "<div class='modal-body' style='padding-top: 0px'>";
                         html += "<!------------------------------------------------------------------->";
@@ -2249,8 +2250,8 @@ function fechadeservicio(elfiltro, busquedade){
                         html +="<input style='width: 100%' type='number' step='any' min='0' name='producto_precio"+registros[i]['detalleserv_id']+"' id='producto_precio"+registros[i]['detalleserv_id']+"' />";
                         html +="</td>";
                         html +="<td style='width: 60%; padding: 1px'>";
-                        html +="<input style='width: 90%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' readonly />";
-                        html += "<button class='btn btn-success btn-xs' onclick='registrarinsumo_aldetalle("+registros[i]['detalleserv_id']+")' title='Usar insumo'><span class='fa fa-check'></span></button>";
+                        html +="<input style='width: 80%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' readonly />";
+                        html += "<button class='btn btn-success btn-xs' onclick='registrarinsumo_aldetalle("+registros[i]['detalleserv_id']+")' title='Usar insumo'><span class='fa fa-plus'></span> Añadir</button>";
                         html +="</td>";
                         html +="</tr>";
                         
@@ -4578,7 +4579,9 @@ function registrarservicio_proceso(servicio_id, detalleserv_id){
 }*/
 
 function mostrarinsumosdetalleserv(detalleserv_id){
+    
     var base_url = document.getElementById('base_url').value;
+    var decimales = document.getElementById('decimales').value;
     var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
     $.ajax({url: controlador,
            type:"POST",
@@ -4592,27 +4595,40 @@ function mostrarinsumosdetalleserv(detalleserv_id){
                     res +="<table style='width: 100%; font-size: 10px; font-weight: normal; padding: 0px'>";
                     res +="<tr>";
                     res +="<th style='padding: 0px'>Cant.</th>";
-                    res +="<th style='padding: 0px'>Total</th>";
                     res +="<th style='padding: 0px'>Insumo</th>";
                     res +="<th style='padding: 0px'>Código</th>";
+                    res +="<th style='padding: 0px'>Total</th>";
                     res +="<th style='padding: 0px'></th>";
                     res +="</tr>";
+                    
                     for (var i = 0; i < n ; i++){
                         total = Number(total)+Number(registros[i]['detalleven_total']);
                         res +="<tr>";
-                        res +="<td style='padding: 0px' class='text-right'>"+registros[i]['detalleven_cantidad']+"</td>";
-                        res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"</td>";
-                        res +="<td style='padding: 0px'>"+registros[i]['producto_nombre']+"</td>";
+                        res +="<td style='padding: 0px' class='text-right'>"+Number(registros[i]['detalleven_cantidad']).toFixed(decimales)+"</td>";
+                        res +="<td style='padding: 0px'>"+registros[i]['producto_nombre'];
+                        
+                        if(registros[i]['detalleven_preferencia']!=null && registros[i]['detalleven_preferencia']!='' && registros[i]['detalleven_preferencia']!=' '){
+                            
+                            res +="<br>"+registros[i]['detalleven_preferencia'];
+                            
+                        }
+    
+                        res +="</td>";
+                        
                         res +="<td style='padding: 0px' class='text-center'>"+registros[i]['producto_codigo']+"</td>";
+                        res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"</td>";
                         res +="<td style='padding: 0px' class='text-center'>";
-                        res += "<button class='btn btn-danger btn-xs' onclick='eliminar_insumo("+registros[i]['detalleven_id']+", "+detalleserv_id+")' title='Eliminar insumo'><span class='fa fa-trash'></span></button>";
+                        res += "<button class='btn btn-danger btn-xs' onclick='eliminar_insumo("+registros[i]['detalleven_id']+", "+detalleserv_id+")' title='Eliminar insumo'><span class='fa fa-times'></span></button>";
+                        res += "<button class='btn btn-warning btn-xs'  data-toggle='modal' data-target='#modalpreferencia' onclick='mostrar_modalpreferencia("+registros[i]['detalleven_id']+")' title='Registrar Preferencia'><span class='fa fa-barcode'></span></button>";
                         res +="</td>";
                         res +="</tr>";
 
                    }
                    res +="<tr>";
-                   res +="<td style='padding: 0px'>Total:</td>";
-                   res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(total).toFixed(2))+"</td>";
+                   res +="<th style='padding: 0px' colspan='2'>TOTAL Bs</th>";
+                   res +="<th style='padding: 0px'></th>";
+//                   res +="<th style='padding: 0px'></th>";
+                   res +="<th style='padding: 0px' class='text-right' colspan='2'>"+numberFormat(Number(total).toFixed(2))+"</th>";
                    res +="</tr>";
                    res +="</table>";
                    $('#misinsumosusados'+detalleserv_id).html(res);
@@ -4710,18 +4726,26 @@ function mostrarinsumosdetalleservt(detalleserv_id){
                     res +="<table style='width: 100%; font-size: 10px; font-weight: normal; padding: 0px'>";
                     res +="<tr>";
                     res +="<th style='padding: 0px'>Cant.</th>";
-                    res +="<th style='padding: 0px'>Total</th>";
                     res +="<th style='padding: 0px'>Insumo</th>";
                     res +="<th style='padding: 0px'>Código</th>";
+                    res +="<th style='padding: 0px'>Total</th>";
                     //res +="<th style='padding: 0px'></th>";
                     res +="</tr>";
                     for (var i = 0; i < n ; i++){
                         total = Number(total)+Number(registros[i]['detalleven_total']);
                         res +="<tr>";
-                        res +="<td style='padding: 0px' class='text-right'>"+registros[i]['detalleven_cantidad']+"</td>";
-                        res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"</td>";
-                        res +="<td style='padding: 0px'>"+registros[i]['producto_nombre']+"</td>";
+                        res +="<td style='padding: 0px' class='text-right'>"+Number(registros[i]['detalleven_cantidad']).toFixed(2)+"</td>";
+                        res +="<td style='padding: 0px'>"+registros[i]['producto_nombre'];    
+                        
+                       if(registros[i]['detalleven_preferencia']!=null && registros[i]['detalleven_preferencia']!='' && registros[i]['detalleven_preferencia']!=' '){
+                            
+                            res +="<br>"+registros[i]['detalleven_preferencia'];
+                            
+                        }
+                        
+                        res +="</td>";                        
                         res +="<td style='padding: 0px' class='text-center'>"+registros[i]['producto_codigo']+"</td>";
+                        res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"</td>";
                         /*res +="<td style='padding: 0px' class='text-center'>";
                         res += "<button class='btn btn-danger btn-xs' onclick='eliminar_insumo("+registros[i]['detalleven_id']+", "+detalleserv_id+")' title='Eliminar insumo'><span class='fa fa-trash'></span></button>";
                         res +="</td>";*/
@@ -5141,4 +5165,41 @@ function sin_cargar_parafactura_serv(servicio_id){
 
     })
         
+}
+
+
+function mostrar_modalpreferencia(detalleven_id){
+
+
+    $("#detalleven_id").val(detalleven_id);
+    $("#producto_preferencia").val("");
+
+}
+
+function registrar_preferencia(){
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/registrar_preferencia';
+    //$('#myModal'+i).modal('hide');
+    var producto_preferencia = document.getElementById('producto_preferencia').value;
+    var detalleven_id = document.getElementById('detalleven_id').value;
+    var detalleserv_id = document.getElementById('detalleserv_id').value;
+   // alert(detalleserv_id);
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{detalleven_id:detalleven_id, producto_preferencia: producto_preferencia},
+           success:function(respuesta){
+                //dasdaddaad
+                mostrarinsumosdetalleserv(detalleserv_id);
+            
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           //$("#insumosresultados").html(html);
+        }
+
+    });
+
 }

@@ -203,6 +203,7 @@ function validar(e,opcion) {
         }
 
         if (opcion==2){
+            
             var codigo = document.getElementById('razon_social').value;
             
             codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
@@ -308,6 +309,20 @@ function validar(e,opcion) {
                 }
                 
         }
+        
+        if (opcion == 16){   // si la pulsacion proviene modificar precios         
+
+            let modificarprecios_producto_precio = document.getElementById('modificarprecios_producto_precio').value.trim();     
+            let modificarprecios_producto_costo  = document.getElementById('modificarprecios_producto_costo').value.trim();     
+            let modificarprecios_producto_codigo = document.getElementById('modificarprecios_producto_codigo').value.trim();     
+            let modificarprecios_producto        = document.getElementById('modificarprecios_producto').value.trim();     
+
+            if(modificarprecios_producto_precio === "" || modificarprecios_producto_costo  === "" || modificarprecios_producto_codigo === "" || modificarprecios_producto === ""){
+                alert("ADVERTENCIA: verifique los datos por favor...!");
+            }
+
+           actualizar_precio();
+        }
 
         
     }
@@ -356,6 +371,7 @@ function seleccionar(opcion) {
 }
 
 function clasificarDocumento(cadena) {
+    
     // Expresión regular para verificar si la cadena contiene solo números
     var regexNumeros = /^[0-9]+$/;
 
@@ -370,9 +386,16 @@ function clasificarDocumento(cadena) {
         if (regexNumeros.test(cadena)){
             
             if (regexNIT.test(ultimosTres)) {
-                return 5; // Si termina en los números del 010 al 029, es un NIT
+                if (tamanio>8){
+                  return 5; // Si termina en los números del 010 al 029, es un NIT
+                }else{
+                    return 1; // Si la cadena no es mayor a 8 digitos, es ci aunque finalice en 015, 016, etc                    
+                }
+                
             } else {
+                
                 return 1; // Si la cadena contiene solo números pero no termina en los números del 010 al 029, es una CI
+                
             }
             
         }else{
@@ -2340,7 +2363,7 @@ function incrementar(cantidad,detalleven_id)
     var cantidad_disponible =  existencia(producto_id);
     cantidad_disponible = Number(cantidad_disponible).toFixed(decimales);
     
-   if (cantidad_detalle <= cantidad_disponible){
+   if (Number(cantidad_detalle) <= Number(cantidad_disponible)){
        
         $.ajax({url: controlador,
                 type:"POST",
@@ -3425,6 +3448,7 @@ function tablaresultados(opcion)
     let verificar_cantidades = document.getElementById('parametro_vercantidades').value;
     let compra_rapida = document.getElementById('parametro_comprarapida').value;
     let actualizar_precios = document.getElementById('parametro_actualizarprecios').value;
+    let lista_series = 1;
     
     
     // var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
@@ -3555,7 +3579,7 @@ function tablaresultados(opcion)
                         html += "<tr>";
                         html += "<td class='button btn-default' onclick='ocultar_busqueda();' style='padding:0;'>"+(i+1)+"</td>";
                         
-                        nombreprod = registros[i]["producto_nombre"];
+                        nombreprod = registros[i]["producto_nombre"]+"<small><sub>["+registros[i]["producto_id"]+"]</sub></small>";
                         
 //                        if (nombreprod.length>35)
 //                            nombreprod = "<span title='"+nombreprod+"'>"+nombreprod.substr(0,34)+"...</span>";
@@ -3592,6 +3616,10 @@ function tablaresultados(opcion)
 
                         if(actualizar_precios==1){
                             html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Actualizador de precios' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
+                        }
+
+                        if(lista_series==1){
+                            html += "<button data-toggle='modal' data-target='#modalseries'  class='btn btn-warning btn-xs' style='padding:0;' title='Series Disponibles' id='button"+registros[i]["producto_id"]+"' onclick='series_disponibles("+registros[i]["producto_id"]+")'>- <fa class='fa fa-barcode'></fa> -</button>";
                         }
                         
                         if (parametro_modulorestaurante==2){ //si es farmacia
@@ -6345,11 +6373,22 @@ function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
         data:{},
         success:function(respuesta){  
             
+            let resultado = JSON.parse(respuesta);
             
-            $("#pedido_id").val(pedido_id);           
-            $("#usuarioprev_id").val(usuariopedido_id);
-            tablaproductos();
-            datoscliente(cliente_id);
+            if (resultado != null){
+                                
+                tam = resultado.length;
+                
+                $("#pedido_id").val(pedido_id);           
+                $("#usuarioprev_id").val(usuariopedido_id);
+                $("#venta_glosa").val(resultado[0]["pedido_glosa"]); // select a credito
+                tablaproductos();
+                datoscliente(cliente_id);                           
+
+
+            }
+            
+            
         },
         error: function(respuesta){
             tablaproductos();
@@ -6375,15 +6414,25 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
         data:{},
         success:function(respuesta){  
             
-            $("#orden_id").val(orden_id);
-            $("#pedido_id").val(0);
-            $("#usuarioprev_id").val(usuariopedido_id);
-            $("#cuota_inicial").val(acuenta);
-            $("#tipo_transaccion").val(2); // select a credito
-                        
-            document.getElementById('creditooculto').style.display = 'block';
-            tablaproductos();
-            datoscliente(cliente_id);
+            let resultado = JSON.parse(respuesta);
+            
+            if (resultado != null){
+                                
+                tam = resultado.length;
+                
+                $("#orden_id").val(orden_id);
+                $("#pedido_id").val(0);
+                $("#usuarioprev_id").val(usuariopedido_id);
+                $("#cuota_inicial").val(acuenta);
+                $("#tipo_transaccion").val(2); // select a credito
+                $("#venta_glosa").val(resultado[0]["pedido_glosa"]); // select a credito
+
+                document.getElementById('creditooculto').style.display = 'block';
+                tablaproductos();
+                datoscliente(cliente_id);
+
+            }
+            
         },
         error: function(respuesta){
             tablaproductos();
@@ -7017,7 +7066,7 @@ function actualizar_precio(){
 
             },
             error:function(resultado){
-                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+                alert("Ocurrio un problema al intentar actualizar los datos. Vuelva a intentar por favor");
             },
         
         
@@ -7080,9 +7129,10 @@ function pedidos_pendientes()
                         html += "     <td>"+cont+"</td>";
                         html += "     ";
                         html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
-                        if (p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!=""){                        
+                        if ((p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!="") || (p[i]['pedido_glosa']!=null && p[i]['pedido_glosa']!="")){                       
                             html += "     <br>"+p[i]['cliente_nombrenegocio']+"  <b style='color:red'>"+p[i]["pedido_glosa"]+"</b>";
                         }
+                        html += "     <br><b style='color: red;'>COD. CLIENTE: "+p[i]['cliente_codigo']+'</b>';
                         html += "     <br>"+p[i]['pedido_fecha'];
                         html += "     <br><small><b>PREV./RESPONSABLE:</b> "+p[i]['usuario_nombre']+"</small>";
                         html += "     </td>";
@@ -9179,12 +9229,11 @@ function seleccionar_documento(id){
     var boton = document.getElementById("documento"+id);
     boton.style = "color: white";
     boton.style.backgroundColor = "#f39c12"; //
-    //boton.style.borderColor = "#f8f9fa"; //
-   
     
     for(i = 1; i<=5; i++){
         
         if (i != id){
+            
             try{
                 let boton2 = document.getElementById("documento"+i);
                 boton2.style = "color: black";
@@ -9601,6 +9650,60 @@ function verificar_producto(){
                 document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
 }
 
+function series_disponibles(producto_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/listar_series_disponibles'; 
+    var html = "";
+    
+    //if(confirmacion == true){
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+    
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{producto_id:producto_id},
+            success:function(result){
+                
+                res = JSON.parse(result);
+                
+                    html = "";
+                    
+                    html += "<table id='mitabla' class='table table-condensed table-striped'>";
+                    html += "<tr>";
+                        html += "<th style='padding:3px; width:10px;'>#</th>";
+                       
+                        html += "<th style='padding:3px; width:70px;'>SERIES DISPONIBLES</th>";
+                        html += "<th style='padding:3px; width:20px;'>OPERACIONES</th>";
+                       
+                    html += "</tr>";
+                    
+        
+                for (let i = 0; i < res.length; i++) {
+                   
+                        html += "<tr>"
+
+                            html += "<td style='padding:0px;'>"+(i+1)+"</td>";
+                            html += "<td style='padding:0px;'>"+res[i]; //+"<br>"+objeto.almacen_basedatos+"</td>";
+                            html += "<td style='padding:0px;'><button class='btn btn-warning btn-xs' data-dismiss='modal' style='padding:0;' onclick=vender_serie("+JSON.stringify(res[i])+")><fa class='fa fa-cart-plus'></fa>  VENDER</button>"; //+"<br>"+objeto.almacen_basedatos+"</td>";
+
+                        html += "<tr>"
+                      
+                    }
+                
+                
+
+                
+                    html += "</table>";
+                    
+                $("#tabla_series").html(html);                
+                
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+            },
+        });
+
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+}
+
 function actualziar_pago_servicio(num_fact){
 
     let base_url = document.getElementById('base_url').value;
@@ -9717,6 +9820,15 @@ function eliminar_transaccion(venta_id){
             }else{                   
                 
             }
+            
+}
+
+function vender_serie(serie){
+
+    document.getElementById('check_agrupar').checked = false;
+    document.getElementById('busqueda_serie').checked = true;
+    $("#codigo").val(serie);
+    validar(13,3);
             
 }
 
@@ -10237,6 +10349,7 @@ function borrar_datos_cliente(){
     let documento_sector = document.getElementById("docsec_codigoclasificador").value;
     var base_url = document.getElementById('base_url').value;
     //var docsec_codigoclasificador = document.getElementById("docsec_codigoclasificador").value;
+    let tiposerv_id = document.getElementById("tiposerv_id").value;
     
     var nit = "1234";
     var razon_social = "SIN NOMBRE";
@@ -10352,6 +10465,15 @@ function borrar_datos_cliente(){
 //        }
 //        
 //    }
+    
+    if (modulo_restaurante == 1){
+        
+        if (tiposerv_id==2){ //Si es servicio para llevar
+            let boton = document.getElementById("imprimir_ticket");
+            boton.click();
+        }
+        
+    }
     
    // if(parametro_imprimirfactura!=0){
 

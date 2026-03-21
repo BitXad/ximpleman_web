@@ -154,7 +154,15 @@
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
                 <?php } ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0" onclick="llevar_invacero()"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
-                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro <?php echo $sistema["sistema_modulocompras"]; ?></small></a>
+                <!--<a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro <?php echo $sistema["sistema_modulocompras"]; ?></small></a>-->
+                
+                <button type="button"
+                        style="width: 78px; margin-right: 1px; margin-top: 1px"
+                        class="btn btn-success btn-foursquarexs"
+                        onclick="exportar_excel_filtrado('mitabla','compras_filtradas.xls')">
+                    <font size="5"><span class="fa fa-file-excel-o"></span></font><br>
+                    <small>Excel</small>
+                </button>
             </center>            
         </div>
     </div>
@@ -626,3 +634,76 @@
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL BACKUP ----------------------------------->
 <!------------------------------------------------------------------------------->
+
+<script type="text/javascript">
+function exportar_excel_filtrado(tableId, filename){
+    var table = document.getElementById(tableId);
+    if(!table){
+        alert("No se encontró la tabla: " + tableId);
+        return;
+    }
+
+    // Clonar tabla para no alterar la vista
+    var clone = table.cloneNode(true);
+
+    // Eliminar columnas no-print (botones/acciones)
+    var ths = clone.querySelectorAll('th.no-print, td.no-print');
+    for (var i=0; i<ths.length; i++){
+        ths[i].parentNode.removeChild(ths[i]);
+    }
+
+    // Quitar filas ocultas por el filtro (display:none)
+    // Nota: como clonamos, no tiene estilos calculados; por eso revisamos el original.
+    var originalRows = table.querySelectorAll('tbody tr');
+    var cloneRows    = clone.querySelectorAll('tbody tr');
+
+    for (var r = cloneRows.length - 1; r >= 0; r--){
+        var rowOriginal = originalRows[r];
+        if(!rowOriginal) continue;
+
+        // Si la fila original está oculta, la quitamos del clon
+        if (rowOriginal.style.display === 'none') {
+            cloneRows[r].parentNode.removeChild(cloneRows[r]);
+        }
+    }
+
+    // Si no hay filas visibles
+    var visibles = clone.querySelectorAll('tbody tr');
+    if(visibles.length === 0){
+        alert("No hay registros visibles para exportar.");
+        return;
+    }
+
+    // Armar HTML Excel
+    var html = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office"
+              xmlns:x="urn:schemas-microsoft-com:office:excel"
+              xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+            <meta charset="utf-8">
+            <!--[if gte mso 9]>
+            <xml>
+              <x:ExcelWorkbook>
+                <x:ExcelWorksheets>
+                  <x:ExcelWorksheet>
+                    <x:Name>Hoja1</x:Name>
+                    <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                  </x:ExcelWorksheet>
+                </x:ExcelWorksheets>
+              </x:ExcelWorkbook>
+            </xml>
+            <![endif]-->
+        </head>
+        <body>` + clone.outerHTML + `</body></html>`;
+
+    var blob = new Blob([html], {type: "application/vnd.ms-excel;charset=utf-8;"});
+
+    // Descargar
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename || "export.xls";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>

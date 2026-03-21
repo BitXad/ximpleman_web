@@ -83,11 +83,11 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>					
-                                                <th>Cliente</th>
-						<th>Pedido</th>						
-						<th>Orden</th>
-						<th></th>
+                        <th>#</th>					
+                        <th>Cliente</th>
+                        <th>Pedido</th>						
+                        <th>Orden</th>
+                        <th></th>
 
                     </tr>
 

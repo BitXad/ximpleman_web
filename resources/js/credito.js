@@ -708,3 +708,136 @@ function formato_numerico(numero){
 	
 	return x1 + x2;
 }
+
+
+function formato_fecha(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+
+function formato_numerico(numero){
+    
+    var decimales = Number(document.getElementById('parametro_decimales').value);
+    
+        nStr = Number(numero).toFixed(decimales);
+        nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	
+	return x1 + x2;
+}
+
+var registros;
+
+function buscar_cobros()
+{   
+    var base_url    = document.getElementById('base_url').value;
+    var controlador    = base_url+"credito/buscar_cobros/";
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var usuario_id = document.getElementById('select_usuario').value;
+    var select_usuario = document.getElementById('select_usuario');
+    var usuario = select_usuario.options[select_usuario.selectedIndex].text;
+    
+    var select_estado = document.getElementById('select_estado');
+    var estado = select_estado.options[select_estado.selectedIndex].text;
+    
+    var estado_id = document.getElementById('select_estado').value;
+
+   // alert(fecha_desde+" ** "+fecha_hasta+" ** "+usuario+" ** "+estado);
+
+    let html = "";
+    html += "<span style='font-size: 10px; '><b>USUARIO:</b> "+usuario;
+    html += "<br><b>CUOTA(S):</b> "+estado;
+    html += "<br><b>DESDE:</b> "+formato_fecha(fecha_desde)+" HASTA: "+formato_fecha(fecha_hasta);
+    html += "</span>";
+    
+    $("#datos_reporte").html(html); 
+    //alert(usuario);
+    
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{fecha_desde:fecha_desde, fecha_hasta:fecha_hasta, usuario_id:usuario_id, estado_id:estado_id}, 
+            success:function(resultado){
+
+              var res =  JSON.parse(resultado);
+              if(res != null){
+                  registros = res;
+                  tabla_resultados();
+              }
+                
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+                
+    }) 
+            
+}
+
+function tabla_resultados(){
+    
+    let html = "";
+    
+    let capital = 0;
+    let interes = 0;
+    let descuento = 0;
+    let total = 0;
+    let cancelado = 0;
+
+    for(let i = 0; i<registros.length; i++){ 
+
+	capital += Number(registros[i]['cuota_capital']);
+	interes += Number(registros[i]['cuota_interes']);
+	descuento += Number(registros[i]['cuota_descuento']);
+	total += Number(registros[i]['cuota_total']);
+	cancelado += Number(registros[i]['cuota_cancelado']);
+
+        html += "    <tr>";
+        html += "        <td>"+(i+1)+"</td>";
+        html += "        <td>"+registros[i]['cliente_nombre']+"</td>";
+        html += "        <td style='text-align: center;'>00"+registros[i]['credito_id']+"</td>";
+        html += "        <td style='text-align: center;'>00"+registros[i]['venta_id']+"</td>";
+        html += "        <td style='text-align: center;'>00"+registros[i]['cuota_numcuota']+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_capital'])+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_interes'])+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_descuento'])+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_total'])+"</td>";
+        html += "        <td style='text-align: center;'>"+formato_numerico(registros[i]['cuota_moradias'])+"</td>";
+        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['cuota_fechalimite'])+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_cancelado'])+"</td>";
+        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['cuota_fecha'])+' - '+registros[i]['cuota_hora']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['estado_descripcion']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['usuario_nombre']+"</td>";
+        html += "    </tr>";
+        //alert("aqui termina");
+    }
+    
+    html +="<tr>";
+    html +="    <th colspan='2'>TOTALES</th>";
+    html +="    <th></th>";
+    html +="    <th></th>";
+    html +="    <th></th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(capital)+"</th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(interes)+"</th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(descuento)+"</th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(total)+"</th>";
+    html +="    <th></th>";
+    html +="    <th></th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(cancelado)+"</th>";
+    html +="    <th></th>";
+    html +="    <th></th>";
+    html +="    <th></th>";
+    html +="</tr>";
+    
+    $("#tabla_pagos").html(html);
+    
+}

@@ -2,7 +2,7 @@
 function inicio_recepcion(){
           
        	//recepcion(1); 
-        setInterval('actualizar()',2000);
+        setInterval('actualizar()',3000);
           //aca podemos mandar fecha 
 }
 function actualizar()
@@ -170,8 +170,15 @@ function recepcion(estado)
                         html += "</td>";
                         
                         html += "<td align='center' style='"+color+"'><b style='font-size: 20px;'>"+ventas[i]["venta_numeroventa"]+"</b>"; 
-                        html += "<br> "+ventas[i]["tiposerv_descripcion"]+"<br>"+ventas[i]["venta_hora"];
-                        if(ventas[i]["entrega_id"]==1){                            
+                        
+                        
+                        if (ventas[i]["tiposerv_id"]==1){
+                            html += "<br><span class='btn btn-xs btn-facebook' style='background: black;'>"+ventas[i]["tiposerv_descripcion"]+"<br>"+ventas[i]["venta_hora"]+"</span>";
+                        }else{
+                            html += "<br><span class='btn btn-xs btn-facebook' style='background: purple;'>"+ventas[i]["tiposerv_descripcion"]+"<br>"+ventas[i]["venta_hora"]+"</span>";
+                        }
+
+                           if(ventas[i]["entrega_id"]==1){                            
                             html += "<br><span class='btn btn-facebook btn-xs'> "+ventas[i]["entrega_nombre"]+"</span></td>";
                         }else{
                             html += "<br><span class='btn btn-danger btn-xs'> "+ventas[i]["entrega_nombre"]+"</span></td>";         

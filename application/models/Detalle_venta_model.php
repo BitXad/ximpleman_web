@@ -749,7 +749,7 @@ function ventas_cocina_dia($estado)
     {
         $sql = "select
                        dv.detalleven_id, p.producto_id, dv.detalleven_cantidad, dv.detalleven_total,
-                       p.producto_nombre, p.producto_codigo, p.producto_codigobarra
+                       p.producto_nombre, p.producto_codigo, p.producto_codigobarra, dv.detalleven_preferencia
                   from
                        detalle_venta dv, producto p
                  where

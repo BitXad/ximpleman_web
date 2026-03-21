@@ -948,15 +948,17 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
     }
     function reporte_general($filtro)
     {
-        $reporte = $this->db->query(
-        "SELECT vs.*, fa.factura_id, fa.factura_numero, cr.credito_cuotainicial, fp.*
+        $sql = "SELECT vs.*, fa.factura_id, fa.factura_numero, cr.credito_cuotainicial, fp.*,cp.categoria_nombre
                 FROM ventas vs
                 LEFT JOIN forma_pago fp on vs.forma_id = fp.forma_id
                 LEFT JOIN factura fa on vs.venta_id = fa.venta_id
                 LEFT JOIN credito cr on vs.venta_id = cr.venta_id
+                LEFT JOIN categoria_producto cp on cp.categoria_id = vs.categoria_id
+                
                 WHERE  ".$filtro."
-                ORDER BY vs.venta_fecha DESC, vs.venta_hora DESC
-        ")->result_array();
+                ORDER BY vs.venta_fecha DESC, vs.venta_hora DESC";
+        
+        $reporte = $this->db->query($sql)->result_array();
         return $reporte;
     }
     function reporte_generalinsumo($filtro)
@@ -1018,6 +1020,39 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         ")->result_array();
         return $reporte;
     }
+
+    // =========================
+    // REPORTE GENERAL - COMPRAS
+    // =========================
+    function reporte_generalcompra($filtro)
+    {
+        /*
+         * Reporte por detalle de compra.
+         * Nota: se asume la existencia de la tabla producto con campos:
+         *   producto_id, producto_nombre, producto_unidad, categoria_id, preferencia_id, clasificador_id, subcategoria_id
+         * Si tu producto usa otros nombres, ajusta el SELECT y los filtros en el controlador.
+         */
+        $sql = "SELECT 
+                    c.compra_id, c.compra_fecha, c.compra_hora, c.compra_numdoc, c.documento_respaldo_id,c.compra_caja,
+                    tt.tipotrans_nombre, fp.forma_nombre,
+                    pv.proveedor_id, pv.proveedor_codigo, pv.proveedor_nombre,
+                    u.usuario_nombre,
+                    dc.detallecomp_id, dc.producto_id, dc.detallecomp_codigo, dc.detallecomp_cantidad,
+                    dc.detallecomp_unidad, dc.detallecomp_costo, dc.detallecomp_descuento, dc.detallecomp_total,
+                    dc.detallecomp_tc, dc.detallecomp_tipocambio,dc.detallecomp_series,
+                    pr.producto_nombre, pr.producto_unidad
+                FROM compra c
+                INNER JOIN detalle_compra dc ON c.compra_id = dc.compra_id
+                LEFT JOIN producto pr ON pr.producto_id = dc.producto_id
+                LEFT JOIN proveedor pv ON pv.proveedor_id = c.proveedor_id
+                LEFT JOIN usuario u ON u.usuario_id = c.usuario_id
+                LEFT JOIN tipo_transaccion tt ON tt.tipotrans_id = c.tipotrans_id
+                LEFT JOIN forma_pago fp ON fp.forma_id = c.forma_id
+                WHERE ".$filtro."
+                ORDER BY c.compra_fecha DESC, c.compra_hora DESC, c.compra_id DESC";
+        return $this->db->query($sql)->result_array();
+    }
+
 }
 
 ?>

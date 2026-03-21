@@ -27,6 +27,7 @@
 
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $decimales; ?>" name="parametro_decimales"  hidden>
 
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
@@ -43,7 +44,9 @@
         <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
             <a class="btn btn-success btn-md" style="float: right;margin-left: 10px" onclick="imprimir()"><span class="fa fa-print"></span> Imprimir</a>
         <?php } ?>
+            <a href="<?php echo base_url("credito/reporte_cobros"); ?>" class="btn btn-facebook btn-md" target="_BLANK" style="float: right;margin-left: 10px" ><span class="fa fa-list"></span> Rep. Cobros</a>
         <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
+     
         
     </div>
 </div>

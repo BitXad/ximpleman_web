@@ -35,6 +35,50 @@
     }
 </style>
 
+
+<style type="text/css">
+  @page{
+    size: landscape;
+    /* deja el izquierdo en 0 y el resto pequeño */
+    margin: 5mm 5mm 5mm -5mm;   /* top right bottom left */
+  }
+
+  @media print{
+    html, body{
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Si usas AdminLTE/Bootstrap, esto quita el “corrimiento” */
+    .wrapper, .content-wrapper, .right-side, .content{
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      left: 0 !important;
+    }
+
+    /* Quita gutter/padding lateral típico */
+    .row{
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    [class*="col-"]{
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    /* Fuerza que tus contenedores arranquen pegados a la izquierda */
+    .cuerpo, .box, .box-body, .table-responsive{
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      width: 100% !important;
+    }
+
+    .table-responsive{ overflow: visible !important; }
+    #mitabla{ width: 100% !important; }
+  }
+</style>
+
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 
@@ -62,7 +106,8 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>REPORTE GENERAL</u></h3>
+            <h3 class="box-title" style="margin: 0; font-family: Arial;"><b>VENTA</b></h3>
+            <h5 class="box-title" style="margin: 0;">REPORTE GENERAL</h5>
             <?php echo date('d/m/Y H:i:s'); ?><br>
         </center>
     </div>
@@ -72,23 +117,23 @@
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-2 no-print">
             <label for="filtrar" class="control-label"> Filtrar: </label>
-            <select class="btn btn-primary btn-sm form-control" name="filtrar" id="filtrar" onchange="tipode_reporte()" required>
-                <option value="1" selected>VENTA</option>
+            <select class="btn btn-default btn-sm form-control" name="filtrar" id="filtrar" onchange="tipode_reporte()" required>
+                <option value="1" selected>VENTAS</option>
                 <option value="2">SERVICIO</option>
                 <option value="3">PRODUCCION</option>
             </select>
         </div>
         <div class="col-md-2 no-print">
             <label for="fecha_desde" class="control-label"> Desde: </label>
-            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
+            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-default btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
         </div> 
         <div class="col-md-2 no-print">
             <label for="fecha_hasta" class="control-label"> Hasta: </label>
-            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
+            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-default btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
         <div class="col-md-2 no-print" id="serv_vendedor" style="display: block">
             <label for="vendedor_id" class="control-label"> Vendedor: </label>
-            <select class="btn btn-primary btn-sm form-control" name="vendedor_id" id="vendedor_id" >
+            <select class="btn btn-default btn-sm form-control" name="vendedor_id" id="vendedor_id" >
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){
                     $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
@@ -99,7 +144,7 @@
         </div>
         <div class="col-md-2 no-print" id="serv_prevendedor" style="display: block">
             <label for="prevendedor_id" class="control-label"> Prevendedor: </label>
-            <select class="btn btn-primary btn-sm form-control" name="prevendedor_id" id="prevendedor_id" >
+            <select class="btn btn-default btn-sm form-control" name="prevendedor_id" id="prevendedor_id" >
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){?>
                 <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
@@ -108,7 +153,7 @@
         </div>
         <div class="col-md-2 no-print" id="serv_usuario" style="display: none">
             <label for="usuario_id" class="control-label"> Usuario: </label>
-            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required >
+            <select class="btn btn-default btn-sm form-control" name="usuario_id" id="usuario_id" required >
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){?>
                 <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
@@ -128,7 +173,7 @@
         <span id="masdeventas" style="display: none">
             <div class="col-md-2 no-print" id="prod_tipotrans" style="display: block">
                 <label for="tipotrans_id" class="control-label"> Tipo Trans: </label>
-                <select class="btn btn-primary btn-sm form-control" name="tipotrans_id" id="tipotrans_id" required>
+                <select class="btn btn-default btn-sm form-control" name="tipotrans_id" id="tipotrans_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_tipotransaccion as $tipo){?>
                     <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>
@@ -137,7 +182,7 @@
             </div>
             <div class="col-md-2 no-print" id="prod_forma" style="display: block">
                 <label for="forma_id" class="control-label"> Forma Pago: </label>
-                <select class="btn btn-primary btn-sm form-control" name="forma_id" id="forma_id" required>
+                <select class="btn btn-default btn-sm form-control" name="forma_id" id="forma_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_formapago as $forma){?>
                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>
@@ -146,7 +191,7 @@
             </div>
             <div class="col-md-2 no-print" id="prod_comprobante" style="display: block">
                 <label for="comprobante" class="control-label"> Comprobante: </label>
-                <select class="btn btn-primary btn-sm form-control" name="comprobante" id="comprobante" required>
+                <select class="btn btn-default btn-sm form-control" name="comprobante" id="comprobante" required>
                     <option value="0">TODOS</option>
                     <option value="1">FACTURA</option>
                     <option value="2">NOTA DE VENTA</option>
@@ -154,7 +199,7 @@
             </div>
             <div class="col-md-2 no-print" id="serv_zona" style="display: block">
                 <label for="zona_id" class="control-label"> Zona: </label>
-                <select class="btn btn-primary btn-sm form-control" name="zona_id" id="zona_id" required>
+                <select class="btn btn-default btn-sm form-control" name="zona_id" id="zona_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_zona as $zona){?>
                     <option value="<?php echo $zona['zona_id']; ?>"><?php echo $zona['zona_nombre']; ?></option>
@@ -163,7 +208,7 @@
             </div>
             <div class="col-md-1 no-print" id="serv_ventapreventa" style="display: block">
                 <label for="ventapreventa" class="control-label"> Origen: </label>
-                <select class="btn btn-primary btn-sm form-control" name="ventapreventa" id="ventapreventa" required>
+                <select class="btn btn-default btn-sm form-control" name="ventapreventa" id="ventapreventa" required>
                     <option value="0">TODOS</option>
                     <option value="1">PREVENTAS</option>
                     <option value="2">VENTAS</option>
@@ -191,7 +236,7 @@
             </div>
             <div class="col-md-2 no-print" id="serv_preferencia" style="display: block">
                 <label for="preferencia_id" class="control-label"> Preferencia: </label>
-                <select class="btn btn-primary btn-sm form-control" name="preferencia_id" id="preferencia_id" required>
+                <select class="btn btn-default btn-sm form-control" name="preferencia_id" id="preferencia_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_preferencia as $preferencia){?>
                     <option value="<?php echo $preferencia['preferencia_id']; ?>"><?php echo $preferencia['preferencia_descripcion']; ?></option>
@@ -200,7 +245,7 @@
             </div>
             <div class="col-md-2 no-print" id="serv_clasificador" style="display: block">
                 <label for="clasificador_id" class="control-label"> Clasificador: </label>
-                <select class="btn btn-primary btn-sm form-control" name="clasificador_id" id="clasificador_id" required>
+                <select class="btn btn-default btn-sm form-control" name="clasificador_id" id="clasificador_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_clasificador as $clasificador){?>
                     <option value="<?php echo $clasificador['clasificador_id']; ?>"><?php echo $clasificador['clasificador_nombre']; ?></option>
@@ -209,7 +254,7 @@
             </div>
             <div class="col-md-2 no-print" id="serv_categoria" style="display: block">
                 <label for="categoria_id" class="control-label"> Categoria: </label>
-                <select class="btn btn-primary btn-sm form-control" name="categoria_id" id="categoria_id" onchange="mostrar_subcategoriaproducto(this.value)" required>
+                <select class="btn btn-default btn-sm form-control" name="categoria_id" id="categoria_id" onchange="mostrar_subcategoriaproducto(this.value)" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_categoria as $categoria){?>
                     <option value="<?php echo $categoria['categoria_id']; ?>"><?php echo $categoria['categoria_nombre']; ?></option>
@@ -218,7 +263,7 @@
             </div>
             <div class="col-md-2 no-print" id="serv_subcategoria" style="display: block">
                 <label for="subcategoria_id" class="control-label"> Sub categoria: </label>
-                <select class="btn btn-primary btn-sm form-control" name="subcategoria_id" id="subcategoria_id" required>
+                <select class="btn btn-default btn-sm form-control" name="subcategoria_id" id="subcategoria_id" required>
                     <option value="0">TODOS</option>
                 </select>
             </div>
@@ -263,10 +308,12 @@
             <tr>
                 <th>Nro.</th>
                 <th>PRODUCTO</th>
+                <th>COD.</th>
                 <th id="titulo_uno">FECHA<br>VENTA</th>
                 <th id="titulo_dos">NUM.<br>VENTA</th>
                 <th id="titulo_tres">NUM.<br>DOC.</th>
                 <th id="titulo_cuatro">TIPO<br>VENTA</th>
+                <!--<th id="titulo_cuatro">FORMA<br>PAGO</th>-->
                 <th id="titulo_cinco">CUOTA<br>INIC.(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>UNIDAD</th>
                 <th>CANT.</th>
@@ -298,3 +345,72 @@
 <center>
     <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
     <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</
+
+        
+        
+<!------------------------ INICIO modal para Seleccionar a un cliente ------------------->
+<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Cliente</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="buscar_elcliente" name="buscar_elcliente" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="buscarcliente(event)" autofocus>
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablarecliente()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="row no-print" id='loader_bcliente'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                </center>
+            </div>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablarecliente"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar a un cliente ------------------->
+<!------------------------ INICIO modal para Seleccionar a un producto ------------------->
+<div class="modal fade" id="modalbuscarproducto" tabindex="-1" role="dialog" aria-labelledby="modalbuscarproductolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Producto</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="buscar_elproducto" name="buscar_elproducto" type="text" class="form-control" placeholder="Ingrese el nombre del producto o codigo"  onkeypress="buscarproducto(event)" autofocus>
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="row no-print" id='loader_bproducto'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                </center>
+            </div>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablareproducto"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar a un producto ------------------->

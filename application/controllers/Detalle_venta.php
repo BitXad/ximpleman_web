@@ -34,7 +34,7 @@ class Detalle_venta extends CI_Controller{
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
         
-        $this->para_llevar = 1; //solo Para llevar 1 *** todas las ventas 0
+        $this->para_llevar = 0; //solo Para llevar 1 *** 0 todas las ventas
         
     }
     /* *****Funcion que verifica el acceso al sistema**** */

@@ -26,6 +26,14 @@
     }
      
 </style>
+
+<?php
+    $fecha_desde = date('Y-m-d');
+    $hora_desde = '00:00';
+    $fecha_hasta = date('Y-m-d');
+    $hora_hasta = '23:59';
+?>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
@@ -61,12 +69,32 @@
 </div>
 <div class="row" >
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <div class="col-md-3">
+        
+<!--        <div class="col-md-3">
             Desde: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
         </div> 
+        
         <div class="col-md-3">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
-        </div>
+        </div>-->
+        
+                <div class="col-md-2">
+                    Fecha: 
+                    <input type="date" value="<?php echo $fecha_desde; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                </div>
+                <div class="col-md-2">
+                    Hora:
+                    <input type="time" value="<?php echo $hora_desde; ?>" class="btn btn-primary btn-sm form-control" id="hora_desde" name="hora_desde" required="true">
+                </div>
+                <div class="col-md-2">
+                    Fecha: 
+                    <input type="date" value="<?php echo $fecha_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="fecha_hasta" name="fecha_hasta" required="true">
+                </div>
+                <div class="col-md-2">
+                    Hora: 
+                    <input type="time" value="<?php echo $hora_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="hora_hasta" name="hora_hasta" required="true">
+                </div>
+
         <div class="col-md-2">
             Tipo Trans.:
             <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >

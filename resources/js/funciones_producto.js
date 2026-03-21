@@ -1475,6 +1475,8 @@ function listacodbarras() {
         var tipolinea = document.getElementById('tipolinea').value;
         var estilolinea = "";
         var copias = document.getElementById('copias').value;
+        var separacion = document.getElementById('separacion').value;
+        var interlineado = document.getElementById('interlineado').value;
         
         if (tipolinea==0){
             estilolinea = "";
@@ -1510,7 +1512,8 @@ function listacodbarras() {
                         if (i < n){
 
 
-                                    html += "<td style='padding:0; width:"+anchocolumna+"cm; height:"+altofila+"cm; "+estilolinea+"'>";
+                                    html += "<td style='padding:0; width:"+anchocolumna+"cm; height:"+altofila+"cm; "+estilolinea+"; line-height:"+interlineado+"px;' >";
+                                    
                                     html += "<br>";
 
                                         if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
@@ -1532,18 +1535,59 @@ function listacodbarras() {
 
                                         }
                                     html +="</td>";
+                                    
+                                if(n==1){
+                                    
+                                    for(let s=0; s<numcolumna-1; s++){
+                                    
+                                    html += "<td style='padding:0; width:"+anchocolumna+"cm; height:"+altofila+"cm; "+estilolinea+"; line-height:"+interlineado+"px;' >";
 
+                                        html += "<br>";
+
+                                            if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
+                                                html += "<center style='font-size:"+tamanio_fuenteprod+"px;'>";
+
+                                                if (selector==1){
+
+                                                    html += "<img id='barcode"+registros[i]["producto_id"]+"' style='width:"+(anchocolumna*0.8)+"cm; height:"+altofila+"cm;' />";
+
+                                                }else{
+
+                                                    html += "<img src='"+base_url+"resources/images/empresas/"+empresa_logo+"'  id='barcode"+registros[i]["producto_id"]+"' style='width:"+(anchocolumna*0.7)+"cm; height:"+altofila+"cm;' />";
+
+                                                }
+
+                                                html += "<br>"+registros[i]["producto_nombre"]; //+" ID: "+registros[i]["producto_id"]+" i:"+i ;
+                                                html += "<br><b style='font-size: "+tamanio_fuente+"px;'> Bs "+Number(registros[i]["producto_precio"]).toFixed(decimales)+"</b>"; //+" ID: "+registros[i]["producto_id"]+" i:"+i ;
+                                                html += "</center>";
+
+                                            }
+                                    html +="</td>";
+                                    
+                                    }  
+                                }  
+                        
+                                
+                                
+                                
 
                                 i++;
                         }
                     } i--;
 
                     html += "<tr>"; 
+                                    
+                    //separacion entre etiquetas
+                    html +="<tr style='height: "+separacion+"cm'><td colspan="+numcolumna+"></td></tr>";
                 }
         
         }//for(var copia = 1; copia<=copias; copia++){
         
+        html += "<tr class='no-print'><td colspan="+numcolumna+"><div><center><button class='btn btn-success btn-xs' onclick='imprimir_etiquetas()'><fa class='fa fa-print'></fa> Imprimir</button></center></div></td></tr>";
+        
         html += "</table>";
+        
+        
         $("#cabcatalogo").html("");
         $("#tablaresultados").html(html);
         tabla.style.width = "auto";      

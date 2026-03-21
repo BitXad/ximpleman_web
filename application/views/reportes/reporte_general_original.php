@@ -287,6 +287,7 @@
                 <th id="titulo_dos">NUM.<br>VENTA</th>
                 <th id="titulo_tres">NUM.<br>DOC.</th>
                 <th id="titulo_cuatro">TIPO<br>VENTA</th>
+<!--                <th id="titulo_cuatro">FORMA<br>PAGO</th>-->
                 <th id="titulo_cinco">CUOTA<br>INIC.(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>UNIDAD</th>
                 <th>CANT.</th>

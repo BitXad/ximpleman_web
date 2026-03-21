@@ -824,7 +824,7 @@
                             <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario Valorado</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('inventario/inventario_saldos');?>"><i class="fa fa-cubes"></i> Inventario Saldos por Fecha </a>
+                            <a href="<?php echo site_url('inventario/inventario_saldos');?>"><i class="fa fa-cubes"></i> Inventario Saldos Por Fecha </a>
                             
                         </li>
                         <li>
@@ -847,10 +847,29 @@
                         } ?>
                         <?php
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
+                            
                         ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i><?php echo $sistema["sistema_modulocompras"]; ?></a>
+                        
+                        <li><a href="#"><i class="fa fa-clipboard"></i> <span><?php echo $sistema["sistema_modulocompras"]; ?></span></a>
+                            <ul class="treeview-menu">
+
+                                <li>
+                                    <a href="<?php echo site_url('reportes/reporte_generalcompra');?>"><i class="fa fa-shopping-basket"></i><?php echo $sistema["sistema_modulocompras"]." General"; ?></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i><?php echo $sistema["sistema_modulocompras"]; ?></a>
+                                </li>
+                                
+                                
+                            </ul>
+
                         </li>
+                        
+                        
+                        
+
+                        
+                        
                         <?php
                         }
                         if($rolusuario[142-1]['rolusuario_asignado'] == 1){

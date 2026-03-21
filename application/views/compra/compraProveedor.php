@@ -39,13 +39,28 @@
      
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
+
+<!-------------------------------------------------------->
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" hidden>
+<?php $decimales = $parametro['parametro_decimales'];?>
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="compra_idie" value="0" name="compra_idie"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="bandera" value="0" name="bandera"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="modificar_detalle" value="0" name="modificar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="eliminar_detalle" value="0" name="eliminar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="monedaparam_id" value="0" name="monedaparam_id"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="autorizado" value="<?php echo $autorizado["usuario_autorizado"]; ?>" name="autorizado" hidden>
+
+<!-------------------------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro['moneda_descripcion']; ?>" />-->
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
 <div class="cuerpo">
                     <div class="columna_derecha">
@@ -144,10 +159,10 @@
                         <th>UNIDAD</th>
                         <th>FECHA</th>
                         <th>CANTIDAD</th>
-                        <th>PRECIO UNIT. (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                        <th>TOTAL (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>PRECIO UNIT. (<?php echo $parametro['moneda_descripcion']; ?>)</th>
+                        <th>TOTAL (<?php echo $parametro['moneda_descripcion']; ?>)</th>
                         <th>TOTAL (<?php
-                                            if($parametro[0]["moneda_id"] == 1){
+                                            if($parametro["moneda_id"] == 1){
                                                 echo $lamoneda[1]['moneda_descripcion'];
                                             }else{
                                                 echo $lamoneda[0]['moneda_descripcion'];

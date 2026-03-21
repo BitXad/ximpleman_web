@@ -945,6 +945,9 @@ class Servicio extends CI_Controller{
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
             
+            $this->load->model('Detalle_venta_model');
+	    $data['detalle_venta'] = $this->Detalle_serv_model->get_detalle_venta($servicio_id);
+            
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
@@ -2427,6 +2430,23 @@ class Servicio extends CI_Controller{
             $servicio_id = $this->input->post("servicio_id");
             
             $sql = "update servicio set servicio_codigo = '{$servicio_codigo}' where servicio_id = {$servicio_id}";         
+            $this->Servicio_model->ejecutar($sql);
+            echo json_encode(true);                
+
+        }
+    }
+
+    /*
+     * Registrar preferencia
+     */
+    function registrar_preferencia(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $detalleven_id = $this->input->post("detalleven_id");
+            $producto_preferencia = $this->input->post("producto_preferencia");
+            
+            $sql = "update detalle_venta set detalleven_preferencia = '{$producto_preferencia}' where detalleven_id = {$detalleven_id}";         
             $this->Servicio_model->ejecutar($sql);
             echo json_encode(true);                
 

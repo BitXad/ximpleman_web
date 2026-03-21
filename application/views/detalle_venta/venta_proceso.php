@@ -16,7 +16,7 @@
         <?php $decimales = $parametro['parametro_decimales']; ?>
     </head>
     <?php
-        $fondomonitor = "fondo_vistadetalleventa.jpg";
+        $fondomonitor = $parametro['parametro_fondomonitor']; 
  
         $logomonitor = "logo.png";
         

@@ -20,8 +20,21 @@
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+<input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value='<?php echo $lamoneda["moneda_descripcion"]; ?>' />
+<input type="hidden" id="tipousuario_id" value="<?php echo 1; ?>" name="tipousuario_id"  hidden>
+<input type="hidden" id="compra_idie" value="0" name="compra_idie"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="hidden" id="bandera" value="0" name="bandera"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="hidden" id="modificar_detalle" value="0" name="modificar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="hidden" id="eliminar_detalle" value="0" name="eliminar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="hidden" id="monedaparam_id" value="0" name="monedaparam_id"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="hidden" id="autorizado" value="<?php echo 0; ?>" name="autorizado" hidden>
+<input type="hidden" id="compra_descglobal" value="<?php echo 0; ?>" name="compra_descglobal" hidden>
+
+
+
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 

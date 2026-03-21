@@ -1,7 +1,7 @@
 // Global: registro de anuncios
 // estructura: { [numeroPedido]: { count: 0, last: timestampMs } }
 const anuncios = {};
-const MAX_REPITENCIAS = 3;      // repetir 3 veces
+const MAX_REPITENCIAS = 2;      // repetir 3 veces
 const RESET_AFTER_MS = 2 * 60 * 1000; // si pasan 2 minutos sin actividad, permitimos anunciar de nuevo
 
 $(document).on("ready", inicio_recepcion);
@@ -189,7 +189,7 @@ function manejar_anuncio(numero) {
 }
 
 function anunciar_mi_pedido(numero) {
-    anunciar_pedido(numero);
+    anunciar_numero(numero);
 }
 
 function anunciar_pedido(numero) {
@@ -208,40 +208,44 @@ function anunciar_pedido(numero) {
         return;
     }
 
-    if (numero >= 1000) {
-        if (numero === 1000) { secuencia.push("1000.mp3"); }
-        else { secuencia.push("numero_invalido.mp3"); }
-    } else {
-        let centenas = Math.floor(numero / 100);
-        let decenas = Math.floor((numero % 100) / 10);
-        let unidades = numero % 10;
-        let resto = numero % 100;
+    if (numero <= 500) {
+       secuencia.push(numero+".mp3"); 
+       
+    }else{
+        
+    } 
+    
+//    else {
+//        let centenas = Math.floor(numero / 100);
+//        let decenas = Math.floor((numero % 100) / 10);
+//        let unidades = numero % 10;
+//        let resto = numero % 100;
 
-        $("#numeros").text(centenas + " ** " + decenas + " ** " + unidades + " ** " + resto);
+        $("#numeros").text(numero);
 
-        // Centenas
-        if (centenas > 0) {
-            if (numero === 100) { secuencia.push("100.mp3"); }
-            else if (centenas === 1) { secuencia.push("100to.mp3"); }
-            else { secuencia.push((centenas * 100) + ".mp3"); }
-        }
+//        // Centenas
+//        if (centenas > 0) {
+//            if (numero === 100) { secuencia.push("100.mp3"); }
+//            else if (centenas === 1) { secuencia.push("100to.mp3"); }
+//            else { secuencia.push((centenas * 100) + ".mp3"); }
+//        }
 
-        // Decenas y unidades
-        if (resto > 0) {
-            if (resto <= 20) {
-                secuencia.push((resto < 10 ? pad2(resto) : String(resto)) + ".mp3");
-            } else if (resto < 30) {
-                secuencia.push("20y.mp3");
-                if (unidades > 0) secuencia.push(pad2(unidades) + ".mp3");
-            } else {
-                if (decenas > 0) secuencia.push((decenas * 10) + ".mp3");
-                if (unidades > 0) {
-                    secuencia.push("y.mp3");
-                    secuencia.push(pad2(unidades) + ".mp3");
-                }
-            }
-        }
-    }
+//        // Decenas y unidades
+//        if (resto > 0) {
+//            if (resto <= 20) {
+//                secuencia.push((resto < 10 ? pad2(resto) : String(resto)) + ".mp3");
+//            } else if (resto < 30) {
+//                secuencia.push("20y.mp3");
+//                if (unidades > 0) secuencia.push(pad2(unidades) + ".mp3");
+//            } else {
+//                if (decenas > 0) secuencia.push((decenas * 10) + ".mp3");
+//                if (unidades > 0) {
+//                    secuencia.push("y.mp3");
+//                    secuencia.push(pad2(unidades) + ".mp3");
+//                }
+//            }
+//        }
+//    }
 
     // Reproducir audios secuencialmente
     let i = 0;
@@ -267,12 +271,16 @@ function anunciar_numero(numero) {
     // Construir secuencia de archivos
     const secuencia = ["pedido.mp3"]; // Siempre inicia con "pedido.mp3"
     
+    if (numero <= 500) {
+       secuencia.push(numero+".mp3"); 
+       
+    } 
     //if (isNaN(numero) || numero < 1 || numero > 1000) {
     //    secuencia.push("numero_invalido.mp3"); 
         //console.error("Número fuera de rango (1-1000)");
         //return;
     //}
-
+/*
     function pad2(n) { return n < 10 ? '0' + n : String(n); }
 
 
@@ -286,12 +294,12 @@ function anunciar_numero(numero) {
         let decenas = Math.floor((numero % 100) / 10);
         let unidades = numero % 10;
         let resto = numero % 100;
-
+*/
      // alert(centenas+" ** "+decenas+" ** "+unidades+" ** "+resto);
      // 
-     $("#numeros").text(centenas+" ** "+decenas+" ** "+unidades+" ** "+resto);
+     $("#numeros").text(numero);
      
-     
+ /*    
         // Centenas
         if (centenas > 0) {
             
@@ -333,8 +341,8 @@ function anunciar_numero(numero) {
                             
                         }
                     }
-        }
-    }
+        }*/
+   /// }//
 
     // Reproducir audios secuencialmente
     let i = 0;

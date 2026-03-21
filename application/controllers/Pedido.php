@@ -543,7 +543,12 @@ class Pedido extends CI_Controller{
        
         
         $this->Pedido_model->ejecutar($sql);
-        return true;
+        
+        
+        $sql = "select * from pedido where pedido_id = {$pedido_id}";
+        $resultado = $this->Pedido_model->consultar($sql);
+        
+        echo json_encode($resultado);
         		
         //**************** fin contenido ***************
         }

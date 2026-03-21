@@ -408,7 +408,7 @@
                         <tr>
 <td style="border-top: 0px; border-bottom: 0px;">
     <div id="ordenes_terminadas">
-        <table style="border: 2px solid black; border-collapse: collapse; background-color: #e04400; color: white; font-size: 50px; table-layout: fixed; width: 100%;">
+        <table style="border: 2px solid black; border-collapse: collapse; background-color: #f71752; color: white; font-size: 50px; table-layout: fixed; width: 100%;">
             <tr id='mifila'>
 <!--                <td style="border: 2px solid black; padding: 5px; width: 100px; text-align: center;">45</td>
                 <td style="border: 2px solid black; padding: 5px; width: 100px; text-align: center;">345</td>
@@ -455,4 +455,7 @@
     <footer style="color: white;">
         <marquee>Desarrollado por <b>PASSWORD</b> Ingenieria Hardware & Software. Contactos: <b>4511518</b> - <b>77417605</b></marquee>
     </footer>
+<!--    <footer style="color: white;">
+        <marquee>Bienvenidos a <b>POLLITO Z&Aacute;RATE...</b> Siente el sabor...<b>***</b> Gracias por su preferencia...!</marquee>
+    </footer>-->
 </html>

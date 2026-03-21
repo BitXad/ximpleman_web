@@ -2130,6 +2130,7 @@ function torta3($anio,$mes)
                     $elfiltro .= " and vs.subcategoria_id = $subcategoria_id";
                 }
                 $datos = $this->Reporte_ing_egr_model->reporte_general($elfiltro);
+                
             }elseif($filtrar == 2){ // <-- Servicios
                 $elfiltro .= "date(ci.detalleserv_fechaentregado) >= '$fecha_desde'
                              and date(ci.detalleserv_fechaentregado) <= '$fecha_hasta'";
@@ -2474,4 +2475,129 @@ function torta3($anio,$mes)
         }
     }
     
+
+    // =========================
+    // REPORTE GENERAL - COMPRAS
+    // =========================
+    function reporte_generalcompra()
+    {
+        $data['sistema'] = $this->sistema;
+
+        if($this->acceso(157)){
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['parametro'] = $this->parametros;
+
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); // moneda extranjera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+
+            $this->load->model('Tipo_transaccion_model');
+            $data['all_tipotransaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+
+            $this->load->model('Forma_pago_model');
+            $data['all_formapago'] = $this->Forma_pago_model->get_all_forma();
+
+            // filtros opcionales por producto (si los usas)
+            $this->load->model('Producto_preferencia_model');
+            $data['all_preferencia'] = $this->Producto_preferencia_model->get_allpreferencia_producto();
+
+            $this->load->model('Clasificador_model');
+            $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificador_asc();
+
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
+
+            // No usamos zona/origen/prevendedor en compras, pero el view base los referencia.
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
+
+            $data['page_title'] = "Reporte general - Compras";
+            $data['_view'] = 'reportes/reporte_generalcompra';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+
+    /* busca reportes de COMPRAS (detalle) */
+    function reporte_buscarreportecompra(){
+        
+        $data['sistema'] = $this->sistema;
+
+        if ($this->input->is_ajax_request()){
+            $fecha_desde    = $this->input->post('fecha_desde');
+            $fecha_hasta    = $this->input->post('fecha_hasta');
+            $usuario_id     = (int)$this->input->post('usuario_id');
+            $tipotrans_id   = (int)$this->input->post('tipotrans_id');
+            $forma_id       = (int)$this->input->post('forma_id');
+            $comprobante    = (int)$this->input->post('comprobante'); // documento_respaldo_id
+            $proveedor_id   = (int)$this->input->post('proveedor_id');
+            $producto_id    = (int)$this->input->post('producto_id');
+            $preferencia_id = (int)$this->input->post('preferencia_id');
+            $clasificador_id= (int)$this->input->post('clasificador_id');
+            $categoria_id   = (int)$this->input->post('categoria_id');
+            $subcategoria_id= (int)$this->input->post('subcategoria_id');
+
+            $filtro  = "date(c.compra_fecha) >= '$fecha_desde' and date(c.compra_fecha) <= '$fecha_hasta'";
+
+            if($usuario_id > 0){
+                $filtro .= " and c.usuario_id = $usuario_id";
+            }
+            if($tipotrans_id > 0){
+                $filtro .= " and c.tipotrans_id = $tipotrans_id";
+            }
+            if($forma_id > 0){
+                $filtro .= " and c.forma_id = $forma_id";
+            }
+            if($comprobante > 0){
+                $filtro .= " and c.documento_respaldo_id = $comprobante";
+            }
+            if($proveedor_id > 0){
+                $filtro .= " and c.proveedor_id = $proveedor_id";
+            }
+            if($producto_id > 0){
+                $filtro .= " and dc.producto_id = $producto_id";
+            }
+
+            // filtros por atributos del producto (si existen en tu tabla producto)
+            if($preferencia_id > 0){
+                $filtro .= " and pr.preferencia_id = $preferencia_id";
+            }
+            if($clasificador_id > 0){
+                $filtro .= " and pr.clasificador_id = $clasificador_id";
+            }
+            if($categoria_id > 0){
+                $filtro .= " and pr.categoria_id = $categoria_id";
+            }
+            if($subcategoria_id > 0){
+                $filtro .= " and pr.subcategoria_id = $subcategoria_id";
+            }
+
+            $datos = $this->Reporte_ing_egr_model->reporte_generalcompra($filtro);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
+
+    /* buscar proveedores para el modal (ajax) */
+    function buscarproveedor(){
+        if(!$this->input->is_ajax_request()){ show_404(); }
+
+        $parametro = trim((string)$this->input->post('parametro'));
+        $parametro = $this->db->escape_like_str($parametro);
+
+        $sql = "SELECT proveedor_id, proveedor_codigo, proveedor_nombre, proveedor_nit
+                FROM proveedor
+                WHERE proveedor_nombre LIKE '%$parametro%'
+                   OR proveedor_codigo LIKE '%$parametro%'
+                   OR proveedor_nit LIKE '%$parametro%'
+                ORDER BY proveedor_nombre ASC
+                LIMIT 50";
+        $datos = $this->db->query($sql)->result_array();
+        echo json_encode($datos);
+    }
+
 }

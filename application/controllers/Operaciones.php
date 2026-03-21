@@ -662,7 +662,7 @@ class Operaciones extends CI_Controller{
     function comprimir() {
         
         $source = FCPATH . 'resources/xml';
-        $destination = FCPATH . 'resources/facuras_backup'.date('dmy.hms').'.zip';
+        $destination = FCPATH . 'resources/facturas_backup'.date('dmy.hms').'.zip';
         
         if (!extension_loaded('zip') || !file_exists($source)) {
             return false;

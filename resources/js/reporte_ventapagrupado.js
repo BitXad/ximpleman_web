@@ -9,7 +9,9 @@ function tabla_reportesproducto(){
     var controlador = base_url+"detalle_venta/buscarprodagrupados";
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var desde    = document.getElementById('fecha_desde').value;
+    var hora_desde    = document.getElementById('hora_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
+    var hora_hasta    = document.getElementById('hora_hasta').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
     var usuario_id = document.getElementById('usuario_id').value;
     var esventa_preventa = document.getElementById('esventa_preventa').value;
@@ -39,7 +41,11 @@ function tabla_reportesproducto(){
         $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
     }
 	//var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
-	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elusuario+" ";
+        
+        fecha_desde = desde+" "+hora_desde;
+        fecha_hasta = hasta+" "+hora_hasta;
+        
+	var filtro = " CONCAT(venta_fecha, ' ', venta_hora) >= '"+fecha_desde+"'  and  CONCAT(venta_fecha, ' ', venta_hora) <='"+fecha_hasta+"' "+eltipo+" "+elusuario+" ";
 
   //simplemente(filtro);
      

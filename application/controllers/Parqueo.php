@@ -504,8 +504,7 @@ class Parqueo extends CI_Controller{
                         r.cliente_id = c.cliente_id";
                     
                     $datos = $this->Venta_model->consultar($sql);
-                }
-                
+                }                
                 echo json_encode($datos);
             
     }
@@ -697,5 +696,63 @@ class Parqueo extends CI_Controller{
             $this->load->view('layouts/main',$data);
         //}
     }
+    
+
+    function buscar_mensualeros()
+    {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+        $usuario_id = $this->input->post('usuario_id');
+        $estado_id = $this->input->post('estado_id');
+        
+        if($usuario_id>0){
+            $condicion1 = " and c.usuario_id = {$usuario_id} ";
+        }else $condicion1 = "";
+        
+            $sql = "SELECT 
+                    c.cliente_nombre,
+                    t.tarifa_tipo,
+                    r.*
+                  FROM
+                    cliente c,
+                    tarifa_parqueo t,
+                    registro_parqueo r
+                  WHERE
+                    r.registroparqueo_fechaingreso >= '2020-10-01' AND 
+                    r.registroparqueo_fechaingreso <= '2025-10-31' AND 
+                    r.tarifa_id = t.tarifa_id AND 
+                    r.cliente_id = c.cliente_id AND 
+                    r.tarifa_id >= 5 AND 
+                    r.tarifa_id <= 7";
+            $resultado = $this->Venta_model->consultar($sql);
+        
+        echo json_encode($resultado);
+    }
+    
+    
+    function reporte_mensualeros()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(41)){
+            
+            $data['page_title'] = "Reporte de Cobros";
+           
+            $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            
+            $sql = "select * from estado where estado_tipo = 4";
+            $data['estados'] = $this->Venta_model->consultar($sql);
+            $data['cobros'] = $this->Venta_model->consultar($sql);
+
+            $data['_view'] = 'parqueo/reporte_mensualeros';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    
     
 }

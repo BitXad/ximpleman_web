@@ -60,7 +60,19 @@ function reporte_general(){
                         utilidades += Number(utilidad);
                         html += "<tr>";
                         html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
-                        html += "<td> "+registros[i]["producto_nombre"]+" </td>";                                            
+                        html += "<td> "+registros[i]["producto_nombre"];
+                        
+                        
+                           
+                        if(registros[i]["detalleven_caracteristicas"]!=null&&registros[i]["detalleven_caracteristicas"]!=''&&registros[i]["detalleven_caracteristicas"]!=' '){
+                            html += "<br><small>"+registros[i]["detalleven_caracteristicas"]+"</small>";
+                        }
+                        
+                        
+                        html += "</td>";
+                        
+                        html += "<td> "+registros[i]["detalleven_codigo"]+"</td>";
+                        
                         html += "<td align='center' style='width:110px;'>";
                         if(filtrar == 1){
                             html += moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"];
@@ -85,10 +97,10 @@ function reporte_general(){
                             html += "</td>";
                         }
                         if(filtrar == 1 || filtrar == 2){
-                            html += "<td align='center'>";
+                            html += "<td align='center' style='line-height:10px;'>";
                             html += registros[i]["tipotrans_nombre"];
                             html += "<br>";
-                            html += registros[i]["forma_nombre"];
+                            html += "<small style='font-family: Arial Narrow;'>"+registros[i]["forma_nombre"]+"</small>";
                             html += "</td>";
                         }
                         if(filtrar == 1 || filtrar == 2){
@@ -510,6 +522,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += 'Nro.' + ',';
                 row += 'PRODUCTO' + ',';
+                row += 'CATEGORIA' + ',';
                 row += 'FECHA VENTA' + ',';
                 row += 'HORA VENTA' + ',';
                 row += 'NUM. VENTA' + ',';
@@ -552,6 +565,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += (i+1)+',';
                 row += '"' +registros[i]["producto_nombre"]+ '",';
+                row += '"' +registros[i]["categoria_nombre"]+ '",';
                 row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+ '",';
                 row += '"' +registros[i]["venta_hora"]+ '",';
                 row += '"' +registros[i]["venta_id"]+ '",';
@@ -587,6 +601,7 @@ function generarexcel_reportegrl(){
             row += '\r\n';
             row += '"",';
             row += '"",';
+            row += '"",';
             row += '"",';   
             row += '"",';   
             row += '"",';   
@@ -610,6 +625,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += 'Nro.' + ',';
                 row += 'PRODUCTO' + ',';
+                row += 'CATEGORIA' + ',';
                 row += 'FECHA SERVICIO' + ',';
                 row += 'NUM. SERV.' + ',';
                 row += 'NUM. DOC.' + ',';
@@ -649,6 +665,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += (i+1)+',';
                 row += '"' +registros[i]["producto_nombre"]+ '",';
+                row += '"' +registros[i]["categoria_nombre"]+ '",';
                 row += '"' +moment(registros[i]["detalleserv_fechaentregado"]).format('DD/MM/YYYY')+"-"+registros[i]["detalleserv_horaentregado"]+ '",';
                 row += '"' +registros[i]["servicio_id"]+ '",';
                 row += '"' +Number(registros[i]["factura_id"])+ '",';
@@ -684,6 +701,7 @@ function generarexcel_reportegrl(){
             row += '"",';   
             row += '"",';   
             row += '"",';   
+            row += '"",';   
             row += '"",';
             row += '"'+numberFormat(Number(cuotas).toFixed(decimales))+'",';
             row += '"",';
@@ -704,6 +722,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += 'Nro.' + ',';
                 row += 'PRODUCTO' + ',';
+                row += 'CATEGORIA' + ',';
                 row += 'FECHA PROD.' + ',';
                 row += 'NUM. PROD.' + ',';
                 row += 'UNIDAD' + ',';
@@ -739,6 +758,7 @@ function generarexcel_reportegrl(){
                 var row = "";
                 row += (i+1)+',';
                 row += '"' +registros[i]["producto_nombre"]+ '",';
+                row += '"' +registros[i]["categoria_nombre"]+ '",';
                 row += '"' +moment(registros[i]["produccion_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["produccion_hora"]+ '",';
                 row += '"' +registros[i]["produccion_id"]+ '",';
                 //row += '"' +Number(registros[i]["factura_id"])+ '",';
@@ -769,6 +789,7 @@ function generarexcel_reportegrl(){
             }
             row = '\r\n';
             row += '\r\n';
+            row += '"",';
             row += '"",';
             row += '"",';
             row += '"",';   

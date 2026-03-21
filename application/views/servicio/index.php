@@ -7,6 +7,7 @@
 <input type="hidden" name="tipoimpresora" id="tipoimpresora" value="<?php echo $all_parametro[0]['parametro_tipoimpresora']; ?>" />
 <input type="hidden" name="parametro_segservicio" id="parametro_segservicio" value="<?php echo $all_parametro[0]['parametro_segservicio']; ?>" />
 <input type="hidden" name="parametro_serviciofact" id="parametro_serviciofact" value="<?php echo $all_parametro[0]['parametro_serviciofact']; ?>" />
+<input type="hidden" name="decimlaes" id="decimales" value="<?php echo $all_parametro[0]['parametro_decimales']; ?>" />
 <input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value="<?php echo $all_parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($all_usuario);  ?>' />
 <input type="hidden" name="tipo_transaccion" id="tipo_transaccion" value='<?php echo json_encode($tipo_transaccion);  ?>' />
@@ -631,3 +632,58 @@ if(isset($a) && $a == "n"){ ?>
     <!-- </div> -->
 </div>
 <!------------------------ FIN modal para registrar PAGO A CUENTA ------------------->
+
+
+
+
+
+<div >
+    <button type="button" id="boton_preferencia" class="btn btn-default" data-toggle="modal" data-target="#modalpreferencia" >
+      Registrar preferencia
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalpreferencia" tabindex="-1" role="dialog" aria-labelledby="modalpreferencia" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">REGISTRAR PREFERENCIAS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                <input type="hidden" id="detalleven_id" disabled="true"/>
+    
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <center>
+                                
+                                
+                            <div class="col-md-12 form-group">
+                              <label for="producto_caracteristicas">Registrar Características</label>
+                              <input type="text" step="1" class="form-control" value="" name="producto_preferencia" id="producto_preferencia">
+                            </div>
+                                
+
+                            </center>
+                        </div>
+
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="registrar_preferencia()"><fa class="fa fa-floppy-o"></fa> Registrar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+                
+
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL TOTAL ----------------------------------->
+<!------------------------------------------------------------------------------->

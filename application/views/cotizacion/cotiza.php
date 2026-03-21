@@ -238,7 +238,7 @@ function valor_valido($valor) {
                 <td colspan="3"><b>LUGAR DE ENTREGA:</b> <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center">TODOS LOS PRECIOS INCLUYEN IMPUESTOS DE LEY</td>
+                <td colspan="7" class="text-center"><?php echo $cotizacion['cotizacion_glosa']; ?></td>
             </tr>
             <tr>
                 <th colspan="7" class="text-center" style="font-size: 9px; padding: 3px"><b>FAVOR EMITIR EL CHEQUE A NOMBRE DE:</b> <?php echo $cotizacion['cotizacion_chequenombre'] ?></th>

@@ -8,170 +8,143 @@ class Viaje extends CI_Controller{
     private $sistema;
     private $parametros;
 
- function __construct()
- {
-       parent::__construct();
-      $this->load->model('Viaje_model');
-      
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->load->model('Viaje_model');
         $this->load->model('Sistema_model');
         $this->load->model('Parametro_model');
         $this->load->model('Empresa_model');
         $this->load->model('Moneda_model');
-        $this->load->model('Viaje_model');
         $this->load->model('Venta_model');
+
+        $this->load->library('form_validation');
+        $this->load->helper(array('form', 'url'));
+
         $this->sistema = $this->Sistema_model->get_sistema();
         $parametro = $this->Parametro_model->get_parametros();
-        $this->parametros = $parametro[0];
-        
-        
+        $this->parametros = isset($parametro[0]) ? $parametro[0] : array();
+
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
-        }else {
+        } else {
             redirect('', 'refresh');
         }
- } 
+    } 
  /*
 * Listing of viaje
  */
 public function index()
 {
-     $data['sistema'] = $this->sistema;
-     $data['parametro'] = $this->parametros;
-  try{
-      $data['noof_page'] = 0;
-//     $data['viaje'] = $this->Viaje_model->get_all_with_asso_viaje();
-     $data['viaje'] = $this->Viaje_model->get_viajes_pendientes();
-      $data['_view'] = 'viaje/index';
-      $this->load->view('layouts/main',$data);
-    } catch (Exception $ex) {
-      throw new Exception('Viaje Controller : Error in index function - ' . $ex);
-  }  
-}
+    $data['sistema']   = $this->sistema;
+    $data['parametro'] = $this->parametros;
 
+    $this->load->library('pagination');
+
+    $config['base_url'] = site_url('viaje/index');
+    $config['total_rows'] = $this->Viaje_model->get_all_viaje_count();
+    $config['per_page'] = 25;
+    $config['uri_segment'] = 3;
+
+    $this->pagination->initialize($config);
+
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+    $params = array(
+        'limit'  => $config['per_page'],
+        'offset' => $page
+    );
+
+    $data['noof_page'] = $page;
+
+    // CAMBIO IMPORTANTE
+    $data['viaje'] = $this->Viaje_model->get_viajes_con_pasajes($params);
+
+    $data['_view'] = 'viaje/index';
+    $this->load->view('layouts/main', $data);
+}
  /*
   * Adding a new viaje
   */
- function add()
- {  
-    $usuario_id = $this->session_data['usuario_id']; 
+public function add()
+{
     $data['sistema'] = $this->sistema;
-        try{
-              $params = array(
-               'ayudante_id'=> $this->input->post('ayudante_id'),
-               'vehiculo_id'=> $this->input->post('vehiculo_id'),
-               'ruta_id'=> $this->input->post('ruta_id'),
-               'usuario_id'=> $usuario_id,
-               'conductor_id'=> $this->input->post('conductor_id'),
-               'viaje_fechasalida'=> $this->input->post('viaje_fechasalida'),
-               'viaje_horasalida'=> $this->input->post('viaje_horasalida'),
-               'viaje_fechallegada'=> $this->input->post('viaje_fechallegada'),
-               'viaje_horallegada'=> $this->input->post('viaje_horallegada'),
-                );
+    $data['parametro'] = $this->parametros;        
+    $this->_cargar_datos_formulario($data);
+    $this->_set_validation_rules();
 
-                var_dump($params);
+    if ($this->form_validation->run()) {
 
+        $params = $this->_get_post_data();
 
-               $this->load->library('upload');
-               $this->load->library('form_validation');
-               if(isset($_POST) && count($_POST) > 0)     
-                {  
-                    $viaje_id= $this->Viaje_model->add_viaje($params);
-                     $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Succesfully added.</div>');
-                      redirect('viaje/index');
-                }
-                else
-                { 
-                 $this->load->model('Ayudante_model');
-                 $data['all_ayudante'] = $this->Ayudante_model->get_all_ayudante(); 
-                 $this->load->model('Vehiculo_model');
-                 $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo(); 
-                 $this->load->model('Ruta_model');
-                 $data['all_ruta'] = $this->Ruta_model->get_all_ruta(); 
-                 $this->load->model('Usuario_model');
-                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario(); 
-                 $this->load->model('Conductor_model');
-                 $data['all_conductor'] = $this->Conductor_model->get_all_conductor();
+        // extraer vehiculo_id desde params
+        $vehiculo_id = $params['vehiculo_id'];
 
-                   $data['_view'] = 'viaje/add';
-                    $this->load->view('layouts/main',$data);
-                }
+        $viaje_id = $this->Viaje_model->add_viaje($params);
 
-          } catch (Exception $ex) {
-            throw new Exception('Viaje Controller : Error in add function - ' . $ex);
-          }  
- }  
+        if ($viaje_id) {
+
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-success text-center">Viaje registrado correctamente.</div>'
+            );
+
+            // Generar pasajes
+            $this->generar_pasajes($viaje_id, $vehiculo_id);
+
+            redirect('viaje/index');
+        }
+    }
+
+    $data['_view'] = 'viaje/add';
+    $this->load->view('layouts/main', $data);
+}
   /*
   * Editing a viaje
  */
- public function edit($viaje_id)
- {   
-     $data['sistema'] = $this->sistema;
-  try{
-   $data['viaje'] = $this->Viaje_model->get_viaje($viaje_id);
-       $this->load->library('upload');
-       $this->load->library('form_validation');
-     if(isset($data['viaje']['viaje_id']))
-      {
-        $params = array(
-           'ayudante_id'=> $this->input->post('ayudante_id'),
-           'vehiculo_id'=> $this->input->post('vehiculo_id'),
-           'ruta_id'=> $this->input->post('ruta_id'),
-           'usuario_id'=> $this->input->post('usuario_id'),
-           'conductor_id'=> $this->input->post('conductor_id'),
-           'viaje_fechasalida'=> $this->input->post('viaje_fechasalida'),
-           'viaje_horasalida'=> $this->input->post('viaje_horasalida'),
-           'viaje_fechallegada'=> $this->input->post('viaje_fechallegada'),
-           'viaje_horallegada'=> $this->input->post('viaje_horallegada'),
-        );
-          if(isset($_POST) && count($_POST) > 0)     
-           {  
-           $this->Viaje_model->update_viaje($viaje_id,$params);
-             $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Succesfully updated.</div>');
+    public function edit($viaje_id = null)
+    {
+        $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        $data['viaje'] = $this->Viaje_model->get_viaje($viaje_id);
+
+        if (!isset($data['viaje']['viaje_id'])) {
+            show_error('El viaje que intenta editar no existe.');
+        }
+
+        $this->_cargar_datos_formulario($data);
+        $this->_set_validation_rules();
+
+        if ($this->form_validation->run()) {
+            $params = $this->_get_post_data();
+
+            $ok = $this->Viaje_model->update_viaje($viaje_id, $params);
+
+            if ($ok) {
+                $this->session->set_flashdata('alert_msg', '<div class="alert alert-success text-center">Viaje actualizado correctamente.</div>');
                 redirect('viaje/index');
-           }
-           else
-          {
-             $this->load->model('Ayudante_model');
-             $data['all_ayudante'] = $this->Ayudante_model->get_all_ayudante(); 
-             $this->load->model('Vehiculo_model');
-             $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo(); 
-             $this->load->model('Ruta_model');
-             $data['all_ruta'] = $this->Ruta_model->get_all_ruta(); 
-             $this->load->model('Usuario_model');
-             $data['all_usuario'] = $this->Usuario_model->get_all_usuario(); 
-             $this->load->model('Conductor_model');
-             $data['all_conductor'] = $this->Conductor_model->get_all_conductor(); 
-              $data['_view'] = 'viaje/edit';
-              $this->load->view('layouts/main',$data);
-          }
-  }
-  else
-  show_error('The viaje you are trying to edit does not exist.');
-  } catch (Exception $ex) {
-    throw new Exception('Viaje Controller : Error in edit function - ' . $ex);
-  }  
-} 
+            }
+        }
+
+        $data['_view'] = 'viaje/edit';
+        $this->load->view('layouts/main', $data);
+    }
 /*
   * Deleting viaje
   */
-  function remove($viaje_id)
-   {
-     $data['sistema'] = $this->sistema;
-    try{
-      $viaje = $this->Viaje_model->get_viaje($viaje_id);
-  // check if the viaje exists before trying to delete it
-       if(isset($viaje['viaje_id']))
-       {
-         $this->Viaje_model->delete_viaje($viaje_id);
-             $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Succesfully Removed.</div>');
-           redirect('viaje/index');
-       }
-       else
-       show_error('The viaje you are trying to delete does not exist.');
-  } catch (Exception $ex) {
-    throw new Exception('Viaje Controller : Error in remove function - ' . $ex);
-  }  
-  }
+    public function remove($viaje_id)
+    {
+        $viaje = $this->Viaje_model->get_viaje($viaje_id);
+
+        if (!isset($viaje['viaje_id'])) {
+            show_error('El viaje que intenta eliminar no existe.');
+        }
+
+        $this->Viaje_model->delete_viaje($viaje_id);
+        $this->session->set_flashdata('alert_msg', '<div class="alert alert-success text-center">Viaje eliminado correctamente.</div>');
+        redirect('viaje/index');
+    }
   /*
   * View more a viaje
  */
@@ -337,6 +310,30 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
             $data['datos_viaje'] = $this->Viaje_model->get_datos_viaje($viaje_id);
             $data['lista_pasajeros'] = $this->Viaje_model->get_lista_pasajeros($viaje_id);
             $data['_view'] = 'viaje/nomina_pasajeros';
+            $this->load->view('layouts/main',$data);
+
+        } catch (Exception $ex) {
+          throw new Exception('Viaje Controller : Error in index function - ' . $ex);
+      }  
+    }
+    
+    /*
+    * Listing of viaje
+     */
+    public function nomina_equipaje($viaje_id)
+    {
+        
+      try{
+            $data['sistema'] = $this->sistema;
+            $data['page_title'] = "Nomina Pasajeros";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+
+            $data['noof_page'] = 0;
+            $data['datos_viaje'] = $this->Viaje_model->get_datos_viaje($viaje_id);
+            $data['lista_pasajeros'] = $this->Viaje_model->get_lista_equipaje($viaje_id);
+            $data['_view'] = 'viaje/nomina_equipaje';
             $this->load->view('layouts/main',$data);
 
         } catch (Exception $ex) {
@@ -519,6 +516,186 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
             echo json_encode(true);
         
     }
-   
-   
+
+    private function _cargar_datos_formulario(&$data)
+    {
+        $this->load->model('Ayudante_model');
+        $this->load->model('Vehiculo_model');
+        $this->load->model('Ruta_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Conductor_model');
+
+        $data['all_ayudante'] = $this->Ayudante_model->get_all_ayudante();
+        $data['all_vehiculo'] = $this->Vehiculo_model->get_all_vehiculo();
+        $data['all_ruta'] = $this->Ruta_model->get_all_ruta();
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        $data['all_conductor'] = $this->Conductor_model->get_all_conductor();
+    }
+
+    private function _set_validation_rules()
+    {
+        $this->form_validation->set_rules('vehiculo_id', 'Vehículo', 'required|integer');
+        $this->form_validation->set_rules('ruta_id', 'Ruta', 'required|integer');
+        $this->form_validation->set_rules('ayudante_id', 'Ayudante', 'integer');
+        $this->form_validation->set_rules('conductor_id', 'Conductor', 'required|integer');
+        $this->form_validation->set_rules('conductor_id2', 'Conductor de relevo', 'integer');
+        $this->form_validation->set_rules('viaje_fechasalida', 'Fecha salida', 'required');
+        $this->form_validation->set_rules('viaje_horasalida', 'Hora salida', 'required');
+        $this->form_validation->set_rules('viaje_fechallegada', 'Fecha llegada', 'required');
+        $this->form_validation->set_rules('viaje_horallegada', 'Hora llegada', 'required');
+        $this->form_validation->set_rules('viaje_preciopasaje', 'Precio base', 'numeric');
+        $this->form_validation->set_rules('viaje_precio1', 'Precio 1', 'numeric');
+        $this->form_validation->set_rules('viaje_precio2', 'Precio 2', 'numeric');
+        $this->form_validation->set_rules('viaje_precio3', 'Precio 3', 'numeric');
+    }
+
+    private function _get_post_data()
+    {
+        return array(
+            'ruta_id' => $this->input->post('ruta_id') !== '' ? (int)$this->input->post('ruta_id') : null,
+            'ayudante_id' => $this->input->post('ayudante_id') !== '' ? (int)$this->input->post('ayudante_id') : null,
+            'vehiculo_id' => $this->input->post('vehiculo_id') !== '' ? (int)$this->input->post('vehiculo_id') : null,
+            'usuario_id' => (int)$this->session_data['usuario_id'],
+            'conductor_id' => $this->input->post('conductor_id') !== '' ? (int)$this->input->post('conductor_id') : null,
+            'conductor_id2' => $this->input->post('conductor_id2') !== '' ? (int)$this->input->post('conductor_id2') : null,
+            'viaje_fechasalida' => $this->input->post('viaje_fechasalida') ?: null,
+            'viaje_horasalida' => $this->input->post('viaje_horasalida') ?: null,
+            'viaje_fechallegada' => $this->input->post('viaje_fechallegada') ?: null,
+            'viaje_horallegada' => $this->input->post('viaje_horallegada') ?: null,
+            'viaje_preciopasaje' => $this->input->post('viaje_preciopasaje') !== '' ? (float)$this->input->post('viaje_preciopasaje') : 0,
+            'viaje_precio1' => $this->input->post('viaje_precio1') !== '' ? (float)$this->input->post('viaje_precio1') : 0,
+            'viaje_precio2' => $this->input->post('viaje_precio2') !== '' ? (float)$this->input->post('viaje_precio2') : 0,
+            'viaje_precio3' => $this->input->post('viaje_precio3') !== '' ? (float)$this->input->post('viaje_precio3') : 0,
+        );
+    }
+
+    public function generar_pasajes($viaje_id, $vehiculo_id)
+    {
+        if (empty($viaje_id) || empty($vehiculo_id)) {
+            return array(
+                'status'  => false,
+                'mensaje' => 'Parámetros inválidos'
+            );
+        }
+
+        $asientos = $this->db
+            ->where('vehiculo_id', $vehiculo_id)
+            ->order_by('asiento_orden', 'ASC')
+            ->get('asientos')
+            ->result();
+
+        if (!$asientos) {
+            return array(
+                'status'  => false,
+                'mensaje' => 'No se encontraron asientos para el vehículo'
+            );
+        }
+
+        $insertados = 0;
+        $existentes = 0;
+
+        $this->db->trans_begin();
+
+        foreach ($asientos as $asiento) {
+
+            $existe = $this->db
+                ->where('viaje_id', $viaje_id)
+                ->where('asiento_id', $asiento->asiento_id)
+                ->get('pasaje')
+                ->row();
+
+            if ($existe) {
+                $existentes++;
+                continue;
+            }
+
+            $data = array(
+                'asiento_id'      => $asiento->asiento_id,
+                'viaje_id'        => $viaje_id,
+                'pasaje_numero'   => $asiento->asiento_numero,
+                'pasaje_precio'   => ($asiento->asiento_precio !== null) ? (float)$asiento->asiento_precio : 0,
+                'estado_id'       => 50,
+                'pasaje_fecha'    => date('Y-m-d'),
+                'pasaje_hora'     => date('H:i:s'),
+                'usuario_id'      => $this->session->userdata('usuario_id') ? $this->session->userdata('usuario_id') : null
+            );
+
+            $this->db->insert('pasaje', $data);
+            $insertados++;
+        }
+
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return array(
+                'status'  => false,
+                'mensaje' => 'Ocurrió un error al generar los pasajes'
+            );
+        }
+
+        $this->db->trans_commit();
+
+        return array(
+            'status'     => true,
+            'mensaje'    => 'Pasajes generados correctamente',
+            'insertados' => $insertados,
+            'existentes' => $existentes
+        );
+    }    
+    
+    public function generar_pasajes_viaje($viaje_id)
+    {
+        if (empty($viaje_id)) {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-danger text-center">Viaje inválido.</div>'
+            );
+            redirect('viaje/index');
+        }
+
+        $viaje = $this->Viaje_model->get_viaje($viaje_id);
+
+        if (!$viaje) {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-danger text-center">No se encontró el viaje.</div>'
+            );
+            redirect('viaje/index');
+        }
+
+        $vehiculo_id = isset($viaje['vehiculo_id']) ? $viaje['vehiculo_id'] : null;
+
+        if (empty($vehiculo_id)) {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-danger text-center">El viaje no tiene vehículo asignado.</div>'
+            );
+            redirect('viaje/index');
+        }
+
+        $cantidad_pasajes = $this->Viaje_model->contar_pasajes_por_viaje($viaje_id);
+
+        if ($cantidad_pasajes > 0) {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-warning text-center">Este viaje ya tiene asientos generados.</div>'
+            );
+            redirect('viaje/index');
+        }
+
+        $resultado = $this->generar_pasajes($viaje_id, $vehiculo_id);
+
+        if ($resultado) {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-success text-center">Asientos generados correctamente.</div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'alert_msg',
+                '<div class="alert alert-danger text-center">No se pudieron generar los asientos.</div>'
+            );
+        }
+
+        redirect('viaje/index');
+    }   
 }

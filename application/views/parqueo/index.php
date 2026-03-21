@@ -136,7 +136,7 @@ window.onkeydown = compruebaTecla;
 
 <div class="row">
     
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">NUMERO DE PLACA/CODIGO/QR</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
                                 
@@ -158,6 +158,14 @@ window.onkeydown = compruebaTecla;
             <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">VENTAS/SERVICIOS</label>
             <!--<div class="form-group">-->          
             <a href="<?php echo base_url("venta/ventas"); ?>" target="_blank" name="cliente_telefono" class="form-control btn btn-warning" id="cliente_telefono"><fa class="fa fa-cart-plus"></fa>  Ventas</a>
+            <!--</div>-->
+        </div>
+    
+        <div class="col-md-2">
+            
+            <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">REPORTE MENSUALEROS</label>
+            <!--<div class="form-group">-->          
+            <a href="<?php echo base_url("parqueo/reporte_mensualeros"); ?>" target="_blank" name="reporte_mensualeros" class="form-control btn btn-success" id="reporte_mensualeros"><fa class="fa fa-print"></fa>  Rep. Mensualeros</a>
             <!--</div>-->
         </div>
     

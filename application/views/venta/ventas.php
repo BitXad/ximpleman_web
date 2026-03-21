@@ -408,470 +408,592 @@ window.onkeydown = compruebaTecla;
 <!-------------------- inicio collapse ---------------------->
 
 <div class="panel-group" <?php echo $estilo_div; ?>>
-    
-    <font size="1"><b>DATOS DEL CLIENTE</b> 
-    <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] == $mostrar_placa)? "" : "hidden";  ?>> <!--- !=12 original viene desde el controlador funcion ventas()-->
-        
-        * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_placa" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" onkeypress="buscar_placa(event);" style="font-size: 12px;">    
-        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_embase" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;" value="-">        
-        * PAIS <select type="text" width="100px" class="btn btn-warning btn-xs" id="datos_codigopais" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
-                    <option value="0">-NINGUNO-</option>
-                    <?php foreach ($paises as $p){ ?>
-                                <option value="<?php echo $p["pais_id"]; ?>" <?php echo ($p["pais_id"] == 22)?"selected":""; ?>><?php echo $p["pais_descripcion"]." - ".$p["pais_id"]; ?></option>
-                            
-                    <?php } ?>
-                    
-               </select>
-        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_autorizacionsc" value="" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
+
+    <small><b>DATOS DEL CLIENTE</b></small>
+
+    <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] == $mostrar_placa)? "" : "hidden";  ?>>
+        <!--- !=12 original viene desde el controlador funcion ventas()-->
+
+        * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_placa"
+            onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"
+            onkeypress="buscar_placa(event);" style="font-size: 12px;">
+
+        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_embase"
+            onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"
+            style="font-size: 12px;" value="-">
+
+        * PAIS
+        <select type="text" width="100px" class="btn btn-warning btn-xs" id="datos_codigopais"
+            onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
+            <option value="0">-NINGUNO-</option>
+            <?php foreach ($paises as $p){ ?>
+                <option value="<?php echo $p["pais_id"]; ?>" <?php echo ($p["pais_id"] == 22)?"selected":""; ?>>
+                    <?php echo $p["pais_descripcion"]." - ".$p["pais_id"]; ?>
+                </option>
+            <?php } ?>
+        </select>
+
+        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_autorizacionsc"
+            value="" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"
+            style="font-size: 12px;">
     </div>
-      
-    </font>
-      
-        <div class="box" style="border-color:black;">
-            <div class="box-body">
-      
-      
-    <div class="panel panel-default" <?php echo $estilo_div; ?> >
-      <div class="panel-heading" <?php echo $estilo_div; ?>>
-      
 
-<!--------------------- cliente_id --------------------->
-<div class="container" hidden>
-    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
-</div>
+    <div class="box" style="border-color:black;">
+        <div class="box-body">
 
-<!--------------------- fin cliente_id --------------------->
+            <div class="panel panel-default" <?php echo $estilo_div; ?> >
+                <div class="panel-heading" <?php echo $estilo_div; ?>>
 
-        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']!=1)?"":"hidden" ?>>
-            <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
-            <br>
-            <?php
-                
-                $tam = sizeof($docs_identidad);
-               foreach ($docs_identidad as $di){?> 
-                   
-            <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa><br> <?php echo substr($di['cdi_descripcion'],0,5); ?><br></button>
-               <?php    
-                    //if($tam<=2){ ?>
-            
-                        <!--<button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>-->                   
+                    <!-- ✅ FIX: row para todos los col-md-* (evita distorsión) -->
+                    <div class="row" style="margin-left:0; margin-right:0;">
 
-                    <?php //}else{?>
-                        
-                        <!--<button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa> <?php echo substr($di['cdi_descripcion'],0,5); ?></button>-->
+                        <!--------------------- cliente_id --------------------->
+                        <div class="container" hidden>
+                            <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
+                        </div>
+                        <!--------------------- fin cliente_id --------------------->
 
-                    <?php       //}
-               }?>
-            
-            
-            
-            
-        </div>
-        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
-            <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
-            <div class="form-group" <?= $estilo_div ?>>
-                <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
-                    <?php 
-                        $select = $cliente[0]['cdi_codigoclasificador'];
-                        
-                        if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
-                        
-                        foreach ($docs_identidad as $di){
-                            
-                            if($dosificacion[0]['docsec_codigoclasificador'] == 23){
-                                
-                                if($di['cdi_codigoclasificador'] == 5){
+                        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']!=1)?"":"hidden" ?>>
+                            <label for="tipo_doc_identidad" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal">
+                                TIPO DOCUMENTO IDENTIDAD
+                            </label>
+                            <br>
+                            <?php
+                                $tam = sizeof($docs_identidad);
+                                foreach ($docs_identidad as $di){
+                            ?>
+                                <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?> btn-xs"
+                                        id="documento<?php echo $di['cdi_id']; ?>"
+                                        onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"
+                                        title="<?php echo $di['cdi_descripcion']; ?>">
+                                    <fa class="fa fa-cube"></fa><br>
+                                    <?php echo substr($di['cdi_descripcion'],0,5); ?><br>
+                                </button>
+                            <?php } ?>
+                        </div>
+
+                        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
+                            <label for="tipo_doc_identidad" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal">
+                                TIPO DOCUMENTO IDENTIDAD
+                            </label>
+                            <div class="form-group" <?= $estilo_div ?>>
+                                <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad"
+                                        id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
+                                    <?php
+                                        $select = $cliente[0]['cdi_codigoclasificador'];
+                                        if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
+
+                                        foreach ($docs_identidad as $di){
+
+                                            if($dosificacion[0]['docsec_codigoclasificador'] == 23){
+                                                if($di['cdi_codigoclasificador'] == 5){
                                     ?>
-                                    <option value="<?= $di['cdi_codigoclasificador'] ?>" selected><?= $di['cdi_descripcion'] ?></option>
+                                                    <option value="<?= $di['cdi_codigoclasificador'] ?>" selected><?= $di['cdi_descripcion'] ?></option>
                                     <?php
-                                    break;
-                                }
-                                
-                            }else{
-                                
-                                $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;// por defecto que esté seleccionado NIT
-                        ?>                    
-                        <option value="<?= $di['cdi_codigoclasificador'] ?>" <?= $selected ?>><?= $di['cdi_descripcion'] ?></option>
-                    <?php
-                            }
-                    }?>
-                </select>
-            </div>
-        </div>
-
-        <?php
-        $sololectura = "";
-        if($dosificacion[0]['docsec_codigoclasificador'] == 23){ $sololectura = "readonly"; } ?>
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">NUMERO DE DOCUMENTO</label>
-            <div class="input-group"  <?php echo $estilo_div; ?>>
-              
-                <?php if($parametro['parametro_comprobante']==2){ //si es factura trch en vez de recibo ?>
-                    
-                        <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_sinnombre()" title=""><span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span></div>
-                                
-                <?php } ?>
-                <!--<input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />-->
-                        <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?>  <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
-                <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_nuevo()" title="Cliente nuevo"><span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span></div>
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
-            
-            </div>
-        </div>
-        
-        <div class="col-md-3"  <?php echo $estilo_div; ?> >
-            
-            <label for="razon social" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">RAZON SOCIAL</label>
-            <div class="input-group" <?php echo $estilo_div; ?>>
-                
-                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly  <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
-                <datalist id="listaclientes"></datalist>
-                <div style="border-color: orange; background: orange !important; color: white" class="btn btn-facebook input-group-addon" title="Buscar por nombre de cliente"><span class="fa fa-unlock" aria-hidden="true" id="bucar_cliente" onclick="buscar_nombre();"></span></div>
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
-                
-            </div>
-            
-        </div>
-<?php
-    $es_movil = "0";
-    $es_movil = "<script>document.write(esmovil);</script>";         
-
-?>   
-
-<?php //if($es_movil == 0){ ?> 
-
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
-        <label for="cliente_celular" class="control-label" style="margin-bottom: 0;  font-size: 10px; color: gray;  font-weight: normal;">CELULAR</label>
-        <div class="form-group" <?php echo $estilo_div; ?>>
-            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,12)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
-        </div>
-        
-        </div>
-
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="email" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CORREO ELECTRONICO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email']; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
-            </div>
-        </div>
-        
-        <?php 
-            if($parametro["parametro_panelventas"]==1){ 
-                
-                if($parametro["parametro_documentoslista"]==1){?>
-
-                        <div class="col-md-2" <?php echo $estilo_div; ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
-                            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">SERVICIO</label>
-                            <div class="form-group" <?php echo $estilo_div; ?>>
-                                <select id="tiposerv_id" name="tiposerv_id" class="form-control btn btn-info btn-xs">
-
+                                                    break;
+                                                }
+                                            } else {
+                                                $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;
+                                    ?>
+                                                <option value="<?= $di['cdi_codigoclasificador'] ?>" <?= $selected ?>><?= $di['cdi_descripcion'] ?></option>
                                     <?php
-                                        foreach($tipo_servicio as $ts){ ?>
-                                            <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
-                                    <?php } ?>
-
-                                 </select>
+                                            }
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
 
-                <?php }else{ ?>
+                        <?php
+                            $sololectura = "";
+                            if($dosificacion[0]['docsec_codigoclasificador'] == 23){ $sololectura = "readonly"; }
+                        ?>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="nit" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">
+                                NUMERO DE DOCUMENTO
+                            </label>
+
+                            <div class="input-group" <?php echo $estilo_div; ?>>
+                                <?php if($parametro['parametro_comprobante']==2){ ?>
+                                    <div style="border-color: #be2626; background: #be2626 !important; color: white"
+                                         class="btn btn-danger input-group-addon"
+                                         onclick="cliente_sinnombre()" title="">
+                                        <span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span>
+                                    </div>
+                                <?php } ?>
+
+                                <input type="number" name="nit"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos_facturacion; ?>
+                                       id="nit"
+                                       value="<?php echo $cliente[0]['cliente_nit']; ?>"
+                                       onkeypress="validar(event,1)" onclick="seleccionar(1)"
+                                       onKeyUp="this.value = this.value.toUpperCase();"
+                                       <?php echo $sololectura?>
+                                       <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
+
+                                <div style="border-color: #be2626; background: #be2626 !important; color: white"
+                                     class="btn btn-danger input-group-addon"
+                                     onclick="cliente_nuevo()" title="Cliente nuevo">
+                                    <span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span>
+                                </div>
+
+                                <div style="border-color: #008d4c; background: #008D4C !important; color: white"
+                                     class="btn btn-success input-group-addon"
+                                     onclick="validar(13,1)" title="Buscar por número de documento">
+                                    <span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?> >
+                            <label for="razon social" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">
+                                RAZON SOCIAL
+                            </label>
+                            <div class="input-group" <?php echo $estilo_div; ?>>
+
+                                <input type="search" name="razon_social" list="listaclientes"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;"
+                                       id="razon_social"
+                                       value="<?php echo $cliente[0]['cliente_razon']; ?>"
+                                       onkeypress="validar(event,9)"
+                                       onchange="seleccionar_cliente()" onclick="seleccionar(2)"
+                                       onKeyUp="this.value = this.value.toUpperCase();"
+                                       autocomplete="off" readonly
+                                       <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
+
+                                <datalist id="listaclientes"></datalist>
+
+                                <div style="border-color: orange; background: orange !important; color: white"
+                                     class="btn btn-facebook input-group-addon"
+                                     title="Buscar por nombre de cliente">
+                                    <span class="fa fa-unlock" aria-hidden="true" id="bucar_cliente" onclick="buscar_nombre();"></span>
+                                </div>
+
+                                <div style="border-color: #008d4c; background: #008D4C !important; color: white"
+                                     class="btn btn-success input-group-addon"
+                                     onclick="validar(13,9)" title="Buscar por número de documento">
+                                    <span class="fa fa-search" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php
+                            $es_movil = "0";
+                            $es_movil = "<script>document.write(esmovil);</script>";
+                        ?>
 
                         <div class="col-md-2" <?php echo $estilo_div; ?>>
-                            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">SERVICIO</label>
+                            <label for="cliente_celular" class="control-label"
+                                   style="margin-bottom: 0;  font-size: 10px; color: gray;  font-weight: normal;">
+                                CELULAR
+                            </label>
                             <div class="form-group" <?php echo $estilo_div; ?>>
-                                    <?php
-                                        foreach($tipo_servicio as $ts){ ?>
-                                            <button class="btn btn-group <?= ($ts['tiposerv_id']==1)?"btn-warning":"btn-default"; ?>  btn-xs" id="servicio<?php echo $ts['tiposerv_id']; ?>" onclick="seleccionar_servicio(<?php echo $ts['tiposerv_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $ts['tiposerv_descripcion']; ?></button>
-
-                                    <?php } ?>
-
+                                <input type="text" name="cliente_celular"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos_facturacion; ?>
+                                       id="cliente_celular"
+                                       onkeypress="validar(event,12)" onclick="seleccionar(3)"
+                                       value="<?php echo $cliente[0]['cliente_celular']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
                             </div>
                         </div>
-                <?php } ?>
 
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
+                        <div class="col-md-2" <?php echo $estilo_div; ?>>
+                            <label for="email" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                CORREO ELECTRONICO
+                            </label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="email" name="email"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos_facturacion; ?>
+                                       id="email"
+                                       value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email']; ?>"
+                                       onclick="this.select()" onkeypress="validar(event,13)"/>
+                            </div>
+                        </div>
 
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
-            <div class="input-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #000000; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="iniciarteclado()" title="Habilitar teclado numerico"><span class="fa fa-keyboard-o" aria-hidden="true" id="span_buscar_cliente"></span></div>
-            </div>
-        </div>
+                        <?php
+                        if($parametro["parametro_panelventas"]==1){
 
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
-            <div class="input-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" style="color: black; background:white ; text-align: left; font-size: 18px; font-family: Arial; " id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir()"/>
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="finalizarmiventa()" title="Finalizar Venta"><span class="fa fa-money" aria-hidden="true" id="span_buscar_cliente"></span></div>
-            </div>
-            
-            
-        </div>
-
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="cambioy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CAMBIO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cambioy" class="form-control <?php echo $atributos; ?>" style="color: black; background: #be2626; text-align: left; font-size: 18px; font-family: Arial; color: white" id="cambioy"  value="0.00" onclick="this.select()"/>
-            </div>
-        </div>
-        
-        <?php } // fin $parametro["parametro_tiposistema"]==1 ?>
-        
-<!--            <div class="input-group"  <?php echo $estilo_div; ?>>
-                <div class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-floppy-o" aria-hidden="true" id="span_buscar_cliente"></span></div>
-                <div class="btn btn-primary input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-battery-0" aria-hidden="true" id="span_buscar_cliente"></span></div>
-                <div class="btn btn-danger input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-cubes" aria-hidden="true" id="span_buscar_cliente"></span></div>
-                <div class="btn btn-warning input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-download" aria-hidden="true" id="span_buscar_cliente"></span></div>
-                <div class="btn btn-facebook input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
-            
-            </div>-->
-
-
-<!---------------------- collapse ----------------------------->
-        <h4 class="panel-title">
-            <!--<div class="col-md-12">-->
-            <?php
-            if(sizeof($dosificacion)>0){
-                if($parametro['parametro_factura'] == 1){ // todo facturado
-                    $eschecked = "checked disabled";
-                }elseif($parametro['parametro_factura'] == 2){ // factura opcional tipo 1
-                    $eschecked = "";
-                }elseif($parametro['parametro_factura'] == 3){ // sin factura
-                    $eschecked = "hidden";
-                }elseif($parametro['parametro_factura'] == 4){ // factura opcional tipo 2
-                    $eschecked = "checked";
-                }
-            ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
-          <?php } else{ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-            <font color="red" size="2"> Dosificación no activada</font>
-          <?php } ?> 
-          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
-            Más información</a>
-            
-            
-            <?php 
-            if ($parametro["parametro_agruparitems"] == 1 )
-                    { $agrupar = "checked='true'";}
-              else {$agrupar = " ";}
-            ?>
-            <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
-            <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
-            <?php if($parametro["parametro_tiposistema"] != 1){ //si es electronica o computarizada en linea?>
-                    <?php
-                    if($parametro["parametro_tipoemision"] == 1){?>
-                
-                        <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
-                        <span id="eltipo_emision" style="color: white;">EN LINEA</span>
-                        </a>
-                    <?php
-                    }elseif($parametro["parametro_tipoemision"] == 2){ ?>
-                        <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
-                        <span id="eltipo_emision" style="color: white;">FUERA DE LINEA</span>
-                        </a>        
-                
-                       
-                    <?php
-                    }if($parametro["parametro_tipoemision"] == 3){ ?>
-                        
-                        <a class="btn btn-warning btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
-                        <span id="eltipo_emision" style="color: white;">masiva</span>
-                        </a>        
-                        
-                    <?php }
-                    ?>
-                <div hidden>                
-                    <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?php echo ($cliente[0]['cliente_excepcion']==1)?"checked":""; ?>  > <label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-                </div>
-            
-                <?php }else{ ?>
-            <div hidden><input type="checkbox" class="form-check-input" id="codigoexcepcion" ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label></div>
-                <?php
-                }  ?>
-            
-            <?php if ($parametro["parametro_tiposistema"]!=1){ //si es electronica o computarizada en linea ?>
-                
-                <select class="btn btn-default btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
-                    <option value="0">- SIN CONTINGENCIA -</option>
-                        <?php 
-                                foreach($eventos as $evento){ ?>
-                    <option value="<?= $evento["registroeventos_codigo"]; ?>"><?= $evento["registroeventos_fecha"]." ".substr($evento["registroeventos_detalle"],0,30)."..."; ?></option>
+                            if($parametro["parametro_documentoslista"]==1){
+                        ?>
+                                <div class="col-md-2" <?php echo $estilo_div; ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
+                                    <label for="glosay" class="control-label"
+                                           style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                        SERVICIO
+                                    </label>
+                                    <div class="form-group" <?php echo $estilo_div; ?>>
+                                        <select id="tiposerv_id" name="tiposerv_id" class="form-control btn btn-info btn-xs">
+                                            <?php foreach($tipo_servicio as $ts){ ?>
+                                                <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                        <?php
+                            } else {
+                        ?>
+                                <div class="col-md-2" <?php echo $estilo_div; ?>>
+                                    <label for="glosay" class="control-label"
+                                           style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                        SERVICIO
+                                    </label>
+                                    <div class="form-group" <?php echo $estilo_div; ?>>
+                                        <?php foreach($tipo_servicio as $ts){ ?>
+                                            <button class="btn btn-group <?= ($ts['tiposerv_id']==1)?"btn-warning":"btn-default"; ?> btn-xs"
+                                                    id="servicio<?php echo $ts['tiposerv_id']; ?>"
+                                                    onclick="seleccionar_servicio(<?php echo $ts['tiposerv_id']; ?>)">
+                                                <fa class="fa fa-cube"></fa> <?php echo $ts['tiposerv_descripcion']; ?>
+                                            </button>
+                                        <?php } ?>
+                                    </div>
+                                </div>
                         <?php } ?>
 
-                </select>
-            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-default btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
-            
-    
-            <button type="button" id="boton_modalpaquetes" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
-                <fa class="fa fa-cubes"></fa>
-            </button>
-        
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="glosay" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                PREFERENCIAS
+                            </label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="glosay"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial;"
+                                       id="glosay"
+                                       value=""
+                                       onclick="this.select()"
+                                       onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
 
-            
-            
-            
-            <?php if($dosificacion[0]['docsec_codigoclasificador'] == 13){ ?>
-            
-                <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios" >
-                    <fa class="fa fa-database"></fa>
-                </button>
-            <?php } ?><!-- comment -->
-            
-            <?php 
-                }else{ ?>
-                           
-                    <input type="hidden" id="evento_contingencia" value="0" />
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="totaly" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                TOTAL
+                            </label>
+                            <div class="input-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="totaly"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       style="background:#000000; text-align:left; font-size:18px; font-family:Arial; color:white"
+                                       id="totaly" value="0.00" onclick="this.select()" readonly/>
+                                <div style="border-color:#008d4c; background:#008D4C !important; color:white"
+                                     class="btn btn-success input-group-addon"
+                                     onclick="iniciarteclado()" title="Habilitar teclado numerico">
+                                    <span class="fa fa-keyboard-o" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
 
-            <?php    }  ?>
+                        <div class="col-md-2" <?php echo $estilo_div; ?>>
+                            <label for="cobradoy" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                COBRADO
+                            </label>
+                            <div class="input-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cobradoy"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       style="color:black; background:white; text-align:left; font-size:18px; font-family:Arial;"
+                                       id="cobradoy" value="0.00" onclick="this.select()" onkeyup="transcribir()"/>
+                                <div style="border-color:#008d4c; background:#008D4C !important; color:white"
+                                     class="btn btn-success input-group-addon"
+                                     onclick="finalizarmiventa()" title="Finalizar Venta">
+                                    <span class="fa fa-money" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
 
-            <div id="mensajes">
-            <?php if (isset($cliente[0]['cliente_liquidopagable'])){ ?>
-                    Liquido pagable Bs: 345, Monto credito Bs: 452
-            <?php } ?>
-            </div>
-                    
-             <?php if($parametro['parametro_modulorestaurante']==1){ ?>
-            
-                <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">
-                    <option value="0">- PENSIONADO -</option>
-                    <option value="1">REGISTRAR PENSIONADO</option>
-                </select>            
-            
-            <?php } else{?>
-            
-              <input type="text" id="pensionado" value="0" name="pensionado" hidden>
-                
-            <?php } ?>
-                          
-         
-        </h4>
-     
-        <div class="row" id='loader_documento' style='display:none;'>
-            <center>
-                <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-            </center>
-        </div> 
-    </div>
-      
-    <div id="collapse1" class="panel-collapse collapse">
-        <!---------------------- contenido collapse ----------------------------->
-        <?php $estilo_label = "style='margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;'"; ?> 
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="tipo" class="control-label" <?php echo $estilo_label; ?>>TIPO CLIENTE</label>           
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                
-                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
-                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
-                    <?php $contador = 0;
-                            foreach($tipo_cliente as $tc){                          
-                                if ($contador>0){?>                    
-                                     <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
-                    <?php       }
-                                $contador++;
-                            }?>
-                </select>
-              
-            </div>
-        </div>  
-        
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="nombre" class="control-label"  <?php echo $estilo_label; ?>><?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"CLIENTE":"ESTUDIANTE"; ?></label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" style="background:yellow; font-size: 10pt;" id="cliente_nombre" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();" />
-            </div>
-        </div>
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="cliente_ci" class="control-label"  <?php echo $estilo_label; ?>>C.I.</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_ci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
-        <div class="col-md-1" <?php echo $estilo_div; ?>>
-            <label for="cliente_complementoci" class="control-label"  <?php echo $estilo_label; ?>>Compl. C.I.</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_complementoci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="cliente_nombrenegocio" class="control-label"  <?php echo $estilo_label; ?>><?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"NEGOCIO":"PERIODO FACTURADO"; ?></label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" style="background:yellow; font-size: 10pt;" id="cliente_nombrenegocio"  name="cliente_nombrenegocio" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
-        
-        
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="cliente_codigo" class="control-label"  <?php echo $estilo_label; ?>>CÓDIGO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_codigo" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();" onkeypress="validar(event,15)" onclick="seleccionar(8)"/>
-            </div>
-        </div>
-        
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="cliente_direccion" class="control-label"  <?php echo $estilo_label; ?>>DIRECCIÓN</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_direccion" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="cliente_departamento" class="control-label"  <?php echo $estilo_label; ?>>DEPARTAMENTO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_departamento" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
-            </div>
-        </div>
-        <div class="col-md-3" <?php echo $estilo_div; ?> hidden="">
-            <label for="telefono" class="control-label"  <?php echo $estilo_label; ?>>TELEFONO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
-            </div>
-        </div>
+                        <div class="col-md-2" <?php echo $estilo_div; ?>>
+                            <label for="cambioy" class="control-label"
+                                   style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">
+                                CAMBIO
+                            </label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cambioy"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       style="background:#be2626; text-align:left; font-size:18px; font-family:Arial; color:white"
+                                       id="cambioy" value="0.00" onclick="this.select()"/>
+                            </div>
+                        </div>
 
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="zona_id" class="control-label"  <?php echo $estilo_label; ?>>ZONA</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
-                    <option value="0">- ZONAS -</option>
-                    <?php 
-                    foreach($zonas as $categoria_clientezona)
-                    {
-                        $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
-                        echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
-                    }
-                    ?>
-                </select>
-                <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
-            </div>
-        </div>
-        <div class="col-md-12" >
-            <br>
-            <small>
-                <b>
-                    * Información complementaria del cliente                   
-                </b>
-            </small>
-        </div>
-    <!--        
-            </div>
+                        <?php } // fin parametro_panelventas ?>
 
-        </div>-->
+                    </div><!-- ✅ FIN row -->
 
-    <!--  </div>
-    </div>  -->
-    <!-------------------- fin inicio collapse ---------------------->
-    </div>
-    </div>
-    </div>
-    </div>
-        
-      
-  </div>
+                    <!---------------------- collapse ----------------------------->
+                    <h4 class="panel-title">
+
+                        <?php
+                        if(sizeof($dosificacion)>0){
+                            if($parametro['parametro_factura'] == 1){
+                                $eschecked = "checked disabled";
+                            }elseif($parametro['parametro_factura'] == 2){
+                                $eschecked = "";
+                            }elseif($parametro['parametro_factura'] == 3){
+                                $eschecked = "hidden";
+                            }elseif($parametro['parametro_factura'] == 4){
+                                $eschecked = "checked";
+                            }
+                        ?>
+                            <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
+                        <?php } else { ?>
+                            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+                            <font color="red" size="2"> Dosificación no activada</font>
+                        <?php } ?>
+
+                        <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm">
+                            Más información
+                        </a>
+
+                        <?php
+                        if ($parametro["parametro_agruparitems"] == 1){ $agrupar = "checked='true'"; }
+                        else { $agrupar = " "; }
+                        ?>
+
+                        <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>>
+                        <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label>
+
+                        <input type="checkbox" class="form-check-input" id="busqueda_serie">
+                        <label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
+
+                        <?php if($parametro["parametro_tiposistema"] != 1){ ?>
+                            <?php if($parametro["parametro_tipoemision"] == 1){ ?>
+                                <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
+                                    <span id="eltipo_emision" style="color: white;">EN LINEA</span>
+                                </a>
+                            <?php }elseif($parametro["parametro_tipoemision"] == 2){ ?>
+                                <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
+                                    <span id="eltipo_emision" style="color: white;">FUERA DE LINEA</span>
+                                </a>
+                            <?php } if($parametro["parametro_tipoemision"] == 3){ ?>
+                                <a class="btn btn-warning btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
+                                    <span id="eltipo_emision" style="color: white;">masiva</span>
+                                </a>
+                            <?php } ?>
+
+                            <div hidden>
+                                <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?php echo ($cliente[0]['cliente_excepcion']==1)?"checked":""; ?>  >
+                                <label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                            </div>
+
+                        <?php } else { ?>
+                            <div hidden>
+                                <input type="checkbox" class="form-check-input" id="codigoexcepcion" >
+                                <label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                            </div>
+                        <?php } ?>
+
+                        <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
+                            <select class="btn btn-default btn-xs" id="evento_contingencia" onchange="cargar_contingencia()">
+                                <option value="0">- SIN CONTINGENCIA -</option>
+                                <?php foreach($eventos as $evento){ ?>
+                                    <option value="<?= $evento["registroeventos_codigo"]; ?>">
+                                        <?= $evento["registroeventos_fecha"]." ".substr($evento["registroeventos_detalle"],0,30)."..."; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+
+                            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-default btn-xs" title="Registrar evento significativo">
+                                <fa class="fa fa-floppy-o"></fa>
+                            </a>
+
+                            <button type="button" id="boton_modalpaquetes" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpaquetes">
+                                <fa class="fa fa-cubes"></fa>
+                            </button>
+
+                            <?php if($dosificacion[0]['docsec_codigoclasificador'] == 13){ ?>
+                                <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios">
+                                    <fa class="fa fa-database"></fa>
+                                </button>
+                            <?php } ?>
+
+                        <?php } else { ?>
+                            <input type="hidden" id="evento_contingencia" value="0" />
+                        <?php } ?>
+
+                        <div id="mensajes">
+                            <?php if (isset($cliente[0]['cliente_liquidopagable'])){ ?>
+                                Liquido pagable Bs: 345, Monto credito Bs: 452
+                            <?php } ?>
+                        </div>
+
+                        <?php if($parametro['parametro_modulorestaurante']==1){ ?>
+                            <select class="btn btn-warning btn-xs" id="pensionado" onchange="registrar_pensionado()">
+                                <option value="0">- PENSIONADO -</option>
+                                <option value="1">REGISTRAR PENSIONADO</option>
+                            </select>
+                        <?php } else { ?>
+                            <input type="text" id="pensionado" value="0" name="pensionado" hidden>
+                        <?php } ?>
+
+                    </h4>
+
+                    <div class="row" id='loader_documento' style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >
+                        </center>
+                    </div>
+
+                </div><!-- /panel-heading -->
+
+                <div id="collapse1" class="panel-collapse collapse">
+                    <!---------------------- contenido collapse ----------------------------->
+                    <?php $estilo_label = "style='margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;'"; ?>
+
+                    <div class="row" style="margin-left:0; margin-right:0;">
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="tipo" class="control-label" <?php echo $estilo_label; ?>>TIPO CLIENTE</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <select class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?>
+                                        id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
+                                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
+                                    <?php $contador = 0; foreach($tipo_cliente as $tc){ if ($contador>0){ ?>
+                                        <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
+                                    <?php } $contador++; } ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="cliente_nombre" class="control-label" <?php echo $estilo_label; ?>>
+                                <?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"CLIENTE":"ESTUDIANTE"; ?>
+                            </label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <!-- ✅ FIX: id duplicado eliminado -->
+                                <input type="text" style="background:yellow; font-size: 10pt;"
+                                       name="cliente_nombre"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_nombre"
+                                       value="<?php echo $cliente[0]['cliente_nombre']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" <?php echo $estilo_div; ?>>
+                            <label for="cliente_ci" class="control-label" <?php echo $estilo_label; ?>>C.I.</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_ci"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_ci"
+                                       value="<?php echo $cliente[0]['cliente_ci']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1" <?php echo $estilo_div; ?>>
+                            <label for="cliente_complementoci" class="control-label" <?php echo $estilo_label; ?>>Compl. C.I.</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_complementoci"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_complementoci"
+                                       value="<?php echo $cliente[0]['cliente_complementoci']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="cliente_nombrenegocio" class="control-label" <?php echo $estilo_label; ?>>
+                                <?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"NEGOCIO":"PERIODO FACTURADO"; ?>
+                            </label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <!-- ✅ FIX: id duplicado eliminado -->
+                                <input type="text" style="background:yellow; font-size: 10pt;"
+                                       name="cliente_nombrenegocio"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_nombrenegocio"
+                                       value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="cliente_codigo" class="control-label" <?php echo $estilo_label; ?>>CÓDIGO</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_codigo"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_codigo"
+                                       value="<?php echo $cliente[0]['cliente_codigo']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"
+                                       onkeypress="validar(event,15)" onclick="seleccionar(8)"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="cliente_direccion" class="control-label" <?php echo $estilo_label; ?>>DIRECCIÓN</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_direccion"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_direccion"
+                                       value="<?php echo $cliente[0]['cliente_direccion']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="cliente_departamento" class="control-label" <?php echo $estilo_label; ?>>DEPARTAMENTO</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_departamento"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="cliente_departamento"
+                                       value="<?php echo $cliente[0]['cliente_departamento']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?> hidden="">
+                            <label for="telefono" class="control-label" <?php echo $estilo_label; ?>>TELEFONO</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="telefono" name="telefono"
+                                       class="form-control <?php echo $atributos; ?>"
+                                       <?php echo $estilos; ?>
+                                       id="telefono"
+                                       value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                            <label for="zona_id" class="control-label" <?php echo $estilo_label; ?>>ZONA</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
+                                    <option value="0">- ZONAS -</option>
+                                    <?php
+                                        foreach($zonas as $categoria_clientezona){
+                                            $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
+                                            echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <br>
+                            <small><b>* Información complementaria del cliente</b></small>
+                        </div>
+
+                    </div><!-- /row collapse -->
+                </div><!-- /collapse1 -->
+
+            </div><!-- /panel panel-default -->
+
+        </div><!-- /box-body -->
+    </div><!-- /box -->
+
+</div><!-- /panel-group -->
 
 <!-------------------- fin inicio collapse ---------------------->
 
@@ -1271,6 +1393,7 @@ window.onkeydown = compruebaTecla;
                     
             <?php if($parametro["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
                     <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <div hidden> <a href="<?php echo base_url('venta/ultimoticket');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_ticket" title="Ticket" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-print"></span><b> Ticket</b></a> </div>
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-default btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
@@ -2679,23 +2802,23 @@ window.onkeydown = compruebaTecla;
                             
        
                                             
-                                        <input type="text" id="modificarprecios_producto" value="modificarprecios_producto" class="form-control btn btn-xs btn-default" style="font-size: 10pt;">
+                                        <input type="text" id="modificarprecios_producto" value="modificarprecios_producto" class="form-control btn btn-xs btn-default" style="font-size: 10pt;" onkeyup="validar(event,16)" >
                                         
                                         <div class="col-md-3">
                                             <label for="usuario_idx" class="control-label">Precio Costo:</label>
                                             
                                             <input type="text" id="modificarprecios_producto_id" value="0.00" hidden />
-                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,16)"  style="font-size: 10pt;"/>
 					</div>
                             
                                         <div class="col-md-3">
                                             <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
-                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,16)"  style="font-size: 10pt;"/>
 					</div>
                                         
                                         <div class="col-md-6">
                                             <label for="usuario_idx" class="control-label">Cod. Barra:</label>                                            
-                                            <input type="text" id="modificarprecios_producto_codigo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+                                            <input type="text" id="modificarprecios_producto_codigo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,16)"  style="font-size: 10pt;"/>
 					</div>
                             
                                         <div class="col-md-6">
@@ -3707,6 +3830,56 @@ $(document).ready(function() {
 
                         <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_series" class="btn btn-default" data-toggle="modal" data-target="#modalseries" >
+      Ver series
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalseries" tabindex="-1" role="dialog" aria-labelledby="modalseries" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">INVENTARIO: SERIES DISPONIBLES</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+
+                        <div class="box-body">
+                            
+                                        
+
+                            <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                               <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                           </div>
+                                        
+                            <div id="tabla_series">
+                                
+                            </div>
+             
+                           
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
                             <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
                         </div>
             

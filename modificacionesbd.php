@@ -25,6 +25,7 @@ COMMIT;
 #TRUNCAR TABLAS#
 truncate venta;
 truncate detalle_venta;
+truncate detalle_venta_aux;
 truncate factura;
 truncate factura_datos;
 truncate factura_bitacora;
@@ -37,6 +38,8 @@ truncate almacenes;
 truncate proveedor;
 truncate compra;
 truncate detalle_compra;
+truncate detalle_compra_aux;
+truncate detalle_compra_bitacora;
 truncate cotizacion;
 truncate detalle_cotizacion;
 truncate registro_eventos;
@@ -58,11 +61,28 @@ truncate bitacora;
 truncate factura_servicios;
 truncate detalle_factura_servicios;
 truncate lectura;
+truncate venta_pasaje;
+truncate viaje;
+truncate ubicacion_producto;
+truncate producto_precios;
+truncate orden_compra;
+truncate orden_pago;
+truncate orden_pago;
+truncate inventario_sucursales;
+truncate detalle_promocion;
+truncate catalogo;
+truncate banco;
+
 
 update parametros
 set 
 parametro_numrecing = 0,
 parametro_numrecegr = 0;
+
+update dosificacion
+set 
+dosificacion_numerotransmes = 0,
+dosificacion_mesactual = 0;
 
 
  truncate cliente;
@@ -547,7 +567,12 @@ INSERT INTO `estado` (`estado_id`, `estado_descripcion`, `estado_tipo`, `estado_
   (38,'LIBRE',10,'BF3415'),
   (39,'OCUPADA',10,'1fc4ae'),
   (40,'RESERVADA',10,'666666'),
-  (41,'MANTENIMIENTO',10,'29AF01');
+  (41,'MANTENIMIENTO',10,'29AF01'),
+  (50,'LIBRE',12,'6c757d'),
+  (51,'EN PROCESO',12,'ffc107'),
+  (52,'RESERVADO',12,'17a2b8'),
+  (53,'NO DISPONIBLE',12,'dc3545'),
+  (54,'VENDIDO',12,'3b5998');
 COMMIT;
 
 
@@ -762,8 +787,7 @@ COMMIT;
  
  
 
- 
-  
+
 truncate actividad;
 truncate actividad_doc_sector;
 truncate almacenes;
@@ -943,6 +967,7 @@ truncate tabla_asiento;
 truncate tablapermiso;
 truncate tablas_sistema;
 truncate tarifa_parqueo;
+truncate temporal;
 truncate tiempo_uso;
 truncate tipo_cliente;
 truncate tipo_emision;
@@ -956,9 +981,11 @@ truncate tipo_transaccion;
 truncate tipo_usuario;
 truncate tipo_vehiculo;
 truncate token;
+truncate traspaso;
 truncate ubicacion;
 truncate ubicacion_producto;
 truncate unidad;
+truncate urls;
 truncate usuario;
 truncate usuario_destino;
 truncate vehiculo;
@@ -969,8 +996,11 @@ truncate venta_pasaje;
 truncate viaje;
 truncate viaje_conductor;
 truncate zona;
-truncate temporal;
 
+  
+
+
+ *  * 
  * 
  * 
  * 

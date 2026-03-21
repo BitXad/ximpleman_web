@@ -178,7 +178,7 @@ class Venta extends CI_Controller{
     function traspasos()
     {
 
-        if($this->acceso(18)){
+//        if($this->acceso(18)){
         //**************** inicio contenido ***************
         $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
@@ -217,10 +217,37 @@ class Venta extends CI_Controller{
         $this->load->view('layouts/main',$data);
         
         //**************** fin contenido ***************
-		}
+//		}
         
     }
 
+        /*
+     * Elimina el contenido de la tabla inventario y lo carga nuevamente
+     */
+    function actualizar_inventario()
+    {   
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(26)){
+        //**************** inicio contenido ***************
+		       
+        $usuario_id = 1;
+        
+        $this->Inventario_model->actualizar_inventario();
+        
+        if ($this->parametros["parametro_sininventario"]==1){
+            
+            $sql = "update inventario set existencia = 10000000 ";
+            $this->Venta_model->ejecutar($sql);   
+            
+        }
+		
+        //**************** fin contenido ***************
+			}
+			
+    }  
+    
     function ventas()
     {    
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
@@ -322,6 +349,9 @@ class Venta extends CI_Controller{
         //Reiniciar numero de venta diaria
             $this->reiniciar_ventas();
         
+        //Actualizar inventario
+            $this->actualizar_inventario();
+            
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
         		
@@ -870,9 +900,26 @@ class Venta extends CI_Controller{
                 $venta_numerotransmes = 0;
                 
                 $venta_numeroventa = 0;
+                
                 if($this->parametros["parametro_contarventas"]==1){// Si contador de transacciones esta activada                   
+                    
                     $venta_numeroventa = $this->numero_venta();
+                    
+                                    
+                    //contabilidar las ventas
+                    $limite_ventas = 200;
+                    if ( $venta_numeroventa > $limite_ventas){
+                                
+                            
+                            $actualizarventa = "update parametros set parametro_numeroventa = 0 where parametro_id = ".$this->parametros['parametro_id'];
+                            $this->Venta_model->ejecutar($actualizarventa);
+                            $venta_numeroventa = 1;
+                        
+                    }
+                    
+                    
                 }
+                
                 
                 if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
                     
@@ -1077,7 +1124,6 @@ class Venta extends CI_Controller{
                     
                 }
                 
-                
                    
                 $sql =  "insert into detalle_venta
                 (producto_id,
@@ -1162,9 +1208,11 @@ class Venta extends CI_Controller{
                 $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
                 
                 
-                //************* reducir inventario
-                
-                $this->Inventario_model->reducir_inventario_aux($usuario_id);
+                //************* reducir si es sin inventario no debe reducir
+                if ($this->parametros["parametro_sininventario"]==0){
+                    
+                    $this->Inventario_model->reducir_inventario_aux($usuario_id);
+                }
                 
           
                 if($tipo_transaccion == 2){ //Si la transaccion es a credito
@@ -1461,7 +1509,7 @@ class Venta extends CI_Controller{
                         $factura_enviada = 0;// 0 = falso
                         
                         
-                        
+                        /* comentado temporalmente para pollos zarate
                             if ($this->parametros["parametro_comprobante"]==2){ //si es factura trcha
                                 
                                 if ($this->parametros['parametro_contarventas']==1){
@@ -1471,7 +1519,7 @@ class Venta extends CI_Controller{
 
                                 }
                             }
-                        
+                        */
                         if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
                             $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
@@ -4339,6 +4387,23 @@ function ultimagarantia(){
             
 }
 
+function ultimoticket(){
+    
+       if($this->acceso(12)){
+        //**************** inicio contenido ***************    
+    
+                
+            $venta = $this->Venta_model->ultima_venta();
+            $venta_tipodoc = $venta[0]['venta_tipodoc'];
+            $venta_id = $venta[0]['venta_id'];
+
+        redirect('factura/ticket_boucher/'.$venta_id);
+
+       //**************** fin contenido ***************
+        }
+            
+}
+
 function ultimacomanda(){
     
        if($this->acceso(12)){
@@ -4391,6 +4456,7 @@ function eliminar_venta($venta_id){
                     ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
             $this->Venta_model->ejecutar($sql);    
 
+            
             $sql =  "delete from detalle_venta where venta_id = ".$venta_id;
             $this->Venta_model->ejecutar($sql);
 
@@ -11300,6 +11366,7 @@ function anular_traspaso($traspaso_id){
 //        $efectivo_bs = $this->input->post('efectivo_bs');
 //        $cambio_bs = $this->input->post('cambio_bs');
         
+        $dosificacion = $this->dosificacion;
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
         $forma_id = $this->input->post('forma_pago'); //
@@ -11350,7 +11417,7 @@ function anular_traspaso($traspaso_id){
             //Verificar si es el mes correcto
             $numeroMes = date("n");
 
-            if($numeroMes != $dosificacion[0]["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
+            if($numeroMes != $dosificacion["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
 
                 $SQLcontador = "update dosificacion d set
                                 d.dosificacion_numerotransmes = (SELECT COUNT(*) AS cantidad_ventas FROM venta
@@ -11362,7 +11429,7 @@ function anular_traspaso($traspaso_id){
 
             }
 
-            $venta_numerotransmes = $dosificacion[0]["dosificacion_numerotransmes"]+1;
+            $venta_numerotransmes = $dosificacion["dosificacion_numerotransmes"]+1;
 
         }
                                         
@@ -11815,5 +11882,82 @@ function enviopdf(){
         
     }
     
+function listar_series_disponibles()
+{
     
+    
+    $producto_id = $this->input->post("producto_id");
+
+    // ===============================
+    // 1) SERIES COMPRADAS
+    // ===============================
+    $compras = $this->db
+        ->select('detallecomp_series')
+        ->from('detalle_compra')
+        ->where('producto_id', $producto_id)
+        ->where("detallecomp_series IS NOT NULL", null, false)
+        ->get()
+        ->result_array();
+
+    $stock = [];
+
+    foreach ($compras as $row) {
+        $series = preg_split('/[,\n;]+/', $row['detallecomp_series']);
+
+        foreach ($series as $s) {
+            $s = trim($s);
+            if ($s == '') continue;
+
+            $s = strtoupper($s); // normaliza mayúsculas
+
+            if (!isset($stock[$s])) {
+                $stock[$s] = 0;
+            }
+            $stock[$s]++;
+        }
+    }
+
+    // ===============================
+    // 2) SERIES VENDIDAS
+    // ===============================
+    $ventas = $this->db
+        ->select('detalleven_preferencia')
+        ->from('detalle_venta')
+        ->where('producto_id', $producto_id)
+        ->where("detalleven_preferencia IS NOT NULL", null, false)
+        ->get()
+        ->result_array();
+
+    foreach ($ventas as $row) {
+
+        $serie = trim($row['detalleven_preferencia']);
+        if ($serie == '') continue;
+
+        $serie = strtoupper($serie); // normaliza
+
+        if (isset($stock[$serie])) {
+            $stock[$serie]--; // descontamos una unidad
+        }
+    }
+
+    // ===============================
+    // 3) ARMAR LISTA DISPONIBLE
+    // ===============================
+    $disponibles = [];
+
+    foreach ($stock as $serie => $cantidad) {
+        if ($cantidad > 0) {
+            for ($i = 0; $i < $cantidad; $i++) {
+                $disponibles[] = $serie;
+            }
+        }
+    }
+
+    sort($disponibles, SORT_NATURAL);
+
+    $disponibles = array_map('strval', $disponibles);
+    echo json_encode($disponibles);
+}
+
+
 }

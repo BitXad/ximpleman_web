@@ -125,8 +125,9 @@
                 <div class="col-md-3">
                     <label class="form-label">OPERACIONES</label> <br>
                     <a href="<?php base_url("venta/ultimo_pasaje"); ?>" class="btn btn-success" target="_blank"><fa class="fa fa-print"> </fa> </a>
-                    <a href="http://localhost/ximpleman_web/viaje" class="btn btn-warning"  target="_blank"><fa class="fa fa-cubes"> </fa> </a>
-                    <button onclick="nomina_pasajeros()" class="btn btn-facebook" ><fa class="fa fa-list-ol"> </fa> </button>
+                    <a href="http://localhost/ximpleman_web/viaje" class="btn btn-warning"  target="_blank" title="Viajes"><fa class="fa fa-cubes"> </fa> </a>
+                    <button onclick="nomina_pasajeros()" class="btn btn-facebook" title="Lista de pasajeros"><fa class="fa fa-list-ol"> </fa> </button>
+                    <button onclick="nomina_equipaje()" class="btn btn-facebook" title="Lista de pasajeros"><fa class="fa fa-list-ol"> </fa> </button>
                     <!--<a href="http://localhost/ximpleman_web/viaje/reporte_manifiesto" class="btn btn-facebook"  target="_blank"><fa class="fa fa-list-ol"> </fa> </a>-->
                 </div>
                 
@@ -157,50 +158,63 @@
     
       <!-- Mapa de Asientos -->
     <div class="col-md-6">
-        <sub>MAPA DE ASIENTOS</sub>
+        <sub>MAPA DE ASIENTOS <button class="btn btn-xs btn-info" title="Actualizar asientos" onclick="cargar_datosviaje()"><fa class="fa fa-refresh"></fa></button></sub>
         <div class="box" style="border-color: black;">          
             <div class="box-body table-condensed">
                 <div class="table-responsive">
         
           <!---------------------- INICIO FLOTA ---------------------------------->
-          <?php 
-            $filas = 10;
-            $columnas = 5;
-            ?>
 
         <!--<div class="container" >-->
             <center>
-
+                <?php
+                
+                    $filas = 15;
+                    $columnas = 5;
+                    $columna_pasillo = 2;
+                ?>
+                
+                <input type="hidden" value="<?php echo $filas; ?>" id="filas">
+                <input type="hidden" value="<?php echo $columnas; ?>" id="columnas">
+                
             <table class="border" style="border-color: black; background-color: lightgray; ">
                 <tbody id="tabla_asientos" style="display: none;">
                 <tr>
-                    <!--<td colspan="<?php echo $columnas; ?>">-->
-                    <td>
-                        <button class="btn btn-info" style="font-size: 9px;">
-                            <img src="<?php echo base_url("resources/images/transporte/conductor.png"); ?>" width="30px;" height="30px;">
-                            <br>conduc.
-                        </button>
-                    </td>
-                    <td></td>
-                    <td></td>
+                    
+                    <?php 
+                        for($i=0; $i < $columnas; $i++){ ?>
+                    
+                            <td><div id="<?php echo "botonprincipal".($i); ?>"> <?php  //echo "botonprincipal".($i); ?> </div> </td>
+                    
+                        <?php } ?>
 
-                    <td><button class="btn btn-default" style="font-size: 9px;">
-                            <img src="<?php echo base_url("resources/images/transporte/libre.png"); ?>" width="30px;" height="30px;">
-                        <br>Relevo
-                        </button>
-                    </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="<?php echo $columnas; ?>" style="text-align: center;">
+                        
+                        <div class="row">
+                                <div class="col-md-12">
 
-                    <td><button class="btn btn-default" style="font-size: 9px;">
-                            <img src="<?php echo base_url("resources/images/transporte/libre.png"); ?>" width="30px;" height="30px;">
-                        <br>Ayudante
-                        </button>
+                                    <select class=" btn btn-warning btn-xs btn-block" id="nivel" onchange="cargar_datosviaje()">
+                                        <option value="1">Nivel 1</option>
+                                        <option value="2">Nivel 2</option>
+                                    </select>
+                                </div>
+                        
+                        </div>
                     </td>
                 </tr>
                     
-                <?php for ($i = 0; $i < $filas; $i++): ?>
+              <?php 
+
+                
+                for ($i = 0; $i < $filas; $i++): 
+            ?>
                     <tr>
                         <?php for ($j = 0; $j < $columnas; $j++): ?>
-                            <?php if ($j == 2): ?>
+                        
+                            <?php if ($j == $columna_pasillo): ?>
                                 <td style="width: 1cm;"></td>
                             <?php else: ?>
                                 <td>
@@ -210,7 +224,7 @@
 
                                     </button>-->
                                     <div id="<?php echo "boton".($j).($i); ?>">
-                                           <?php // echo "boton" . ($j) . ($i); ?> 
+                                             <?php  echo "boton".($j).($i); ?> 
                                     </div>
 
 
@@ -277,6 +291,7 @@
             </div>        
         </div>        
         
+        <img src="<?php echo base_url("resources/images/transporte/bus.jpg") ?>" width="90%" height="90%">
 
       </div>
       
@@ -512,7 +527,7 @@
 
                         <div class="col-md-3">
                             <label for="complemento" class="form-label">MAS INF..</label><br>
-                            <input type="checkbox"  id="parametro_factura" value="1" name="facturado">
+                            <input type="checkbox"  id="facturado" value="1" name="facturado">
                         </div>
             
                         <div class="col-md-12"><br></div>
@@ -922,17 +937,27 @@
                 </div>
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-danger btn-block form-control" onclick="anular_operacion()" data-dismiss="modal"> <fa class="fa fa-trash"></fa> Anular Operación</button>              
+                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #979797;" onclick="consolidar_reserva()"> <fa class="fa fa-cart-arrow-down"></fa> Consolidar Reserva</button>              
                     <br>
                 </div>
-              
+
                 <div class="col-md-6">
                     <button class="btn btn-sm btn-success btn-block form-control"> <fa class="fa fa-cubes"></fa> Equipaje Adicional</button>              
                     <br>
                 </div>
               
                 <div class="col-md-6">
+                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #833ab4;" onclick="equipaje_extra()"> <fa class="fa fa-briefcase"></fa> Equipaje Extra</button>              
+                    <br>
+                </div>                              
+              
+                <div class="col-md-6">
                     <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #000;" onclick="emitir_factura()"> <fa class="fa fa-list-alt"></fa> Emitir Factura</button>              
+                    <br>
+                </div>
+                            
+                <div class="col-md-6">
+                    <button class="btn btn-sm btn-danger btn-block form-control" onclick="anular_operacion()" data-dismiss="modal"> <fa class="fa fa-trash"></fa> Anular Operación</button>              
                     <br>
                 </div>
 
@@ -1222,3 +1247,65 @@
 </div>
 <!-- --------------- F I N  modal Advertencia ---------------------------------->
 <!-- --------------- F I N  modal Advertencia ---------------------------------->
+
+
+
+<!-- ************************************************************************************* -->
+<!-- Button trigger modal -->
+<div>
+    
+<button type="hidden" class="btn btn-primary" data-toggle="modal" data-target="#modalconsolidarreserva">
+  Consolidar Reserva
+</button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalconsolidarreserva" tabindex="-1" role="dialog" aria-labelledby="modalconsolidarreserva" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">CONSOLIDAR RESERVA</h5>
+        
+      </div>
+       
+<!--        <input type="text" id="asiento_idcambio">
+        <input type="text" id="pasaje_idcambio">-->
+        
+        
+      <div class="modal-body">
+          <div class="row">
+
+                <div class="col-md-6">
+                    <label class="fw-bold"><fa class="fa fa-chain"></fa> COD. RESERVA:</label>
+                    <input class="form-control" id="asiento_origen" value="ASIENTO 6X, PASAJE 15">
+                    
+               </div>
+
+                <div class="col-md-6">
+                    <label class="fw-bold"><fa class="fa fa-chain"></fa> Cambiar a:</label>
+                    <select class="form-control" id="select_asientoslibres">
+                        <option>VENDIDO</option>
+                    </select>
+                    
+               </div>
+
+              
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa>  Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="cambiar_asiento()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ************************************************************************************* -->

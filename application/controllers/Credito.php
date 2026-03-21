@@ -17,6 +17,7 @@ class Credito extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Cuotum_model');
         $this->load->model('Compra_model');
+        $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
         $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
@@ -139,6 +140,7 @@ class Credito extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+   
     
      function indexCuenta()
     {
@@ -406,6 +408,75 @@ class Credito extends CI_Controller{
          
         $datos = $this->Credito_model->get_ventas($venta_id);
         echo json_encode($datos);
+    }
+    
+    function buscar_cobros()
+    {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+        $usuario_id = $this->input->post('usuario_id');
+        $estado_id = $this->input->post('estado_id');
+        
+        if($usuario_id>0){
+            $condicion1 = " and c.usuario_id = {$usuario_id} ";
+        }else $condicion1 = "";
+       
+
+//            $sql = "select r.*, c.*, e.*, u.usuario_nombre,  t.cliente_nombre
+//                    from cuota c, estado e
+//                    left join credito r on c.credito_id = r.credito_id
+//                    left join usuario u on c.usuario_id = u.usuario_id
+//                    left join venta v on r.venta_id =  v.venta_id 
+//                    left join cliente t on t.cliente_id = v.cliente_id
+//                    where c.estado_id = e.estado_id and c.cuota_fecha >= '{$fecha_desde}' and c.cuota_fecha<='{$fecha_hasta}' 
+//                         and e.estado_id = {$estado_id} {$condicion1}";
+//            echo $sql;
+        
+            $sql = "SELECT 
+                    r.*,
+                    c.*,
+                    e.*,
+                    u.usuario_nombre,
+                    t.cliente_nombre
+                  FROM
+                    cuota c
+                    INNER JOIN estado e ON (e.estado_id = c.estado_id)
+                    LEFT OUTER JOIN credito r ON (r.credito_id = c.credito_id)
+                    LEFT OUTER JOIN usuario u ON (u.usuario_id = c.usuario_id)
+                    LEFT OUTER JOIN venta v ON (v.venta_id = r.venta_id)
+                    LEFT OUTER JOIN cliente t ON (t.cliente_id = v.cliente_id)
+                  WHERE
+                    c.cuota_fecha >= '{$fecha_desde}' AND 
+                    c.cuota_fecha <= '{$fecha_hasta}    ' AND 
+                    e.estado_id = {$estado_id} {$condicion1} 
+                    order by c.cuota_fecha, c.cuota_hora";
+            $resultado = $this->Venta_model->consultar($sql);
+        
+        echo json_encode($resultado);
+    }
+    
+    
+    function reporte_cobros()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(41)){
+            
+            $data['page_title'] = "Reporte de Cobros";
+           
+            $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            
+            $sql = "select * from estado where estado_tipo = 4";
+            $data['estados'] = $this->Venta_model->consultar($sql);
+            $data['cobros'] = $this->Venta_model->consultar($sql);
+
+            $data['_view'] = 'credito/reporte_cobros';
+            $this->load->view('layouts/main',$data);
+        }
     }
     
 }

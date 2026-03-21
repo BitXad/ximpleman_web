@@ -153,6 +153,33 @@ class Mesa extends CI_Controller{
             show_error('The mesa you are trying to delete does not exist.');
     }
     
+        /*
+     * Elimina el contenido de la tabla inventario y lo carga nuevamente
+     */
+    function actualizar_inventario()
+    {   
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(26)){
+        //**************** inicio contenido ***************
+		       
+        $usuario_id = 1;
+        
+        $this->Inventario_model->actualizar_inventario();
+        
+        if ($this->parametros["parametro_sininventario"]==1){
+            
+            $sql = "update inventario set existencia = 10000000 ";
+            $this->Venta_model->ejecutar($sql);   
+            
+        }
+		
+        //**************** fin contenido ***************
+			}
+			
+    }      
+    
     
      /*
      * Vista para mostrar mesas
@@ -217,6 +244,8 @@ class Mesa extends CI_Controller{
 
 
 
+            //Actualizar inventario
+                $this->actualizar_inventario();
 
 
 

@@ -189,6 +189,14 @@ class Compra extends CI_Controller{
            // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
             //$this->pagination->initialize($config);
             $filtro = $this->input->post('filtro');
+            
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['autorizado'] = $this->Usuario_model->get_autorizacion($this->session_data['usuario_id']);         
+            $data['rolusuario'] = $this->session_data['rol'];
+            $this->load->model('Empresa_model');
+
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $data['estado'] = $this->Estado_model->get_tipo_estado(1);
 
             if ($filtro == null){
                 $data['compra'] = $this->Compra_model->get_all_compra($params);
@@ -201,8 +209,6 @@ class Compra extends CI_Controller{
             $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
-            
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1335,6 +1341,7 @@ class Compra extends CI_Controller{
            $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
            $productos_id=$this->db->query($product)->result_array();
 
+           $misproductos = "";
            foreach ($productos_id as $producto_id) {
             //////pasa producto a inventario   y actualiza ultimo costo///////////
 
@@ -1343,7 +1350,7 @@ class Compra extends CI_Controller{
 
                 $detallecomp_costo = number_format($producto_id['detallecomp_costo'],2,".",",");
                 $detallecomp_precio = number_format($producto_id['detallecomp_precio'],2,".",",");
-              $productos = " PRODUCTO ID: {$producto_id['producto_id']}, COSTO: {$detallecomp_costo}, PRECIO: {$detallecomp_precio}";
+              $misproductos .= " PRODUCTO ID: {$producto_id['producto_id']}, COSTO: {$detallecomp_costo}, PRECIO: {$detallecomp_precio}";
            }
            
            
@@ -1356,7 +1363,7 @@ class Compra extends CI_Controller{
 
                     $bitacoracaja_fecha = "date({$now})";
                     $bitacoracaja_hora = "time({$now})";
-                    $bitacoracaja_evento = "concat('ACTUALICE PRECIOS Y COSTOS => COMPRA: {$compra_id}',' ** DETALLE => ','{$productos}')";
+                    $bitacoracaja_evento = "concat('ACTUALICE PRECIOS Y COSTOS => COMPRA: {$compra_id}',' ** DETALLE => ','{$misproductos}')";
                     $bitacoracaja_montoreg = 0;
                     $bitacoracaja_montocaja = 0;
                     $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS

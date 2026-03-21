@@ -5,6 +5,9 @@ function cargar_vehiculo(viaje_id){
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'vehiculo/get_asientos/';
+    var nivel = document.getElementById('nivel').value;
+    var filas = document.getElementById('filas').value;
+    var columnas = document.getElementById('columnas').value;
     var html = "";
     var html2 = "";
     var color = "";
@@ -12,9 +15,17 @@ function cargar_vehiculo(viaje_id){
     //$("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]).html(html);
     document.getElementById("tabla_asientos").style.display = "none";
     
+    
+    for(let i=0;i<columnas;i++){
+        for(let j=0;j<filas;j++){
+            //alert("#boton"+j+i);
+             $("#boton"+i+j).html("");
+        }
+    }
+    
     $.ajax({url: controlador,
             type:"POST",
-            data:{viaje_id:viaje_id},
+            data:{viaje_id:viaje_id, nivel: nivel},
             success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);
@@ -23,17 +34,45 @@ function cargar_vehiculo(viaje_id){
                     
                     document.getElementById("tabla_asientos").style.display = "block";
                     
+//                     Revisar, es para insertar conductgor y ayudantes
+                    html = "";
+                    html += "        <button class='btn btn-default' style='font-size: 9px; background: gray;'>";
+                    html += "            <img src='"+base_url+"resources/images/transporte/conductor.png' width='40px;' height='40px;'>";
+                    html += "            <br>conduc.";
+                    html += "        </button>";
+                    $("#botonprincipal0").html(html);
+
+                    html = "";
+                    html += "        <button class='btn btn-default' style='font-size: 9px; background: gray;'>";
+                    html += "            <img src='"+base_url+"resources/images/transporte/libre.png' width='35px;' height='35px;'>";
+                    html += "            <br>conduc.";
+                    html += "        </button>";
+                    $("#botonprincipal3").html(html);
+
+                    html = "";
+                    html += "        <button class='btn btn-default' style='font-size: 9px; background: gray;'>";
+                    html += "            <img src='"+base_url+"resources/images/transporte/libre.png' width='35px;' height='35px;'>";
+                    html += "            <br>conduc.";
+                    html += "        </button>";
+                    $("#botonprincipal4").html(html);
+                    
+                    
                     for(var i=0; i<registros.length; i++){                            
                             
                          html = "";
+                         
+                         
+                         
+                         
                          //if(Number(registros['asiento_x'])>=0 && Number(registros['asiento_y'])>=0){
                             color = 'btn-default';
                            // alert("aqui cosas..!");
                             if (Number(registros[i]["estado_pasaje"])==50){ color = 'btn-default';}
                             if (Number(registros[i]["estado_pasaje"])==51){ color = 'btn-warning';}
                             if (Number(registros[i]["estado_pasaje"])==52){ color = 'btn-info';}
-                            if (Number(registros[i]["estado_pasaje"])==53){ color = 'btn-danger';}
+                            if (Number(registros[i]["estado_pasaje"])==53  || registros[i]["estado_pasaje"]==null){ color = 'btn-danger';}
                             if (Number(registros[i]["estado_pasaje"])==54){ color = 'btn-facebook';}
+                            
                             
                             //Libre
                             if (Number(registros[i]["estado_pasaje"])==50){
@@ -64,7 +103,7 @@ function cargar_vehiculo(viaje_id){
                             }
                             
                             // No disponible
-                            if (Number(registros[i]["estado_pasaje"])==53){
+                            if (Number(registros[i]["estado_pasaje"])==53  || registros[i]["estado_pasaje"]==null){
                                 html += "<button class='btn "+color+"' style='font-size: 9px; line-height:7px; border-color: black;'>";
                                 html += "<img src='"+base_url+"resources/images/transporte/libre.png' width='35px;' height='35px;' >";
                                 html += "<br>"+registros[i]["asiento_numero"];
@@ -80,8 +119,13 @@ function cargar_vehiculo(viaje_id){
                                 html += "<sub><br>VENDIDO</sub>";
                                 html += "</button>";                                
                             }
-                             
-                             $("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]).html(html);
+                            
+
+                             //alert("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]);
+                            if (registros[i]["asiento_mostrar"]==1) 
+                                $("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]).html(html);
+                            else
+                                $("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]).html("");
                         // }
 
                      }
@@ -590,7 +634,8 @@ function finalizar_venta_pasaje(){
     let efectivo_bs = Number(document.getElementById("efectivo_bs").value);
     let cambio_bs = Number(document.getElementById("cambio_bs").value);   
     let glosa = document.getElementById("glosa").value;   
-    let cliente_id = document.getElementById("cliente_id").value;   
+    let cliente_id = document.getElementById("cliente_id").value;
+    
     let facturado = document.getElementById('facturado').checked;
 
     
@@ -754,9 +799,11 @@ function pasajes_vendidos(){
 
 function borrar_datos_viaje(){
     document.getElementById("select_documento").value = 1;
-    document.getElementById("numero_documento").value = "";
+//    document.getElementById("numero_documento").value = "";
+    document.getElementById("generar_nit").value = "";
     document.getElementById("complemento_ci").value = "";
-    document.getElementById("razon_social").value = "";
+//    document.getElementById("razon_social").value = "";
+    document.getElementById("generar_razon").value = "";
     document.getElementById("select_operacion").value = 1;
     document.getElementById("forma_pago").value = 1;
     document.getElementById("glosa").value = "";
@@ -1024,6 +1071,19 @@ function nomina_pasajeros(){
     
 }
 
+function nomina_equipaje(){
+        
+    let viaje_id = document.getElementById('select_viaje').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'viaje/nomina_pasajeros_viaje/';
+    let venta_id = document.getElementById('venta_id').value;    
+
+    var url = base_url + "viaje/nomina_equipaje/" + viaje_id;
+
+    window.open(url, '_blank'); // Abre la URL en una nueva pestaña o ventana
+    
+}
+
 function mostrar_menu(venta_id,pasaje_id,pasaje_numero, pasaje_nombre, asiento_numero){
     
     //alert(venta_id+" *** "+pasaje_numero+" *** "+pasaje_nombre);
@@ -1212,7 +1272,7 @@ function buscar_a_losclientes(){
 
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('generar_nit').value;
-    var parametro_factura = document.getElementById('parametro_factura').value;
+   var parametro_factura = document.getElementById('parametro_factura').value;
 
     if (nit==''){ 
         var cod = generar_codigo();
@@ -1610,5 +1670,11 @@ function seleccionar_ci(){
     $("#tipo_doc_identidad").val(1);
     $("#razon_social").focus();
     $("#razon_social").select();
+    
+}
+
+function equipaje_extra(){
+    
+    alert("ADVERTENCIA: No tiene autorización para realizar esta operación...!");
     
 }

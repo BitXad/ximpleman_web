@@ -25,13 +25,23 @@
             }(jQuery));
         });
 </script> 
+
+
 <!----------------------------- fin script buscador --------------------------------------->
+<style>
+    /* SOLO afecta a esta vista */
+    section.content {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+</style>
 <style type="text/css">
     /*td img{
         width: 50px;
         height: 50px;
         margin-right: 5px; 
     }*/
+ 
     #contieneimg{
         width: 50px;
         height: 50px;
@@ -199,17 +209,21 @@
         
         <div class="box">
                  
-            <div class="box-body  table-responsive">
-               <table class="table table-condensed" id="mitabla" role="table">
-               <!--<table role="table">-->
-                    <thead role="rowgroup" id="cabcatalogo">
+            <div class="box-body  table-responsive" style="padding-top: 0px; padding-bottom: 0px;">
+                <center>
+                    
+                    <table class="table table-condensed" id="mitabla" role="table">
+                    <!--<table role="table">-->
+                         <thead role="rowgroup" id="cabcatalogo">
 
-                        
-                    </thead>
-                    <tbody class="buscar" id="tablaresultados" role="rowgroup">
-                                         
-                    </tbody>
-                </table>
+
+                         </thead>
+                         <tbody class="buscar" id="tablaresultados" role="rowgroup">
+
+                         </tbody>
+                     </table>
+                    
+                </center>
             </div>
                 <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
@@ -615,35 +629,50 @@ echo '<script type="text/javascript">
                             <div class="col-md-4">
                                     <label for="codigo_ancho" class="control-label"style="font-family: Arial; font-size: 10px;" >ANCHO(cm)</label>
                                     <div class="form-group">
-                                            <input type="number" min="1" name="codigo_ancho" id="codigo_ancho" value="5" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                            <input type="number" min="1" name="codigo_ancho" id="codigo_ancho" value="5" class="form-control" required  />
                                     </div>
                             </div>
              
                             <div class="col-md-4">
                                     <label for="codigo_alto" class="control-label" style="font-family: Arial; font-size: 10px;">ALTO(cm)</label>
                                     <div class="form-group">
-                                            <input type="number" min="1" name="codigo_alto" id="codigo_alto" value="2.5" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                            <input type="number" min="1" name="codigo_alto" id="codigo_alto" value="2.5" class="form-control" required  />
                                     </div>
                             </div>
              
                             <div class="col-md-6">
-                                    <label for="tamanio_fuenteprod" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRODUCTO</label>
+                                    <label for="tamanio_fuenteprod" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRODUCTO(px)</label>
                                     <div class="form-group">
                                             <input type="number" min="1" name="tamanio_fuenteprod" id="tamanio_fuenteprod" value="8" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
                             </div>
              
                             <div class="col-md-6">
-                                    <label for="tamanio_fuente" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRECIO</label>
+                                    <label for="tamanio_fuente" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRECIO(px)</label>
                                     <div class="form-group">
                                             <input type="number" min="1" name="tamanio_fuente" id="tamanio_fuente" value="16" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
                             </div>
                                 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="copias" class="control-label" style="font-family: Arial; font-size: 10px;">COPIAS</label>
                                     <div class="form-group">
                                             <input type="number" min="1" name="copias" id="copias" value="1" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+                                
+                            <div class="col-md-4">
+                                    <label for="separacion" class="control-label" style="font-family: Arial; font-size: 10px;">SEPARACIÓN(cm)</label>
+                                    <div class="form-group">
+                                            <input type="number" min="0.0" name="separacion" id="separacion" value="0.5" class="form-control" required />
+                                    </div>
+                            </div>
+                                
+                                
+                            <div class="col-md-4">
+                                    <label for="interlineado" class="control-label" style="font-family: Arial; font-size: 10px;">INTERL.(px)</label>
+                                    <div class="form-group">
+                                            <input type="number" min="0.0" name="interlineado" id="interlineado" value="10" class="form-control" required />
                                     </div>
                             </div>
                                 
@@ -778,6 +807,13 @@ echo '<script type="text/javascript">
     </div>
 </div>
 
+
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
 <!------------------------------------------------------------------------------->
+<script type="text/javascript">
+    function imprimir_etiquetas()
+    {
+        window.onload = window.print();
+    }
+</script>
