@@ -1,6 +1,8 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/funciones_producto.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/JsBarcode.all.js'); ?>" type="text/javascript"></script>
+<!-- Librería para exportar la tabla de productos a Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!--<script src="<?php /*echo base_url('resources/plugins/datatables/dataTables.bootstrap.css'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.min.js'); ?>" type="text/javascript"></script>
@@ -115,7 +117,7 @@
             <div style="border-color: #d58512; background: #e08e0b !important; color: white" class="btn btn-warning input-group-addon" onclick="tablaresultadosproducto(3)" title="Mostrar todos los productos"><span class="fa fa-globe"></span></div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="box-tools">
             <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="mostrar_subcategoria(this.value); tablaresultadosproducto(2)">
                 <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
@@ -156,6 +158,7 @@
             <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
             <a style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="exportar_productos_excel()" class="btn btn-success btn-foursquarexs" title="Exportar productos a Excel"><font size="5"><span class="fa fa-file-excel-o"></span></font><br><small>Excel</small></a>
             <?php
             } ?>
         <!--</div>-->
@@ -816,4 +819,128 @@ echo '<script type="text/javascript">
     {
         window.onload = window.print();
     }
+</script>
+
+<script type="text/javascript">
+/**
+ * Exporta a Excel únicamente los registros actualmente visibles en la tabla.
+ * La cabecera se toma de #cabcatalogo y los datos de #tablaresultados.
+ */
+function exportar_productos_excel() {
+    if (typeof XLSX === 'undefined') {
+        alert('No se pudo cargar la librería de exportación a Excel.');
+        return;
+    }
+
+    var cabecera = document.getElementById('cabcatalogo');
+    var cuerpo = document.getElementById('tablaresultados');
+
+    if (!cabecera || !cuerpo) {
+        alert('No se encontró la tabla de productos.');
+        return;
+    }
+
+    var filasVisibles = Array.prototype.filter.call(cuerpo.querySelectorAll('tr'), function (fila) {
+        return window.getComputedStyle(fila).display !== 'none';
+    });
+
+    if (filasVisibles.length === 0) {
+        alert('No existen productos visibles para exportar.');
+        return;
+    }
+
+    var tablaExcel = document.createElement('table');
+    var theadExcel = document.createElement('thead');
+    var tbodyExcel = document.createElement('tbody');
+
+    // Copiar la cabecera dinámica.
+    Array.prototype.forEach.call(cabecera.querySelectorAll('tr'), function (filaOriginal) {
+        var filaNueva = document.createElement('tr');
+
+        Array.prototype.forEach.call(filaOriginal.children, function (celdaOriginal) {
+            if (window.getComputedStyle(celdaOriginal).display === 'none') {
+                return;
+            }
+
+            var celdaNueva = document.createElement('th');
+            celdaNueva.textContent = obtener_texto_excel(celdaOriginal);
+            filaNueva.appendChild(celdaNueva);
+        });
+
+        if (filaNueva.children.length > 0) {
+            theadExcel.appendChild(filaNueva);
+        }
+    });
+
+    // Copiar únicamente las filas que quedaron visibles después de buscar/filtrar.
+    filasVisibles.forEach(function (filaOriginal) {
+        var filaNueva = document.createElement('tr');
+
+        Array.prototype.forEach.call(filaOriginal.children, function (celdaOriginal) {
+            if (window.getComputedStyle(celdaOriginal).display === 'none') {
+                return;
+            }
+
+            var celdaNueva = document.createElement('td');
+            celdaNueva.textContent = obtener_texto_excel(celdaOriginal);
+            filaNueva.appendChild(celdaNueva);
+        });
+
+        if (filaNueva.children.length > 0) {
+            tbodyExcel.appendChild(filaNueva);
+        }
+    });
+
+    tablaExcel.appendChild(theadExcel);
+    tablaExcel.appendChild(tbodyExcel);
+
+    var hoja = XLSX.utils.table_to_sheet(tablaExcel, { raw: true });
+    var libro = XLSX.utils.book_new();
+
+    // Ajustar automáticamente el ancho de las columnas.
+    var rango = XLSX.utils.decode_range(hoja['!ref']);
+    var anchos = [];
+
+    for (var columna = rango.s.c; columna <= rango.e.c; columna++) {
+        var anchoMaximo = 10;
+
+        for (var fila = rango.s.r; fila <= rango.e.r; fila++) {
+            var direccion = XLSX.utils.encode_cell({ r: fila, c: columna });
+            var celda = hoja[direccion];
+            var largo = celda && celda.v !== undefined ? String(celda.v).length : 0;
+            anchoMaximo = Math.max(anchoMaximo, Math.min(largo + 2, 45));
+        }
+
+        anchos.push({ wch: anchoMaximo });
+    }
+
+    hoja['!cols'] = anchos;
+    hoja['!autofilter'] = { ref: hoja['!ref'] };
+
+    XLSX.utils.book_append_sheet(libro, hoja, 'Productos');
+
+    var fecha = new Date();
+    var nombreArchivo = 'productos_' +
+        fecha.getFullYear() + '-' +
+        String(fecha.getMonth() + 1).padStart(2, '0') + '-' +
+        String(fecha.getDate()).padStart(2, '0') + '.xlsx';
+
+    XLSX.writeFile(libro, nombreArchivo);
+}
+
+/**
+ * Obtiene texto limpio de una celda, omitiendo imágenes, botones e íconos.
+ */
+function obtener_texto_excel(celda) {
+    var copia = celda.cloneNode(true);
+
+    Array.prototype.forEach.call(
+        copia.querySelectorAll('img, button, input, select, textarea, script, style, .fa'),
+        function (elemento) {
+            elemento.remove();
+        }
+    );
+
+    return copia.textContent.replace(/\s+/g, ' ').trim();
+}
 </script>

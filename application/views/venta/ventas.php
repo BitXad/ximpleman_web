@@ -69,6 +69,8 @@ function mostrar_ocultar(){
 
 }
 
+
+
 function mostrar_formapago(){
     
     var forma_id = document.getElementById('forma_pago').value;    
@@ -79,6 +81,7 @@ function mostrar_formapago(){
     var dato = result;
     var tam = dato.length;
     var mostrarimagen = "";
+    
     var encontrado = 0;
     
     const formasValidas = [
@@ -411,7 +414,7 @@ window.onkeydown = compruebaTecla;
 
     <small><b>DATOS DEL CLIENTE</b></small>
 
-    <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] == $mostrar_placa)? "" : "hidden";  ?>>
+    <div <?php echo ($mostrar_placa==1)? "" : "hidden";  ?>>
         <!--- !=12 original viene desde el controlador funcion ventas()-->
 
         * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_placa"
@@ -518,37 +521,66 @@ window.onkeydown = compruebaTecla;
                             </label>
 
                             <div class="input-group" <?php echo $estilo_div; ?>>
-                                <?php if($parametro['parametro_comprobante']==2){ ?>
-                                    <div style="border-color: #be2626; background: #be2626 !important; color: white"
-                                         class="btn btn-danger input-group-addon"
-                                         onclick="cliente_sinnombre()" title="">
-                                        <span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span>
-                                    </div>
-                                <?php } ?>
 
-                                <input type="number" name="nit"
+                                            <?php if($parametro['parametro_comprobante']==2){ ?>
+                                                <div style="border-color: #be2626; background: #be2626 !important; color: white"
+                                                     class="btn btn-danger input-group-addon"
+                                                     onclick="cliente_sinnombre()" title="">
+                                                    <span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span>
+                                                </div>
+                                            <?php } ?>
+
+                                            <!-- CONTENEDOR FLEX -->
+                                            <div style="display:flex; width:100%;">
+
+                                                <!-- NIT -->
+                                                <input type="number"
+                                                       name="nit"
+                                                       class="form-control <?php echo $atributos; ?>"
+                                                       <?php echo $estilos_facturacion; ?>
+                                                       id="nit"
+                                                       value="<?php echo $cliente[0]['cliente_nit']; ?>"
+                                                       onkeypress="validar(event,1)"
+                                                       onclick="seleccionar(1)"
+                                                       onKeyUp="this.value = this.value.toUpperCase();"
+                                                       <?php echo $sololectura?>
+                                                       <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?>
+                                                       style="flex:1 1 auto; width:auto; border-radius:0;" />
+
+
+
+                                            </div>
+
+                                            <!-- NUEVO CLIENTE -->
+                                            <div style="border-color: #be2626; background: #be2626 !important; color: white"
+                                                 class="btn btn-danger input-group-addon"
+                                                 onclick="cliente_nuevo()" title="Cliente nuevo">
+                                                <span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span>
+                                            </div>
+
+                                            <!-- BUSCAR -->
+                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white"
+                                                 class="btn btn-success input-group-addon"
+                                                 onclick="validar(13,1)" title="Buscar por número de documento">
+                                                <span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span>
+                                            </div>
+
+                                        </div>
+                        </div>
+                        
+                        <!-- COMPLEMENTO C.I.  -->
+                        <div class="col-md-1" style="padding:2; padding-left:1px; margin:0; line-height:12px; display: none;" id="div_complemento">
+                            <label for="cliente_complementoci" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">COMPL.C.I.</label>
+                            <div class="form-group" <?php echo $estilo_div; ?>>
+                                <input type="text" name="cliente_complementoci"
                                        class="form-control <?php echo $atributos; ?>"
-                                       <?php echo $estilos_facturacion; ?>
-                                       id="nit"
-                                       value="<?php echo $cliente[0]['cliente_nit']; ?>"
-                                       onkeypress="validar(event,1)" onclick="seleccionar(1)"
-                                       onKeyUp="this.value = this.value.toUpperCase();"
-                                       <?php echo $sololectura?>
-                                       <?php echo($parametro['parametro_modulorestaurante']==1)?"onblur='guardar_temporal()'":""; ?> />
-
-                                <div style="border-color: #be2626; background: #be2626 !important; color: white"
-                                     class="btn btn-danger input-group-addon"
-                                     onclick="cliente_nuevo()" title="Cliente nuevo">
-                                    <span class="fa fa-user-plus" aria-hidden="true" id="span_cliente_nuevo"></span>
-                                </div>
-
-                                <div style="border-color: #008d4c; background: #008D4C !important; color: white"
-                                     class="btn btn-success input-group-addon"
-                                     onclick="validar(13,1)" title="Buscar por número de documento">
-                                    <span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span>
-                                </div>
+                                       <?php echo $estilos; ?>
+                                       id="cliente_complementoci"
+                                       value="<?php echo $cliente[0]['cliente_complementoci']; ?>"
+                                       onKeyUp="this.value = this.value.toUpperCase();"/>
                             </div>
                         </div>
+                        
 
                         <div class="col-md-3" <?php echo $estilo_div; ?> >
                             <label for="razon social" class="control-label"
@@ -589,7 +621,7 @@ window.onkeydown = compruebaTecla;
                             $es_movil = "<script>document.write(esmovil);</script>";
                         ?>
 
-                        <div class="col-md-2" <?php echo $estilo_div; ?>>
+                        <div class="col-md-1" <?php echo $estilo_div; ?>>
                             <label for="cliente_celular" class="control-label"
                                    style="margin-bottom: 0;  font-size: 10px; color: gray;  font-weight: normal;">
                                 CELULAR
@@ -731,6 +763,7 @@ window.onkeydown = compruebaTecla;
                     <h4 class="panel-title">
 
                         <?php
+                        
                         if(sizeof($dosificacion)>0){
                             if($parametro['parametro_factura'] == 1){
                                 $eschecked = "checked disabled";
@@ -888,7 +921,7 @@ window.onkeydown = compruebaTecla;
                                        onKeyUp="this.value = this.value.toUpperCase();"/>
                             </div>
                         </div>
-
+<!--
                         <div class="col-md-1" <?php echo $estilo_div; ?>>
                             <label for="cliente_complementoci" class="control-label" <?php echo $estilo_label; ?>>Compl. C.I.</label>
                             <div class="form-group" <?php echo $estilo_div; ?>>
@@ -899,9 +932,9 @@ window.onkeydown = compruebaTecla;
                                        value="<?php echo $cliente[0]['cliente_complementoci']; ?>"
                                        onKeyUp="this.value = this.value.toUpperCase();"/>
                             </div>
-                        </div>
+                        </div>-->
 
-                        <div class="col-md-3" <?php echo $estilo_div; ?>>
+                        <div class="col-md-4" <?php echo $estilo_div; ?>>
                             <label for="cliente_nombrenegocio" class="control-label" <?php echo $estilo_label; ?>>
                                 <?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"NEGOCIO":"PERIODO FACTURADO"; ?>
                             </label>
@@ -1137,8 +1170,9 @@ window.onkeydown = compruebaTecla;
             </button>
             <?php } ?>
            
+           <!----------------------- HABILITADO SOLO PARA CHOCOLATES PARA TI
            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalcambiarprecios"><span class="fa fa-money"></span> Precios</button>
-
+           ------------------------>
            
             <?php if($parametro["parametro_categoriabotones"]==1){ ?>
            
@@ -1680,7 +1714,7 @@ window.onkeydown = compruebaTecla;
                     <?php
                         foreach($ventas_guardadas as$vg){ ?>
                     
-                            <button class="btn btn-warning btn-xs" onclick="cargar_venta('<?php echo $vg["codigo_venta"]; ?>')" title="<?php echo $vg["codigo_venta"]." ".$vg["nombre_venta"] ?>"><fa class="fa fa-cart-arrow-down"></fa> <?php echo "<br>".number_format($vg["totalbs"],2,".",",")."<br>"; ?></button>
+                            <button class="btn btn-warning btn-xs" onclick="cargar_venta('<?php echo $vg["codigo_venta"]; ?>')" title="<?php echo $vg["codigo_venta"]." ".$vg["nombre_venta"]." RESP.: ".$vg["usuario_nombre"]; ?>"><fa class="fa fa-cart-arrow-down"></fa> <?php echo "<br>".number_format($vg["totalbs"],2,".",",")."<br>"; ?></button>
                     
                     <?php } ?>
 
@@ -1844,10 +1878,10 @@ window.onkeydown = compruebaTecla;
 
 
                     <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
-                        <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
-                        <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
-                        <br><b>DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
-                        <br><b>CUFD VIGENCIA:</b> <?php 
+                        <b><fa class="fa fa-home"> </fa> PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
+                        <br><b><fa class="fa fa-money"> </fa> MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
+                        <br><b><fa class="fa fa-file-text-o"> </fa> DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
+                        <br><b><fa class="fa fa-joomla"> </fa> CUFD VIGENCIA:</b> <?php 
 
                             if (isset($cufd[0])){
 
@@ -1865,13 +1899,17 @@ window.onkeydown = compruebaTecla;
                                 <br>
 
                                 </div>
-                    <br><b>ACTIVIDAD: </b>
+                    <br><b><b><fa class="fa fa-calendar"> </fa> ACTIVIDAD: </b>
+                        
+                        
                     <select class="btn btn-info btn-xs" style="width:150px; text-align: left;" onchange = "cambiar_actividad();" id="select_actividad">
                                 
                         <?php foreach($actividades as $actividad){ ?>
                         <option value="<?php echo $actividad["actividad_codigocaeb"];  ?>" <?php echo ($actividad["actividad_codigocaeb"] == $dosificacion[0]["dosificacion_actividad"])?"selected":""; ?>><?php echo "[".$actividad["actividad_codigocaeb"]."] ".substr($actividad["actividad_descripcion"],0,100).((strlen($actividad["actividad_descripcion"])>100)?"...":"")." ".(($actividad["actividad_tipoactividad"]=="P")?" [ACT. PRINCIPAL]":" [ACT. SECUNDARIA]"); ?></option>
                         <?php } ?>
 
+                        
+                        
                     </select>
                     <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"display:none":"" ?>" title="Cargar todos los productos de inventario"><span class="fa fa-cubes"></span> </button>
                     
@@ -1883,17 +1921,117 @@ window.onkeydown = compruebaTecla;
                         <br>  
                         <br>  
                     </button>-->
+                    <br><b><fa class="fa fa-lastfm-square"> </fa> FIRMA DIGITAL:</b> 
+                    <?php 
+                        if ($parametro["parametro_tiposistema"]==3){//SI es electronica en linea
+
+
+                                    // Ruta al archivo .p12
+                                    $archivop12 = $dosificacion[0]["dosificacion_contenedorp12"];
+                                    $clavep12 = $dosificacion[0]["dosificacion_clavep12"];
+                                    $p12File = base_url("resources/xml/certificados/{$archivop12}");
+
+                                    // Contraseña del archivo .p12
+                                    $password = $clavep12;
+
+                                    // Leer el contenido del archivo .p12
+                                    $p12File = FCPATH . "resources/xml/certificados/" . $archivop12;
+
+                                    if (!file_exists($p12File)) {
+                                        echo "NO EXISTE ARCHIVO .P12";
+                                    } elseif (!is_readable($p12File)) {
+                                        echo "EL ARCHIVO .P12 NO TIENE PERMISOS DE LECTURA";
+                                    } else {
+                                        
+                                        $p12Content = file_get_contents($p12File);
+
+                                        $certs = [];
+
+                                        if (openssl_pkcs12_read($p12Content, $certs, $password)) {
+
+                                            $certData = openssl_x509_parse($certs['cert']);
+
+                                            $validFrom = $certData['validFrom_time_t'];
+                                            $validTo   = $certData['validTo_time_t'];
+
+                                            $validFromStr = date('Y-m-d H:i:s', $validFrom);
+                                            $validToStr   = date('Y-m-d H:i:s', $validTo);
+
+                                            $now = time();
+                                            $diasRestantes = floor(($validTo - $now) / (60 * 60 * 24));
+
+                                            if ($diasRestantes >= 1 && $diasRestantes <= 5) {
+                                                echo "<span class='btn btn-danger btn-xs' style='font-size: 16px;'>LA FIRMA DIG. VENCE EN {$diasRestantes} DIAS</span>";
+                                            } elseif ($diasRestantes <= 0) {
+                                                echo "<br><span class='btn btn-danger btn-xs' style='font-size: 16px;'>FIRMA DIG. EXPIRADA</span>";
+                                                echo "<b style='color:red;'><br>NO PODRA EMITIR FACTURAS VALIDAS</b>";
+                                            } else {
+                                                echo "VIGENTE.";
+                                                echo "<br>DESDE: {$validFromStr} AL {$validToStr}";
+                                            }
+
+                                        } else {
+                                            echo "LA CLAVE DEL .P12 ES INVALIDA O EL ARCHIVO ESTA DAÑADO";
+                                        }
+                                    }                           
+                            
+                        }else{
+                            echo "NO REQUIERE FIRMA DIGITAL";
+                        }
+                        
                     
-                    <?php if(isset($sucursales)){
-                                
-                                foreach ($sucursales as $s){?>
-                                    
-                                    <a href="<?php echo $s["sucursal_url"] ?>"  class="btn btn-dropbox btn-block btn-sm">
-                                        <fa class="fa fa-server"></fa>   <b> <?php echo $s["sucursal_nombre"] ?></b>
-                                    </a>
-                                    
+                    ?>
                     <?php
-                                }
+                    if($parametro["parametro_tiposistema"]>1){?>
+                    
+                            <br><b><fa class="fa fa-chain"> </fa> TOKEN DELEGADO:</b> 
+
+                            <?php
+                                if($diasdo['dias'] <= 0){
+
+                                    echo "<br><span class='btn btn-danger btn-xs' style='font-size: 16px;'>TOKEN DELEGADO VENCIDO</span><b style='color:red;'><br>NO PODRA EMITIR FACTURAS VALIDAS</b>";
+
+                                }else{ 
+                                        if($diasdo['dias']>5){
+                                            echo "VIGENTE";
+                                        }else{
+                                            $diastoken = $diasdo['dias'];
+                                            echo "<span class='btn btn-danger btn-xs' style='font-size: 16px;'>EL TOKEN VENCE EN {$diastoken} DIAS</span>";
+                                        } ?>
+                                <?php } ?>
+
+                            <br><b><fa class="fa fa-cogs"> </fa> C.U.I.S.:</b> 
+
+                                    <?php //echo $cuis['dias'];
+
+                                        if($cuis['dias'] <= 0){
+
+                                                 echo "<br><span class='btn btn-danger btn-xs' style='font-size: 16px;'>C.U.I.S. VENCIDO</span><b style='color:red;'><br>NO PODRA EMITIR FACTURAS VALIDAS</b>";                        
+
+                                        } else {        
+                                                if($cuis['dias']>5){
+
+                                                    echo "VIGENTE";
+
+                                                }else{
+                                                    $diascuis = $cuis['dias'];
+                                                    echo "<span class='btn btn-danger btn-xs' style='font-size: 16px;'>EL CUIS VENCE EN {$diascuis} DIAS</span>";
+                                                } 
+                                        } ?>          
+
+                            <?php } ?>
+
+
+                            <?php if(isset($sucursales)){
+
+                                        foreach ($sucursales as $s){?>
+
+                                            <a href="<?php echo $s["sucursal_url"] ?>"  class="btn btn-dropbox btn-block btn-sm">
+                                                <fa class="fa fa-server"></fa>   <b> <?php echo $s["sucursal_nombre"] ?></b>
+                                            </a>
+
+                            <?php
+                                        }
                         
                         
                     } ?>
@@ -2235,6 +2373,7 @@ window.onkeydown = compruebaTecla;
                     $ocultar = "none";
                     if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39 && 
                        $dosificacion[0]['docsec_codigoclasificador']!=12 && 
+                       $dosificacion[0]['docsec_codigoclasificador']!=55 && 
                        $dosificacion[0]['docsec_codigoclasificador']!=51)
                              { $ocultar = "contents"; }?>
                 
@@ -2255,14 +2394,32 @@ window.onkeydown = compruebaTecla;
                 
          
                     
-                        <tr id="filaAlternativo"  style="display: none; padding: 0; border-top: 2px solid black; border-bottom: 2px solid black;">
-                            <td style="padding: 0; background: lightgray;"><b><span id="span_alternativo">Alternativo</span> <?php echo $parametro['moneda_descripcion']; ?></b></td>
-                            <td align="right" style="padding: 0; background: lightgray;">
-                                <input class="btn" style="padding:0; background-color:#edde34; font-size:20px;"
-                                       id="pago_alternativo" size="<?php echo $ancho_boton; ?>" name="pago_alternativo"
-                                       value="<?php echo $efectivo; ?>" 
-                                       onclick="seleccionar(7)" autocomplete="off">
+                        <tr id="filaAlternativo" style="display: none; padding: 0; border-top: 2px solid black; border-bottom: 2px solid black;">
+
+                            <td style="padding: 0; background: lightgray;">
+                                <b><span id="span_alternativo">Alternativo</span> <?php echo $parametro['moneda_descripcion']; ?></b>
+
+                                <button id="btn_pagoalternativo"
+                                        class="btn btn-warning btn-sm"
+                                        title ="Habilitar pago alternativo"
+                                        onclick="habilitar_pagoalternativo()">
+                                    <i id="icon_pagoalternativo" class="fa fa-lock"></i>
+                                </button>
+
                             </td>
+
+                            <td align="right" style="padding: 0; background: lightgray;">
+                                <input class="btn"
+                                       style="padding:0; background-color:#edde34; font-size:20px;"
+                                       id="pago_alternativo"
+                                       size="<?php echo $ancho_boton; ?>"
+                                       name="pago_alternativo"
+                                       value="<?php echo $efectivo; ?>"
+                                       onclick="seleccionar(7)"
+                                       autocomplete="off"
+                                       disabled>
+                            </td>
+
                         </tr>
 
                         <tr id="filaEfectivo" style="display: none; padding: 0; border-top: 2px solid black; border-bottom: 2px solid black;">
@@ -2320,16 +2477,18 @@ window.onkeydown = compruebaTecla;
                            
            <!-- ************************************* datos credito ************************************************-->
                 
+           <?php $estilo_fuente = "style='font-size:12px;'"; ?>
+           
             <div class="row" id='creditooculto'  style='display:none;'>
                 <div class="col-md-12">
-                    <label style="margin-bottom: 0px">
+                    <label style="margin-bottom: 0px;">
                         <input type="checkbox" name="metodofrances" id="metodofrances"> Metodo Frances
                     </label>
                 </div>
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
 
-                    <select name="cuotas"  class="form-control input-sm" id="cuotas">
+                    <select name="cuotas"  class="form-control input-sm" id="cuotas" <?=$estilo_fuente ?>">
                         <?php for($i=1;$i<=120;$i++){ ?>
                             <option value="<?php echo $i; ?>"><?php echo $i; ?> CUOTA (S)</option>
                         <?php } ?>
@@ -2339,7 +2498,7 @@ window.onkeydown = compruebaTecla;
                 
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>MODALIDAD</b></h5>
-                    <select class="form-control input-sm" id="modalidad" name="modalidad">                       
+                    <select class="form-control input-sm" id="modalidad" name="modalidad" <?=$estilo_fuente ?>>                       
                         <option value="MENSUAL">MENSUAL</option>
                         <option value="QUINCENAL">QUINCENAL</option>
                         <option value="SEMANAL">SEMANAL</option>
@@ -2348,7 +2507,7 @@ window.onkeydown = compruebaTecla;
                 
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>DIA PAGO</b></h5>
-                    <select class="form-control input-sm" id="dia_pago" name="dia_pago">
+                    <select class="form-control input-sm" id="dia_pago" name="dia_pago" <?=$estilo_fuente ?>>
                         
                     <?php for($dia=1; $dia<=31; $dia++){?>
                             <option value="<?php echo $dia; ?>"><?php echo $dia; ?></option>
@@ -2357,12 +2516,12 @@ window.onkeydown = compruebaTecla;
                 </div>
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>INTERES (%)</b></h5>
-                    <input type="text"  class="form-control  input-sm" value="<?php echo 0.00; ?>" name="credito_interes" id="credito_interes">
+                    <input type="text"  class="form-control  input-sm" value="<?php echo 0.00; ?>" name="credito_interes" id="credito_interes" <?=$estilo_fuente ?>>
                 </div>
 
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro['moneda_descripcion']; ?></b></h5>
-                    <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
+                    <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial"  <?=$estilo_fuente ?>>
                 </div>
 
 <!--                <div class="col-md-3">
@@ -2374,7 +2533,7 @@ window.onkeydown = compruebaTecla;
                 <div class="col-md-4">
                     
                     <h5 class="modal-title" id="myModalLabel"><b>FECHA INICIAL</b></h5>
-                    <input type="date" class="form-control  input-sm"  value="<?php echo $fecha; ?>" name="fecha_inicio" id="fecha_inicio">
+                    <input type="date" class="form-control  input-sm"  value="<?php echo $fecha; ?>" name="fecha_inicio" id="fecha_inicio" <?=$estilo_fuente ?>>
                     
                 </div>
                 
@@ -4418,7 +4577,7 @@ Gasto de Seguro:2000
                                
                             <div class="col-md-4 form-group">
                               <label for="calcular_cantidad">Cantidad</label>
-                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_cantidad" id="calcular_cantidad" onkeyup="calcular_portotal()">
+                              <input type="number" step="0.0000000000000001" class="form-control" value="0.00" name="calcular_cantidad" id="calcular_cantidad" onkeyup="calcular_porcantidad()">
                             </div>
                                 
                             <div class="col-md-4 form-group">
@@ -4649,22 +4808,49 @@ function abrir_lacaja()
 document.getElementById("pago_alternativo").addEventListener("input", calcularPagoEfectivo);
 
 function calcularPagoEfectivo() {
+    
     const total = parseFloat(document.getElementById("venta_totalfinal").value) || 0;
-    const alternativo = parseFloat(document.getElementById("pago_alternativo").value) || 0;
+    const forma_pago = parseInt(document.getElementById("forma_pago").value) || 1;
+
     const inputAlternativo = document.getElementById("pago_alternativo");
     const inputEfectivo = document.getElementById("pago_efectivo");
 
-    // Validar que alternativo no sea mayor al total
-    if (alternativo > total) {
-        alert("⚠️ El monto alternativo no puede ser mayor al total de la venta.");
-        inputAlternativo.value = total.toFixed(2); // ajusta automáticamente
+    let alternativo = parseFloat(inputAlternativo.value);
+
+    if (isNaN(alternativo)) {
+        alternativo = 0;
+    }
+
+    // No permitir valores negativos
+    if (alternativo < 0) {
+        alert("⚠️ El pago alternativo no puede ser negativo.");
+        inputAlternativo.value = total.toFixed(2);
         inputEfectivo.value = "0.00";
         inputAlternativo.focus();
         inputAlternativo.select();
         return;
     }
 
-    // Calcular pago efectivo
+    // Si forma_pago > 1, no puede ser 100% efectivo
+    if (forma_pago > 1 && alternativo == 0) {
+        alert("⚠️ Para pago combinado, el pago alternativo no puede ser 0.");
+        inputAlternativo.value = "0.1";
+        inputEfectivo.value = total.toFixed(2);
+        inputAlternativo.focus();
+        inputAlternativo.select();
+        return;
+    }
+
+    //El pago alternativo no puede superar el total
+    if (alternativo > total) {
+        alert("⚠️ El monto alternativo no puede ser mayor al total de la venta.");
+        inputAlternativo.value = total.toFixed(2);
+        inputEfectivo.value = "0.00";
+        inputAlternativo.focus();
+        inputAlternativo.select();
+        return;
+    }
+
     const efectivo = total - alternativo;
     inputEfectivo.value = efectivo.toFixed(2);
 }

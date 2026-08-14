@@ -131,6 +131,7 @@
           <th class="text-center">#</th>
           <th class="text-center">PASAJERO</th>
           <th class="text-center"   >ASIENTO</th>
+          <th class="text-center"   >PRECIO</th>
         </tr>
       </thead>
       <tbody>
@@ -141,14 +142,23 @@
               <td class="text-center"><?php echo ++$i." "; ?></td>
               <td><?php echo $detalle["pasaje_nombre"]; ?></td>
               <td class="text-center"><?php echo $detalle["asiento_numero"]; ?></td>
+              <td class="text-center"><?php echo $detalle["asiento_precio"]; ?>120</td>
             </tr>
         <?php } ?>
       </tbody>
+      <thead>
+        <tr>
+          <th class="text-center" colspan="3">TOTAL Bs</th>
+          <th class="text-center">480.00</th>
+        </tr>
+      </thead>
+      
     </table>
 
     <!-- PIE DE PÁGINA DEL TICKET -->
     <div class="ticket-footer">
       <hr>
+      <div><center><b>NO OLVIDE RETIRAR SU FACTURA EN VENTANILLA</b></center></div>
       <div><center>Gracias por su compra. ¡Buen viaje!</center></div>
     </div>
   </div>

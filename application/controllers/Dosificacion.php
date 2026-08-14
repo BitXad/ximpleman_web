@@ -951,83 +951,127 @@ class Dosificacion extends CI_Controller{
     }
     
     
-    function cufd(){
-        try{
-            if ($this->input->is_ajax_request()) {
-                
-                $dosificacion_id = 1;
-                
-                $punto_venta = $this->input->post('punto_venta');
-                
-                $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-                $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($punto_venta);
-                
-                if(is_array($cuis_puntoventa)){
-                
-                    $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
-                    // $cuis_puntoventa = $this->Dosificacion_model->get_cuis_puntoventa($punto_venta); 
-                    /* ---------------------INICIO segun EJEMPLO ---------------------- */
-                    /*fuente:
-                     * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
-                     * Nota.- hubo unos pequeños cambios......
-                     */
-                    //la ruta para el servicio de obtencion de codigos, ejm:
-                    //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
-
-                    $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
-                    $token = $dosificacion['dosificacion_tokendelegado'];
-
-                    $opts = array(
-                          'http' => array(
-                               'header' => "apiKey: TokenApi $token",
-                          )
-                    );
-
-
-                    $context = stream_context_create($opts);
-
-                    $cliente = new \SoapClient($wsdl, [
-                          'stream_context' => $context,
-                          'cache_wsdl' => WSDL_CACHE_NONE,
-                          'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
-
-                          // other options
-                    ]);
-
-                    /* ---------------------F I N  segun EJEMPLO ---------------------- */
-                    /* ordenado segun SoapUI */
-
-                    $parametros = ["SolicitudCufd" => [
-                        "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
-                        "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                        "codigoPuntoVenta"=>   $punto_venta, //$dosificacion['dosificacion_puntoventa'],
-                        "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
-                        "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                        "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
-                        "nit"=>             $dosificacion['dosificacion_nitemisor']
-                            ]];
-
-                    $resultado = $cliente->cufd($parametros);
-                    $datos['respuesta'] = $resultado;
-                    $datos['falla'] = "";
-                    echo json_encode($datos);
-                    
-                } else {
-                     $datos['respuesta'] = "No existe C.U.I.S. (Codigo Unico de Inicio de Sistema) VIGENTE.";
-                     $datos['falla'] = "'Debe generar un C.U.I.S. nuevo...!!'";
-                     echo json_encode($datos);
-                }
-                
-            }else{                 
-                show_404();
-            }
-        }catch (Exception $e){
-            $datos['respuesta'] = "Ocurrio algo inesperado; revisar datos!.";
-            $datos['falla'] = $e;
-            echo json_encode($datos);
-            //echo 'Ocurrio algo inesperado; revisar datos!.';
-        }
+function cufd()
+{
+    if (!$this->input->is_ajax_request()) {
+        show_404();
+        return;
     }
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    try {
+        $dosificacion_id = 1;
+        $punto_venta = $this->input->post('punto_venta');
+
+        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($punto_venta);
+
+        if (!is_array($cuis_puntoventa)) {
+            echo json_encode([
+                'respuesta' => 'No existe C.U.I.S. vigente.',
+                'falla' => 'Debe generar un C.U.I.S. nuevo.'
+            ]);
+            return;
+        }
+
+        $wsdl  = trim($dosificacion['dosificacion_obtencioncodigos']);
+        $token = trim($dosificacion['dosificacion_tokendelegado']);
+
+        if (empty($wsdl) || !filter_var($wsdl, FILTER_VALIDATE_URL)) {
+            echo json_encode([
+                'respuesta' => 'La URL del servicio WSDL no es válida.',
+                'falla' => $wsdl
+            ]);
+            return;
+        }
+
+        $opts = [
+            'http' => [
+                'header'  => "apiKey: TokenApi {$token}\r\n",
+                'timeout' => 20
+            ],
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ];
+
+        $context = stream_context_create($opts);
+
+        /*
+         * Convierte los Warning de SoapClient en Exception
+         * para evitar que CodeIgniter imprima HTML antes del JSON.
+         */
+        set_error_handler(function ($severity, $message, $file, $line) {
+            throw new ErrorException($message, 0, $severity, $file, $line);
+        });
+
+        try {
+            $cliente = new SoapClient($wsdl, [
+                'stream_context' => $context,
+                'cache_wsdl' => WSDL_CACHE_NONE,
+                'trace' => true,
+                'exceptions' => true,
+                'connection_timeout' => 20,
+                'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE
+            ]);
+        } finally {
+            restore_error_handler();
+        }
+
+        $parametros = [
+            "SolicitudCufd" => [
+                "codigoAmbiente"   => $dosificacion['dosificacion_ambiente'],
+                "codigoModalidad"  => $dosificacion['dosificacion_modalidad'],
+                "codigoPuntoVenta" => $punto_venta,
+                "codigoSistema"    => $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"   => $dosificacion['dosificacion_codsucursal'],
+                "cuis"             => $cuis_puntoventa['cuis_codigo'],
+                "nit"              => $dosificacion['dosificacion_nitemisor']
+            ]
+        ];
+
+        $resultado = $cliente->cufd($parametros);
+
+        echo json_encode([
+            'respuesta' => $resultado,
+            'falla' => ''
+        ]);
+
+    } catch (SoapFault $e) {
+
+        echo json_encode([
+            'respuesta' => 'No se pudo conectar con el servicio SIAT.',
+            'falla' => [
+                'codigo' => $e->faultcode,
+                'mensaje' => $e->getMessage()
+            ]
+        ]);
+
+    } catch (ErrorException $e) {
+
+        echo json_encode([
+            'respuesta' => 'No se pudo cargar el WSDL del servicio SIAT.',
+            'falla' => [
+                'mensaje' => $e->getMessage(),
+                'linea' => $e->getLine(),
+                'archivo' => basename($e->getFile())
+            ]
+        ]);
+
+    } catch (Throwable $e) {
+
+        echo json_encode([
+            'respuesta' => 'Ocurrió algo inesperado; revisar datos.',
+            'falla' => [
+                'mensaje' => $e->getMessage(),
+                'linea' => $e->getLine(),
+                'archivo' => basename($e->getFile())
+            ]
+        ]);
+    }
+}
 
     function cuis(){
         try{
@@ -3312,4 +3356,35 @@ class Dosificacion extends CI_Controller{
             //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+    
+    function get_documento_sector_por_actividad()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $codigo_actividad = $this->input->post('codigo_actividad');
+
+            $documentos = $this->Dosificacion_model
+                ->get_documento_sector_por_actividad($codigo_actividad);
+
+            echo json_encode($documentos);
+
+        } else {
+            show_404();
+        }
+    }
+    
+    
+    function get_todos_documentos_sector()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $documentos = $this->Dosificacion_model->get_documento_sector();
+
+            echo json_encode($documentos);
+
+        } else {
+            show_404();
+        }
+    }
+    
 }

@@ -1,5 +1,6 @@
 <script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<script src="<?php echo base_url('resources/js/validar_codigos_producto.js'); ?>" type="text/javascript"></script>
 <input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <script type="text/javascript">
@@ -67,6 +68,59 @@
         });
     });
 </script>
+
+<script>
+      function verificar_precio(){
+              var venta = Number($("#producto_precio").val());
+              var costo = Number($("#producto_costo").val());
+              if(costo >= venta){
+                  alert("El Precio de Compra es mayor o igual a Precio de Venta");
+              }
+      };
+    function loader() {
+     	$("form").submit(function() {
+            document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+        });
+    }
+        
+    function calcularporc(){
+        var estecosto   = $("#producto_costo").val();
+        var esteporcent = $("#porcentaje").val();
+        $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
+    }
+
+    function calcularPrecioVenta() {
+        
+        var costo = $("#producto_costo").val();
+
+        const tabla = [
+            { desde: 0,   factor: 3.00, base: 0   },
+            { desde: 50,  factor: 1.20, base: 150 },
+            { desde: 100, factor: 1.40, base: 210 },
+            { desde: 300, factor: 1.37, base: 490 }
+        ];
+
+        // Buscar el tramo (equivalente a BUSCARV(...;VERDADERO))
+        let tramo = tabla[0];
+
+        for (let i = 0; i < tabla.length; i++) {
+            if (costo >= tabla[i].desde) {
+                tramo = tabla[i];
+            } else {
+                break;
+            }
+        }
+
+        // Aplicar la fórmula
+        const venta = tramo.base + ((costo - tramo.desde) * tramo.factor);
+        
+         $("#producto_precio").val(Number(venta).toFixed(2));
+
+        //return Math.round(venta);
+    }
+    
+</script>
+
 <script>
       $(document).ready(function () {
           $("#producto_costo").keyup(function () {
@@ -101,6 +155,13 @@
         alert("El producto '"+esnombre+"' \n ya se encuentra REGISTRADO");
     });
 </script>
+
+<?php if ($this->session->flashdata('mensaje_error')) { ?>
+    <div class="alert alert-danger">
+        <?php echo $this->session->flashdata('mensaje_error'); ?>
+    </div>
+<?php } ?>
+
 <?php } ?>
 <div class="row">
     <div class="col-md-12">
@@ -243,12 +304,18 @@
                                 <input type="number" step="any" min="0" name="producto_costo" value="<?php echo '0.00'; ?>" class="form-control" id="producto_costo"  onclick="this.select();"/>
                             </div>
                     </div>
-                    <div class="col-md-2">
-                            <label for="porcentaje" class="control-label">Porcentaje</label>
-                            <div class="form-group">
-                                <input type="number" step="any" min="0" name="porcentaje" value="<?php echo '0.25'; ?>" class="form-control" id="porcentaje"  onclick="this.select();"/>
-                            </div>
+                    
+                    <div class="col-md-2" style="padding-right: 30px">
+                        <label for="porcentaje" class="control-label">Porcentaje</label>
+                        <div class="form-group" style="display: flex">
+                            <input type="number" step="any" min="0" name="porcentaje" value="0.00" class="form-control" id="porcentaje" />
+                            <a href="#" class="btn btn-warning" title="Calcular Porcentaje" onclick="calcularporc()">
+                                <span class="fa fa-snowflake-o"></span> </a>
+                            <a href="#" class="btn btn-info" title="Calcular precio de venta" onclick="calcularPrecioVenta()">
+                                <span class="fa fa-snowflake-o"></span> </a>
+                        </div>
                     </div>
+                    
                     <div class="col-md-2">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">

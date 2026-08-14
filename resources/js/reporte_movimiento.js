@@ -133,6 +133,47 @@ function formato_numerico(numero){
 	return x1 + x2;
 }
 
+
+function formaPagoEsEfectivo(forma_id, forma){
+    forma_id = Number(forma_id || 0);
+    forma = String(forma || '').toUpperCase();
+    return forma_id === 1 || forma.indexOf('EFECTIVO') >= 0 || forma.indexOf('CONTADO') >= 0;
+}
+
+function transaccionEsCredito(tipotrans_id, transaccion, detalle){
+    tipotrans_id = Number(tipotrans_id || 0);
+    transaccion = String(transaccion || '').toUpperCase();
+    detalle = String(detalle || '').toUpperCase();
+    return tipotrans_id === 2 || transaccion.indexOf('CREDITO') >= 0 || detalle.indexOf('CREDITO') >= 0;
+}
+
+function formaPagoEsBanco(forma_id, forma, banco){
+    forma_id = Number(forma_id || 0);
+    forma = String(forma || '').toUpperCase();
+    banco = String(banco || '').toUpperCase();
+
+    if(formaPagoEsEfectivo(forma_id, forma)) return false;
+    if(banco.trim() !== '') return true;
+
+    return (
+        forma.indexOf('TRANSFER') >= 0 ||
+        forma.indexOf('QR') >= 0 ||
+        forma.indexOf('TARJETA') >= 0 ||
+        forma.indexOf('DEBITO') >= 0 ||
+        forma.indexOf('DÉBITO') >= 0 ||
+        forma.indexOf('CREDITO') >= 0 ||
+        forma.indexOf('CRÉDITO') >= 0 ||
+        forma.indexOf('CHEQUE') >= 0 ||
+        forma.indexOf('BANCO') >= 0 ||
+        forma_id > 1
+    );
+}
+
+function valorSeguro(numero){
+    numero = Number(numero || 0);
+    return isNaN(numero) ? 0 : numero;
+}
+
 function mostrar_detalle(){
     
     var numfilas = document.getElementById('filas_detalle').value;
@@ -232,6 +273,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var total_transaccion = 0;
                     var total_credito = 0;
                     var total_cheque = 0;
+                    var total_gasto = 0;
                     
                     var filas = 0;
                     
@@ -241,6 +283,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         
                         totalingresos += Number(registro["ingresos"]);
                         totalegresos += Number(registro["egresos"]);
+                        total_gasto += Number(registro["gasto"]);
                         
                         if (registro["egresos"]==0){
                             totalprecios += Number(registro["precio"]);                            
@@ -248,7 +291,9 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         
                         totalutilidad += Number(registro["utilidad"]);
                         
-                        if(registro["tipotrans_id"]<=2 && registro["forma_id"]==1) totalefectivo += Number(registro["ingresos"]);                       
+                        if(registro["tipotrans_id"]<=2 && registro["forma_id"]==1) totalefectivo += Number(registro["ingresos"]);  
+                        //totalefectivo += Number(registro["ingresos"]);  
+                        
                         filas++;
                         
                         html += "<tr style='padding:0; ' id='ocultar_fila"+filas+"' >";
@@ -268,6 +313,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 if (registro["orden"]==4) enlace += `servicio/boletainftecservicio/${registro["recibo"]}`;
                                 if (registro["orden"]==5) enlace += `cuotum/recibocuentas/${registro["recibo"]}`;
                                 if (registro["orden"]==6) enlace += `venta/prestamos/`;
+                                if (registro["orden"]==7) enlace += `factura/imprimir_recibo/${registro["recibo"]}`; 
 
                                 // DEL 7 AL 10 RESERVADO PARA FUTUROS INGRESOS
                                 if (registro["orden"]==11) enlace += `egreso/imprimir/${registro["recibo"]}`;
@@ -297,10 +343,20 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "</td>";
                         //  TRANS.
                         html += "<td style='text-align: right; padding:0;'>";
-                            if (registro["egresos"]==0){
+                            if (registro["precio"]>0){
                                 html += formato_numerico(registro["precio"]);
                             }
                         html += "</td>";
+                        
+                        
+                        //  GASTO TOTAL.
+                        html += "<td style='text-align: right; padding:0;'>";
+                            if (registro["gasto"]>0){
+                                html += formato_numerico(registro["gasto"]);
+                            }
+                        html += "</td>";
+                        
+                        
                         //  UTILD
                         if(tipousuario_id == 1){
                             html += "<td style='text-align: right; padding:0;'>";
@@ -321,6 +377,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalprecios)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(total_gasto)+"</b></td>";
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
                     html += "</tr>";
 
@@ -331,17 +388,40 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     var total_ingresos = 0;
                     var total_ingresos_efectivo = 0;
+                    var total_ingresos_transferencias = 0;
+                    var total_ingresos_banco = 0;
+                    var total_ingresos_credito = 0;
                     var total_egresos_efectivo = 0;
+                    var total_egresos_banco = 0;
                     var total_egresos = 0;
+                    var total_movimiento_general = 0;
+                    var resumen_transacciones = [];
                     
                     //INGRESOS
-                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='9'><b>INGRESOS</b></td></tr>"; 
+                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='10'><b>INGRESOS</b></td></tr>"; 
                     
                     for(let total of totales){
                         
-                        if(total["tipo"]==1){//INGRESOS
+                        
+                        if(total["tipo"]==1 && (Number(total["ingresos"])>0 || Number(total["transferencias"]))>0){//INGRESOS
                             
-                            total_ingresos += total["ingresos"];
+                            total_ingresos += valorSeguro(total["ingresos"]);
+                            total_movimiento_general += valorSeguro(total["ingresos"]);
+
+                            total_ingresos_transferencias += valorSeguro(total["transferencias"]);
+                            
+                            total_ingresos_efectivo += valorSeguro(total["ingresos"]);
+                            
+                            if(formaPagoEsEfectivo(total["forma_id"], total["forma"])){
+                                total_ingresos_efectivo += 0; // valorSeguro(total["ingresos"]);
+                            }else if(formaPagoEsBanco(total["forma_id"], total["forma"], total["banco"])){
+                                total_ingresos_banco += valorSeguro(total["ingresos"]);
+                                resumen_transacciones.push((total["forma"] || '')+' '+(total["transaccion"] || '')+' '+(total["banco"] || '')+': '+Number(total["ingresos"] || 0).toFixed(decimales));
+                            }
+
+                            if(transaccionEsCredito(total["tipotrans_id"], total["transaccion"], total["detalle"])){
+                                total_ingresos_credito += valorSeguro(total["ingresos"]);
+                            }
 
                                 html += "<tr>"; 
                                         html += "<td "+estilox+"></td>"; 
@@ -356,6 +436,10 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                             html += (total["ingresos"]>0)? Number(total["ingresos"]).toFixed(decimales) : "";
                                         html += "</td>";
 
+                                        html += "<td "+estilo2+">";
+                                            html += (total["transferencias"]>0)? Number(total["transferencias"]).toFixed(decimales) : "";
+                                        html += "</td>";
+
                                         html += "<td "+estilox+">";
                                             html += (total["egresos"]>0)? Number(total["egresos"]).toFixed(decimales) : "";
                                         html += "</td>";
@@ -363,11 +447,9 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                         html += "<td "+estilox+"> </td>"; 
                                 html += "</tr>"; 
                                 
-                            if(total["forma_id"]==1){
-                                total_ingresos_efectivo += Number(total["ingresos"]);
-                            }
-
                         }
+                        
+                        
                     }
                             html += "<tr style='background-color: white; !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>"; 
                                     html += "<td></td>";  
@@ -382,14 +464,34 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
               
                             html += "</tr>"; 
                             
+                            html += "<tr style='background-color: white; !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>"; 
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td "+estilo+" colspan='2'><b> TOTAL INGRESOS TRANSFERENCIAS</b></td>"; 
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td "+estilo1+"><b>"+formato_numerico(total_ingresos_transferencias)+"</b></td>"; 
+                                    html += "<td ></td>"; 
+                                    html += "<td ></td>";         
+              
+                            html += "</tr>"; 
+                            
                     //EGRESOS
-                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='9'><b>EGRESOS</b></td></tr>"; 
+                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='10'><b>EGRESOS</b></td></tr>"; 
                     
                     for(let total of totales){
                         
                         if(total["tipo"]==2){//EGRESOS
                             
-                            total_ingresos += total["egresos"];
+                            total_egresos += valorSeguro(total["egresos"]);
+                            total_movimiento_general += valorSeguro(total["egresos"]);
+
+                            if(formaPagoEsEfectivo(total["forma_id"], total["forma"])){
+                                total_egresos_efectivo += valorSeguro(total["egresos"]);
+                            }else if(formaPagoEsBanco(total["forma_id"], total["forma"], total["banco"])){
+                                total_egresos_banco += valorSeguro(total["egresos"]);
+                            }
 
                                 html += "<tr>"; 
                                         html += "<td "+estilox+"></td>"; 
@@ -411,11 +513,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                         html += "<td "+estilox+"> </td>"; 
                                 html += "</tr>"; 
                                 
-                            if(total["tipo"]==2){
-                                total_egresos_efectivo += Number(total["egresos"]);
-                            }
-
                         }
+                        
                     }
                             html += "<tr style='background-color: white; !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>"; 
                                     html += "<td></td>";  
@@ -434,8 +533,12 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
 
 
+                    var apertura_caja = 0;
+                    try { apertura_caja = valorSeguro(document.getElementById('caja_apertura').value); } catch(e) { apertura_caja = 0; }
+
                     var efectivo_caja = 0;
-                    efectivo_caja = parseFloat(total_ingresos_efectivo) - parseFloat(total_egresos_efectivo);
+                    efectivo_caja = apertura_caja + parseFloat(total_ingresos_efectivo) - parseFloat(total_egresos_efectivo);
+                    
                     // efectivo_caja = subtotal - totalbanco;
                     //let efectivo_caja_diferencia = bancos.shift();
                     //efectivo_caja_diferencia = parseFloat(efectivo_caja_diferencia.ingreso_total_efectivo) - parseFloat(efectivo_caja_diferencia.egreso_total_efectivo)
@@ -446,17 +549,26 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "<td "+estilo+" colspan='5'><b style='font-size:14px;'>TOTAL EFECTIVO EN CAJA "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo+"></td>";
                         html += "<td "+estilo+" colspan='2'><b style='font-size:14px;'>"+formato_numerico(efectivo_caja)+"</b></td>";
-                        html += "<td "+estilo+"></td>";
+                        html += "<td "+estilo+" colspan='3'></td>";
                         
                     html += "</tr>";
                     if (tipousuario_id==1){
                         html += "<tr style='font-size:12px;'>";
-                            html += "<td colspan='8'><b>UTILIDAD "+nombre_moneda+"</b></td>";
+                            html += "<td colspan='9'><b>UTILIDAD "+nombre_moneda+"</b></td>";
                             html += "<td colspan='2' style='text-align: right;'><b>"+formato_numerico(totalutilidad)+"</b></td>";
                         html += "</tr>";
                     }
                     
-                      html += "<input  type='hidden' value='"+numerofilas+"' id='numerofilas' name='numerofilas' />"
+                    let tipo = 'hidden';
+                      html += "<input  type='"+tipo+"' value='"+numerofilas+"' id='numerofilas' name='numerofilas' />";
+                      html += "<input type='"+tipo+"' id='total_ingresos_efectivo' name='total_ingresos_efectivo' value='"+Number(total_ingresos_efectivo).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_ingresos_banco' name='total_ingresos_banco' value='"+Number(total_ingresos_banco).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_ingresos_credito' name='total_ingresos_credito' value='"+Number(total_ingresos_credito).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_egresos_efectivo' name='total_egresos_efectivo' value='"+Number(total_egresos_efectivo).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_egresos_banco' name='total_egresos_banco' value='"+Number(total_egresos_banco).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_movimiento' name='total_movimiento' value='"+Number(total_movimiento_general).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='total_efectivo_esperado' name='total_efectivo_esperado' value='"+Number(efectivo_caja).toFixed(2)+"' />";
+                      html += "<input type='"+tipo+"' id='resumen_transacciones' name='resumen_transacciones' value='"+resumen_transacciones.join(' | ').replace(/'/g, '')+"' />";
 
                     $("#tablatotalresultados").html(html);
                    
@@ -466,7 +578,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     
                 document.getElementById('loader').style.display = 'none';
-                
+                //alert(efectivo_caja);
                 $("#saldo_caja").val(Number(efectivo_caja).toFixed(2));
 //                alert(fecha_desde+' ***** '+fecha2+' ***** '+usuario+' ***** '+hora_desde+' ***** '+hora_hasta);
 //                alert(efectivo_caja);

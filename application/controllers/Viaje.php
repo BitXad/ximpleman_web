@@ -316,6 +316,30 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
           throw new Exception('Viaje Controller : Error in index function - ' . $ex);
       }  
     }
+   
+    /*
+    * Listing of viaje
+     */
+    public function control_abordaje($viaje_id)
+    {
+        
+      try{
+            $data['sistema'] = $this->sistema;
+            $data['page_title'] = "Control de Abordaje";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+
+            $data['noof_page'] = 0;
+            $data['datos_viaje'] = $this->Viaje_model->get_datos_viaje($viaje_id);
+            $data['lista_pasajeros'] = $this->Viaje_model->get_lista_pasajeros($viaje_id);
+            $data['_view'] = 'viaje/control_abordaje';
+            $this->load->view('layouts/main',$data);
+
+        } catch (Exception $ex) {
+          throw new Exception('Viaje Controller : Error in index function - ' . $ex);
+      }  
+    }
     
     /*
     * Listing of viaje
@@ -382,6 +406,23 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
             $data['detalle_pasaje'] = $this->Viaje_model->get_detalle_pasaje($venta_id);
             $data['title'] = "PASAJE";
             $data['_view'] = 'viaje/pasaje_boucher';
+            $this->load->view('layouts/main',$data);
+   }
+    /*
+   * get search values by column- viaje
+    */
+   public function imprimir_pasajes($venta_id)
+   {
+            $data['sistema'] = $this->sistema;
+            $data['page_title'] = "Nomina Pasajeros";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();      
+       
+            $data['pasaje'] = $this->Viaje_model->get_pasaje($venta_id);
+            $data['detalle_pasaje'] = $this->Viaje_model->get_detalle_pasaje($venta_id);
+            $data['title'] = "PASAJE";
+            $data['_view'] = 'viaje/pasajes_boucher';
             $this->load->view('layouts/main',$data);
    }
    
@@ -697,5 +738,34 @@ if(isset($data['all_usuario']) && $data['all_usuario']!=null)
         }
 
         redirect('viaje/index');
-    }   
+    }
+    
+    public function registrar_controlabordaje($pasaje_id, $accion, $viaje_id)
+    {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('usuario/login');
+        }
+
+        $this->load->model('Pasaje_model');
+
+        $valor = null;
+
+        if ($accion == "ABORDO") {
+            $valor = "A BORDO";
+        } elseif ($accion == "NOPRESENTE") {
+            $valor = "NO PRESENTE";
+        }
+
+        if ($valor !== null) {
+            $params = array(
+                'pasaje_controlabordaje' => $valor
+            );
+
+            $this->Pasaje_model->update_pasaje($pasaje_id, $params);
+        }
+
+        redirect('viaje/control_abordaje/'.$viaje_id);
+    }    
+    
+
 }

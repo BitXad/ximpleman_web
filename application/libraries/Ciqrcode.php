@@ -13,11 +13,11 @@
  
 class Ciqrcode
 {
-	var $cacheable = true;
-	var $cachedir = 'application/cache/';
-	var $errorlog = 'application/logs/';
-	var $quality = true;
-	var $size = 1024;
+	public $cacheable = true;
+	public $cachedir = 'application/cache/';
+	public $errorlog = 'application/logs/';
+	public $quality = true;
+	public $size = 1024;
 	
 	function __construct($config = array()) {
 		$this->initialize($config);
@@ -54,16 +54,16 @@ class Ciqrcode
 		if (!defined('QR_PNG_MAXIMUM_SIZE')) define('QR_PNG_MAXIMUM_SIZE',  $this->size);
 	
 		// call original library
-		include "qrcode/qrconst.php";
-		include "qrcode/qrtools.php";
-		include "qrcode/qrspec.php";
-		include "qrcode/qrimage.php";
-		include "qrcode/qrinput.php";
-		include "qrcode/qrbitstream.php";
-		include "qrcode/qrsplit.php";
-		include "qrcode/qrrscode.php";
-		include "qrcode/qrmask.php";
-		include "qrcode/qrencode.php";
+		require_once __DIR__."/qrcode/qrconst.php";
+		require_once __DIR__."/qrcode/qrtools.php";
+		require_once __DIR__."/qrcode/qrspec.php";
+		require_once __DIR__."/qrcode/qrimage.php";
+		require_once __DIR__."/qrcode/qrinput.php";
+		require_once __DIR__."/qrcode/qrbitstream.php";
+		require_once __DIR__."/qrcode/qrsplit.php";
+		require_once __DIR__."/qrcode/qrrscode.php";
+		require_once __DIR__."/qrcode/qrmask.php";
+		require_once __DIR__."/qrcode/qrencode.php";
 	}
 	
 	public function generate($params = array()) {

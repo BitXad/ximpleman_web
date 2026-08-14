@@ -102,11 +102,11 @@
         <?php } ?>
         
         <div class="col-md-2">
-            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" value="<?php echo date("Y-m-d");?>" name="fecha_desde" required="true">
+            Desde: <input type="date" class="btn btn-warning btn-md form-control" id="fecha_desde" value="<?php echo date("Y-m-d");?>" name="fecha_desde" required="true">
         </div>
         
         <div class="col-md-2">
-            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" value="<?php echo date("Y-m-d");?>"  name="fecha_hasta" required="true">
+            Hasta: <input type="date" class="btn btn-warning btn-md form-control" id="fecha_hasta" value="<?php echo date("Y-m-d");?>"  name="fecha_hasta" required="true">
         </div>
         
         <div class="col-md-2">
@@ -150,6 +150,7 @@
                     <tr>
                         <th>N</th>
                         <th>Cliente</th>
+                        <th>Placa</th>
                         <th>Tipo Movilidad</th>
                         <th align="center">Registro</th>
                         <th align="center">Puesto</th>
@@ -158,6 +159,8 @@
                         <th>Fecha<br>Limite</th>
                         <th>Registro<br>Ingreso</th>
                         <th>Ragistro<br>Salida</th>
+                        <th>Monto</th>
+                        <th>Usuario</th>
                         <th>Estado</th>
  
                     </tr>

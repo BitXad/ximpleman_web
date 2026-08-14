@@ -143,8 +143,100 @@ if(isset($sintitulo)){
             }
         ?>
 
-
+        
     </div><!--<br>-->
+    
+    <?php // if (is_array($productos)){ ?>
+<!--    <div class="negrita micontenedorlineas" style="width: 100%; padding-top: 15px; font-size: 7.5pt !important;">DETALLE REPUESTOS/PRODUCTOS USADOS:
+        <hr style="margin-left: 0px;">
+    </div>
+        <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 7pt;
+                }
+
+                th, td {
+                    border: 1px solid #000;
+                    padding: 4px;
+                }
+
+                th {
+                    background-color: #e6e6e6; /* gris claro */
+                    text-align: center;
+                    font-weight: bold;
+                }
+
+                td {
+                    vertical-align: middle;
+                }
+
+                .text-center {
+                    text-align: center;
+                }
+
+                .text-right {
+                    text-align: right;
+                }
+
+                tfoot th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+            </style>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Num.</th>
+                        <th>Producto</th>
+                        <th>Código</th>
+                        <th>Unid.</th>
+                        <th>Cant.</th>
+                        <th>Prec.</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <?php 
+//                $cont = 0;
+//                $cantidad = 0;
+//                $total_final = 0;
+//
+//                foreach($productos as $d){
+//                    $cont++;
+//                    $cantidad += $d['detalleven_cantidad'];
+//                    $total_final += $d['detalleven_total']; 
+                ?>
+                    <tr>
+                        <td class="text-center"><?php echo $cont ?></td>
+                        <td><?php echo $d['producto_nombre']; ?></td>
+                        <td class="text-center"><?php echo $d['detalleven_codigo']; ?></td>
+                        <td class="text-center"><?php echo $d['detalleven_unidad']; ?></td>
+                        <td class="text-center"><?php echo number_format($d['detalleven_cantidad'],2,'.',','); ?></td>
+                        <td class="text-right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
+                        <td class="text-right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+                    </tr>
+                <?php // } ?>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th><?php echo number_format($cantidad,2,'.',','); ?></th>
+                        <th></th>
+                        <th><?php echo number_format($total_final,2,'.',','); ?></th>
+                    </tr>
+                </tfoot>
+            </table>
+        -->
+    <?php // } ?> 
+    
     <div class="negrita micontenedorlineas" style="width: 100%; font-size: 7.5pt; padding-top: 15px;">RESPONSABLE TÉCNICO:
         <hr style="margin-left: 0px;">
     </div>
@@ -176,7 +268,8 @@ if(isset($sintitulo)){
 <div class="row micontenidoInforme">
     <div id="cabizquierda" style="width: 40%; font-family: Arial; font-size: 8pt;">
         <?php echo $usuario_nombre; ?><br>
-        DPTO. TECNICO
+        <?php echo $tipo_usuario; ?>
+        
     </div>
     <div id="cabcentro" style="width: 20%;">
         

@@ -124,8 +124,8 @@
                 
                 <div class="col-md-3">
                     <label class="form-label">OPERACIONES</label> <br>
-                    <a href="<?php base_url("venta/ultimo_pasaje"); ?>" class="btn btn-success" target="_blank"><fa class="fa fa-print"> </fa> </a>
-                    <a href="http://localhost/ximpleman_web/viaje" class="btn btn-warning"  target="_blank" title="Viajes"><fa class="fa fa-cubes"> </fa> </a>
+                    <a href="<?php echo base_url("venta/ultimo_pasaje"); ?>" class="btn btn-success" target="_blank"><fa class="fa fa-print"> </fa> </a>
+                    <a href="<?php echo base_url("viaje"); ?>" class="btn btn-warning"  target="_blank" title="Viajes"><fa class="fa fa-cubes"> </fa> </a>
                     <button onclick="nomina_pasajeros()" class="btn btn-facebook" title="Lista de pasajeros"><fa class="fa fa-list-ol"> </fa> </button>
                     <button onclick="nomina_equipaje()" class="btn btn-facebook" title="Lista de pasajeros"><fa class="fa fa-list-ol"> </fa> </button>
                     <!--<a href="http://localhost/ximpleman_web/viaje/reporte_manifiesto" class="btn btn-facebook"  target="_blank"><fa class="fa fa-list-ol"> </fa> </a>-->
@@ -427,12 +427,14 @@
       </div>
     </div>
         
-        <div class="modal-footer">
+        <center>
+            <div class="modal-footer">
 
-          <button type="button" class="btn btn-success btn-block" data-dismiss="modal" onclick="registrar_datos_pasaje()">Registrar</button>
-          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Cerrar</button>
-        </div>
-        
+              <button type="button" class="btn btn-success btn-block" data-dismiss="modal" onclick="registrar_datos_pasaje()">Registrar</button>
+              <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Cerrar</button>
+            </div>            
+        </center>
+            
     </div>
   </div>
 </div>
@@ -921,52 +923,56 @@
                 </div>
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-warning btn-block form-control" onclick="reimprimir_pasaje()"> <fa class="fa fa-print"></fa> Reimprimir Pasaje</button>     
+                    <button class="btn btn-warning btn-block form-control" onclick="reimprimir_pasaje()"> <fa class="fa fa-print"></fa> Reimprimir Pasaje</button>     
                     <br>
                 </div>
               
              
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-info btn-block form-control" onclick="cargar_asiento()" data-dismiss="modal"> <fa class="fa fa-recycle"></fa> Cambiar Asiento</button>              
+                    <button class="btn btn-info btn-block form-control" onclick="cargar_asiento()" data-dismiss="modal"> <fa class="fa fa-recycle"></fa> Cambiar Asiento</button>              
                     <br>
                 </div>
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-primary btn-block form-control" onclick="verificar_reserva()"> <fa class="fa fa-calendar"></fa> Ampliar Reserva</button>              
+                    <button class="btn btn-primary btn-block form-control" onclick="verificar_reserva()"> <fa class="fa fa-calendar"></fa> Ampliar Reserva</button>              
                     <br>
                 </div>
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #979797;" onclick="consolidar_reserva()"> <fa class="fa fa-cart-arrow-down"></fa> Consolidar Reserva</button>              
+                    <button class="btn btn-primary btn-block form-control" style="background-color: #979797;" onclick="consolidar_reserva()"> <fa class="fa fa-cart-arrow-down"></fa> Consolidar Reserva</button>              
                     <br>
                 </div>
 
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-success btn-block form-control"> <fa class="fa fa-cubes"></fa> Equipaje Adicional</button>              
+                    <button class="btn btn-success btn-block form-control"> <fa class="fa fa-cubes"></fa> Equipaje Adicional</button>              
                     <br>
                 </div>
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #833ab4;" onclick="equipaje_extra()"> <fa class="fa fa-briefcase"></fa> Equipaje Extra</button>              
+                    <button class="btn btn-primary btn-block form-control" style="background-color: #833ab4;" onclick="equipaje_extra()"> <fa class="fa fa-briefcase"></fa> Equipaje Extra</button>              
                     <br>
                 </div>                              
               
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-primary btn-block form-control" style="background-color: #000;" onclick="emitir_factura()"> <fa class="fa fa-list-alt"></fa> Emitir Factura</button>              
+                    <button class="btn btn-primary btn-block form-control" style="background-color: #000;" onclick="emitir_factura()"> <fa class="fa fa-list-alt"></fa> Emitir Factura</button>              
                     <br>
                 </div>
                             
                 <div class="col-md-6">
-                    <button class="btn btn-sm btn-danger btn-block form-control" onclick="anular_operacion()" data-dismiss="modal"> <fa class="fa fa-trash"></fa> Anular Operación</button>              
+                    <button class="btn btn-danger btn-block form-control" onclick="anular_operacion()" data-dismiss="modal"> <fa class="fa fa-trash"></fa> Anular Operación</button>              
                     <br>
                 </div>
 
           </div>
       </div>
       <div class="modal-footer">
-          <br>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerraropciones"><fa class="fa fa-times"></fa> Cerrar</button>
-        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+          <center>
+              
+            <br>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerraropciones"><fa class="fa fa-times"></fa> Cerrar</button>
+          <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+              
+          </center>
       </div>
     </div>
   </div>

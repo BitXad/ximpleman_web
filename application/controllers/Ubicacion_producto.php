@@ -240,5 +240,29 @@ class Ubicacion_producto extends CI_Controller{
         echo json_encode($sql);
         
     }
+    
+    /** 
+     * finaliza el conteo 
+    */
+    function finalizar_conteo()
+    {
+        $sql = "UPDATE ubicacion_producto
+                SET
+                    ubiprod_faltante = CASE
+                        WHEN ubiprod_existencia >= 0 THEN ubiprod_existencia
+                        ELSE 0
+                    END,
+                    ubiprod_sobrante = CASE
+                        WHEN ubiprod_existencia < 0 THEN ubiprod_existencia * -1
+                        ELSE 0
+                    END,
+                    ubiprod_lecturado = 1
+                WHERE ubiprod_lecturado = 0";
+
+        $this->Venta_model->ejecutar($sql);
+
+        echo json_encode(true);
+    }
+    
 }
 

@@ -233,4 +233,19 @@ class Dosificacion_model extends CI_Model
             where c.tipopuntoventa_codigo = $punto_venta"
         )->row_array();
     }
+    
+    function get_documento_sector_por_actividad($codigo_actividad)
+    {
+        return $this->db->query("
+            SELECT 
+                ds.docsec_codigoclasificador,
+                ds.docsec_descripcion
+            FROM actividad_doc_sector ads
+            INNER JOIN documento_sector ds 
+                ON ds.docsec_codigoclasificador = ads.actdocsec_codigo
+            WHERE ads.actdocsec_codigoactividad = ?
+            ORDER BY ds.docsec_codigoclasificador ASC
+        ", [$codigo_actividad])->result_array();
+    }
+    
 }

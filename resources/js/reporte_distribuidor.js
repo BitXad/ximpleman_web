@@ -134,8 +134,9 @@ function buscarventasdist(){
                             }
                             else{
                                 imagen = "blue.png";
-                                html += " <a href='https://www.google.com/maps/dir/"+registros[i]['cliente_latitud']+","+registros[i]['cliente_longitud']+"' target='_blank' title='lat:"+registros[i]['cliente_latitud']+",long:"+registros[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
-
+                                //html += " <a href='https://www.google.com/maps/dir/"+registros[i]['cliente_latitud']+","+registros[i]['cliente_longitud']+"' target='_blank' title='lat:"+registros[i]['cliente_latitud']+",long:"+registros[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                                html += " <a href='https://www.google.com/maps/dir/?api=1&destination="+registros[i]['cliente_latitud']+","+registros[i]['cliente_longitud']+"' target='_blank' title='lat:"+registros[i]['cliente_latitud']+",long:"+registros[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                                    
                             }
 
                         html += "</td>";

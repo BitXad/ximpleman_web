@@ -1,3 +1,4 @@
+<script src="<?php echo base_url('resources/js/validar_codigos_producto.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
    /* function cambiarcod(cod){
         var nombre = $("#producto_nombre").val();
@@ -36,6 +37,13 @@
         $('#producto_codigo').val(anio+mes+hora+min+seg);
     }
 </script>
+
+
+<?php if ($this->session->flashdata('mensaje_error')) { ?>
+    <div class="alert alert-danger">
+        <?php echo $this->session->flashdata('mensaje_error'); ?>
+    </div>
+<?php } ?>
 
 <div class="row">
     <div class="col-md-12">

@@ -95,26 +95,28 @@ class Reportes extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
-        $this->load->model('Empresa_model');
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
-        $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
-        $data['usuario_id']  = $this->session_data['usuario_id'];
-        $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
-        $this->load->model('Usuario_model');
-        
-        $rolusuario = $this->session_data['rol'];
-        $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];        
-        
-        $data['parametro'] = $this->parametros;
-        $this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/reportediario';
+            
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
 
-        $this->load->view('layouts/main',$data);
+            $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
+            $data['usuario_id']  = $this->session_data['usuario_id'];
+            $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
+            $this->load->model('Usuario_model');
+
+            $rolusuario = $this->session_data['rol'];
+            $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];        
+
+            $data['parametro'] = $this->parametros;
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/reportediario';
+
+            $this->load->view('layouts/main',$data);
+            
         }
     }
     /*
@@ -249,10 +251,13 @@ class Reportes extends CI_Controller{
                     where usuario_id = {$usuario_id} and venta_fecha = date({$now})";
             $data['descuentos_globales'] = $this->Venta_model->consultar($sql);*/
                     
-            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
+            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,
+                    if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,
+                    (sum(precio)- sum(ingresos)) AS transferencias,
+                    if(sum(egresos)>0,sum(egresos),0) AS egresos
                     FROM consreporte c
                     WHERE
-                    c.usuario_id = {$usuario_id} and (c.fecha >= '{$fecha1}' and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}') 
+                    c.usuario_id = {$usuario_id} and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}' 
                     GROUP BY c.operacion,c.forma,c.transaccion,c.banco
                     ORDER BY orden";
             //echo $sql;
@@ -354,146 +359,296 @@ class Reportes extends CI_Controller{
         //}
     }
     
-    function reportecajaid($caja_id)
-    {
-        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-        $data['sistema'] = $this->sistema;
-        //if($this->acceso(156)){
-            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $this->load->model('Tipo_transaccion_model');
-            //$usuario_id = $this->session_data['usuario_id']; 
-            
-            //Filtramos los datos de la caja seleccionada en base al ID
-            $caja = $this->Caja_model->get_caja_por_id($caja_id); 
-            //*******************************************************                
-                $fecha1 = $caja["caja_fechaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
-                $hora1 = $caja["caja_horaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
-               
-                $fecha2 = $caja["caja_fechacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
-                $hora2 = $caja["caja_horacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
-                
-                $usuario = $caja["usuario_id"]; 
-                $usuario_id = $caja["usuario_id"]; 
-//                $valfecha1 = "";
-//                $valfecha2 = "";
-                //$usuario_id = "";
+function reportecajaid($caja_id)
+{
+    $data['sistema'] = $this->sistema;
+    $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
 
-            //*******************************************************
-            
-            
-            $data['page_title'] = "Reporte Cierre de Caja";
-            
-            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
-            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-            $this->load->model('Usuario_model');
-            
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $data['usuario_caja'] = $this->Usuario_model->get_usuario($usuario_id);
-            $data['parametro'] = $this->parametros;
-            
-            $this->load->model('Moneda_model');
-            $data['moneda'] = $this->Moneda_model->get_moneda(1); //Obtener moneda extragera
-            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-            
-//            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
-//            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
-            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fechahora($usuario_id,$fecha1,$hora1, $fecha2, $hora2);
-//            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
-            
-            //$caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
-                       
-            $data['caja'] = $caja;
-            
-            //Filtra las cajas que el usuario cerro en una sola fecha
-            $data['efectivo'] = $this->Venta_model->Consultar("select * from caja where usuario_id = {$caja["usuario_id"]} and caja_fechacierre = '{$caja["caja_fechacierre"]}' order by caja_id asc");
-            
-            
-            if ($caja!==null){
-                
-                $bitacora = $this->Caja_model->get_caja_id(is_numeric($caja["caja_id"])?$caja["caja_id"]:0);
-            }else
-                $bitacora = null;
-            
-            $data['bitacora'] = $bitacora;
-            
-            $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
-            
-            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
-                    MAX(factura_id)-MIN(factura_id) as ventas from factura
-                    where usuario_id = $usuario_id and factura_fecha = date({$now})";
-            $data['resumen'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as total_ventas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
-            $data['total_ventas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as ventas_validas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
-                    and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
-            $data['validas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as mal_emitidas
-                    from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
-                    and factura_codigodescripcion != 'VALIDADA'";
-            $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(count(*)>0,count(*),0) as anuladas
-                    from factura
-                    where usuario_id = ".$usuario_id." 
-                    and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
-            $data['anuladas'] = $this->Venta_model->consultar($sql);
+    $this->load->model('Tipo_transaccion_model');
+    $this->load->model('Usuario_model');
+    $this->load->model('Moneda_model');
 
-            //********************************************************************
-            
-            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
-                    FROM consreporte c
-                    WHERE
-                    c.usuario_id = {$usuario_id} and (c.fecha >= '{$fecha1}' and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}') 
-                    GROUP BY c.operacion,c.forma,c.transaccion,c.banco
-                    ORDER BY orden";
-            //echo $sql;
-            $data['transacciones'] = $this->Venta_model->consultar($sql);
-            
-            $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
-                    where usuario_id = {$usuario_id} and venta_fecha >= '{$fecha1}' and CONCAT(venta_fecha, ' ', venta_hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}'";
+    $caja = $this->Caja_model->get_caja_por_id($caja_id);
 
-            $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
-                    
-//
-//                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
-//                    $valfecha1 = $fecha1;
-//                    $valfecha2 = $fecha2;
-//                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
-//                    $valfecha1 = $fecha1;
-//                    $valfecha2 = $fecha1;
-//                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
-//                    $valfecha1 = $fecha2;
-//                    $valfecha2 = $fecha2;
-//                }else{
-//                    $fecha1 = null;
-//                    $fecha2 = null;
-//                }
-//
-//                if($usuario >  0){
-//                    $usuario_id = $usuario;
-//                }else{
-//                    $usuario_id = 0;
-//                }
-//                
-//                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
-//                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
-//            
-            
-            //********************************************************************
-            //$data['_view'] = 'reportes/reportecaja';
-            $data['_view'] = 'reportes/reportecajares';
-            $this->load->view('layouts/main',$data);
-        //}
+    if ($caja == null) {
+        show_error('No se encontró la caja solicitada.');
+        return;
     }
+
+    $fecha1 = $caja["caja_fechaapertura"];
+    $hora1  = $caja["caja_horaapertura"];
+    $fecha2 = $caja["caja_fechacierre"];
+    $hora2  = $caja["caja_horacierre"];
+
+    $usuario_id = $caja["usuario_id"];
+
+    $data['page_title'] = "Reporte Cierre de Caja";
+
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+    $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+    $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+    $data['usuario_caja'] = $this->Usuario_model->get_usuario($usuario_id);
+    $data['parametro'] = $this->parametros;
+
+    $data['moneda'] = $this->Moneda_model->get_moneda(1);
+    $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+
+    $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fechahora(
+        $usuario_id,
+        $fecha1,
+        $hora1,
+        $fecha2,
+        $hora2
+    );
+
+    $data['caja'] = $caja;
+
+    $data['efectivo'] = $this->Venta_model->Consultar("
+        SELECT *
+        FROM caja
+        WHERE usuario_id = {$usuario_id}
+        AND caja_fechacierre = '{$caja["caja_fechacierre"]}'
+        ORDER BY caja_id ASC
+    ");
+
+    $data['bitacora'] = $this->Caja_model->get_caja_id(
+        is_numeric($caja["caja_id"]) ? $caja["caja_id"] : 0
+    );
+
+    $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
+
+    $rango_inicio = "{$fecha1} {$hora1}";
+    $rango_fin    = "{$fecha2} {$hora2}";
+
+    $sql = "
+        SELECT 
+            MIN(factura_id) AS desde,
+            MAX(factura_id) AS hasta,
+            IFNULL(MAX(factura_id) - MIN(factura_id), 0) AS ventas
+        FROM factura
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(factura_fecha, ' ', factura_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+    ";
+    $data['resumen'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT COUNT(*) AS total_ventas
+        FROM factura
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(factura_fecha, ' ', factura_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+    ";
+    $data['total_ventas'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT COUNT(*) AS ventas_validas
+        FROM factura
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(factura_fecha, ' ', factura_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+        AND estado_id = 1
+        AND factura_codigodescripcion = 'VALIDADA'
+    ";
+    $data['validas'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT COUNT(*) AS mal_emitidas
+        FROM factura
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(factura_fecha, ' ', factura_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+        AND factura_codigodescripcion != 'VALIDADA'
+    ";
+    $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT COUNT(*) AS anuladas
+        FROM factura
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(factura_fecha, ' ', factura_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+        AND estado_id <> 1
+        AND factura_codigodescripcion = 'VALIDADA'
+    ";
+    $data['anuladas'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT 
+            c.operacion,
+            c.forma,
+            c.transaccion,
+            c.banco,
+            IF(SUM(c.ingresos) > 0, SUM(c.ingresos), 0) AS ingresos,
+            IFNULL(SUM(c.precio), 0) - IFNULL(SUM(c.ingresos), 0) AS transferencias,
+            IF(SUM(c.egresos) > 0, SUM(c.egresos), 0) AS egresos
+        FROM consreporte c
+        WHERE c.usuario_id = {$usuario_id}
+        AND CONCAT(c.fecha, ' ', c.hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+        GROUP BY 
+            c.operacion,
+            c.forma,
+            c.transaccion,
+            c.banco
+        ORDER BY c.orden
+    ";
+    $data['transacciones'] = $this->Venta_model->consultar($sql);
+
+    $sql = "
+        SELECT IFNULL(SUM(venta_descuento), 0) AS descuentos
+        FROM venta
+        WHERE usuario_id = {$usuario_id}
+        AND CONCAT(venta_fecha, ' ', venta_hora) 
+            BETWEEN '{$rango_inicio}' AND '{$rango_fin}'
+    ";
+    $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
+
+    $data['_view'] = 'reportes/reportecajares';
+
+    $this->load->view('layouts/main', $data);
+}
     
+//        function reportecajaid($caja_id)
+//        {
+//            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+//            $data['sistema'] = $this->sistema;
+//            //if($this->acceso(156)){
+//                $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+//                $this->load->model('Tipo_transaccion_model');
+//                //$usuario_id = $this->session_data['usuario_id']; 
+//
+//                //Filtramos los datos de la caja seleccionada en base al ID
+//                $caja = $this->Caja_model->get_caja_por_id($caja_id); 
+//                //*******************************************************                
+//                    $fecha1 = $caja["caja_fechaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
+//                    $hora1 = $caja["caja_horaapertura"];  //date("Y-m-d"); //$this->input->post('fecha1');   
+//
+//                    $fecha2 = $caja["caja_fechacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
+//                    $hora2 = $caja["caja_horacierre"];  //date("Y-m-d"); //$this->input->post('fecha2');             
+//
+//                    $usuario = $caja["usuario_id"]; 
+//                    $usuario_id = $caja["usuario_id"]; 
+//    //                $valfecha1 = "";
+//    //                $valfecha2 = "";
+//                    //$usuario_id = "";
+//
+//                //*******************************************************
+//
+//
+//                $data['page_title'] = "Reporte Cierre de Caja";
+//
+//                $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+//                $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+//                $this->load->model('Usuario_model');
+//
+//                $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+//                $data['usuario_caja'] = $this->Usuario_model->get_usuario($usuario_id);
+//                $data['parametro'] = $this->parametros;
+//
+//                $this->load->model('Moneda_model');
+//                $data['moneda'] = $this->Moneda_model->get_moneda(1); //Obtener moneda extragera
+//                $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+//
+//    //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
+//    //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
+//                $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fechahora($usuario_id,$fecha1,$hora1, $fecha2, $hora2);
+//    //            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
+//
+//                //$caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+//
+//                $data['caja'] = $caja;
+//
+//                //Filtra las cajas que el usuario cerro en una sola fecha
+//                $data['efectivo'] = $this->Venta_model->Consultar("select * from caja where usuario_id = {$caja["usuario_id"]} and caja_fechacierre = '{$caja["caja_fechacierre"]}' order by caja_id asc");
+//
+//
+//                if ($caja!==null){
+//
+//                    $bitacora = $this->Caja_model->get_caja_id(is_numeric($caja["caja_id"])?$caja["caja_id"]:0);
+//                }else
+//                    $bitacora = null;
+//
+//                $data['bitacora'] = $bitacora;
+//
+//                $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
+//
+//                $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
+//                        MAX(factura_id)-MIN(factura_id) as ventas from factura
+//                        where usuario_id = $usuario_id and factura_fecha = date({$now})";
+//                $data['resumen'] = $this->Venta_model->consultar($sql);
+//
+//                $sql = "select if(count(*)>0,count(*),0) as total_ventas
+//                        from factura
+//                        where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
+//                $data['total_ventas'] = $this->Venta_model->consultar($sql);
+//
+//                $sql = "select if(count(*)>0,count(*),0) as ventas_validas
+//                        from factura
+//                        where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
+//                        and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
+//                $data['validas'] = $this->Venta_model->consultar($sql);
+//
+//                $sql = "select if(count(*)>0,count(*),0) as mal_emitidas
+//                        from factura
+//                        where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
+//                        and factura_codigodescripcion != 'VALIDADA'";
+//                $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
+//
+//                $sql = "select if(count(*)>0,count(*),0) as anuladas
+//                        from factura
+//                        where usuario_id = ".$usuario_id." 
+//                        and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+//                $data['anuladas'] = $this->Venta_model->consultar($sql);
+//
+//                //********************************************************************
+//
+//                $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,if(sum(ingresos)>0,sum(ingresos),0) AS ingresos,if(sum(egresos)>0,sum(egresos),0) AS egresos
+//                        FROM consreporte c
+//                        WHERE
+//                        c.usuario_id = {$usuario_id} and (c.fecha >= '{$fecha1}' and CONCAT(c.fecha, ' ', c.hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}') 
+//                        GROUP BY c.operacion,c.forma,c.transaccion,c.banco
+//                        ORDER BY orden";
+//                //echo $sql;
+//                $data['transacciones'] = $this->Venta_model->consultar($sql);
+//
+//                $sql = "select if(sum(venta_descuento)>0, sum(venta_descuento),0) as descuentos from venta
+//                        where usuario_id = {$usuario_id} and venta_fecha >= '{$fecha1}' and CONCAT(venta_fecha, ' ', venta_hora) BETWEEN '{$fecha1} {$hora1}' AND '{$fecha2} {$hora2}'";
+//
+//                $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
+//
+//    //
+//    //                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+//    //                    $valfecha1 = $fecha1;
+//    //                    $valfecha2 = $fecha2;
+//    //                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+//    //                    $valfecha1 = $fecha1;
+//    //                    $valfecha2 = $fecha1;
+//    //                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+//    //                    $valfecha1 = $fecha2;
+//    //                    $valfecha2 = $fecha2;
+//    //                }else{
+//    //                    $fecha1 = null;
+//    //                    $fecha2 = null;
+//    //                }
+//    //
+//    //                if($usuario >  0){
+//    //                    $usuario_id = $usuario;
+//    //                }else{
+//    //                    $usuario_id = 0;
+//    //                }
+//    //                
+//    //                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
+//    //                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
+//    //            
+//
+//                //********************************************************************
+//                //$data['_view'] = 'reportes/reportecaja';
+//                $data['_view'] = 'reportes/reportecajares';
+//                $this->load->view('layouts/main',$data);
+//            //}
+//        }
+
     function reportecajadmin()
     {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}

@@ -2503,8 +2503,8 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             between: {
-                'default': 'Please enter a value between %s and %s',
-                notInclusive: 'Please enter a value between %s and %s strictly'
+                'default': 'Por favor ingrese un valor entre %s y %s',
+                notInclusive: 'Por favor ingrese un valor entre %s y %s strictly'
             }
         }
     });
@@ -4001,8 +4001,8 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             greaterThan: {
-                'default': 'Please enter a value greater than or equal to %s',
-                notInclusive: 'Please enter a value greater than %s'
+                'default': 'Por favor ingrese un valor mayor o igual a %s',
+                notInclusive: 'Por favor ingrese un valor mayor a %s'
             }
         }
     });
@@ -6393,8 +6393,8 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             lessThan: {
-                'default': 'Please enter a value less than or equal to %s',
-                notInclusive: 'Please enter a value less than %s'
+                'default': 'Por favor ingrese un valor menor o igual a %s',
+                notInclusive: 'Por favor ingrese un valor menor que %s'
             }
         }
     });
@@ -6586,7 +6586,7 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             notEmpty: {
-                'default': 'Please enter a value'
+                'default': 'Por favor ingrese el valor requerido'
             }
         }
     });
@@ -6895,7 +6895,7 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             regexp: {
-                'default': 'Please enter a value matching the pattern'
+                'default': 'Por favor ingrese un valor similar al ejemplo'
             }
         }
     });
@@ -7347,10 +7347,10 @@ if (typeof jQuery === 'undefined') {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             stringLength: {
-                'default': 'Please enter a value with valid length',
-                less: 'Please enter less than %s characters',
-                more: 'Please enter more than %s characters',
-                between: 'Please enter value between %s and %s characters long'
+                'default': 'Por favor ingrese un valor con una longitud válida',
+                less: 'Por favor ingrese menos de %s caracteres',
+                more: 'Por favor ingrese más de %s caracteres',
+                between: 'Por favor ingrese un valor entre %s y %s caracteres de longitud'
             }
         }
     });

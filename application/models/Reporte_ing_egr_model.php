@@ -400,17 +400,17 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
           
           $sql = "select * from
-                    ((select c.forma,c.transaccion, c.banco, sum(c.`ingresos`) as ingresos, 0 as egresos,c.forma_id,c.tipotrans_id, 1 as tipo
+                    ((select c.forma,c.transaccion, c.banco, sum(c.`ingresos`) as ingresos, sum(transferencia) as transferencias, 0 as egresos,c.forma_id,c.tipotrans_id, 1 as tipo
 
                     from consreporte c
-                    where concat(c.fecha,' ',c.hora) >= concat('{$fecha1}',' ','{$hora1}') and concat(c.fecha,' ',c.hora)<=concat('{$fecha2}',' ','{$hora2}') and c.ingresos>0 $cadusuario1
+                    where concat(c.fecha,' ',c.hora) >= concat('{$fecha1}',' ','{$hora1}') and concat(c.fecha,' ',c.hora)<=concat('{$fecha2}',' ','{$hora2}')  $cadusuario1
 
                     group by c.tipotrans_id, c.forma_id, c.banco_id
                     order by forma_id)
 
                     UNION
 
-                    (select c.forma,c.transaccion, c.banco, 0 as ingresos, sum(c.`egresos`) as egresos,c.forma_id,c.tipotrans_id, 2 as tipo
+                    (select c.forma,c.transaccion, c.banco, 0 as ingresos, 0 as transferencias, sum(c.`egresos`) as egresos,c.forma_id,c.tipotrans_id, 2 as tipo
                     from consreporte c
                     where concat(c.fecha,' ',c.hora) >= concat('{$fecha1}',' ','{$hora1}') and concat(c.fecha,' ',c.hora)<=concat('{$fecha2}',' ','{$hora2}') and c.egresos>0 $cadusuario1
 
@@ -419,7 +419,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
                     order by tipo,forma_id, tipotrans_id asc";        
 
-          
+          //echo $sql;
           $totales = $this->db->query($sql)->result_array();
           
           

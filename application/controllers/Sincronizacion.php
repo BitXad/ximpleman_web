@@ -114,7 +114,6 @@ class Sincronizacion extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 $data['dosificacion'] = $dosificacion;
-                
                 $data['_view'] = 'sincronizacion/productos_servicios';
                 break;
             case 7:
@@ -150,7 +149,7 @@ class Sincronizacion extends CI_Controller{
                 $data['_view'] = 'sincronizacion/metodo_pago';
                 break;
             case 15:
-                $data['datos'] = $this->Moneda_model->get_all_moneda();
+                $data['datos'] = $this->Sincronizacion_model->get_all_monedas();
                 $data['_view'] = 'sincronizacion/moneda';
                 break;
             case 16:
@@ -181,6 +180,7 @@ class Sincronizacion extends CI_Controller{
             
             static $array;
             $sincronizacion_id = $this->input->post('codigo_sincronizar');
+            
             if(!isset($array['dosificacion'])){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -358,6 +358,8 @@ class Sincronizacion extends CI_Controller{
                 
                 if(isset($listaActividades->codigoCaeb)){
                     
+                    $this->Actividad_model->truncate_activities();
+                    
                     $params = array(
                         'actividad_codigocaeb' => $listaActividades->codigoCaeb,
                         'actividad_descripcion' => $listaActividades->descripcion,
@@ -523,8 +525,10 @@ class Sincronizacion extends CI_Controller{
             $transaccion = $resultados->RespuestaListaActividadesDocumentoSector->transaccion;
 
             if($transaccion){
+                
                 $listaActividadesDocumentoSector = $resultados->RespuestaListaActividadesDocumentoSector->listaActividadesDocumentoSector;
                 $this->ActividadDocumentoSector_model->truncate_table();
+                
                 foreach ($listaActividadesDocumentoSector as $actDocSec) {
                     $params = array(
                         'actdocsec_codigoactividad' => $actDocSec->codigoActividad,
@@ -1244,22 +1248,63 @@ class Sincronizacion extends CI_Controller{
         $codigo_producto = $this->input->post("codigo_producto");
         $categoria_id = $this->input->post("categoria_id");
         $unidad_id = $this->input->post("unidad_id");
+        $select_aplicacion = $this->input->post("select_aplicacion");
         
         //Eliminamos la tabla sincronizacion
-        if ($categoria_id == 0){
-            $sql = "update producto set
-                    producto_codigosin = {$codigo_producto},
-                    producto_codigounidadsin = {$unidad_id},
-                    producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})";   
-            
-        }else{
-            $sql = "update producto set 
-                    producto_codigosin = {$codigo_producto},
-                    producto_codigounidadsin = {$unidad_id},
-                    producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})                        
-                    where categoria_id = {$categoria_id}";
-            
+        
+        if($select_aplicacion == 1){ //Ambos categorias y productos
+
+            if ($categoria_id == 0){ // Si es a todas las categorias
+
+                $sql = "update producto set 
+                        producto_codigosin = {$codigo_producto},
+                        producto_codigounidadsin = {$unidad_id},
+                        producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})";
+
+            }else{ //Sino una categoria especifica
+
+                $sql = "update producto set 
+                        producto_codigosin = {$codigo_producto},
+                        producto_codigounidadsin = {$unidad_id},
+                        producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})                        
+                        where categoria_id = {$categoria_id}";
+            }
         }
+        
+        if($select_aplicacion==2){ //Ambos categorias y productos
+
+            if ($categoria_id == 0){ // Si es a todas las categorias
+
+                $sql = "update producto set 
+                        producto_codigosin = {$codigo_producto}";
+
+            }else{ //Sino una categoria especifica
+
+                $sql = "update producto set 
+                        producto_codigosin = {$codigo_producto}
+                        where categoria_id = {$categoria_id}";
+            }
+        }
+        
+        if($select_aplicacion==3){ //Solo unidades
+
+            if ($categoria_id == 0){ // Si es a todas las categorias
+
+                    $sql = "update producto set                            
+                            producto_codigounidadsin = {$unidad_id},
+                            producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})";
+
+            }else{ //Sino una categoria especifica
+
+                $sql = "update producto set 
+                        producto_codigounidadsin = {$unidad_id},
+                        producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})
+                        where categoria_id = {$categoria_id}";
+            }
+
+        }
+        
+        //echo $sql;
         $this->Venta_model->ejecutar($sql);
         
         
@@ -1362,5 +1407,126 @@ class Sincronizacion extends CI_Controller{
     }
     
     //function 
+    public function cambiar_estado_todos_forma_pago()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $estado_id = $this->input->post('estado_id');
+
+            if ($estado_id != 1 && $estado_id != 2) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Estado no válido'
+                ]);
+                return;
+            }
+
+            $this->load->model('Sincronizacion_model');
+
+            $ok = $this->Sincronizacion_model->cambiar_estado_todos_forma_pago($estado_id);
+
+            echo json_encode([
+                'success' => $ok ? true : false,
+                'message' => $ok ? 'Estados actualizados correctamente' : 'No se pudo actualizar'
+            ]);
+        } else {
+            show_404();
+        }
+    }    
+    
+    public function cambiar_estado_forma_pago()
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+            return;
+        }
+
+        $forma_id = (int)$this->input->post('forma_id');
+        $estado_id = (int)$this->input->post('estado_id');
+
+        if ($forma_id <= 0 || !in_array($estado_id, [1, 2])) {
+            echo json_encode([
+                'success' => false,
+                'mensaje' => 'Datos inválidos'
+            ]);
+            return;
+        }
+
+        $this->load->model('Sincronizacion_model');
+
+        $ok = $this->Sincronizacion_model->cambiar_estado_forma_pago($forma_id, $estado_id);
+
+        echo json_encode([
+            'success' => $ok ? true : false,
+            'estado' => $ok ? 'ok' : 'error',
+            'estado_id' => $estado_id,
+            'estado_descripcion' => $estado_id == 1 ? 'ACTIVO' : 'INACTIVO',
+            'mensaje' => $ok ? 'Actualizado correctamente' : 'No se pudo actualizar'
+        ]);
+    }
+
+
+    public function cambiar_estado_todos_moneda()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $estado_id = (int)$this->input->post('estado_id');
+
+            if (!in_array($estado_id, array(1, 2))) {
+                echo json_encode(array(
+                    'success' => false,
+                    'estado' => 'error',
+                    'mensaje' => 'Estado no válido'
+                ));
+                return;
+            }
+
+            $ok = $this->Sincronizacion_model->cambiar_estado_todos_moneda($estado_id);
+            $estado = $this->Sincronizacion_model->get_estado_moneda($estado_id);
+
+            echo json_encode(array(
+                'success' => $ok ? true : false,
+                'estado' => $ok ? 'ok' : 'error',
+                'estado_id' => $estado_id,
+                'estado_descripcion' => $estado['estado_descripcion'],
+                'total' => $this->Sincronizacion_model->contar_monedas(),
+                'mensaje' => $ok ? 'Estados actualizados correctamente' : 'No se pudo actualizar'
+            ));
+        } else {
+            show_404();
+        }
+    }
+
+    public function cambiar_estado_moneda()
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+            return;
+        }
+
+        $moneda_id = (int)$this->input->post('moneda_id');
+        $estado_id = (int)$this->input->post('estado_id');
+
+        if ($moneda_id <= 0 || !in_array($estado_id, array(1, 2))) {
+            echo json_encode(array(
+                'success' => false,
+                'estado' => 'error',
+                'mensaje' => 'Datos inválidos'
+            ));
+            return;
+        }
+
+        $ok = $this->Sincronizacion_model->cambiar_estado_moneda($moneda_id, $estado_id);
+        $estado = $this->Sincronizacion_model->get_estado_moneda($estado_id);
+
+        echo json_encode(array(
+            'success' => $ok ? true : false,
+            'estado' => $ok ? 'ok' : 'error',
+            'estado_id' => $estado_id,
+            'estado_descripcion' => $estado['estado_descripcion'],
+            'mensaje' => $ok ? 'Actualizado correctamente' : 'No se pudo actualizar'
+        ));
+    }
+
 }
 ?>

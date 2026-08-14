@@ -153,6 +153,7 @@ function mostrar_ocultar(){
         </div>        
         
       <h4 class="panel-title">
+          
         <?php if(sizeof($dosificacion)>0){ ?>
           <input type="checkbox" id="facturado" value="1" name="facturado">
         <?php } else{ ?>

@@ -12,39 +12,102 @@ class Verificar extends CI_Controller
         $this->load->model('login_model');
         $this->load->model('rol_model');
         $this->load->model('Dosificacion_model');
+        $this->load->model('Venta_model');
     }
 
     function index()
     {
-        $username = $this->input->post('username');
-        $clave = $this->input->post('password');
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
+        $username  = $this->input->post('username');
+        $clave     = $this->input->post('password');
+        $latitud   = $this->input->post('latitud');
+        $longitud  = $this->input->post('longitud');
+        $dispositivo = $this->input->post('dispositivo');
+        $user_agent  = $this->input->post('user_agent');
 
-        $result = $this->login_model->login2($username,$clave );
-/*        print "<pre>";
-        print_r( $result);
-        print "</pre>";*/
-        //var_dump($result);
+        if (
+            $latitud === '' || 
+            $longitud === '' || 
+            !is_numeric($latitud) || 
+            !is_numeric($longitud) ||
+            $latitud < -90 || $latitud > 90 ||
+            $longitud < -180 || $longitud > 180
+        ) {
+            $latitud = 0;
+            $longitud = 0;
+        } else {
+            $latitud = (float)$latitud;
+            $longitud = (float)$longitud;
+        }
+        
+        
+        //Obtener IP y Dispositivo
+        $this->load->library('user_agent');
 
-        if ($result) {
+        $ip = $this->input->ip_address();
+        if ($ip == '::1') {
+            $ip = '127.0.0.1';
+        }
+        $user_agent = $this->input->user_agent();
+
+        if ($this->agent->is_mobile()) {
+            $dispositivo = "Móvil ".$dispositivo;
+        } else {
+            $dispositivo = "PC ".$dispositivo;
+        }
+
+        $browser = $this->agent->browser();
+        $platform = $this->agent->platform();
+
+        $detalle = $browser . " - " . $platform.", IP:".$ip;
+        
+        //Fin Obtener IP y Dispositivo
+        
+        
+        $result = $this->login_model->login2($username, $clave);
+
+        if ($result) {//Si el usuario y contraseña son correctos
+        
+            //eliminamos datos de sesiones antiguas
+            $sql = "DELETE FROM ci_session 
+                    WHERE DATE(FROM_UNIXTIME(timestamp)) < DATE(NOW())";
+            $this->Venta_model->ejecutar($sql);
             
+            
+            //**************** bitacora caja
+            $bitacoracaja_evento = "INGRESO A SISTEMA, USUARIO: ".$result->usuario_nombre." | DOSPOSITIVO/IP: ".$detalle;
+            $bitacoracaja_tipo = 5;
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                    ",'".$bitacoracaja_evento."',".$result->usuario_id.",{$latitud},{$longitud},".$bitacoracaja_tipo.",0)";
+
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja
+            
+            
+
             if ($result->tipousuario_id >= 1 && $result->tipousuario_id <= 100) {
-                
+
                 $this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');
+
                 $thumb = "thumb_default.jpg";
                 $usuario_imagen = "default.jpg";
-                
-                if ($result->usuario_imagen <> null && $result->usuario_imagen <> "") {
+
+                if ($result->usuario_imagen <> null && $result->usuario_imagen <> "") { 
                     $thumb = "thumb_".$result->usuario_imagen;
                     $usuario_imagen = $result->usuario_imagen;
-                    //$thumb = $this->foto_thumb($result->usuario_imagen);
                 }
+
                 $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
                 $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
+
                 $this->load->model('Parametro_model');
                 $parametro = $this->Parametro_model->get_parametro($result->parametro_id);
                 $parametro = [$parametro];
-                
+
                 $sess_array = array(
                     'usuario_login' => $result->usuario_login,
                     'usuario_id' => $result->usuario_id,
@@ -60,144 +123,137 @@ class Verificar extends CI_Controller
                     'rol' => $rolusuario,
                     'puntoventa_codigo' => $result->puntoventa_codigo,
                     'codigo' => $this->get_codigo_empresa(),
-                    'pedido_titulo' => $parametro[0]["parametro_pedidotitulo"]
+                    'pedido_titulo' => $parametro[0]["parametro_pedidotitulo"],
+
+                    // nuevos datos
+                    'latitud' => $latitud,
+                    'longitud' => $longitud,
+                    'dispositivo' => $dispositivo,
+                    'user_agent' => $user_agent
                 );
-                
+
                 $this->session->set_userdata('logged_in', $sess_array);
+
+                // aquí puedes registrar el intento de acceso si quieres
+                // ejemplo:
+                /*
+                $data_log = array(
+                    'usuario_id'    => $result->usuario_id,
+                    'latitud'       => $latitud,
+                    'longitud'      => $longitud,
+                    'dispositivo'   => $dispositivo,
+                    'user_agent'    => $user_agent,
+                    'ip'            => $this->input->ip_address(),
+                    'fecha'         => date('Y-m-d'),
+                    'hora'          => date('H:i:s')
+                );
+                $this->db->insert('login_log', $data_log);
+                */
+
                 $session_data = $this->session->userdata('logged_in');
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
                 $dosificacion = $this->db->query($dosif)->row_array();
-                
-                
-                
-                
-                
-                
-                //print "<pre>"; print_r( $session_data); print "</pre>";
+
                 if($parametro[0]["parametro_tiposistema"] == 1){
-                    
-                    if ($session_data['tipousuario_id'] == 1) {// admin page
-                        
+
+                    if ($session_data['tipousuario_id'] == 1) {
+
                         if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                            redirect('alerta/dosificacion'); 
+                            redirect('alerta/dosificacion');
                         }
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
                             redirect('admin/dashb');
                         }
-                        
-                    }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
-                        
+
+                    }elseif($session_data['tipousuario_id'] == 7){
+
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
                             redirect('detalle_venta/recepcion');
                         }
-                        //redirect('reportes/ventacategoriap');
-                    }else{  // En caso de otro usuario no administrador 
-                        if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                            redirect('alerta/dosificacion'); 
-                        } 
-                       // $this->load->model('Cliente_model'); 
-                        //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
+
+                    }else{
+                        if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
+                            redirect('alerta/dosificacion');
+                        }
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
                             redirect('admin/dashb/index_user');
                         }
                     }
+
                 }else{
-                    
+
                     $tok="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
                     $token = $this->db->query($tok)->row_array();
 
                     $punto_venta = $session_data['puntoventa_codigo'];
-                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";               
+                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";
                     $cuis = $this->db->query($cuissql)->row_array();
-                    
-                    if ($session_data['tipousuario_id'] == 1) {// admin page
-                        
+
+                    if ($session_data['tipousuario_id'] == 1) {
+
                         if (($token['dias']<=5 && $token['dias']!=null)||($cuis['dias']<=5&&$cuis['dias']!=null)) {
-                            redirect('alerta/token'); 
+                            redirect('alerta/token');
                         }
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
                             redirect('admin/dashb');
                         }
-                    }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
+
+                    }elseif($session_data['tipousuario_id'] == 7){
+
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
                             redirect('detalle_venta/recepcion');
                         }
-                        
-                    }else{  // En caso de otro usuario no administrador 
-                        
-                        if (($token['dias']<=5 && $token['dias']!=null)||($cuis['dias']<=5&&$cuis['dias']!=null)) { 
-                            redirect('alerta/token'); 
+
+                    }else{
+
+                        if (($token['dias']<=5 && $token['dias']!=null)||($cuis['dias']<=5&&$cuis['dias']!=null)) {
+                            redirect('alerta/token');
                         }
-                        
+
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{
-                            redirect('admin/dashb/index_user'); 
+                            redirect('admin/dashb/index_user');
                         }
-                        
                     }
-                    
                 }
-                // if($session_data['tipousuario_id'] == 5) { 
-                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                //        redirect('alerta/dosificacion'); 
-                //     } 
-                //    // $this->load->model('Cliente_model'); 
-                //     //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
-                //     redirect('servicio'); 
-                // } 
- 
-                // if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){ 
-                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                //        redirect('alerta/dosificacion'); 
-                //     } 
-                //     redirect('venta/ventas'); 
-                // } 
- 
-                // if($session_data['tipousuario_id'] == 4){ 
-                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                //        redirect('alerta/dosificacion'); 
-                //     } 
-                //     redirect('pedido'); 
-                // } 
- 
-                //  if($session_data['tipousuario_id'] == 6){ 
-                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                //        redirect('alerta/dosificacion'); 
-                //     } 
-                //     redirect('factura'); 
-                // } 
- 
-                //  if($session_data['tipousuario_id'] == 7){ 
-                //     redirect('detalle_venta/recepcion'); 
-                // } 
-                // if($session_data['tipousuario_id'] == 8){ 
-                //     redirect('venta/ventas'); 
-                // } 
- 
- 
-            } else { 
-            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">TIPO DE USUARIO no es valido</div>');
+
+            } else {
+                $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">TIPO DE USUARIO no es valido</div>');
                 redirect('login');
             }
 
-        }
-        else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO o CONTRASEÑA no son validos  </div>');
+        } else {
+            
+                        
+            
+            //**************** bitacora caja
+            $bitacoracaja_evento = "INTENTO DE ACCESO A SISTEMA, USUARIO: {$username} CONTRASEÑA: {$clave} | DOSPOSITIVO: ".$detalle;
+            $bitacoracaja_tipo = 6;
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                    ",'".$bitacoracaja_evento."',1,{$latitud},{$longitud},".$bitacoracaja_tipo.",0)";
+
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja
+            
+            
+            
+            
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO o CONTRASEÑA no son validos</div>');
             redirect('login');
         }
-
-        // }
     }
 
     /*public function foto_thumb($foto)

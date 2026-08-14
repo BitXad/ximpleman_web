@@ -120,8 +120,8 @@
             </div>
             <div class="box-body table-responsive no-print" style="<?= ($tipousuario_id == 1) ? '' : (($control_ubicacion['estado_id'] == 26) ? 'display: none' : '') ?>" >
 <!--                <button class="btn btn-success" onclick="guardar(<?= $controli_id ?>)">Guardar</button> anterior..revisar la funcion guardar-->
-                <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-success">Guardar</a>
-                <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-danger">Cancelar</a>
+                <button type="button" id="boton_finalizar" class="btn btn-facebook" data-toggle="modal" data-target="#modal_finalizarconteo" ><fa class="fa fa-floppy-o"></fa> Finalizar Ajuste</button>
+                <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-danger"><fa class="fa fa-times"></fa> Cerrar</a>
             </div>
         </div>
             
@@ -202,5 +202,46 @@
         </div>
     </div>
 </div>
+
+<!------------------------ INICIO modal finalizar ------------------->
+<div class="modal fade" id="modal_finalizarconteo" tabindex="-1" role="dialog" aria-labelledby="modal_finalizarconteo">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            
+            <div class="modal-header text-center" style="background: lightgray;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">FINALIZAR AJUSTE DE INVENTARIO</span>
+            </div>
+            
+            <div class="modal-body">
+                <center style="font-size: 16pt; color: red;">
+                    <fa class="fa fa-warning"></fa> ADVERTENCIA
+                </center>
+                
+                
+              <div class="col-md-12"><span class="text-danger">*</span> Finalizará el conteo, y se igualará a CERO los items faltantes</div>  
+              <div class="col-md-12"><span class="text-danger">*</span>Al Finalizar, esta aceptando que ya se realizó el conteo de todo el producto existente </div>  
+              <!--<div class="col-md-12"><label for="elcorreo" class="control-label"><span class="text-danger">*</span>Correo</label> </div>-->  
+                
+            </div>
+            
+            <div class="modal-footer text-center">
+                <br>
+                <br>
+                <div class="modal-footer" style="text-align: center">
+                    <a class="btn btn-success" onclick="finalizar_ajuste()"><span class="fa fa-envelope"></span> Finalizar</a>
+                    <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                </div>
+                
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal finalizar ------------------->
+
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?= base_url('resources/js/ubicacion_producto.js') ?>" type="text/javascript"></script>
+

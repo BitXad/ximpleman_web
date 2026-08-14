@@ -458,3 +458,28 @@ function buscar_producto(e,opcion) {
         
  
 }
+
+
+function finalizar_ajuste(){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url + 'ubicacion_producto/finalizar_conteo';
+    
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {},
+        success: function(result){   
+
+            result = JSON.parse(result);
+
+            if(result){
+                alert("Se finalizó el conteo..!");
+                window.location.href = base_url + 'control_inventario';
+            }
+        },
+        error: function(){
+            alert("Algo salió mal");
+        }
+    });
+}

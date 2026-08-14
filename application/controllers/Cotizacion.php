@@ -545,5 +545,62 @@ class Cotizacion extends CI_Controller{
         echo json_encode($sql);
         
     }
+
+    function clonar_cotizacion(){
+        
+        
+        if ($this->input->is_ajax_request()) {  
+        
+            $cotizacion_id = $this->input->post('cotizacion_id');
+
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];   
+
+            $cotizacion_idnuevo = $cotizacion_id + 1;
+
+            $sql = "
+            INSERT INTO cotizacion(
+                cotizacion_fecha,
+                cotizacion_validez,
+                cotizacion_formapago,
+                cotizacion_tiempoentrega,
+                cotizacion_fechahora,
+                cotizacion_total,
+                cotizacion_glosa,
+                usuario_id,
+                cotizacion_cliente,
+                cotizacion_lugarentrega,
+                cotizacion_chequenombre
+            )
+            SELECT
+                cotizacion_fecha,
+                cotizacion_validez,
+                cotizacion_formapago,
+                cotizacion_tiempoentrega,
+                NOW(),
+                cotizacion_total,
+                cotizacion_glosa,
+                usuario_id,
+                cotizacion_cliente,
+                cotizacion_lugarentrega,
+                cotizacion_chequenombre
+            FROM cotizacion
+            WHERE cotizacion_id = {$cotizacion_id}
+            ";
+
+            $this->Cotizacion_model->ejecutar($sql);
+
+            $cotizacion_idnuevo = $this->db->insert_id();
+            
+            $sql = "insert into detalle_cotizacion(
+                        detallecot_descripcion, detallecot_precio, detallecot_cantidad, detallecot_descuento, detallecot_subtotal, detallecot_descglobal, detallecot_total, detallecot_caracteristica, producto_id, cotizacion_id
+                    )                      
+                    (select detallecot_descripcion, detallecot_precio, detallecot_cantidad, detallecot_descuento, detallecot_subtotal, detallecot_descglobal, detallecot_total, detallecot_caracteristica, producto_id, {$cotizacion_idnuevo} from detalle_cotizacion where cotizacion_id = {$cotizacion_id})";
+            $this->Cotizacion_model->ejecutar($sql);
+            
+            echo json_encode($cotizacion_idnuevo);
+        }
+        
+    }
     
 }

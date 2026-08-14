@@ -353,7 +353,7 @@ border-bottom : 1px solid #aaa;
         
         <?php 
         
-            if($sistema["sistema_modulopedidos"]=="PEDIDOS"){
+        if($parametro[0]["parametro_modulorestaurante"]==0){
                 
             
         ?>
@@ -390,7 +390,7 @@ border-bottom : 1px solid #aaa;
         </tr>
         
     <?php }else{ 
-        if($sistema["sistema_modulopedidos"]=="RESTAURANTE"){ ?>
+        if($parametro[0]["parametro_modulorestaurante"]==1){ ?>
         <tr>    
             <td  style="padding: 0" colspan="4">
             <center>DATOS PARA SU FACTURA</center>

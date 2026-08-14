@@ -1302,6 +1302,7 @@ class Orden_compra extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
+            
             $data['orden_compra'] = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
             //$data['all_ordencompra'] = $this->Orden_compra_model->get_detalleoc_aux($ordencompra_id);
             
@@ -1326,8 +1327,10 @@ class Orden_compra extends CI_Controller{
     {
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
+                
                 $ordencompra_id = $this->input->post('ordencompra_id');
                 $datos = $this->Orden_compra_model->get_detalleoc_aux($ordencompra_id);
+                
                 echo json_encode($datos);
             }else{                 
                 show_404();

@@ -1,3 +1,86 @@
+
+
+function solicitudCufd(punto_venta = 0) {
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + 'dosificacion/cufd';
+
+    var opcion = confirm(
+        "Está a punto de generar el C.U.F.D. para el PUNTO DE VENTA " +
+        punto_venta +
+        ", el cual reemplazará el existente...!\n¿Desea Continuar?"
+    );
+
+    if (opcion !== true) {
+        return;
+    }
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        dataType: "json",
+        data: {
+            punto_venta: punto_venta
+        },
+        success: function (datos) {
+
+            let registros = datos.respuesta;
+            let lafalla = datos.falla;
+
+            if (lafalla !== "" && lafalla !== null) {
+                alert(
+                    "No se pudo generar el C.U.F.D.\n\n" +
+                    "Respuesta: " + JSON.stringify(registros) + "\n\n" +
+                    "Detalle: " + JSON.stringify(lafalla)
+                );
+                return;
+            }
+
+            if (!registros || !registros.RespuestaCufd) {
+                alert("Respuesta inválida del servidor:\n" + JSON.stringify(datos));
+                return;
+            }
+
+            let respuestaCufd = registros.RespuestaCufd;
+
+            let codigo = respuestaCufd.codigo;
+            let codigoControl = respuestaCufd.codigoControl;
+            let direccion = respuestaCufd.direccion;
+            let fechaVigencia = respuestaCufd.fechaVigencia;
+            let transaccion = respuestaCufd.transaccion;
+
+            if (transaccion === true) {
+
+                almacenar_cufd(respuestaCufd, punto_venta);
+
+                $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
+
+                alert("C.U.F.D. generado correctamente.");
+
+            } else {
+                alert("SIAT rechazó la solicitud:\n" + JSON.stringify(respuestaCufd));
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            let mensaje = "Error al comunicarse con el servidor.\n\n";
+
+            mensaje += "Estado: " + textStatus + "\n";
+            mensaje += "Error: " + errorThrown + "\n\n";
+
+            if (jqXHR.responseJSON) {
+                mensaje += JSON.stringify(jqXHR.responseJSON);
+            } else if (jqXHR.responseText) {
+                mensaje += jqXHR.responseText;
+            }
+
+            alert(mensaje);
+        }
+    });
+}
+
+
+/*  antiguo
 function solicitudCufd(punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
@@ -11,39 +94,31 @@ function solicitudCufd(punto_venta=0){
                 data:{punto_venta:punto_venta},
                 success:function(respuesta){
                     var datos = JSON.parse(respuesta);
-                    //var datos =  JSON.parse(registros);
+               
                 let registros = datos['respuesta'];
                 let lafalla = datos['falla']
-                    
-                    /*console.log(registros);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
-                    console.log(registros.RespuestaVerificarNit.transaccion);*/
-                    //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+
                     if(lafalla != ""){
                         alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
                         document.getElementById('loader_revocado').style.display = 'none';
                     }else{
+                        
                     let codigo = registros.RespuestaCufd.codigo;
                     let codigoControl = registros.RespuestaCufd.codigoControl;
                     let direccion = registros.RespuestaCufd.direccion;
                     let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
                     let transaccion = registros.RespuestaCufd.transaccion;
 
-                    //alert(registros);
+
                     if(transaccion == true){
-                       // $("#modal_mensajeadvertencia").modal("show");
+                     
                         almacenar_cufd((registros['RespuestaCufd']),punto_venta);
                     }
                     else{
                         alert(JSON.stringify(registros));
-                        //alert("Algo fallo...!!");
+                
                     }
-                    // document.getElementById('loader_cufd').style.display = 'none';
-                    //alert("hola");
-                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
 
-                    }*/
                     }
 
                 },
@@ -56,6 +131,8 @@ function solicitudCufd(punto_venta=0){
         }); 
     }
 }
+*/ 
+
 
 function solicitudCufds(punto_venta=0, cantidad){
     
@@ -675,6 +752,7 @@ function mostrar_modalregistrarpuntoventa(){
     $("#codigoTipoPuntoVenta").val($("#codigoTipoPuntoVenta option:first").val());
     $("#modalregistrarpventa").modal("show");
 }
+
 function registroPuntoVenta(){
     var codigoTipoPuntoVenta = document.getElementById('codigoTipoPuntoVenta').value;
     var nombrePuntoVenta = document.getElementById('nombrePuntoVenta').value;
@@ -1286,6 +1364,7 @@ function homologar_categoria(){
     var codigo_producto = document.getElementById("codigo_producto").value;
     var categoria_id = document.getElementById("categoria_id").value;
     var unidad_id = document.getElementById("producto_unidad").value;
+    var select_aplicacion = document.getElementById("select_aplicacion").value;
     
     $("#codigo_actividad").val(codigo_actividad);
     $("#codigo_producto").val(codigo_producto);
@@ -1299,7 +1378,7 @@ function homologar_categoria(){
         //document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{codigo_actividad:codigo_actividad, codigo_producto:codigo_producto, categoria_id:categoria_id,unidad_id:unidad_id},
+                data:{codigo_actividad:codigo_actividad, codigo_producto:codigo_producto, categoria_id:categoria_id,unidad_id:unidad_id, select_aplicacion:select_aplicacion},
                 success:function(respuesta){
                     
                     var registros = JSON.parse(respuesta);
@@ -1320,6 +1399,7 @@ function homologar_categoria(){
         }); 
     }
 }
+
 function cargar_datosunidad(unidad_codigo){
     let la_unidad = $("#la_unidad"+unidad_codigo).text();
     $("#unidad_codigo").val(unidad_codigo);

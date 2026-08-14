@@ -29,6 +29,21 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    /*
+     * Get servicio by servicio_id
+     */
+    function get_productos_servicio($servicio_id)
+    {
+        $servicio = $this->db->query("
+            select *
+             from detalle_venta d, producto p
+             where 
+             d.detalleserv_id = ? and
+             d.producto_id = p.producto_id
+        ",array($servicio_id))->result_array();
+
+        return $servicio;
+    }
     
     function get_servicio_id($cliente_id,$servicio_id)
     {

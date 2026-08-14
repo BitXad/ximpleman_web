@@ -273,10 +273,16 @@ class Venta extends CI_Controller{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }
         
-        $mostrar_placa = 12; //Para Documento sector 12 (original)
+        
+        $mostrar_placa = 0; //NO MOSTRAR
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 55)
+        {    
+            $mostrar_placa = 1; //MOSTRA        
+        }
+        
         $data['mostrar_placa'] = $mostrar_placa;
         
-        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 3 || $data['dosificacion'][0]['docsec_codigoclasificador'] == $mostrar_placa){
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 3 || $mostrar_placa == 1 ){
             $sql = "select * from pais order by pais_descripcion";
             $data['paises'] = $this->Venta_model->consultar($sql);
             
@@ -292,7 +298,7 @@ class Venta extends CI_Controller{
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
@@ -318,9 +324,10 @@ class Venta extends CI_Controller{
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
-        $data['empresa_email'] = $this->empresa["empresa_email"];
+        $data['empresa_email'] = $this->empresa["empresa_email"];        
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
-        $data['ventas_guardadas'] = $this->Venta_model->consultar("select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d group by d.codigo_venta");
+        
+        $data['ventas_guardadas'] = $this->Venta_model->get_ventas_guardadas();
         $data['cufd'] = [];
 
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
@@ -341,8 +348,15 @@ class Venta extends CI_Controller{
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
                     $sql = "select * from actividad";
-                    $data['actividades'] = $this->Venta_model->consultar($sql);
+                    $data['actividades'] = $this->Venta_model->consultar($sql);                                       
                     
+                    $dosif="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
+                    $token = $this->db->query($dosif)->row_array();
+                    $data['diasdo'] = $token;
+
+                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";
+                    $cuis = $this->db->query($cuissql)->row_array();
+                    $data['cuis'] = $cuis;                    
 
         }
         
@@ -376,71 +390,108 @@ class Venta extends CI_Controller{
     }
     
     
-    function ventas_pedido($pedido_id)
+    function ventas_pedido($pedido_id=0)
     {    
-        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-        require_once(APPPATH.'controllers/Dosificacion.php');
+            // Validar si no se envió pedido_id o es 0
+                if (empty($pedido_id) || $pedido_id == 0) {
+
+                    $this->session->set_flashdata(
+                        'mensaje',
+                        '<div class="alert alert-warning">
+                            <b>ADVERTENCIA:</b> No especificó ningún Número de pedido, 
+                            se redireccionará a ventas generales.
+                        </div>'
+                    );
+
+                    
+                    
+                //**************** bitacora caja
+
+                 $bitacoracaja_evento = "INTENTE FACTURAR MESA => SIN NUMERO PEDIDO/SIN MESA SELECCIONADA";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",'".$bitacoracaja_evento."'    ,".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja            
+                                
+                    
+                    
+                    redirect('venta/ventas');
+                }
+
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                require_once(APPPATH.'controllers/Dosificacion.php');
+
         
         if($this->acceso(12)){
-            
-        //**************** inicio contenido ***************   
-            
-        $data['pedido'] = $this->Venta_model->Consultar("select * from pedido where pedido_id = {$pedido_id}");
-        $data['sistema'] = $this->sistema;
-        $data['rolusuario'] = $this->session_data['rol'];
-        $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];        
-        $punto_venta = $this->session_data['puntoventa_codigo'];        
 
-        $data['page_title'] = $this->sistema["sistema_moduloventas"];
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        
-        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 23){
-            $data['cliente'] = $this->Venta_model->get_cliente_inicialprevalorada();
-        }else{
-            $data['cliente'] = $this->Venta_model->get_cliente_inicial();
-        }
+                
+                    //**************** inicio contenido ***************   
 
-        $mostrar_placa = 12; //Para Documento sector 12 (original)
-        $data['mostrar_placa'] = $mostrar_placa;
-        
-        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12){
-            $sql = "select * from pais order by pais_descripcion";
-            $data['paises'] = $this->Venta_model->consultar($sql);
-        }
-        
-        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
-        $data['promociones'] = $this->Promocion_model->get_promociones();
-        
-        $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
-        
-        $data['usuario_id'] = $usuario_id;        
-        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
-        $data['tipousuario_id'] = $tipousuario_id;
-//        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
-        $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
-        $data['empresa_email'] = $this->empresa["empresa_email"];
-        $data['almacenes'] = $this->Inventario_model->get_almacenes();
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        
+                    $data['pedido'] = $this->Venta_model->Consultar("select * from pedido where pedido_id = {$pedido_id}");
+                    $data['sistema'] = $this->sistema;
+                    $data['rolusuario'] = $this->session_data['rol'];
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $tipousuario_id = $this->session_data['tipousuario_id'];        
+                    $punto_venta = $this->session_data['puntoventa_codigo'];        
+
+                    $data['page_title'] = $this->sistema["sistema_moduloventas"];
+                    $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+                    $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+
+                    if($data['dosificacion'][0]['docsec_codigoclasificador'] == 23){
+                        $data['cliente'] = $this->Venta_model->get_cliente_inicialprevalorada();
+                    }else{
+                        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+                    }
+
+                    $mostrar_placa = 0; //NO MOSTRAR        
+                    if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 55){
+                        $sql = "select * from pais order by pais_descripcion";
+                        $data['paises'] = $this->Venta_model->consultar($sql);
+                        $mostrar_placa = 1; //MOSTRAR
+                    }
+                    $data['mostrar_placa'] = $mostrar_placa;
+
+                    $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                    $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+                    $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+                    $data['forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
+                    $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+                    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+                    $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
+                    $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                    $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+                    $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+                    $data['promociones'] = $this->Promocion_model->get_promociones();
+
+                    $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
+
+                    $data['usuario_id'] = $usuario_id;        
+                    $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+                    $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+                    $data['tipousuario_id'] = $tipousuario_id;
+            //        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+                    $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
+                    $data['empresa_email'] = $this->empresa["empresa_email"];
+                    $data['almacenes'] = $this->Inventario_model->get_almacenes();
+                    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+
         //Obtener punto de venta
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
-        $data['ventas_guardadas'] = $this->Venta_model->consultar("select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d group by d.codigo_venta");
+        
+
+        $data['ventas_guardadas'] = $this->Venta_model->get_ventas_guardadas();
         $data['cufd'] = [];
 
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
@@ -461,73 +512,58 @@ class Venta extends CI_Controller{
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
                     $sql = "select * from actividad";
-                    $data['actividades'] = $this->Venta_model->consultar($sql);
+                    $data['actividades'] = $this->Venta_model->consultar($sql);                                       
                     
+                    $dosif="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
+                    $token = $this->db->query($dosif)->row_array();
+                    $data['diasdo'] = $token;
+
+                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";
+                    $cuis = $this->db->query($cuissql)->row_array();
+                    $data['cuis'] = $cuis;                    
 
         }
         
-//        
-//        
-//        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-//            
-//           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
-//       
-//
-//                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
-//                    //echo $sql;
-//                    $data['cufd'] = $this->Venta_model->consultar($sql);
-//
-//                    
-//                    $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
-//                            FROM
-//                              inventario i
-//                            WHERE
-//                              i.producto_codigosin = 0 or  i.producto_codigosin is null or
-//                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null
-//                            LIMIT 10";
-//                    
-//                    $data['productos_homologados'] = $this->Venta_model->consultar($sql);
-//                    
-//                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
-////                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-////                            where cufd_puntodeventa = 0 and
-////                            cufd_id in (select max(cufd_id) from cufd)";
-////                    $vigencia_cufd = $this->Venta_model->consultar($sql);
-////
-////                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
-////                        $dosificacion = new $Dosificacion();
-////                        $dosificacion->cufd();
-////                    
-////                    }
-//                    
-//            //}
-//        }
-        
-        /*
-                
-        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-            $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-                    where cufd_puntodeventa = 0 and
-                    cufd_id in (select max(cufd_id) from cufd)";
-            $vigencia_cufd = $this->Venta_model->consultar($sql);
-        
-            if ($vigencia_cufd>=3){
+            //Reiniciar numero de venta diaria
+                $this->reiniciar_ventas();
+
+            //Actualizar inventario
+                $this->actualizar_inventario();
                 
                 
-         
-            }
-            
-        }
-        */
+                    
+                //**************** bitacora caja
+
+                 $bitacoracaja_evento = "(SELECT CONCAT(
+                                                    'INGRESE A FACTURAR => MESA ID: ', 
+                                                    mesa_id,
+                                                    ' *** PEDIDO ID: ', pedido_id,
+                                                    ' *** FECHA REG.: ',pedido_fecha,
+                                                    ' *** TOTAL: ', round(pedido_total,2)
+                                                ) AS resultado
+                                                FROM pedido
+                                                WHERE pedido_id = {$pedido_id})";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",".$bitacoracaja_evento.",".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja            
+                                                
+                
+                
+
+                    $data['_view'] = 'venta/ventas';
+                    $this->load->view('layouts/main',$data);
         
-        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
-        
-        $data['_view'] = 'venta/ventas';
-        $this->load->view('layouts/main',$data);
-        		
         //**************** fin contenido ***************
-        }        
+        }
+
     }
     
     function ventas_cliente($cliente_id)
@@ -558,10 +594,20 @@ class Venta extends CI_Controller{
             
         }        
         
+                
+        $mostrar_placa = 0; //NO MORTRAR
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 55)
+        {    
+            $mostrar_placa = 1; //MOSTRA        
+        }
+        
+        $data['mostrar_placa'] = $mostrar_placa;
+        
+        
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
@@ -590,14 +636,6 @@ class Venta extends CI_Controller{
         //echo $sql;
         $data['cufd'] = $this->Venta_model->consultar($sql);
         
-//        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
-//                FROM
-//                  inventario i
-//                WHERE
-//                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
-//                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
-//        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
-        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
 
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
             
@@ -609,9 +647,6 @@ class Venta extends CI_Controller{
                     $cufd = $this->Venta_model->consultar($sql);
                     $data['cufd'] = !empty($cufd) ? $cufd : [];
 
-                    //echo date("Y-d-m");
-
-                    
                     $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
                             FROM
                               inventario i
@@ -622,19 +657,6 @@ class Venta extends CI_Controller{
                     
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
-                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
-//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NO_W()) * -1) AS horas_vigencia from cufd
-//                            where cufd_puntodeventa = 0 and
-//                            cufd_id in (select max(cufd_id) from cufd)";
-//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
-//
-//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
-//                        $dosificacion = new $Dosificacion();
-//                        $dosificacion->cufd();
-//                    
-//                    }
-                    
-            //}
         }        
 
         $data['_view'] = 'venta/ventas';
@@ -791,15 +813,6 @@ class Venta extends CI_Controller{
     
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
     {
-        // var_dump(isset($dosificacion_llave) ? "si dosificacion_llave":"no dosificacion_llave");
-        // var_dump(isset($dosificacion_autorizacion) ? "si dosificacion_autorizacion":"no dosificacion_autorizacion");
-        // var_dump(isset($dosificacion_numfact) ? "si dosificacion_numfact":"no dosificacion_numfact");
-        // var_dump(isset($nit) ? "si nit":"no nit");
-        // var_dump(isset($fecha_trans) ? "si fecha_trans":"no fecha_trans");
-        // var_dump(isset($monto) ? "si monto":"no monto");
-
-        //include 'ControlCode.php';
-
         $code = $this->controlcode->generate(
                                                 $dosificacion_autorizacion,//Numero de autorizacion
                                                 $dosificacion_numfact,//Numero de factura
@@ -810,15 +823,13 @@ class Venta extends CI_Controller{
                                             );        
          return $code;
     }
-    // Borrar
+
     function sumar_2segundos($factura_fecha_hora){
         $fechaAuxiliar = strtotime( "+10 seconds" ,strtotime($factura_fecha_hora));  
         $factura_fecha_hora_mod = date('Y-m-d\TH:i:s.v' , $fechaAuxiliar );
         return $factura_fecha_hora_mod;
     }
-    // Borrar
-    // 
-    // borrar llamada a la funcion sumar_2segundos() en la linea 725 y descomentar la linea 724
+
     
     function registrarventa(){ // registra la venta y genera la factura
     
@@ -879,20 +890,7 @@ class Venta extends CI_Controller{
                 $pago_alternativo    = $this->input->post('pago_alternativo');
                 $pago_efectivo    = $this->input->post('pago_efectivo');
                 $factura_glosa    = $venta_glosa;
-                
-                
-                
-                //  DATOS  ADICIONALES FACTURA
-                //********************************************************
-                
-                //$datos_placa    = $this->input->post('datos_placa');
-                //$datos_embase    = $this->input->post('datos_embase');
-                //$datos_codigopais    = $this->input->post('datos_codigopais');
-                //$datos_autorizacionsc    = $this->input->post('datos_autorizacionsc');
-                
-                //********************************************************
-                
-                
+                               
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
                 
@@ -971,7 +969,7 @@ class Venta extends CI_Controller{
                 //******** ACTUALIZAR LA TABLA detalle_Venta_aux
                 
                 $sql = "update detalle_venta_aux set
-                        detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
+                        detalleven_descuento = round(((detalleven_total/".$venta_subtotal.") * ".$venta_descuento.")/detalleven_cantidad,3) 
                         where usuario_id = ".$usuario_id;               
                 $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
@@ -1205,7 +1203,70 @@ class Venta extends CI_Controller{
                 
                 //$sqldetalle = $sql;
                 //echo $sql;
-                $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+                
+                // Registrar detalle
+                $this->Venta_model->ejecutar($sql);
+
+                // Verificar si el detalle se registró correctamente
+                $verificarsql = "
+                    SELECT 
+                        COUNT(*) AS items,
+                        ROUND(IFNULL(SUM(detalleven_total), 0), 2) AS total
+                    FROM detalle_venta
+                    WHERE venta_id = {$venta_id}
+                ";
+
+                $verificacion = $this->Venta_model->consultar($verificarsql);
+
+                $items = isset($verificacion[0]['items']) ? (int)$verificacion[0]['items'] : 0;
+                $total = isset($verificacion[0]['total']) ? (float)$verificacion[0]['total'] : 0;
+
+                if ($items <= 0) {
+
+                    // Vuelvo a intentar
+                    $this->Venta_model->ejecutar($sql);
+
+                    // Verificar nuevamente
+                    $verificacion = $this->Venta_model->consultar($verificarsql);
+
+                    $items = isset($verificacion[0]['items']) ? (int)$verificacion[0]['items'] : 0;
+                    $total = isset($verificacion[0]['total']) ? (float)$verificacion[0]['total'] : 0;
+
+                    // Bitácora caja
+                    $cliente_nombre = isset($cliente[0]['cliente_nombre']) 
+                        ? $cliente[0]['cliente_nombre'] 
+                        : 'SIN CLIENTE';
+
+                    $bitacoracaja_evento = "FALLA EN EL REGISTRO DE VENTA Nº 00{$venta_id} CLIENTE: {$cliente_nombre} | ITEMS: {$items} | TOTAL: {$total} * (POSIBLE FALLA DE CONEXION A INTERNET)";
+                    $bitacoracaja_evento = $this->db->escape($bitacoracaja_evento);
+
+                    $bitacoracaja_tipo = 2;
+
+                    $sql_bitacora = "
+                        INSERT INTO bitacora_caja(
+                            bitacoracaja_fecha,
+                            bitacoracaja_hora,
+                            bitacoracaja_evento,
+                            usuario_id,
+                            bitacoracaja_montoreg,
+                            bitacoracaja_montocaja,
+                            bitacoracaja_tipo,
+                            caja_id
+                        ) VALUES (
+                            DATE({$now}),
+                            TIME({$now}),
+                            {$bitacoracaja_evento},
+                            {$usuario_id},
+                            0,
+                            0,
+                            {$bitacoracaja_tipo},
+                            {$this->caja_id}
+                        )
+                    ";
+
+                    $this->Venta_model->ejecutar($sql_bitacora);
+                }
+                
                 
                 
                 //************* reducir si es sin inventario no debe reducir
@@ -1458,8 +1519,6 @@ class Venta extends CI_Controller{
                 }
                 
 //************************************************************************************                
-                
-                        
                 
                 if($facturado=="true"){//si la venta es facturada
    
@@ -1737,7 +1796,9 @@ class Venta extends CI_Controller{
                         
                         //  REGISTRO DE DATO DE FACTURA
                         //*******************************************
-                        if($dosificacion[0]['docsec_codigoclasificador'] == 3 || $dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
+                        //if($dosificacion[0]['docsec_codigoclasificador'] == 3 || $dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13 || $dosificacion[0]['docsec_codigoclasificador'] == 55){
+                        
+                        if (in_array($dosificacion[0]['docsec_codigoclasificador'], [3, 11, 12, 13, 55])) {
                             
                             $datos_periodofacturado = $this->input->post('datos_mes')."/".$this->input->post('datos_anio');
                                     
@@ -1863,7 +1924,8 @@ class Venta extends CI_Controller{
                         
                         $es_valido = $valXSD->validar($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml",$directorio_esquema.$xsd);
 
-                        if(!$es_valido){
+                        if(!$es_valido){ //Si el archivo XML no es valido
+                            
                                 //echo "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
                                 $error = "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
                                 $error = str_replace("'", "", $error);
@@ -2300,7 +2362,7 @@ class Venta extends CI_Controller{
             
             $sql = "select * from cliente c, factura_datos f 
                     WHERE c.cliente_id = f.cliente_id and f.datos_placa =  '{$numeroplaca}' and
-                    (c.cliente_id in (select cliente_id from venta where venta_fecha = date(NOW())))";
+                    (c.cliente_id in (select cliente_id from venta where estado_id = 1 and venta_fecha = date(NOW())))";
             
             $placas = $this->Venta_model->consultar($sql);
             
@@ -2577,7 +2639,7 @@ class Venta extends CI_Controller{
         else
         {
             $this->load->model('Forma_pago_model');
-            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
 
             $this->load->model('Tipo_transaccion_model');
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
@@ -2758,7 +2820,7 @@ function edit($venta_id){
             else
             {
                 $this->load->model('Forma_pago_model');
-                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
 
                 $this->load->model('Tipo_transaccion_model');
                 $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
@@ -2849,7 +2911,7 @@ function edit($venta_id){
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma_activo();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
@@ -2874,7 +2936,13 @@ function edit($venta_id){
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
         
-
+        $mostrar_placa = 0; //NO MORTRAR
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 55)
+        {    
+            $mostrar_placa = 1; //MOSTRA        
+        }
+        
+        $data['mostrar_placa'] = $mostrar_placa;
         
         
         //**************** inicio contenido ***************     
@@ -3109,14 +3177,26 @@ function edit($venta_id){
             $venta_ice = $this->input->post('venta_ice');
             $venta_detalletransaccion = $this->input->post('venta_detalletransaccion');
             $venta_glosa = $this->input->post('venta_glosa');
+            $pago_alternativo = $this->input->post('pago_alternativo');
+            $pago_efectivo = $this->input->post('pago_efectivo');
 
             $porcentaje = 0;
 
+            /*
             $sql = "update detalle_venta_aux set
                     detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
                     where usuario_id = ".$usuario_id;                
             $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+            */
+            //******** ACTUALIZAR LA TABLA detalle_Venta_aux
 
+            $sql = "update detalle_venta_aux set
+                    detalleven_descuento = round(((detalleven_total/".$venta_subtotal.") * ".$venta_descuento.")/detalleven_cantidad,3) 
+                    where usuario_id = ".$usuario_id;               
+            $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+
+            
+            
             $sql = "delete from detalle_venta where venta_id = ".$venta_id;
             $this->Venta_model->ejecutar($sql);
 
@@ -3219,6 +3299,8 @@ function edit($venta_id){
                     ",tipotrans_id = ".$tipotrans_id.                
                     ",forma_id = ".$forma_id.              
                     ",banco_id = '".$banco_id."'".
+                    ",venta_pagoalternativo = ".$pago_alternativo.
+                    ",venta_pagoefectivo = ".$pago_efectivo.                    
                     " where venta_id = ".$venta_id;
             //echo $sql;
             $this->Venta_model->ejecutar($sql);        
@@ -3606,6 +3688,33 @@ function edit($venta_id){
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
 
+            
+                //**************** bitacora caja
+
+                 $bitacoracaja_evento = "(SELECT CONCAT(
+                                                    'ELIMINE ITEM DE VENTA => PRODUCTO ID: ', 
+                                                    producto_id,
+                                                    ' *** PROD.: ', producto_nombre,
+                                                    ' *** COD.: ', detalleven_codigo,
+                                                    ' *** CANT.: ',round(detalleven_cantidad,2),
+                                                    ' *** PRECIO: ', round(detalleven_precio,2),
+                                                    ' *** TOTAL: ', round(detalleven_total,2)
+                                                ) AS resultado
+                                                FROM detalle_venta_aux
+                                                WHERE detalleven_id = {$detalleven_id})";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",".$bitacoracaja_evento.",".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja      
+            
+            
         $sql = "delete from detalle_venta_aux where detalleven_id = ".$detalleven_id;
         $this->Venta_model->ejecutar($sql);
         return true;
@@ -3692,7 +3801,8 @@ function edit($venta_id){
         //************ fin botacora bitacora     
         
         
-        $sql = "delete from detalle_venta_aux";
+        //$sql = "delete from detalle_venta_aux";
+        $sql = "truncate detalle_venta_aux";
         $this->Venta_model->ejecutar($sql);
         return true;
             		
@@ -4436,7 +4546,7 @@ function eliminar_venta($venta_id){
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ELIMINAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
+        $bitacoracaja_evento = "ELIMINAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -4494,7 +4604,7 @@ function anular_venta($venta_id){
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
+        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -4515,7 +4625,9 @@ function anular_venta($venta_id){
     $this->Venta_model->ejecutar($sql);
             
     //$sql =  "delete from venta where venta_id = ".$venta_id;
-    $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+    $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, 
+            venta_efectivo = 0, venta_cambio = 0, venta_pagoefectivo = 0, venta_pagoalternativo = 0,  
+            estado_id = 3 where venta_id = ".$venta_id;
     $this->Venta_model->ejecutar($sql);
     
     //$sql =  "delete from cuota where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
@@ -4578,7 +4690,7 @@ function anular_traspaso($traspaso_id){
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ANULE TRASPASO Nº 00".$traspaso_id." SUCURSAL: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
+        $bitacoracaja_evento = "ANULE TRASPASO Nº 00".$traspaso_id." SUCURSAL: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -4670,7 +4782,7 @@ function anular_traspaso($traspaso_id){
                 }
                 
             }
-            else{
+            else{ //Si es facturacion electronica
             
                 $filtro = $this->input->post('filtro');
 
@@ -5318,6 +5430,7 @@ function anular_traspaso($traspaso_id){
             $sql = $this->input->post('sql');
             $this->Venta_model->ejecutar($sql);
             
+            $producto_id = $this->input->post('prod_id');
             if($this->parametros['parametro_rangoprecios'] == 1){ //si la venta es por cantidad
                 
                 $sql = "update detalle_venta_aux d, rango_precios r
@@ -5325,7 +5438,7 @@ function anular_traspaso($traspaso_id){
                         d.detalleven_precio = r.rango_precio,
                         d.`detalleven_descuentoparcial` = r.rango_descuento
                         where
-                        r.producto_id = 217 and d.detalleven_cantidad >= r.rango_desde and d.detalleven_cantidad <= r.rango_hasta";
+                        r.producto_id = {$producto_id} and d.detalleven_cantidad >= r.rango_desde and d.detalleven_cantidad <= r.rango_hasta";
                 $detalleven_id = $this->Venta_model->ejecutar($sql);
                 
             }
@@ -6300,8 +6413,10 @@ function anular_traspaso($traspaso_id){
                         
                         //  REGISTRO DE DATO DE FACTURA
                         //*******************************************
-                        if($dosificacion[0]['docsec_codigoclasificador'] == 3 ||  $dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
+                        //if($dosificacion[0]['docsec_codigoclasificador'] == 3 ||  $dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
                             
+                        if (in_array($dosificacion[0]['docsec_codigoclasificador'], [3, 11, 12, 13, 55])){ 
+                                
                             $datos_periodofacturado = $this->input->post('datos_mes')."/".$this->input->post('datos_anio');
                                     
                             if($dosificacion[0]['docsec_codigoclasificador'] == 11){
@@ -6420,6 +6535,7 @@ function anular_traspaso($traspaso_id){
                         //echo $directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml"."  **** ".$directorio_esquema.$xsd;
                         
                         if(!$es_valido){
+                            
                                 //echo "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
                                 $error = "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
                                 $error = str_replace("'", "", $error);
@@ -6437,11 +6553,20 @@ function anular_traspaso($traspaso_id){
                                 //echo json_encode($res);
                                 
                                 if (isset($res->codigoDescripcion) && $res->codigoDescripcion == "VALIDADA") {
+                                    
                                     echo json_encode($res);
+                                    
                                 } else {
+                                    
                                     $sql = "UPDATE factura SET venta_id = 0 WHERE factura_id = {$factura_id}";
                                     $this->Venta_model->ejecutar($sql);
+      
+                                    $sql = "UPDATE detalle_factura SET venta_id = 0 WHERE venta_id = {$venta_id}";
+                                   // echo $sql;
+                                    $this->Venta_model->ejecutar($sql);
+                                    
                                     echo json_encode($res);
+                                    
                                 }
 
                         }else{
@@ -6565,6 +6690,9 @@ function anular_traspaso($traspaso_id){
 
                                             //Sino fue enviada la factura debemos desligarla de la venta
                                             $sql = "update factura set venta_id = 0 where factura_id = {$factura_id}";
+                                            $this->Venta_model->ejecutar($sql);
+                                            
+                                            $sql = "update detalle_factura set venta_id = 0 where venta_id = {$venta_id}";
                                             $this->Venta_model->ejecutar($sql);
                                             
                                             
@@ -6894,20 +7022,24 @@ function anular_traspaso($traspaso_id){
     {
         if ($this->input->is_ajax_request()) {
             
-            $producto_id = $this->input->post('producto_id');
-            $producto_costo = $this->input->post('producto_costo');
-            $producto_precio = $this->input->post('producto_precio');
-            $producto_codigo = $this->input->post('producto_codigo');
-            $producto_nombre = $this->input->post('producto_nombre');            
+            $producto_id = (int)$this->input->post('producto_id');
+            $producto_costo = (float)$this->input->post('producto_costo');
+            $producto_precio = (float)$this->input->post('producto_precio');
+            $producto_codigo = $this->input->post('producto_codigo', TRUE);
+            $producto_nombre = $this->input->post('producto_nombre', TRUE);            
             $actualizarpreciossucursales = $this->input->post('actualizarpreciossucursales');
+            $producto_codigo_sql = $this->db->escape($producto_codigo);
+            $producto_nombre_sql = $this->db->escape($producto_nombre);
+            $producto_codigo_evento = $this->db->escape_str($producto_codigo);
+            $producto_nombre_evento = $this->db->escape_str($producto_nombre);
             
             $sql = "update producto set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
-                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}' , producto_nombre = '{$producto_nombre}' 
+                    producto_codigobarra = {$producto_codigo_sql}, producto_codigo = {$producto_codigo_sql} , producto_nombre = {$producto_nombre_sql} 
                      where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql);
             
             $sql2 = "update inventario set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
-                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}', producto_nombre = '{$producto_nombre}' 
+                    producto_codigobarra = {$producto_codigo_sql}, producto_codigo = {$producto_codigo_sql}, producto_nombre = {$producto_nombre_sql} 
                      where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql2);
             
@@ -6932,7 +7064,7 @@ function anular_traspaso($traspaso_id){
         
             $bitacoracaja_fecha = "date({$now})";
             $bitacoracaja_hora = "time({$now})";
-            $bitacoracaja_evento = "(select concat('ACTUALIZACION RAPIDA DE PRECIOS : ','| ID: {$producto_id}','| PRODUCTO: {$producto_nombre}','| CODIGO: {$producto_codigo}','| COSTO: ',round({$producto_costo},2)
+            $bitacoracaja_evento = "(select concat('ACTUALIZACION RAPIDA DE PRECIOS : ','| ID: {$producto_id}','| PRODUCTO: {$producto_nombre_evento}','| CODIGO: {$producto_codigo_evento}','| COSTO: ',round({$producto_costo},2)
                                      ,'| PRECIO: ',round({$producto_precio},2)))";
            // echo $bitacoracaja_evento;
             $usuario_id = $this->session_data['usuario_id'];
@@ -7065,7 +7197,7 @@ function anular_traspaso($traspaso_id){
         //*************************************************************************
         //       SERVICIOS FACTURACION ELECTRONICA
         //*************************************************************************
-        $documentos_sector = array(2,3,6,8,11,12,16,17,23,39,45,51);
+        $documentos_sector = array(2,3,6,8,11,12,16,17,23,39,45,51,55);
             
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
             
@@ -8360,6 +8492,13 @@ function anular_traspaso($traspaso_id){
         $micad .= "      padding : 0 0px 0 0px;";
         $micad .= "  }";
         
+        // Añadido para mejora el tañado de la factura boucher
+//        $micad .= "  @page { margin: 5px; }";
+//        $micad .= "  html, body { margin: 0px; padding: 0px; }";
+//        $micad .= "  table, tr, td { page-break-inside: avoid; }";
+//        $micad .= "  tr { page-break-inside: avoid; page-break-after: auto; }";
+        // ************************
+        
         $micad .= "       </style>"; 
         $micad .= "   </head>";
         $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
@@ -8379,7 +8518,7 @@ function anular_traspaso($traspaso_id){
         $micad .= "                                     ";
                                                        
         $opc = $factura[0]['docsec_codigoclasificador'];
-        if($opc == 12){ //Comercializacion de hidrocarburos
+        if($opc == 12 || $opc == 55){ //Comercializacion de hidrocarburos
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
         //$opc = 1; // Valor solo declarado para actualzar emavra
@@ -8467,7 +8606,7 @@ function anular_traspaso($traspaso_id){
         $micad .= "                            </tr>";
         
         $linea_recortada = "style='border-bottom-style: dashed; border-bottom-width: 1px;'";
-        if($opc == 12){
+        if($opc == 12 || $opc == 55){
             $linea_recortada = "";
         }
         
@@ -8480,7 +8619,7 @@ function anular_traspaso($traspaso_id){
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
                             
-                            if($opc == 12){
+                            if($opc == 12 || $opc == 55){
         $micad .= "                   <tr>";
         $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold; font-family: Helvetica;'>PLACA/B-SISA/VIN:</td>";
         $micad .= "                       <td style='padding: 0; padding-left: 3px'>".$datos_factura['datos_placa']."<br></td>";
@@ -8558,7 +8697,7 @@ function anular_traspaso($traspaso_id){
             /*if($factura[0]['docsec_codigoclasificador'] == 12){
                 $factura_total = $factura_total * 0.70;
             }*/
-            if ($factura[0]['docsec_codigoclasificador']==12){ 
+            if ($factura[0]['docsec_codigoclasificador'] == 12){ //Solo si es venta hidrocarbuross 
 
                 $importe_base_iva = $factura_total * 0.70;
 
@@ -8595,7 +8734,7 @@ function anular_traspaso($traspaso_id){
         $micad .= "                                <td style='text-align: right; ".$elbold."'>".number_format($factura[0]['factura_total'],$dos_decimales,'.',',')."</td>";
         $micad .= "                            </tr>";
         
-        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos
+        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=55){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos
             
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
@@ -8711,11 +8850,33 @@ function anular_traspaso($traspaso_id){
         ));
         $dompdf->setOptions($options);
         
+        /*** ANTERIOR TAMAÑO DE PAPEL
         if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
             $ancho = $this->parametros["parametro_anchofactura"];
             $elancho = (($ancho+2)*28.34645669291);
             $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
         }
+        ****/
+        
+        //***************** CALCULAR TAMAÑO ***************************
+        if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+            $ancho = $this->parametros["parametro_anchofactura"];
+            $elancho = (($ancho + 2) * 28.34645669291);
+
+            $cantidad_items = count($detalle_factura);
+
+            $alto_base = 900;
+            $alto_por_item = 40;
+            $elalto = $alto_base + ($cantidad_items * $alto_por_item);
+
+            if ($elalto < 1200) {
+                $elalto = 1200;
+            }
+
+            $dompdf->set_paper(array(0, 0, $elancho, $elalto), 'portrait');
+        }
+        //****************** FIN CALCULAR TAMAÑO **************************
+        
         //$dompdf = new Dompdf(); 
         $dompdf->loadHtml($micad); 
         $dompdf->render(); 
@@ -9234,7 +9395,7 @@ function anular_traspaso($traspaso_id){
         
         
         $opc = $this->dosificacion["docsec_codigoclasificador"];
-        if($opc == 3 || $opc == 11 || $opc == 12 || $opc == 13){ //Comercializacion de hidrocarburos
+        if($opc == 3 || $opc == 11 || $opc == 12 || $opc == 13 ||  $opc == 55){ //Comercializacion de hidrocarburos
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
        // echo "opc: ".$opc;
@@ -9316,7 +9477,7 @@ function anular_traspaso($traspaso_id){
         }
 
         
-        if($opc == 12){ //Comercializacion de hidrocarburos
+        if($opc == 12 || $opc == 55){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
             $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Placa/B-Sisa/Vin:</td>"; 
             $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_placa']."</td>"; 
@@ -9384,7 +9545,7 @@ function anular_traspaso($traspaso_id){
         }
         
         
-        if($opc == 12){ //Comercializacion de hidrocarburos
+        if($opc == 12 ||  $opc == 55){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
             $micad .= "                            <td style='font-weight: bold; font-family: Helvetica; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Tipo Envase:</td>"; 
             $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_embase']."</td>"; 
@@ -9505,7 +9666,7 @@ function anular_traspaso($traspaso_id){
                                 $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                                 $span = ($mostrarice==1)? 3: 2; 
                                 
-                            if ($factura[0]['docsec_codigoclasificador']==12){ 
+                            if ($factura[0]['docsec_codigoclasificador'] == 12){ 
                                     
                                     $importe_base_iva = $factura_total * 0.70;
                                     
@@ -9680,7 +9841,7 @@ function anular_traspaso($traspaso_id){
                 $micad .= "                    </tr>"; 
 
 
-                if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos
+                if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=55){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos
 
                   $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
 
@@ -9724,7 +9885,7 @@ function anular_traspaso($traspaso_id){
                     //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
                     //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
                     //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
-                    if($factura[0]['docsec_codigoclasificador'] == 12){
+                    if($factura[0]['docsec_codigoclasificador'] == 12){ //venta de hidrocarburos
                         $factura_total = $factura_total * 0.70;
                     }
                     //******************************************************
@@ -10791,7 +10952,9 @@ function anular_traspaso($traspaso_id){
             
             $codigo_venta = $this->input->post('codigo');
             
-            $sql = "truncate detalle_venta_aux";
+            //$sql = "truncate detalle_venta_aux";
+            $usuario_id = $this->session_data['usuario_id'];
+            $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
             $result = $this->Venta_model->ejecutar($sql);
             
             $result = $this->Venta_model->cargar_productos_detalle_temporal($codigo_venta);
@@ -10820,11 +10983,12 @@ function anular_traspaso($traspaso_id){
         if ($this->input->is_ajax_request()) {
             
 
-            $sql = "select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d 
-                    group by d.codigo_venta
-                    order by d.detalleven_id";
+/*            $sql = "SELECT d.*, sum(d.detalleven_total) AS totalbs, u.usuario_nombre
+                    FROM  detalle_venta_temporal d, usuario u WHERE d.usuario_id = u.usuario_id GROUP BY codigo_venta ORDER BY d.detalleven_id";
             //echo $sql;
-            $result = $this->Venta_model->consultar($sql);
+            $result = $this->Venta_model->consultar($sql);*/
+            
+            $result = $this->Venta_model->get_ventas_guardadas();
             
             echo json_encode($result);
             
@@ -10854,6 +11018,24 @@ function anular_traspaso($traspaso_id){
                 echo json_encode($datos);
 
             }
+        }
+
+
+    }
+        
+    /*
+    * buscar productos desde ventas
+    */
+    function buscarproducto(){
+
+        if ($this->input->is_ajax_request()) {
+
+        $parametro = $this->input->post('codigoproducto');   
+
+            $sql = "select * from inventario where producto_codigobarra = '{$parametro}'";
+            $datos = $this->Venta_model->consultar($sql);            
+            echo json_encode($datos);
+
         }
 
 
@@ -11664,6 +11846,10 @@ function anular_traspaso($traspaso_id){
         preg_match_all('/[+-]\d+/', $datos, $matches);
 
         // Recorrer y mostrar en el formato deseado
+        $decimales = $this->parametros["parametro_decimales"];
+        $total =  number_format($cantidad,$decimales) * number_format($precio,$decimales);
+        $total =  number_format($total,$decimales);
+        
         foreach ($matches[0] as $num) {
             $sumatoria_total .= $num . " = \n";
         }
@@ -11881,6 +12067,104 @@ function enviopdf(){
         }
         
     }
+
+function reajustar_totales(){
+    $decimales = 2;
+
+    if($this->input->is_ajax_request()){   
+        
+        $venta_id = $this->input->post("venta_id");
+
+        $this->db->trans_start();
+
+        //0. Igualar codigos
+        
+        $sql = "update detalle_venta v, producto p
+                set v.detalleven_codigo = p.producto_codigobarras
+                where v.producto_id = p.producto_id                
+                ";
+        $this->Venta_model->ejecutar($sql);
+        
+        
+        // 1. Obtener detalles de la venta
+        $detalles = $this->db
+            ->where('venta_id', $venta_id)
+            ->get('detalle_venta')
+            ->result();
+
+        foreach($detalles as $d){
+
+            $cantidad = round(floatval($d->detalleven_cantidad), $decimales);
+            $precio   = round(floatval($d->detalleven_precio), $decimales);
+
+            // descuento unitario
+            $descuento_unitario = round(floatval($d->detalleven_descuento), $decimales);
+
+            // subtotal = cantidad * precio
+            $subtotal = round($cantidad * $precio, $decimales);
+
+            // descuento parcial = descuento unitario * cantidad
+            $descuento_parcial = round($descuento_unitario * $cantidad, $decimales);
+
+            // total detalle
+            $total = round($subtotal - $descuento_parcial, $decimales);
+
+            if($total < 0){
+                $total = 0;
+            }
+
+            $this->db->where('detalleven_id', $d->detalleven_id);
+            $this->db->update('detalle_venta', [
+                'detalleven_cantidad'           => $cantidad,
+                'detalleven_precio'             => $precio,
+                'detalleven_subtotal'           => $subtotal,
+                'detalleven_descuentoparcial'   => $descuento_parcial,
+                'detalleven_total'              => $total
+            ]);
+        }
+
+        // 2. Recalcular totales generales desde detalle_venta
+        $res = $this->db
+            ->select("
+                ROUND(SUM(detalleven_subtotal), {$decimales}) AS subtotal,
+                ROUND(SUM(detalleven_descuentoparcial), {$decimales}) AS descuentoparcial,
+                ROUND(SUM(detalleven_total), {$decimales}) AS total
+            ", false)
+            ->where('venta_id', $venta_id)
+            ->get('detalle_venta')
+            ->row();
+
+        $subtotal          = round(floatval($res->subtotal), $decimales);
+        $descuento_parcial = round(floatval($res->descuentoparcial), $decimales);
+        $total             = round(floatval($res->total), $decimales);
+
+        // 3. Actualizar cabecera venta
+        $this->db->where('venta_id', $venta_id);
+        $this->db->update('venta', [
+            'venta_subtotal'          => $subtotal,
+            'venta_descuentoparcial'  => $descuento_parcial,
+            'venta_descuento'         => $descuento_parcial,
+            'venta_total'             => $total
+        ]);
+
+        // Corregir campos NULL
+        $sql = "
+            UPDATE venta SET
+                venta_ice = IFNULL(venta_ice,0),
+                venta_giftcard = IFNULL(venta_giftcard,0),
+                venta_detalletransaccion = IFNULL(venta_detalletransaccion,'0'),
+                venta_pagoalternativo = IFNULL(venta_pagoalternativo,0),
+                venta_pagoefectivo = IFNULL(venta_pagoefectivo,0)
+            WHERE venta_id = ?
+        ";
+
+        $this->db->query($sql, [$venta_id]);
+
+        $this->db->trans_complete();
+
+        echo json_encode($this->db->trans_status());
+    }
+}
     
 function listar_series_disponibles()
 {
@@ -11959,5 +12243,33 @@ function listar_series_disponibles()
     echo json_encode($disponibles);
 }
 
+
+    function bitacora_pago(){
+        
+        $decimales = 2;
+
+        if($this->input->is_ajax_request()){   
+            
+            $operacion = $this->input->post('operacion');
+                    
+            
+                //**************** bitacora caja
+
+                $bitacoracaja_evento = (($operacion==1)?"ACTIVAR":"DESACTIVAR")." PAGO ALTERNATIVO => EN OPERACION DE VENTA";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",'".$bitacoracaja_evento."'    ,".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja      
+                
+        }
+        
+    }
 
 }

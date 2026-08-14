@@ -119,7 +119,7 @@
                     <div class="col-md-3">
                             <label for="usuario_inicioturno" class="control-label">Inicio</label>
                             <div class="form-group">
-                                    <input type="time" name="usuario_inicioturno" value="<?php echo $this->input->post('usuario_inicioturno'); ?>" class="form-control" id="usuario_inicioturno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <input type="time" name="usuario_inicioturno" value="<?php echo $this->input->post('usuario_inicioturno'); ?>" class="form-control" id="usuario_inicioturno"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     <!--<span class="text-danger"><?php echo form_error('usuario_inicioturno');?></span>-->
                             </div>
                     </div>
@@ -127,7 +127,7 @@
                     <div class="col-md-3">
                             <label for="usuario_finturno" class="control-label">Fin</label>
                             <div class="form-group">
-                                    <input type="time" name="usuario_finturno" value="<?php echo $this->input->post('usuario_finturno'); ?>" class="form-control" id="usuario_finturno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <input type="time" name="usuario_finturno" value="<?php echo $this->input->post('usuario_finturno'); ?>" class="form-control" id="usuario_finturno"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     <!--<span class="text-danger"><?php echo form_error('usuario_finturno');?></span>-->
                             </div>
                     </div>

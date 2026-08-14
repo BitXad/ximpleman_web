@@ -308,7 +308,9 @@ class Sucursales extends CI_Controller{
 
 
             //Paso 1 - Eliminar la tabla inventario_sucursales
-            $sql = "delete from inventario_sucursales";
+            //$sql = "delete from inventario_sucursales";
+            $sql = "truncate inventario_sucursales";
+            
             $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
             
             //Paso 2 - Cargamos el inventario actual de la sucursal central        
@@ -321,7 +323,8 @@ class Sucursales extends CI_Controller{
             for($i=1 ; $i<sizeof($almacenes); $i++){
 
                     //Paso 3.1 - Eliminar la tabla inventario_sucursales_aux de la sucursal 0 (principal)
-                    $sql = "delete from inventario_sucursales_aux";
+//                    $sql = "delete from inventario_sucursales_aux";
+                    $sql = "truncate inventario_sucursales_aux";
                     $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
 
                     //Paso 3.2 - consultar el inventario de la siguiente sucursal

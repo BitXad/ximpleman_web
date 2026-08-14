@@ -596,7 +596,8 @@
                 </div>-->
             </div>
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="validar_correo2()"><fa class="fa fa-floppy-o"></fa> Revertir Anulación</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="validar_correo2()"><fa class="fa fa-recycle"></fa> Revertir Anulación</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="revertir_falsonegativo()"><fa class="fa fa-undo"></fa> Revertir Falso Negativo</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarforz"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
         </div>

@@ -5,6 +5,8 @@ function inicio(){
 
 /* muestra el ultimo pedido cargado en detalle_ordencompra_aux */
 function modificarpedido(){
+    
+    //alert("pasa por aqui...");
     var base_url = document.getElementById('base_url').value;
     var ordencompra_id = document.getElementById('ordencompra_id').value;
     var controlador = base_url+"orden_compra/modificarpedido";
@@ -54,9 +56,9 @@ function modificarpedido(){
                         html += "<td><input class='input-sm form-control text-right' style='font-size:13px; width:95px;padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detalleordencomp_id"]+"' name='producto_costo"+registros[i]["producto_id"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' value='"+Number(registros[i]["detalleordencomp_costo"]).toFixed(2)+"' ></td>";
                         html += "<td>";
                         html += "<input class='input-sm form-control  text-right' style='font-size:13px; width:95px; padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detalleordencomp_id"]+"' name='producto_precio"+registros[i]["producto_id"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' value='"+Number(registros[i]["detalleordencomp_precio"]).toFixed(2)+"' ></td>"; 
-                        html += "<td class='text-center'>"+registros[i]["existencia"]+"</td>",
+                        html += "<td class='text-center'>"+Number(registros[i]["existencia"]).toFixed(2)+"</td>",
                         html += "<td style='padding-left:0px; padding-right:0px;'>";
-                        html += "<input class='input-sm form-control text-right' style='font-size:13px;width:85px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' autocomplete='off' value='"+registros[i]["detalleordencomp_cantidad"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+")' >";
+                        html += "<input class='input-sm form-control text-right' style='font-size:13px;width:85px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' autocomplete='off' value='"+Number(registros[i]["detalleordencomp_cantidad"]).toFixed(2)+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+")' >";
                         html += "<td><center>";
                         html += "<span class='badge badge-success'>";
                         html += "<font size='2'> <b>"+Number(registros[i]["detalleordencomp_total"]).toFixed(2)+"</b></font> <br>";

@@ -250,11 +250,13 @@ class Viaje_model extends CI_Model
     function get_lista_pasajeros($viaje_id)
     {
         $sql = "SELECT
+                    p.pasaje_id,
                     p.pasaje_numero,
                     p.pasaje_nombre,
                     a.asiento_numero,
                     p.pasaje_documento,
-                    p.pasaje_detalleequipaje
+                    p.pasaje_detalleequipaje,
+                    p.pasaje_controlabordaje
                 FROM pasaje p
                 INNER JOIN asientos a ON a.asiento_id = p.asiento_id
                 WHERE p.viaje_id = ?";
@@ -554,4 +556,11 @@ class Viaje_model extends CI_Model
 //        $this->db->where('viaje_id', $viaje_id);
 //        return $this->db->update('viaje', $params);
 //    }
+    function update_pasaje($pasaje_id, $params)
+    {
+        $this->db->where('pasaje_id', $pasaje_id);
+        return $this->db->update('pasaje', $params);
+    }
+    
+    
 }

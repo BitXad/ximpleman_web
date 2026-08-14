@@ -28,6 +28,7 @@
 <!-------------------------------------------------------->
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $decimales; ?>" name="parametro_decimales"  hidden>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="cd" id="cd" value="d">

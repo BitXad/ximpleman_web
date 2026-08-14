@@ -12,13 +12,15 @@
                                 <input type="text" name="ingreso_nombre" value="<?php echo ($this->input->post('ingreso_nombre') ? $this->input->post('ingreso_nombre') : $ingreso['ingreso_nombre']); ?>" class="form-control" id="ingreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus required/>
                             </div>
                         </div>
+                        
                         <div class="col-md-2">
                             <label for="ingreso_monto" class="control-label">La suma de</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo ($this->input->post('ingreso_monto') ? $this->input->post('ingreso_monto') : $ingreso['ingreso_monto']); ?>" class="form-control" id="ingreso_monto" required/>
+                                <input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo number_format($ingreso['ingreso_monto'],2,'.',''); ?>" class="form-control" id="ingreso_monto" required/>
                                 <small id="mjs_ingreso_monto" style="color: red; display:none;">El monto debe ser mayor a 0</small>
                             </div>
                         </div>
+                        
                         <div class="col-md-2">
                             <label for="ingreso_moneda" class="control-label">Moneda</label>
                             <div class="form-group">
@@ -81,7 +83,7 @@
                                 <input type="text" id="input_glosa" name="ingreso_glosa" value="<?php echo ($this->input->post('ingreso_glosa') ? $this->input->post('ingreso_glosa') : $ingreso['ingreso_glosa']) ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                             </div>
                         </div>
-                        <div class="col-md-4" id="ingreso_banco" style="<?php if($ingreso['forma_id'] == 1){ echo 'display: none;';} ?>">
+                        <div class="col-md-4" id="ingreso_banco" >
                         <!--<div class="col-md-4" id="ingreso_banco" style="display:none">-->
                             <label for="banco_id" class="control-label">Banco</label>
                             <div class="form-group">
@@ -97,6 +99,43 @@
                                 </select>
                             </div>
                         </div>
+
+
+                        <div class="col-md-3">
+                            <label class="control-label">Fecha</label>
+                            <div class="form-group">
+                                <input type="datetime-local"
+                                       name="ingreso_fecha"
+                                       class="form-control"
+                                       value="<?php echo date('Y-m-d\TH:i', strtotime($ingreso['ingreso_fecha'])); ?>">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label">Tipo de Cambio</label>
+                            <div class="form-group">
+                                <input type="number"
+                                       step="any"
+                                       name="ingreso_tc"
+                                       value="<?php echo number_format($ingreso['ingreso_tc'],2); ?>"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="control-label">Usuario</label>
+                            <div class="form-group">
+                                <select name="usuario_id" class="form-control" required>
+                                    <?php foreach($all_usuarios as $usuario){ ?>
+                                        <option value="<?php echo $usuario['usuario_id']; ?>"
+                                            <?php echo ($usuario['usuario_id'] == $ingreso['usuario_id']) ? 'selected' : ''; ?>>
+                                            <?php echo $usuario['usuario_nombre']; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                                                
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-success">
                                 <i class="fa fa-check"></i> Guardar

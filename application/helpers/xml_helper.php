@@ -164,7 +164,17 @@
     }
     
     function escapeXML($cadena) {
-        return htmlspecialchars(trim($cadena), ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        // Evita que caracteres especiales (&, <, >, comillas) rompan el XML.
+        // ENT_SUBSTITUTE evita errores si llega algún carácter inválido en UTF-8.
+        // html_entity_decode evita doble escape cuando el dato ya viene como &amp;.
+        if ($cadena === null) {
+            return '';
+        }
+
+        $cadena = trim((string)$cadena);
+        $cadena = html_entity_decode($cadena, ENT_QUOTES | ENT_XML1, 'UTF-8');
+
+        return htmlspecialchars($cadena, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
     }
 
     /**
@@ -190,7 +200,7 @@
         $decimales = $parametros[0]["parametro_decimales"];
         $dos_decimales = 2;
         
-        if($documento_sector == 3 || $documento_sector == 11 || $documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
+        if($documento_sector == 3 || $documento_sector == 11 || $documento_sector == 12 || $documento_sector == 13 || $documento_sector == 55){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
             $CI2 = & get_instance();
             $CI2->load->model('Factura_datos_model');
             
@@ -433,7 +443,8 @@ $salto_linea='
         
 
         
-        if ($documento_sector == 12){  //Si es 12 Comercializacion hidrocarburos debe mostrarse en este sector
+        if ($documento_sector == 12 || $documento_sector == 55){  //Si es 12 Comercializacion hidrocarburos debe mostrarse en este sector
+            
             $codigopais = $factura_datos['datos_codigopais'];
 
             //$codigopais = 1;
@@ -668,7 +679,7 @@ $salto_linea='
         }
         
         
-        if ($documento_sector == 12){ //12 - factura venta hidrocarburos
+        if ($documento_sector == 12 || $documento_sector == 55){ //12 - factura venta hidrocarburos
             
             //$codigoAutorizacionSC = "66545670";
             $codigoAutorizacionSC = $factura_datos['datos_autorizacionsc'];
@@ -790,7 +801,7 @@ $salto_linea='
             
         }
         
-        if ($documento_sector != 2 && $documento_sector != 3 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 15 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 45 && $documento_sector != 51){
+        if ($documento_sector != 2 && $documento_sector != 3 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 15 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 45 && $documento_sector != 51 && $documento_sector != 55){
             $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$dos_decimales,".","").'</montoGiftCard>';
         }
         
@@ -854,8 +865,9 @@ $salto_linea='
 //                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
                 $detallefact_descripcion = escapeXML($df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
-                $numero_serie = $df['detallefact_preferencia'];
-                $valor_imei = $df['detallefact_caracteristicas'];
+                $numero_serie = escapeXML($df['detallefact_preferencia']);
+                $valor_imei_raw = isset($df['detallefact_caracteristicas']) ? $df['detallefact_caracteristicas'] : '';
+                $valor_imei = escapeXML($valor_imei_raw);
 
                 if($documento_sector != 16 && $documento_sector != 17){ //Si no es clinica u hospital
                     
@@ -1015,13 +1027,13 @@ $salto_linea='
                 
                 
                 if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 3 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
-                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 45 && $documento_sector != 51 && $documento_sector != 24){
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 45 && $documento_sector != 51 && $documento_sector != 24 && $documento_sector != 55){
                     
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     
 
                     if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
-                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$valor_imei.'</numeroImei>';
                     }else{
                         $detalle_facturaxml .= $salto_linea.'           <numeroImei xsi:nil="true">'.$valor_vacio.'</numeroImei>';
                     }
@@ -1031,7 +1043,7 @@ $salto_linea='
                 if($documento_sector == 16){ //16 Hoteles
                     
                     if($df['detallefact_preferencia']!=null && $df['detallefact_preferencia']!='null' )
-                        $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes>'.$df['detallefact_preferencia'].'</detalleHuespedes>';
+                        $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes>'.escapeXML($df['detallefact_preferencia']).'</detalleHuespedes>';
                     else
                         $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
                 }
@@ -1057,8 +1069,9 @@ $salto_linea='
 //                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
                 $detallefact_descripcion = escapeXML($df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
-                $numero_serie = $df['detallefact_preferencia'];
-                $valor_imei = $df['detallefact_caracteristicas'];
+                $numero_serie = escapeXML($df['detallefact_preferencia']);
+                $valor_imei_raw = isset($df['detallefact_caracteristicas']) ? $df['detallefact_caracteristicas'] : '';
+                $valor_imei = escapeXML($valor_imei_raw);
                 
                 if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
                     $detallefact_descripcion .= " ".$valor_imei;
@@ -1118,14 +1131,14 @@ $salto_linea='
                 
                 
                 if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
-                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24){
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24 && $documento_sector != 55){
                     
                    
                     
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     
                     if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
-                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                        $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$valor_imei.'</numeroImei>';
                     }else{
                         $detalle_facturaxml .= $salto_linea.'           <numeroImei  xsi:nil="true">'.$valor_vacio.'</numeroImei>';
                     }
@@ -1160,7 +1173,7 @@ $salto_linea='
             $factura_xml = $cabecera_facturaxml.$detalle_facturaxml.$pie_facturaxml;
             
             $nombreArchivo = $directorio.$archivo.$factura['factura_id'].'.xml';
-            $archivo_xml = fopen($nombreArchivo, "a");
+            $archivo_xml = fopen($nombreArchivo, "w");
             fwrite($archivo_xml, $factura_xml);
             fclose($archivo_xml);
             

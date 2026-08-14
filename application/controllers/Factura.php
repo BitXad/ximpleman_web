@@ -249,29 +249,13 @@ class Factura extends CI_Controller{
             // 12 FACTURA DE COMERCIALIZACIÓN DE HIDROCARBUROS 13 FACTURA DE SERVICIOS BASICOS
             // 22 FACTURA TELECOMUNICACIONES
             
-            $documentos_sector1 = array(1,2,3,8,11,12,13,16,17,22,45);
+            $documentos_sector1 = array(1,2,3,8,11,12,13,16,17,22,45,55);
             
             if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector1 )){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_carta_new';
             }
-//            if($dosificacion['docsec_codigoclasificador'] == 8){ //FACTURA COMPRA VENTA
-////                $data['_view'] = 'factura/factura_carta_servicios';
-//                $data['_view'] = 'factura/factura_carta_new';
-//            }
-//            if($dosificacion['docsec_codigoclasificador'] == 12){ // FACTURA SECTOR EDUCATIVO
-//                $data['_view'] = 'factura/factura_carta_new';
-//            }
-//            if($dosificacion['docsec_codigoclasificador'] == 13){ // FACTURA SERVICIOS
-//            
-//                $data['_view'] = 'factura/factura_carta_new';
-//                //$data['_view'] = 'factura/factura_carta_servicios';
-//            }
-//            
-//            
-//            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
-//                $data['_view'] = 'factura/factura_carta_servicios';
-//            }
+
                        
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
@@ -503,46 +487,20 @@ class Factura extends CI_Controller{
             
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
-            if($dosificacion['docsec_codigoclasificador'] <= 2){ //FACTURA COMPRA VENTA
+            
+
+            $documentos_sector1 = array(1,2,3,8,11,12,13,16,17,22,39,45,55);
+            
+            if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector1 )){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_bouchern';
-            }
-            if($dosificacion['docsec_codigoclasificador'] == 3){ //FACTURA EXPORTACION
-//                $data['_view'] = 'factura/factura_carta_servicios';
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            if($dosificacion['docsec_codigoclasificador'] == 8){ //FACTURA COMPRA VENTA
-//                $data['_view'] = 'factura/factura_carta_servicios';
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            
-            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            
-            if($dosificacion['docsec_codigoclasificador'] == 12){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            
-            
-            if($dosificacion['docsec_codigoclasificador'] == 16){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            
-            
-            if($dosificacion['docsec_codigoclasificador'] == 22){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_bouchern';
-            }
-            
-            if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
-                $data['_view'] = 'factura/factura_boucher_prev';
             }
 
-            if($dosificacion['docsec_codigoclasificador'] == 13){ // FACTURA servicios
-                $data['_view'] = 'factura/factura_bouchern';
-            }
             
         }
+        
+        
+        
         //$data['_view'] = 'factura/factura_bouchern';
         $this->load->view('layouts/main',$data);
         
@@ -1539,9 +1497,10 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
-                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+//                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+//                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+                        if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))
+                            $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
 
                          if ($dosificacion['docsec_codigoclasificador']==13)
@@ -1558,9 +1517,10 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 ||  $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
-                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+//                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+//                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 ||  $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+                        if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))
+                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                         
                         if ($dosificacion['docsec_codigoclasificador']==13)
                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
@@ -1582,7 +1542,7 @@ class Factura extends CI_Controller{
                       )
                 );
                 $context = stream_context_create($opts);
-
+                //echo "<br><br> *** WSDL *** :".$wsdl;
                 $cliente = new \SoapClient($wsdl, [
                       'stream_context' => $context,
                       'cache_wsdl' => WSDL_CACHE_NONE,
@@ -1723,7 +1683,10 @@ class Factura extends CI_Controller{
                         $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
                         $this->Venta_model->ejecutar($sql);
 
-                        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+                        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, 
+                                venta_total = 0, venta_efectivo = 0, venta_cambio = 0, 
+                                venta_pagoefectivo = 0, venta_pagoalternativo = 0,
+                                estado_id = 3 where venta_id = ".$venta_id;
                         $this->Venta_model->ejecutar($sql);
 
                         $sql =  "update cuota  set
@@ -1811,6 +1774,7 @@ class Factura extends CI_Controller{
         $fecha_parametro = $fecha_facturas;
         
         if($operacion==1){ //Anulacion de facturas 
+            
             $sql = "select * from factura where estado_id = 1 and factura_fecha = '".$fecha_parametro."' and factura_codigodescripcion = 'VALIDADA' and ".
                    " docsec_codigoclasificador = ".$documento_sector;
             $facturas =  $this->Venta_model->consultar($sql);
@@ -1932,7 +1896,10 @@ class Factura extends CI_Controller{
         $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
         $this->Venta_model->ejecutar($sql);
 
-        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, 
+                venta_total = 0, venta_efectivo = 0, venta_cambio = 0, 
+                venta_pagoefectivo = 0, venta_pagoalternativo = 0,
+                estado_id = 3 where venta_id = ".$venta_id;
         $this->Venta_model->ejecutar($sql);
         
         $sql =  "update cuota  set
@@ -1969,6 +1936,147 @@ class Factura extends CI_Controller{
         $this->Inventario_model->actualizar_inventario(); 
         //**************** fin contenido ***************
         echo json_encode("ok");
+    }
+    
+    /* anula la factura mal emitida, la que noo fue enviada a  impuestos y quita el enlace!.  */
+    function quitar_factura_malemitida($factura_id,$factura_numero){
+        
+        $data['sistema'] = $this->sistema;
+        //$configuracion = $this->configuracion[0];
+            
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        $venta_id = $factura[0]["venta_id"];
+         
+        
+        //******************************************************
+        //      Backup de las facturas a anular
+        
+            $sql = "delete from factura_bitacora where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from detalle_factura_bitacora where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+        
+            
+            $sql = "insert into factura_bitacora (select * from factura where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+
+            $sql = "insert into detalle_factura_bitacora (select * from detalle_factura where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+
+        //******************************************************      
+                    
+        //if($configuracion["parametro_tiposistema"]==1){
+        
+            //************** ANULACION FACTURA COMPUTARIZADA 
+            
+            $sql = "update factura set ".                
+                    "factura_subtotal = 0".
+                    ",factura_nit = 0".
+                    ",factura_razonsocial   = 'ANULADO'".
+                    ",factura_ice           = 0".
+                    ",factura_exento        = 0".
+                    ",factura_descuento     = 0".
+                    ",factura_total         = 0".
+                    ",factura_codigocontrol     = '0'".
+                    ",venta_id     = '0'".
+                    ",estado_id     = 3".
+                    " where factura_id = ".$factura_id;
+
+            $this->Factura_model->ejecutar($sql);
+
+            $sql = "update detalle_factura set venta_id = 0 where venta_id = ".$venta_id;
+
+            $this->Factura_model->ejecutar($sql);
+
+            $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
+            $this->Factura_model->ejecutar($sql);
+//            
+//            $sql = "update detalle_factura set detallefact_cantidad = 0, detallefact_codigo = '',
+//                        detallefact_unidad = '',
+//                        detallefact_precio = 0, detallefact_subtotal = 0, detallefact_descuento = 0,
+//                        detallefact_descuentoparcial = 0, detallefact_total = 0,
+//                        detallefact_preferencia = '', detallefact_caracteristicas = '',
+//                        detallefact_unidadfactor = '' where factura_id = $factura_id";
+//            $this->Factura_model->ejecutar($sql);
+            /* una vez anulado la Factura ma emitida, se procede a anular la venta */
+            //**************** bitacora caja
+//            $usuario_id = $this->session_data['usuario_id'];
+//            $venta = $this->Detalle_venta_model->get_venta($venta_id);
+//            $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
+//            $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+//            $contx = $this->Venta_model->consultar($sql);
+//            $cont = $contx[0]['cantidad'];
+//
+            $prec_total = $factura[0]['factura_total'];
+//            
+            $usuarioventa_id = $factura[0]['usuario_id'];
+            //*********** Administracion de caja *********
+            $caja_id = 0;
+            $caja = $this->Caja_model->get_caja_usuario($usuarioventa_id);
+            if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                //iniciar caja y dejarla en pendiente
+                $caja_id = 0;
+            }else{
+                $caja_id = $caja[0]["caja_id"];
+            }
+            //*********** FIN Administracion de caja *********
+                    
+            $bitacoracaja_evento = "ANULAR FACTURA NO ENV. Nº 00".$factura_numero." CLIENTE: ".$factura[0]["factura_razonsocial"]."| PREC.TOT.: ".number_format($factura[0]["factura_total"],2,".",",");
+            $bitacoracaja_tipo = 2;
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                    ",'".$bitacoracaja_evento."',".$usuarioventa_id.",".$prec_total.",0,".$bitacoracaja_tipo.",".$caja_id.")";
+
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja
+            
+            
+            //**************** inicio contenido ***************   
+
+//        $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
+//        $this->Venta_model->ejecutar($sql);
+//
+//        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+//        $this->Venta_model->ejecutar($sql);
+//        
+//        $sql =  "update cuota  set
+//                cuota_numcuota = 0
+//                ,cuota_capital = 0
+//                ,cuota_interes = 0
+//                ,cuota_moradias = 0
+//                ,cuota_multa = 0
+//                ,cuota_subtotal = 0
+//                ,cuota_descuento = 0
+//                ,cuota_total = 0
+//                ,cuota_cancelado = 0
+//                ,cuota_numercibo = 0
+//                ,cuota_saldo = 0
+//                ,estado_id = 27
+//                ,cuota_saldocredito = 0
+//                 where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+//        $this->Venta_model->ejecutar($sql);
+
+//        $sql =  "update credito set
+//                estado_id = 27
+//                ,credito_monto = 0
+//                ,credito_cuotainicial = 0
+//                ,credito_interesproc = 0
+//                ,credito_interesmonto = 0
+//                ,credito_numpagos = 0
+//                ,credito_tipointeres = 0
+//                where venta_id = ".$venta_id;
+//        $this->Venta_model->ejecutar($sql);
+//
+//        $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
+//        $this->Venta_model->ejecutar($sql);
+
+//        $this->Inventario_model->actualizar_inventario(); 
+        //**************** fin contenido ***************
+        echo json_encode(true);
     }
     
     /*
@@ -2878,6 +2986,7 @@ class Factura extends CI_Controller{
             
             $mensaje_anular = "";
             //****************** inicio bitacora caja
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
             $bitacoracaja_evento = "ANULAR FACTURA N°: ".$factura[0]["factura_numero"];
             $bitacoracaja_tipo = 2;
             $caja_id = 0;
@@ -2896,6 +3005,7 @@ class Factura extends CI_Controller{
         }
         echo json_encode($resultado->RespuestaServicioFacturacion);
     }
+    
     /* Revierte la anulacion de una factura*/
     function revertir_anulacion(){
         
@@ -2918,8 +3028,7 @@ class Factura extends CI_Controller{
                 $wsdl = $dosificacion['dosificacion_factura'];
 
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+            if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -2934,8 +3043,7 @@ class Factura extends CI_Controller{
         }
         
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 ||$dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 ||  $dosificacion['docsec_codigoclasificador']==51)
+            if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))
                 $wsdl = $dosificacion['dosificacion_facturaglp'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -3123,7 +3231,7 @@ class Factura extends CI_Controller{
 
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
             if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 ||$dosificacion['docsec_codigoclasificador']==51)
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 ||$dosificacion['docsec_codigoclasificador']==51 ||$dosificacion['docsec_codigoclasificador']==55)
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -3139,7 +3247,7 @@ class Factura extends CI_Controller{
         
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
             if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
-                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51 ||$dosificacion['docsec_codigoclasificador']==55)
                 $wsdl = $dosificacion['dosificacion_facturaglp'];
 
             if ($dosificacion['docsec_codigoclasificador']==13)
@@ -3461,6 +3569,131 @@ class Factura extends CI_Controller{
         $data['_view'] = 'factura/recibo_mediooficio';
         $this->load->view('layouts/main',$data);
         }
+    }
+    
+    
+    
+    /* Revierte la anulación de una factura */
+    public function revertir_falsonegativo()
+    {
+        $usuario_id = (int) $this->session_data['usuario_id'];
+        $factura_id = (int) $this->input->post("factura_id");
+        $caja_id    = (int) $this->caja_id;
+
+        if ($factura_id <= 0) {
+            echo json_encode([
+                'estado' => 'error',
+                'mensaje' => 'Factura inválida.'
+            ]);
+            return;
+        }
+
+        $this->db->trans_begin();
+
+        // Verificar que exista en bitácora
+        $factura = $this->db
+            ->select('factura_id, venta_id')
+            ->from('factura_bitacora')
+            ->where('factura_id', $factura_id)
+            ->get()
+            ->row_array();
+
+        if (!$factura) {
+            $this->db->trans_rollback();
+
+            echo json_encode([
+                'estado' => 'error',
+                'mensaje' => 'No existe respaldo de la factura en bitácora.'
+            ]);
+            return;
+        }
+
+        $venta_id = (int) $factura['venta_id'];
+
+        // 1. Eliminar factura actual
+        $this->db->where('factura_id', $factura_id)->delete('detalle_factura');
+        $this->db->where('factura_id', $factura_id)->delete('factura');
+
+        // 2. Restaurar factura desde bitácora
+        $this->db->query("
+            INSERT INTO factura
+            SELECT *
+            FROM factura_bitacora
+            WHERE factura_id = ?
+        ", [$factura_id]);
+
+        $this->db->query("
+            INSERT INTO detalle_factura
+            SELECT *
+            FROM detalle_factura_bitacora
+            WHERE factura_id = ?
+        ", [$factura_id]);
+
+        // 3. Restaurar detalle de venta
+        // IMPORTANTE:
+        // Si detalle_factura tiene detalleven_id, usa eso.
+        // Si no tiene, usa producto_id + venta_id.
+        $this->db->query("
+            UPDATE detalle_venta v
+            INNER JOIN detalle_factura f 
+                ON f.venta_id = v.venta_id
+                AND f.producto_id = v.producto_id
+            SET 
+                v.detalleven_cantidad = f.detallefact_cantidad,
+                v.detalleven_precio = f.detallefact_precio,
+                v.detalleven_subtotal = f.detallefact_subtotal,
+                v.detalleven_total = f.detallefact_total,
+                v.detalleven_caracteristicas = f.detallefact_caracteristicas,
+                v.detalleven_preferencia = f.detallefact_preferencia
+            WHERE f.factura_id = ?
+              AND f.venta_id = ?
+        ", [$factura_id, $venta_id]);
+
+        // 4. Restaurar cabecera de venta
+        $this->db->query("
+            UPDATE venta v
+            INNER JOIN factura f ON f.venta_id = v.venta_id
+            SET 
+                v.venta_subtotal = f.factura_subtotal,
+                v.venta_descuento = f.factura_descuento,
+                v.venta_total = f.factura_total,
+                v.venta_efectivo = f.factura_efectivo,
+                v.venta_cambio = f.factura_cambio,
+                v.estado_id = 1
+            WHERE f.factura_id = ?
+              AND v.venta_id = ?
+        ", [$factura_id, $venta_id]);
+
+        // 5. Registrar bitácora
+        $evento = "RESTABLECER FACTURA FALSO/NEGATIVO: FACT. ID -> {$factura_id} * VENTA: {$venta_id}";
+
+        $this->db->insert('bitacora_caja', [
+            'bitacoracaja_fecha'     => date('Y-m-d'),
+            'bitacoracaja_hora'      => date('H:i:s'),
+            'bitacoracaja_evento'    => $evento,
+            'usuario_id'             => $usuario_id,
+            'bitacoracaja_montoreg'  => 0,
+            'bitacoracaja_montocaja' => 0,
+            'bitacoracaja_tipo'      => 2,
+            'caja_id'                => $caja_id
+        ]);
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+
+            echo json_encode([
+                'estado' => 'error',
+                'mensaje' => 'No se pudo restablecer la factura.'
+            ]);
+            return;
+        }
+
+        $this->db->trans_commit();
+
+        echo json_encode([
+            'estado' => 'ok',
+            'mensaje' => 'La factura fue restablecida con éxito.'
+        ]);
     }
     
 }

@@ -97,7 +97,7 @@
                 <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()" type="button"><span class="fa fa-copy"></span> Prod. Duplicados</button>
                 
-                <button class="btn btn-danger btn-sm" id="excel" onclick="generarexcel()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
+                <button class="btn btn-danger btn-sm" id="excel" onclick="generarexcel_realizable()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
                 <?php } ?>
               
             </div>

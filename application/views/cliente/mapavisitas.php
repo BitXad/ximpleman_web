@@ -70,7 +70,8 @@
 
                                     // Contenido del popup
                                     
-                                    var enlace = 'https://www.google.com/maps/dir/'+milat+','+milon;
+                                    //var enlace = 'https://www.google.com/maps/dir/'+milat+','+milon;
+                                    var enlace = 'https://www.google.com/maps/dir/?api=1&destination=' + milat + ',' + milon;
                                     var contenido = '<div id="content" style="width: auto; height: auto;"><h5><b><fa class="fa fa-user"> </fa> CLIENTE:</b> ' +place[0]+'<h5>'+
                                         '<a href="'+link1+place[4]+'" target="_blank"><h5><fa class="fa fa-cart-arrow-down"> </fa> Realizar venta</h5></a>' +
                                         '<a href="'+link2+place[4]+'" target="_blank"><h5><fa class="fa fa-cubes"> </fa> Realizar pedido/preventa</h5></a>' +

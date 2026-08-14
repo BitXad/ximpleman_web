@@ -156,12 +156,21 @@
                                         if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
                                             <button class="btn btn-info btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"><b style="font-size: 20pt;"> ENVIADA </b></button>
                                         <?php
-                                        }else{ ?>
-                                            <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
-                                                <br> <?= $factura[0]['factura_mensajeslist']; ?>
-                                            </button>
-                                           
+                                        }else{
+                                            if ($factura[0]['factura_tipoemision']==2){ ?>
+                                                    <button class="btn btn-warning btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 18pt;"> EMITIDA FUERA DE LINEA</b>
+                                                        <br> La factura será ENVIADA y VALIDADA al finalizar la contingencia.
+                                                        <br> <b>ESTE DOCUMENTO PUEDE SER ENTREGADO AL CLIENTE.</b>
+                                                    </button>
 
+                                            <?php }else{ ?>
+                                            
+                                                        <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
+                                                            <br> <?= $factura[0]['factura_mensajeslist']; ?>
+                                                            <br> <b>FACTURA NO VALIDA - DEBE REHACER ESTE DOCUMENTO</b>                                                    
+                                                        </button>
+                                            
+                                                <?php } ?>
                                         <?php } ?>
                                     </div>
                                                                       
@@ -313,7 +322,7 @@
                             <?php } ?>
                             
                             <?php
-                            if($opc == 12){
+                            if($opc == 12 || $opc == 55){
 
                             ?>
                             <tr>
@@ -431,7 +440,7 @@
                     $total_final_factura = $factura[0]['factura_subtotal'];
                     $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                     
-                    if ($factura[0]['docsec_codigoclasificador']==12){ 
+                    if ($factura[0]['docsec_codigoclasificador'] == 12){ 
 
                         $importe_base_iva = $factura_total * 0.70;
 

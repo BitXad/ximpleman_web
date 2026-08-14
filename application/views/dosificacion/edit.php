@@ -94,7 +94,7 @@
                     <div class="col-md-3">
                         <label for="dosificacion_actividad" class="control-label">Actividad</label>
                         <div class="form-group">
-                            <select name="dosificacion_actividad" id="dosificacion_actividad" class="form-control" onChange="set_actividad(1),get_leyendas()">
+                            <select name="dosificacion_actividad" id="dosificacion_actividad" class="form-control" onChange="set_actividad(1),get_leyendas(),get_documentos_sector()">
                                 <?php
                                     $actividad_select = "";
                                     foreach($actividades as $actividad){
@@ -228,21 +228,55 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <input type="hidden"  id="docsec_codigoclasificador_select"  value="<?= $dosificacion['docsec_codigoclasificador']; ?>"><!-- comment -->
+
                     <div class="col-md-3">
-                        <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
+
+                        <label for="docsec_codigoclasificador" class="control-label">
+                            Documento Sector
+                        </label>
+
                         <div class="form-group">
-                            <select name="docsec_codigoclasificador" id="docsec_codigoclasificador" class="form-control" onchange="mensaje_alerta()">
-                                <option value="">- Documento Sector -</option>
-                                <?php 
-                                    foreach($all_documentosector as $docsector)
-                                    {
-                                        $selected = ($docsector['docsec_codigoclasificador'] == $dosificacion['docsec_codigoclasificador']) ? ' selected="selected"' : "";
-                                        echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.$docsector['docsec_codigoclasificador']."-".$docsector['docsec_descripcion'].'</option>';
-                                    } 
-                                ?>
-                            </select>
+
+                            <div class="input-group">
+
+                                <select name="docsec_codigoclasificador" 
+                                        id="docsec_codigoclasificador" 
+                                        class="form-control"
+                                        onchange="mensaje_alerta()">
+
+                                    <option value="">- Documento Sector -</option>
+
+                                    <?php 
+                                        foreach($all_documentosector as $docsector)
+                                        {
+                                            $selected = ($docsector['docsec_codigoclasificador'] == $dosificacion['docsec_codigoclasificador']) 
+                                                ? ' selected="selected"' 
+                                                : "";
+
+                                            echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.
+                                                    $docsector['docsec_codigoclasificador']." - ".$docsector['docsec_descripcion'].
+                                                 '</option>';
+                                        } 
+                                    ?>
+
+                                </select>
+
+                                <span class="input-group-btn">
+                                    <button type="button"
+                                            class="btn btn-info"
+                                            onclick="get_todos_documentos_sector()" title="Carga toda la lista disponible de documentos sector">
+                                        <fa class="fa fa-list"></fa>
+                                    </button>
+                                </span>
+
+                            </div>
+
                         </div>
+
                     </div>
+                    
                     <div class="col-md-3">
                         <label for="dosificacion_tokendelegado" class="control-label">Token Delegado</label>
                         <div class="form-group">
@@ -275,9 +309,34 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="dosificacion_modalidad" class="control-label">Modalidad (1-Electronica E.L /2-Computarizada E.L.)</label>
+                        <label for="dosificacion_modalidad" class="control-label">
+                            Modalidad
+                        </label>
+
                         <div class="form-group">
-                            <input type="text" name="dosificacion_modalidad" value="<?php echo ($this->input->post('dosificacion_modalidad') ? $this->input->post('dosificacion_modalidad') : $dosificacion['dosificacion_modalidad']); ?>" class="form-control" id="dosificacion_modalidad" />
+                            <select name="dosificacion_modalidad"
+                                    id="dosificacion_modalidad"
+                                    class="form-control">
+
+                                <option value="">- MODALIDAD -</option>
+
+                                <option value="1"
+                                    <?= (($this->input->post('dosificacion_modalidad')
+                                        ? $this->input->post('dosificacion_modalidad')
+                                        : $dosificacion['dosificacion_modalidad']) == 1)
+                                        ? 'selected' : ''; ?>>
+                                    1 - ELECTRONICA EN LINEA
+                                </option>
+
+                                <option value="2"
+                                    <?= (($this->input->post('dosificacion_modalidad')
+                                        ? $this->input->post('dosificacion_modalidad')
+                                        : $dosificacion['dosificacion_modalidad']) == 2)
+                                        ? 'selected' : ''; ?>>
+                                    2 - COMPUTARIZADA EN LINEA
+                                </option>
+
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -583,5 +642,75 @@
         
     }
     
+    
+    function get_documentos_sector(){
+    let base_url = $('#base_url').val();
+    let codigo_actividad = $('#dosificacion_actividad').val();
+    let seleccionado = $('#docsec_codigoclasificador_select').val();
+
+    $.ajax({
+        url: base_url + 'dosificacion/get_documento_sector_por_actividad',
+        type: 'POST',
+        data: {
+            codigo_actividad: codigo_actividad
+        },
+        success: function(respuesta){
+            let documentos = JSON.parse(respuesta);
+
+            let html = '<option value="">- Documento Sector -</option>';
+
+            documentos.map(function(doc){
+                let selected = doc.docsec_codigoclasificador == seleccionado ? 'selected' : '';
+
+                html += `
+                    <option value="${doc.docsec_codigoclasificador}" ${selected}>
+                        ${doc.docsec_codigoclasificador} - ${doc.docsec_descripcion}
+                    </option>
+                `;
+            });
+
+            $('#docsec_codigoclasificador').html(html);
+        },
+        error: function(){
+            alert('Error: no se obtuvieron los documentos sector de esta actividad');
+        }
+    });
+}
+
+function get_todos_documentos_sector(){
+    let base_url = $('#base_url').val();
+    let seleccionado = $('#docsec_codigoclasificador').val();
+
+    $.ajax({
+        url: base_url + 'dosificacion/get_todos_documentos_sector',
+        type: 'POST',
+        success: function(respuesta){
+            let documentos = JSON.parse(respuesta);
+
+            let html = '<option value="">- Documento Sector -</option>';
+
+            documentos.map(function(doc){
+                let selected = doc.docsec_codigoclasificador == seleccionado ? 'selected' : '';
+
+                html += `
+                    <option value="${doc.docsec_codigoclasificador}" ${selected}>
+                        ${doc.docsec_codigoclasificador} - ${doc.docsec_descripcion}
+                    </option>
+                `;
+            });
+
+            $('#docsec_codigoclasificador').html(html);
+        },
+        error: function(){
+            alert('Error: no se pudieron cargar todos los documentos sector');
+        }
+    });
+}
+    
+    
+    
+$(document).ready(function(){
+    get_documentos_sector();
+});
 </script>
 

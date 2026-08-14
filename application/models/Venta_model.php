@@ -560,6 +560,9 @@ class Venta_model extends CI_Model
                 f.factura_transaccion, f.factura_mensajeslist, f.factura_codigocliente, 
                 f.factura_codigodescripcion, f.factura_enviada,f.factura_id,
                 f.factura_excepcion, f.factura_tipoemision,
+                f.factura_razonsocial, f.factura_total, f.factura_fecha,
+                f.factura_nitemisor,
+                
                 e.recpaquete_id, e.recpaquete_codigodescripcion, 
                 e.recpaquete_codigoestado, e.recpaquete_codigorecepcion, 
                 e.recpaquete_transaccion, e.recpaquete_mensajeslist, 
@@ -909,6 +912,7 @@ function get_busqueda($condicion)
      */
     function cargar_productos_detalle_temporal($codigo){
         
+        $usuario_id = $this->session_data['usuario_id'];
         $sql = "insert into detalle_venta_aux(producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
                 detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
                  usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
@@ -917,7 +921,7 @@ function get_busqueda($condicion)
                  
                 (select producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
                 detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
-                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
+                 {$usuario_id}, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
                  detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
                  detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc
                  from detalle_venta_temporal where codigo_venta = '{$codigo}')";
@@ -1110,10 +1114,21 @@ function get_busqueda($condicion)
                 where v.venta_id = {$venta_id} and p.estado_id = 52";
         return $this->db->query($sql)->result_array();
     }
+    
     function obtener_url_larga($short_code)
     {
         $query = $this->db->get_where('urls', ['short_code' => $short_code]);
         return $query->row();
+    }
+    
+    /*
+    * Verificamos si la transaccion es reserva
+    */
+    function get_ventas_guardadas(){
+        
+        $sql = "SELECT d.*, sum(d.detalleven_total) AS totalbs, u.usuario_nombre
+                FROM  detalle_venta_temporal d, usuario u WHERE d.usuario_id = u.usuario_id GROUP BY codigo_venta  ORDER BY d.detalleven_id";
+        return $this->db->query($sql)->result_array();
     }
     
 }

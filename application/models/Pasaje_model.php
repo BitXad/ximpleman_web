@@ -172,5 +172,12 @@ class Pasaje_model extends CI_Model
            } catch (Exception $ex) {
              throw new Exception('Pasaje_model model : Error in get_all_pasaje_by_cat function - ' . $ex);
            }  
-      } 
+      }
+      
+//    public function update_pasaje($pasaje_id, $params)
+//    {
+//        $this->db->where('pasaje_id', $pasaje_id);
+//        return $this->db->update('pasaje', $params);
+//    }  
+      
  }

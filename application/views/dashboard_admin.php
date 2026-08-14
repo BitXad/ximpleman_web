@@ -544,7 +544,7 @@
                        
                       <td style="line-height: 10px;" >
                         <b><?php echo $nombre_proveedor; ?></b>
-                        <a href='<?php echo base_url("orden_compra/edit_ordencompra/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
+                        <a href='<?php echo base_url("orden_compra/edit/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
                         <br>
                         <small>
                             <?php echo $pedidos['pedido_resumen']; ?>
@@ -902,12 +902,13 @@
     </div>
 
     <div class="box-body">
-      <div class="box-body no-padding table-responsive">
+      <div class="box-body no-padding table-responsive"  style="max-height:500px; overflow-y:auto; overflow-x:auto; border:1px solid #ddd;">
+          
         <table class="table table-condensed" id="tabla_operacionesobservadas_excel">
           <tr>
             <th style="width: 10px">#</th>
             <th>
-              Operacion
+                Operacion<br>
               <input type="date" id="calendario_bitacora1" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;">
               <input type="date" id="calendario_bitacora2" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;">
             </th>
@@ -917,6 +918,7 @@
           </tr>
           <tbody id="tabla_operacionesobservadas"></tbody>
         </table>
+          
       </div>
 
       <!-- Botón Exportar -->
@@ -1195,6 +1197,7 @@
     <div class="modal-dialog" role="document">
             <div class="modal-header" style="background: #3399cc">
                 <b style="color: white;">OPERACIONES OBSERVADAS</b>
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1217,11 +1220,13 @@
                                     OPERACION OBSERVADA                                
                                     <fa class="fa fa-clock-o"></fa> 
                                 </center>
+                                <center id="fechaoperacion" style="font-weight: bold">
+
+                                </center>
                                 <br>
                                 <center id="operacion">
                                 
                                 </center>
-             
                         </div>
 
                         <div class="modal-footer" style="text-align: center">

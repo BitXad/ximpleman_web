@@ -354,10 +354,22 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
             </font>
             <br>
-            <font size="1">
-                <?php echo "EFECTIVO ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
-                <?php echo "CAMBIO ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>            
-            </font>
+            
+            <?php if($venta[0]['forma_id']!=1){ ?>
+                
+                    <font size="1">
+                        <?php echo substr($venta[0]['forma_nombre'], 0, 18)." ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_pagoalternativo'],$decimales,'.',','); ?>            
+                        <br><?php echo "EFECTIVO ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_pagoefectivo'],$decimales,'.',','); ?>
+                    </font>
+            
+            <?php }else{ ?>
+            
+                    <font size="1">
+                        <?php echo "EFECTIVO ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
+                        <?php echo "CAMBIO ".$parametro['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>            
+                    </font>
+            
+            <?php } ?>
             
             <?php if($venta[0]['tipotrans_id']==2){ ?>
             <font size="1">

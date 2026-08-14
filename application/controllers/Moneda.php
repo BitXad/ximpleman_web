@@ -142,6 +142,48 @@ class Moneda extends CI_Controller{
                 show_error('The moneda you are trying to edit does not exist.');
         } 
     }
+    /*
+     * Editing a moneda
+     */
+    function edit2($moneda_id)
+    {  
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(124)){ 
+            // check if the moneda exists before trying to edit it
+            $data['moneda'] = $this->Moneda_model->get_moneda($moneda_id);
+
+            if(isset($data['moneda']['moneda_id']))
+            {
+                $this->load->library('form_validation');
+
+                            $this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                            'estado_id' => $this->input->post('estado_id'),
+                            'moneda_descripcion' => $this->input->post('moneda_descripcion'),
+                            'moneda_tc' => $this->input->post('moneda_tc'),
+                    );
+
+                    $this->Moneda_model->update_moneda($moneda_id,$params);            
+                    redirect('sincronizacion/show_sincronizacion/15');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_tipo_estado(1);
+                    $data['page_title'] = "Moneda";
+                    $data['_view'] = 'moneda/edit2';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The moneda you are trying to edit does not exist.');
+        } 
+    }
 
     /*
      * Deleting moneda

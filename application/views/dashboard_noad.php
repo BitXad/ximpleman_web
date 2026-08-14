@@ -285,7 +285,7 @@
                        
                       <td style="line-height: 10px;" >
                         <b><?php echo $nombre_proveedor; ?></b>
-                        <a href='<?php echo base_url("orden_compra/edit_ordencompra/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
+                        <a href='<?php echo base_url("orden_compra/edit/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
                         <br>
                         <small>
                             <?php echo $pedidos['pedido_resumen']; ?>

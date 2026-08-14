@@ -110,7 +110,13 @@ function tabla_pedidos(filtro)
                 }
                 else{
                     imagen = "blue.png";
-                    html += " <a href='https://www.google.com/maps/dir/"+p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+"' target='_blank' title='lat:"+p[i]['cliente_latitud']+",long:"+p[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                    //html += " <a href='https://www.google.com/maps/dir/"+p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+"' target='_blank' title='lat:"+p[i]['cliente_latitud']+",long:"+p[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                    html += "<a href='https://www.google.com/maps/dir/?api=1&destination=" 
+                         + p[i]['cliente_latitud'] + "," + p[i]['cliente_longitud']
+                         + "' target='_blank' title='Lat: " + p[i]['cliente_latitud']
+                         + ", Long: " + p[i]['cliente_longitud']
+                         + "'><img src='" + base_url + "resources/images/" + imagen
+                         + "' width='25' height='25'></a>";
                 
                 }
                     

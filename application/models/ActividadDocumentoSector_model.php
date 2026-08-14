@@ -13,6 +13,7 @@
         }
 
         function add_actividad_doc_sector($params){
+            
             $this->db->insert('actividad_doc_sector',$params);
             return $this->db->insert_id();
         }
@@ -24,6 +25,7 @@
 
         function truncate_table(){
             $this->db->query("truncate actividad_doc_sector");
+            
         }
     }
 ?>

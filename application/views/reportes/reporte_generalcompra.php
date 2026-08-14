@@ -343,3 +343,71 @@
     <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
     <ul style="margin-bottom: -5px; font-size: 10px;">RESPONSABLE<br>FIRMA - SELLO</ul>
 </center>
+
+        
+<!------------------------ INICIO modal para Seleccionar a un cliente ------------------->
+<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Cliente</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="buscar_elcliente" name="buscar_elcliente" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="buscarcliente(event)" autofocus>
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablarecliente()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="row no-print" id='loader_bcliente'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                </center>
+            </div>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablarecliente"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar a un cliente ------------------->
+<!------------------------ INICIO modal para Seleccionar a un producto ------------------->
+<div class="modal fade" id="modalbuscarproducto" tabindex="-1" role="dialog" aria-labelledby="modalbuscarproductolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Producto</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="buscar_elproducto" name="buscar_elproducto" type="text" class="form-control" placeholder="Ingrese el nombre del producto o codigo"  onkeypress="buscarproducto(event)" autofocus>
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="row no-print" id='loader_bproducto'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                </center>
+            </div>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablareproducto"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar a un producto ------------------->

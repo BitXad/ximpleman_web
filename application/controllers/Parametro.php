@@ -811,7 +811,7 @@ class Parametro extends CI_Controller{
                                         v.cliente_id = c.cliente_id ";
                                 
                                 $facturas = $this->Venta_model->consultar($sql);
-                                $cantidad_facturas = sizeof($facturas);
+                                $cantidad_facturas = sizeof($facturas); // cantidad de archivos
 
                                 //PASO 6: Comprimir archivos generados en la contingencia
                                 $base_url = explode('/', base_url());  //convierte un cadena en array
@@ -1205,6 +1205,106 @@ class Parametro extends CI_Controller{
                                         $this->Venta_model->ejecutar($sql);
                                         
                                         //***************************************************************
+                                        
+                                        
+                                        //TRATAMIENTO DE MENSAJELIST
+                                        //***************************************
+                                        
+                                            $respuesta = is_string($res)
+                                                ? json_decode($res, true)
+                                                : json_decode(json_encode($res), true);
+
+                                            // Reindexar por seguridad
+                                            $facturas = array_values($facturas);
+
+                                            $mensajes_por_factura = [];
+                                            $mensajesList = [];
+
+                                            /*
+                                            |--------------------------------------------------------------------------
+                                            | Normalizar mensajesList
+                                            |--------------------------------------------------------------------------
+                                            */
+
+                                            if (!empty($respuesta['mensajesList'])) {
+
+                                                // Caso: solo un mensaje
+                                                if (isset($respuesta['mensajesList']['codigo'])) {
+                                                    $mensajesList[] = $respuesta['mensajesList'];
+                                                }
+                                                // Caso: varios mensajes
+                                                else {
+                                                    $mensajesList = $respuesta['mensajesList'];
+                                                }
+                                            }
+
+                                            /*
+                                            |--------------------------------------------------------------------------
+                                            | Agrupar mensajes por numeroArchivo
+                                            |--------------------------------------------------------------------------
+                                            */
+
+                                            foreach ($mensajesList as $mensaje) {
+
+                                                if (!isset($mensaje['numeroArchivo'])) {
+                                                    continue;
+                                                }
+
+                                                $numeroArchivo = (int)$mensaje['numeroArchivo'];
+
+                                                // opcional: quitar numeroArchivo antes de guardar
+                                                unset($mensaje['numeroArchivo']);
+
+                                                $mensajes_por_factura[$numeroArchivo][] = $mensaje;
+                                            }
+
+                                            /*
+                                            |--------------------------------------------------------------------------
+                                            | Actualizar SOLO facturas observadas
+                                            |--------------------------------------------------------------------------
+                                            */
+
+                                           //var_dump($mensajes_por_factura);
+                                            foreach ($mensajes_por_factura as $numeroArchivo => $mensajes) {
+
+                                                // Validar que exista esa posición
+                                                if (!isset($facturas[$numeroArchivo])) {
+                                                    continue;
+                                                }
+
+                                                $factura = $facturas[$numeroArchivo];
+
+                                                $json_mensajes = json_encode(
+                                                    $mensajes,
+                                                    JSON_UNESCAPED_UNICODE
+                                                );
+
+                                                /*
+                                                echo "<br>FACTURA ID: ".$factura['factura_id'];
+                                                
+                                                $data = [
+                                                    'factura_mensajeslist'      => $json_mensajes,
+                                                    'factura_codigorecepcion'   => '',
+                                                    'factura_enviada'           => 3,
+                                                    'factura_codigodescripcion' => ''
+                                                ];
+                                                
+                                                $this->db->where('factura_id', $factura['factura_id']);
+                                                $this->db->update('factura', $data);*/
+                                                
+                                                $sql = "update factura set 
+                                                        factura_mensajeslist = '{$json_mensajes}',
+                                                        factura_codigorecepcion = '',
+                                                        factura_enviada = 3,
+                                                        factura_codigodescripcion = ''
+                                                        where factura_id = ".$factura['factura_id'];
+
+                                                $this->Venta_model->ejecutar($sql);
+
+                                            }
+                                        
+                                        // FIN TRATAMIENTO MENSAJELIST
+                                        
                                         
                                         echo json_encode($res);
                                         

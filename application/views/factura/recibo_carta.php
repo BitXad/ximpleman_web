@@ -421,10 +421,24 @@ border-bottom : 1px solid #aaa;
             </b>
             </font>
             <?php } ?>
-            <font size="1" <?php echo (isset($venta[0]['traspaso_id']))?"hidden":""; ?>>
-                <?php echo "EFECTIVO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
-                <?php echo "CAMBIO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>
-            </font>
+            
+            <?php if($venta[0]['forma_id']!=1){ ?>
+                
+                    <font size="1">
+                        <?php echo substr($venta[0]['forma_nombre'], 0, 18)." ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_pagoalternativo'],$decimales,'.',','); ?>            
+                        <br><?php echo "EFECTIVO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_pagoefectivo'],$decimales,'.',','); ?>
+                    </font>
+            
+            <?php }else{ ?>
+            
+                    <font size="1">
+                        <?php echo "EFECTIVO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
+                        <?php echo "CAMBIO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>            
+                    </font>
+            
+            <?php } ?>
+            
+
             
             
         </td>          

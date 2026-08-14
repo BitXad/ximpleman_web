@@ -8,6 +8,8 @@ function inicio(){
     }else{
         modal_cajapendiente();
     }
+    
+    ventas_fallidas();
 }
 
 function modal_mensajecaja(){
@@ -186,6 +188,26 @@ function formato_numerico(numero){
 	return x1 + x2;
 }
 
+
+function valor_caja(id, defecto){
+    defecto = (defecto === undefined) ? 0 : defecto;
+    try{
+        var el = document.getElementById(id);
+        if(!el) return defecto;
+        var val = Number(el.value || 0);
+        return isNaN(val) ? defecto : val;
+    }catch(e){
+        return defecto;
+    }
+}
+
+function asignar_valor_caja(id, valor){
+    try{
+        var el = document.getElementById(id);
+        if(el) el.value = Number(valor || 0).toFixed(2);
+    }catch(e){ }
+}
+
  function calcular_caja(){
  
     
@@ -204,7 +226,7 @@ function formato_numerico(numero){
     var caja_corte020 = Number(document.getElementById('caja_corte020').value);
     var caja_corte010 = Number(document.getElementById('caja_corte010').value);
     var caja_corte005 = Number(document.getElementById('caja_corte005').value);
-    var total_transacciones = Number(document.getElementById('saldo_caja').value);
+    var total_transacciones = valor_caja('saldo_caja'); // efectivo esperado calculado por Reporte Movimiento Diario
     
     var total = 0;
     total =  (caja_corte1000*1000) + (caja_corte500*500) + (caja_corte200*200) + (caja_corte100*100) + 
@@ -226,25 +248,52 @@ function formato_numerico(numero){
     $('#span_corte005').text(formato_numerico(Number(caja_corte005*0.05).toFixed(2)));
     
     $('#caja_cierre').val(Number(total).toFixed(2));
-    $('#caja_diferencia').val(Number(total - caja_apertura - total_transacciones).toFixed(2));
+    //$('#caja_diferencia').val(Number(total - caja_apertura - total_transacciones).toFixed(2));
+    //
+    //
     //alert(total);
     
-    
+    var efectivo_registrado = Number(total);
+    var efectivo_en_caja = valor_caja('saldo_caja');
+
+    $('#caja_cierre').val(efectivo_registrado.toFixed(2));
+    $('#caja_diferencia').val(Number(total - total_transacciones).toFixed(2));
     
  }
  
  function verificar_caja(){
-     
-    $("#boton_buscar").click();
     
-    var caja_apertura = 0; //Number(document.getElementById('caja_apertura').value); porque ya lo hace desde el reporte de movimiento
-    var total_transacciones = Number(document.getElementById('saldo_caja').value);
-    var saldo_caja = caja_apertura + total_transacciones;
-    
-    var caja_cierre = Number(document.getElementById('caja_cierre').value);    
+    var caja_apertura = valor_caja('caja_apertura');
+
+    var ingresos_efectivo = valor_caja('total_ingresos_efectivo');
+    var ingresos_banco = valor_caja('total_ingresos_banco');
+    var ingresos_credito = valor_caja('total_ingresos_credito');
+    var egresos_efectivo = valor_caja('total_egresos_efectivo');
+    var egresos_banco = valor_caja('total_egresos_banco');
+    var total_movimiento = valor_caja('total_movimiento');
+
+    var saldo_actual = valor_caja('saldo_caja');
+
+    var existen_totales_movimiento =
+        document.getElementById('total_ingresos_efectivo') ||
+        document.getElementById('total_egresos_efectivo') ||
+        document.getElementById('total_movimiento');
+
+    var saldo_caja = saldo_actual;
+
+    if (existen_totales_movimiento) {
+        saldo_caja = caja_apertura + ingresos_efectivo - egresos_efectivo;
+        asignar_valor_caja('saldo_caja', saldo_caja);
+    }
+
+    asignar_valor_caja('caja_efectivo', saldo_caja);
+    asignar_valor_caja('caja_credito', ingresos_credito);
+    asignar_valor_caja('caja_transacciones', total_movimiento);
+
+    var caja_cierre = valor_caja('caja_cierre');
     var bitacoracaja_montoreg = saldo_caja;
     var bitacoracaja_montocaja = caja_cierre;
-    var bitacoracaja_tipo = 1; //registros de caja
+    var bitacoracaja_tipo = 1;
 
     var billete200 = document.getElementById('caja_corte200').value;
     var billete100 = document.getElementById('caja_corte100').value;
@@ -259,9 +308,8 @@ function formato_numerico(numero){
     var moneda010 = document.getElementById('caja_corte010').value;
     var moneda005 = document.getElementById('caja_corte005').value;
 
-    var base_url    = document.getElementById('base_url').value;
+    var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"caja/registrar_bitacora";
-    
     
     var bitacoracaja_evento = "VERIFICACION EFECTIVO: "+
             "| BILLETE 200 X "+billete200+
@@ -278,36 +326,106 @@ function formato_numerico(numero){
             "| MODENA 0.05 X "+moneda005;
     
     bitacoracaja_evento += " *** TOTAL Bs: "+caja_cierre;
+    bitacoracaja_evento += " | APERTURA: "+caja_apertura.toFixed(2);
+    bitacoracaja_evento += " | ING. EFECTIVO: "+ingresos_efectivo.toFixed(2);
+    bitacoracaja_evento += " | EGR. EFECTIVO: "+egresos_efectivo.toFixed(2);
+    bitacoracaja_evento += " | BANCO: "+ingresos_banco.toFixed(2);
+    bitacoracaja_evento += " | CREDITO: "+ingresos_credito.toFixed(2);
+    bitacoracaja_evento += " | MOVIMIENTO TOTAL: "+total_movimiento.toFixed(2);
     
-            
-    
-    
-    $("#buscar_por_fecha").click();
-    
-    if(saldo_caja == caja_cierre) $("#caja_estado").val("IGUALADA");
-    if(saldo_caja > caja_cierre) $("#caja_estado").val("FALTANTE Bs "+(Number(saldo_caja-caja_cierre).toFixed(2)));
-    if(saldo_caja < caja_cierre)  $("#caja_estado").val("INCONSISTENCIA");
-    
-   // alert(saldo_caja+" - "+caja_cierre);
+    if(saldo_caja == caja_cierre) {
+        $("#caja_estado").val("IGUALADA");
+    }
 
-    $('#caja_diferencia').val((Number(caja_cierre) - Number(saldo_caja)).toFixed(2));
+    if(saldo_caja > caja_cierre) {
+        $("#caja_estado").val("FALTANTE Bs "+Number(saldo_caja - caja_cierre).toFixed(2));
+    }
 
-    $.ajax({url: controlador,
-               type:"POST",
-               data:{bitacoracaja_montoreg:bitacoracaja_montoreg, bitacoracaja_montocaja:bitacoracaja_montocaja, bitacoracaja_tipo:bitacoracaja_tipo, bitacoracaja_evento:bitacoracaja_evento},
+    if(saldo_caja < caja_cierre) {
+        $("#caja_estado").val("SOBRANTE Bs "+Number(caja_cierre - saldo_caja).toFixed(2));
+    }
 
-               success:function(result){
+    $('#caja_diferencia').val(Number(caja_cierre - saldo_caja).toFixed(2));
 
-
-             
-                },
-            error:function(result){
-                alert("Algo salio mal, verifique por favor...!!!");
-               
-            }
-
-        });    
-    
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{
+            bitacoracaja_montoreg:bitacoracaja_montoreg,
+            bitacoracaja_montocaja:bitacoracaja_montocaja,
+            bitacoracaja_tipo:bitacoracaja_tipo,
+            bitacoracaja_evento:bitacoracaja_evento,
+            caja_apertura:caja_apertura,
+            caja_efectivo:saldo_caja,
+            caja_credito:ingresos_credito,
+            caja_ingresos_efectivo:ingresos_efectivo,
+            caja_egresos_efectivo:egresos_efectivo,
+            caja_ingresos_banco:ingresos_banco,
+            caja_egresos_banco:egresos_banco,
+            caja_transacciones:total_movimiento
+        },
+        error:function(result){
+            alert("Algo salió mal, verifique por favor...!!!");
+        }
+    });    
     
     document.getElementById('div_botones').style.display = 'block'; 
- }
+}
+
+
+
+
+function ventas_fallidas(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/ventas_fallidas/";
+    var tipousuario_id = Number(document.getElementById('tipousuario_id')?.value ?? 0);
+
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        success:function(respuesta){
+                            
+                            let res = JSON.parse(respuesta);
+                            let html = "";
+                            
+                            if(res.length>0){
+
+                                    for(var i=0;i<res.length; i++){
+
+                                        html += "<tr>"
+                                            html += "<td>"+(i+1)+"</td>";
+                                            html += "<td>"+res[i]["cliente_nombre"]+"<sub>["+res[i]["cliente_id"]+"]</sub><br>"+((res[i]["cliente_nombre"]!=res[i]["cliente_razon"])?"<sub>"+res[i]["cliente_razon"]+"</sub>":"")+"</td>";
+                                            html += "<td><center>"+res[i]["venta_id"]+"</center></td>";
+                                            html += "<td style='text-align:center;'>"+formato_fecha(res[i]["venta_fecha"])+"</td>";
+                                            html += "<td style='text-align:right;'>"+Number(res[i]["venta_total"]).toFixed(2)+"</td>";
+                                            html += "<td style='text-align:center;'>"+res[i]["estado_descripcion"]+"</td>";
+                                            html += "<td>"+res[i]["usuario_nombre"]+"</td>";
+                                            html += "<td>";
+                                                    html += "<a href='"+base_url+"factura/imprimir_recibo/"+res[i]["venta_id"]+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir'><span class='fa fa-print' aria-hidden='true'></span></a>";
+                                                    html += "<a href='"+base_url+"venta/modificar_venta/"+res[i]["venta_id"]+"' class='btn btn-xs btn-info' target='_blank'><fa class='fa fa-pencil'></fa> </a>";
+
+                                                if (tipousuario_id==1){                                            
+                                                    html += "<button onclick='eliminar_transaccion("+res[i]["venta_id"]+")' class='btn btn-xs btn-danger'><fa class='fa fa-trash'></fa> </a>"; 
+                                                }
+
+                                        html += "</td>";
+
+                                        html += "</tr>"
+
+                                    }
+
+                                    $("#ventas_fallidas").html(html);
+                                }else{
+                                    alert("No se encontraron ventas con fallas/sin detalle...!!")
+                                }
+                                    
+
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
+                                
+
+}

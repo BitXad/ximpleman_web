@@ -129,10 +129,10 @@ empresa_nombre = 'OTOGROUP SRL'
 ,empresa_cargo = ''
 ,empresa_nombresucursal = 'SUC. PRINCIPAL';
 
-update sistema
-set 
-sistema_version = '2.5';
- 
+TRUNCATE sistema;
+INSERT INTO `sistema` (`sistema_id`, `sistema_nombre`, `sistema_version`, `sistema_color`, `sistema_eslogan`, `sistema_logo`, `sistema_moduloventas`, `sistema_modulocompras`, `sistema_modulopedidos`, `sistema_telefonosoporte`) VALUES 
+  (1,'Ximpleman','ver 3.0.1','purple','El sistema que tu Empresa Necesita','logo.jpg','Ventas','Compras','Preventas','59179999097');
+COMMIT;
  * --------------- SQL ---------------
 
 
@@ -192,76 +192,80 @@ p.producto_id = u.producto_id and
 
 
 
+//*****************************************
+ * INVENTARIO INICIAL
+//****************************************
+ 
 
-insert into detalle_compra(
-compra_id
-,moneda_id
-,producto_id
-,detallecomp_codigo
-,detallecomp_cantidad
-,detallecomp_unidad
-,detallecomp_costo
-,detallecomp_precio
-,detallecomp_subtotal
-,detallecomp_descuento
-,detallecomp_total
-,detallecomp_descglobal
-,detallecomp_tipocambio
-,cambio_id
-,detallecomp_tc
-) 
-(
-select 
-1,
-1,
-p.producto_id,
-p.producto_codigobarra,
-p.producto_orden,
-p.`producto_unidad`,
-p.`producto_costo`,
-p.`producto_precio`,
-p.`producto_costo` * p.producto_orden,
-0,
-p.`producto_costo` * p.producto_orden,
-0,
-1,
-1,
-6.96
-from producto p where p.producto_orden>0);
+    insert into detalle_compra(
+    compra_id
+    ,moneda_id
+    ,producto_id
+    ,detallecomp_codigo
+    ,detallecomp_cantidad
+    ,detallecomp_unidad
+    ,detallecomp_costo
+    ,detallecomp_precio
+    ,detallecomp_subtotal
+    ,detallecomp_descuento
+    ,detallecomp_total
+    ,detallecomp_descglobal
+    ,detallecomp_tipocambio
+    ,cambio_id
+    ,detallecomp_tc
+    ) 
+    (
+    select 
+    1,
+    1,
+    p.producto_id,
+    p.producto_codigobarra,
+    p.producto_orden,
+    p.`producto_unidad`,
+    p.`producto_costo`,
+    p.`producto_precio`,
+    p.`producto_costo` * p.producto_orden,
+    0,
+    p.`producto_costo` * p.producto_orden,
+    0,
+    1,
+    1,
+    6.96
+    from producto p where p.producto_orden>0);
 
-INSERT INTO `proveedor` (`proveedor_id`, `estado_id`, `proveedor_codigo`, `proveedor_nombre`, `proveedor_foto`, `proveedor_contacto`, `proveedor_direccion`, `proveedor_telefono`, `proveedor_telefono2`, `proveedor_email`, `proveedor_nit`, `proveedor_razon`, `proveedor_autorizacion`) VALUES 
-  (1,1,'INV410','INVENTARIO INICIAL',NULL,'','','','',NULL,'0','INVENTARIO INICIAL','1');
+    INSERT INTO `proveedor` (`proveedor_id`, `estado_id`, `proveedor_codigo`, `proveedor_nombre`, `proveedor_foto`, `proveedor_contacto`, `proveedor_direccion`, `proveedor_telefono`, `proveedor_telefono2`, `proveedor_email`, `proveedor_nit`, `proveedor_razon`, `proveedor_autorizacion`) VALUES 
+      (1,1,'INV410','INVENTARIO INICIAL',NULL,'','','','',NULL,'0','INVENTARIO INICIAL','1');
 
 
-insert into compra(
-`compra_id`
-,`estado_id`
-,`tipotrans_id`
-,`usuario_id`
-,`moneda_id`
-,`proveedor_id`
-,`forma_id` 
-,`compra_fecha`
-,`compra_hora`
-,`compra_subtotal`
-,`compra_descuento`
-,`compra_descglobal`
-,`compra_total`
-,`compra_totalfinal`
-,`compra_efectivo`
-,`compra_cambio`
-,`compra_glosa`
-,`compra_tipocambio`
-,`compra_chofer`
-,`compra_placamovil`,compra_numdoc,documento_respaldo_id) 
-value(
-1,1,1,1,1,1,1,date(now()),time(now()),0,0,0,0,0,0,0,'',1,'','',0,0);
+    insert into compra(
+    `compra_id`
+    ,`estado_id`
+    ,`tipotrans_id`
+    ,`usuario_id`
+    ,`moneda_id`
+    ,`proveedor_id`
+    ,`forma_id` 
+    ,`compra_fecha`
+    ,`compra_hora`
+    ,`compra_subtotal`
+    ,`compra_descuento`
+    ,`compra_descglobal`
+    ,`compra_total`
+    ,`compra_totalfinal`
+    ,`compra_efectivo`
+    ,`compra_cambio`
+    ,`compra_glosa`
+    ,`compra_tipocambio`
+    ,`compra_chofer`
+    ,`compra_placamovil`,compra_numdoc,documento_respaldo_id) 
+    value(
+    1,1,1,1,1,1,1,date(now()),time(now()),0,0,0,0,0,0,0,'',1,'','',0,0);
 
-update compra set
-compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
-,compra_total = (select sum(detallecomp_total) from detalle_compra where compra_id=1)   
-,compra_totalfinal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
-where compra_id = 1;
+    update compra set
+    compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
+    ,compra_total = (select sum(detallecomp_total) from detalle_compra where compra_id=1)   
+    ,compra_totalfinal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
+    where compra_id = 1;
 
 drop table motivo_anulacion_borrar;
 
@@ -337,7 +341,7 @@ order by
   `v`.`venta_id` desc;
 
 
-
+//******************* FIN INVENTARIO INICIAL ************************************
 
 UPDATE dosificacion
 SET

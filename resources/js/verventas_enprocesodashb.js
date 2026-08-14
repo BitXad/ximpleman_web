@@ -231,9 +231,10 @@ function formato_fecha(string){
 // operaciones.js
 
 // Función para mostrar el modal
-function vermodal(cadena) {
+function vermodal(cadena, cadena2) {
   // Asigna el texto al contenido del modal
   document.getElementById("operacion").innerText = cadena;
+  document.getElementById("fechaoperacion").innerText = cadena2;
   // Muestra el modal
    $("#boton_operaciones").click();
 }
@@ -275,11 +276,37 @@ function operaciones_observadas(opcion)
             _bitacoraDatos = resp; // << guardar para exportar
 
             let html = "";
+            let boton = "";
+            let imagen = "";
             for(var i=0; i<resp.length; i++){
                 let cad = (resp[i]["bitacoracaja_evento"]==null) ? "SIN ESPECIFICAR" : resp[i]["bitacoracaja_evento"];
+                let cad2 = (resp[i]["bitacoracaja_evento"]==null) ? "SIN ESPECIFICAR" : '['+formato_fecha(resp[i]["bitacoracaja_fecha"])+' '+resp[i]["bitacoracaja_hora"]+' *** '+resp[i]["usuario_nombre"]+']';
                 html += "<tr style='font-size:12px;'>";
                 html += "<td>"+(i+1)+"</td>";
-                html += "<td style='font-size: 10px;'>"+cad.substring(0,30)+"... <button class='btn btn-warning btn-xs' title='"+cad+"' onclick='vermodal("+JSON.stringify(cad)+")'>...</button></td>";
+                
+                if(resp[i]["bitacoracaja_tipo"]>=5 && resp[i]["bitacoracaja_tipo"]<=6){                
+
+                   boton = "";
+                   
+                   if(resp[i]["bitacoracaja_tipo"]==5){
+                        imagen = "blue.png";
+                   }else{
+                        imagen = "red.png";                       
+                   }
+                        
+                    if (resp[i]['bitacoracaja_montoreg']!=0 && resp[i]['bitacoracaja_montoreg']!='' && resp[i]['bitacoracaja_montoreg']!=null){                        
+                        boton = " <a href='https://www.google.com/maps?q="+resp[i]['bitacoracaja_montoreg']+","+resp[i]['bitacoracaja_montocaja']+"' target='_blank' title='lat:"+resp[i]['bitacoracaja_montoreg']+",long:"+resp[i]['bitacoracaja_montoreg']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'> </a> ";
+                    }else{
+                        
+                        imagen = "noubicacion.png";
+                        boton = " <a href='#' target='_blank' title='lat:"+resp[i]['bitacoracaja_montoreg']+",long:"+resp[i]['bitacoracaja_montoreg']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'> </a> ";
+                    }
+
+                }else{
+                    boton = "";                    
+                }
+                
+                html += "<td style='font-size: 10px;'>"+boton+cad.substring(0,30)+"... <button class='btn btn-warning btn-xs' title='"+cad+"' onclick='vermodal("+JSON.stringify(cad)+","+JSON.stringify(cad2)+")'>...</button></td>";
                 html += "<td>"+formato_fecha(resp[i]["bitacoracaja_fecha"])+"</td>";
                 html += "<td>"+(resp[i]["bitacoracaja_hora"]||"")+"</td>";
                 html += "<td>"+(resp[i]["usuario_nombre"]||"")+"</td>";

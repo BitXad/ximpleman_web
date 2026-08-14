@@ -18,6 +18,11 @@
                 from actividad"
                 )->result_array();
         }
+
+        function truncate_activities(){
+             $this->db->query("truncate actividad");
+             return true;
+        }
         
         function get_all_actividad_count(){
             $articulo = $this->db->query(

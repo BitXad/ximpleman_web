@@ -113,6 +113,7 @@ class Orden_compra_model extends CI_Model
     
     function get_detalleoc_aux($ordencompra_id)
     {
+        
         $sql="select dca.*, p.producto_nombre, p.existencia, pr.proveedor_nombre
                 from detalle_ordencompra_aux dca
                 left join proveedor pr on dca.proveedor_id = pr.proveedor_id
@@ -121,6 +122,7 @@ class Orden_compra_model extends CI_Model
                     dca.ordencompra_id = $ordencompra_id 
                 order by dca.detalleordencomp_id desc
                 ";
+        //echo $sql;
         return $this->db->query($sql)->result_array();
     }
     /*

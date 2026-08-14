@@ -1,6 +1,9 @@
 <script src="<?php echo base_url('resources/js/caja.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/reporte_movimiento.js'); ?>"></script>
 
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+
 <!-- CODIGO PARA EVITAR ENTER EN LOS INPUTS-->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -26,9 +29,11 @@
 
 <?php  
     //var_dump($caja);
-    $oculto = "hidden";//"hidden"; //hidden para oculto, vacio para mostrar
+    $mostrar_campos = 0; //1 mostrar y otro valor ocultar
 
-    $mostrar_fechas = 0; //1 mostrar fecha - 0 ocultar fechas
+    $oculto = ($mostrar_campos==1)?"":"hidden";  //"hidden"; //hidden para oculto, vacio para mostrar
+
+    $mostrar_fechas = $mostrar_campos; //1 mostrar fecha - 0 ocultar fechas
     
     $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
     $fecha_desde = $caja["caja_fechaapertura"]; //date('Y-m-d');
@@ -46,7 +51,7 @@
     $caja_horaapertura = $caja["caja_horaapertura"]; // Esto debería ser la hora de apertura de la caja
 
     // Si la fecha actual es la misma que la fecha de apertura de la caja y antes de la medianoche
-    if ($fecha_actual == $caja_fechaapertura){// && $hora_actual > '02:00'&&$hora_actual < '23:59') {
+    /*if ($fecha_actual == $caja_fechaapertura){// && $hora_actual > '02:00'&&$hora_actual < '23:59') {
         
                 $fecha_desde = $caja["caja_fechaapertura"]; //$fecha_actual;
                 $hora_desde = $caja["caja_horaapertura"]; //'00:00'; //'16:00';
@@ -58,9 +63,15 @@
     else{
         $fecha_desde = $caja["caja_fechaapertura"]; //date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
         $hora_desde = $caja["caja_horaapertura"]; //'00:00';//'16:00';
-        $fecha_hasta = $fecha_actual;
+        $fecha_hasta = date('y-m-d');
         $hora_hasta = date('H:i:s'); //'23:59'; //02:00';
-    }
+    }*/
+    
+    //La fecha debe ser en cuanto se registra el cierre
+        $fecha_hasta = date('Y-m-d');
+        $hora_hasta = date('H:i:s'); //'23:59'; //02:00';
+    
+    
     // En otro caso, si la fecha actual es el mismo día de la apertura de la caja, pero ya es pasada la medianoche
    /* else {
         // Aquí puedes manejar otra lógica si es necesario
@@ -128,7 +139,9 @@
         </div>
 
 
+                    
 
+                   
 <div class="row" id='loader'  style='display:none; text-align: center'>
     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
 </div>
@@ -143,7 +156,7 @@
 <div class="row"  style="font-family: Arial;" <?php echo $estilo_div; ?>>
     <div class="col-md-12">
       	<div class="box box-info">
-            <?php echo form_open('caja/cierre_caja/'.$caja['caja_id']); ?>
+            <?php echo form_open('caja/cierre_caja/'.$caja['caja_id'], array('id' => 'form_cierre_caja')); ?>
             
             <div <?= $oculto; ?>>
 
@@ -164,7 +177,10 @@
                         <div class="col-md-6" <?= $oculto; ?>>
                             <label for="saldo_caja" class="control-label">Caja Transacciones</label>
                             <div class="form-group">
-                                <input type="text" name="saldo_caja" value="0.00" class="form-control" id="saldo_caja" />
+                                <input type="text" name="saldo_caja" value="0.00" class="form-control" id="saldo_caja" readonly />
+                                <input type="hidden" name="caja_efectivo" value="0.00" id="caja_efectivo" />
+                                <input type="hidden" name="caja_credito" value="0.00" id="caja_credito" />
+                                <input type="hidden" name="caja_transacciones" value="0.00" id="caja_transacciones" />
                             </div>
                         </div>
                         
@@ -202,7 +218,7 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/100bs.jpeg'); ?>" width="100" height="60" title="Cortes de bs. 100">
+                                    <img src="<?php echo base_url('resources/images/caja/100bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 100">
                                 </span>
                                 <input type="number" step="any" min="0" style="height: 61px; font-size: 20px;" name="caja_corte100" value="<?php echo ($this->input->post('caja_corte100') ? $this->input->post('caja_corte100') : 0); ?>" class="form-control" id="caja_corte100" onchange="calcular_caja()" onkeyup="calcular_caja()""/>
                             </div>
@@ -363,7 +379,7 @@ BILLETERA MOVIL: 0.00
                     </div>-->
             
 <div class="box-footer" style="display: none;" id="div_botones">
-    <button type="input" class="btn btn-success" onclick="confirmarCerrarCaja()">
+    <button type="button" class="btn btn-success" onclick="confirmarCerrarCaja()">
         <i class="fa fa-floppy-o"></i> Cerrar Caja
     </button>
     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
@@ -371,29 +387,50 @@ BILLETERA MOVIL: 0.00
     </a>
 </div>
 
-            <script>
-                function confirmarCerrarCaja() {
-                    // Mostrar un cuadro de diálogo de confirmación
-                    var confirmacion = confirm("¿Estás seguro de que quieres cerrar la caja?");
+<!-- Modal de confirmación de cierre de caja -->
+<div class="modal fade" id="modal_confirmar_cierre_caja" tabindex="-1" role="dialog" aria-labelledby="modalConfirmarCierreCajaLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalConfirmarCierreCajaLabel"><i class="fa fa-warning"></i> Confirmar cierre de caja</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center" style="font-size:16px; margin:0;">
+                    ¿Está seguro que desea cerrar la caja actual?
+                </p>
+                <p class="text-center text-muted" style="margin-top:8px;">
+                    Esta acción registrará los valores actuales del formulario.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="enviarCierreCaja()"><i class="fa fa-check"></i> Sí, cerrar caja</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    // Si el usuario hace clic en "Aceptar" en el cuadro de diálogo
-                    if (confirmacion) {
-                        // Aquí puedes agregar la lógica para cerrar la caja
-                        // Por ejemplo, puedes redirigir a la página de cierre de caja o enviar una solicitud al servidor
-                        // window.location.href = "<?php echo site_url('ruta_para_cerrar_caja'); ?>";
-                    } else {
-                        // Si el usuario hace clic en "Cancelar" en el cuadro de diálogo
-                        // Puedes no hacer nada o mostrar un mensaje de cancelación, según tus necesidades
-                        // alert("Cierre de caja cancelado");
-                    }
-                }
-            </script>
-            
+<script>
+    function confirmarCerrarCaja() {
+        // Modal simple: no lee, no calcula y no modifica campos del formulario.
+        $('#modal_confirmar_cierre_caja').modal('show');
+    }
+
+    function enviarCierreCaja() {
+        $('#modal_confirmar_cierre_caja').modal('hide');
+        document.getElementById('form_cierre_caja').submit();
+    }
+</script>
             
             <?php echo form_close(); ?>
       	</div>
     </div>
 </div>
+
+<!--<table>
+    <tbody id='tablatotalresultados'></tbody>
+</table>-->
 
 <!--
 <div class="col-md-12 no-print">
@@ -403,3 +440,47 @@ BILLETERA MOVIL: 0.00
     </center>
 </div>-->
     
+
+<!---  VENTAS CON FALLAS  -->
+
+<div class="col-md-12">
+        
+
+        
+        <div class="box">
+            <font size="1"><b>VENTAS CON FALLAS</b></font><button class="btn btn-xs btn-info" onclick="ventas_fallidas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
+            <br><h5 style="color:red;">Debe corregir estas ventas para obtener un reporte cierre de caja consistente  </h5>
+        <div class="box" style="border-color:black;">
+            <div class="box-body table-responsive">        
+        
+       
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+                 
+        </div>
+            
+        <?php $estilo_tabla = "style='padding:0;'"; ?>
+        <div class="col-md-12" style="padding:0; font-family: Arial;">
+            <table id="mitabla">
+                <tr <?php echo $estilo_tabla; ?>>
+                    <th <?php echo $estilo_tabla; ?>>#</th>
+                    <th <?php echo $estilo_tabla; ?>>CLIENTE</th>
+                    <th <?php echo $estilo_tabla; ?>>VENTA</th>
+                    <th <?php echo $estilo_tabla; ?>>FECHA</th>
+                    <th <?php echo $estilo_tabla; ?>>MONTO</th>
+                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
+                    <th <?php echo $estilo_tabla; ?>>CAJERO</th>                    
+                </tr>
+                <tbody id="ventas_fallidas">
+                    
+                </tbody>
+                    
+            </table>
+            
+        </div>    
+        </div>
+            
+        </div>
+        </div>
+
+        
+    </div>   

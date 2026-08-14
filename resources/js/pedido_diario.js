@@ -400,7 +400,8 @@ function tabla_clientes(response){
                 }
                 else{
                     imagen = "blue.png";
-                    html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                    //html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                    html += " <a href='https://www.google.com/maps/dir/?api=1&destination="+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
                 }                
                 
                 html += "</center></td>";

@@ -1,6 +1,16 @@
 //var decimales = 6;
 
     
+
+// Convierte valores JS a literales SQL seguros para las cadenas que este módulo envía en datos1/cad.
+// Evita que productos como MAC'S o textos con comillas rompan el INSERT armado en PHP.
+function sqlString(value) {
+    if (value === null || value === undefined) {
+        value = '';
+    }
+    return "'" + String(value).replace(/\\/g, "\\\\").replace(/'/g, "''") + "'";
+}
+
 $(document).on("ready",inicio);
 function inicio(){
         
@@ -30,7 +40,9 @@ function inicio(){
         }
         
         document.getElementById('nit').focus();
-        document.getElementById('nit').select();       
+        document.getElementById('nit').select();
+        
+        mostrar_complemento();
         
 }
 
@@ -54,23 +66,7 @@ function agregarCeroSiNecesario(numero) {
 function calculardesc(){
     
     var decimales = Number(document.getElementById('parametro_decimales').value);
-    
-    
-   /*
-    var porcdesc = document.getElementById('tipocliente_porcdesc').value;
-    var montodesc = document.getElementById('tipocliente_montodesc').value;
-    
-    
-    if (Number(porcdesc)>0){
-        //alert("eee: "+porcdesc);
-        $("#tipo_descuento").val(2);        
-        $("#venta_descuento").val(porcdesc);
-    }
-    else if(Number(montodesc)>0){
-        $("#tipo_descuento").val(1);                
-        $("#venta_descuento").val(montodesc);
-    }   
-   */
+    var forma_id = document.getElementById('forma_pago').value; 
    
    var venta_subtotal = document.getElementById('venta_subtotal').value;
    var venta_descuento = document.getElementById('venta_descuento').value;      
@@ -94,37 +90,32 @@ function calculardesc(){
    var venta_cambio = venta_efectivo - subtotal;      
    
    $("#venta_cambio").val(formato_numerico(venta_cambio.toFixed(decimales)));
-   //$("#venta_efectivo").val(subtotal);
-   //alert(venta_efectivo +" *** "+venta_cambio );
-}
-/*
-function calcularcambio(e){
-    
-   var decimales = Number(document.getElementById('parametro_decimales').value);
    
-   let tecla = (document.all) ? e.keyCode : e.which; 
    
-   var venta_efectivo = document.getElementById('venta_efectivo').value;
-   var venta_totalfinal = document.getElementById('venta_totalfinal').value;
-   
-   var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
-   //alert(venta_cambio);
-   $("#venta_cambio").val(venta_cambio.toFixed(decimales));
-   
-    $("#cambioy").val(venta_cambio.toFixed(decimales));
-     
-   //alert(venta_efectivo +" **** "+venta_cambio );
-   /*if (tecla==13){ 
-            //$("#boton_finalizar").click();
-            finalizarventa_sin();
-            $("#cancelar_venta").click();
+   if(forma_id==1){//Si es efectivo
+       
+        $("#pago_efectivo").val(subtotal.toFixed(decimales));
+        $("#pago_alternativo").val("0.00");
+       
+   }else{
+       
+       var pago_efectivo = document.getElementById('pago_efectivo').value;
+       var pago_alternativo = document.getElementById('pago_alternativo').value;
+       
+       if(pago_alternativo <= subtotal.toFixed(decimales)){
+           
+           let efectivo = subtotal.toFixed(decimales) - pago_alternativo;
+           $("#pago_efectivo").val(efectivo.toFixed(decimales));
+            
+           
+       }else{           
+            $("#pago_efectivo").val("0.00");
+            $("#pago_alternativo").val(subtotal.toFixed(decimales));
+       }
    }
-   
-    if (tecla==13){ 
-        $("#boton_finalizar").click();
-   }
+
+
 }
-*/
 
 
 function calcularcambio(e){
@@ -510,7 +501,7 @@ function buscarcliente(){
                     
                     seleccionar_documento(registros[0]["cdi_codigoclasificador"]);
                     
-                    document.getElementById('loader_documento').style.display = 'none';                    
+                    document.getElementById('loader_documento').style.display = 'none';                                                           
                     
                 }
                 else //Si el cliente es nuevo o no existe
@@ -597,6 +588,8 @@ function buscarcliente(){
                     
                 }
                 //document.getElementById('loader_documento').style.display = 'none';
+                
+                 mostrar_complemento();
             },
             error:function(respuesta){			
                 $("#razon_social").val('SIN NOMBRE');
@@ -1435,6 +1428,7 @@ function porcentaje_descuento(detalleven_id){
 function tabladetalle(subtotal,descuento,totalfinal)
 {
     var decimales = Number(document.getElementById('parametro_decimales').value);
+    var forma_id = Number(document.getElementById('forma_pago').value);
     parametro_moneda_descripcion = document.getElementById("parametro_moneda_descripcion").value;
    
     efectivo = totalfinal - descuento;
@@ -1454,8 +1448,35 @@ function tabladetalle(subtotal,descuento,totalfinal)
     var venta_totalfinal = parseFloat(totalfinal - descuento);
     $("#venta_totalfinal").val(venta_totalfinal.toFixed(decimales));
     $("#venta_efectivo").val(venta_totalfinal.toFixed(decimales));
-    $("#pago_alternativo").val("0.00");
-    $("#pago_efectivo").val(venta_totalfinal.toFixed(decimales));
+//    
+//    $("#pago_alternativo").val("0.00");
+//    $("#pago_efectivo").val(venta_totalfinal.toFixed(decimales));
+    
+     /************ INICIO PAGO COMBINADO  ***********************/  
+     
+        if(forma_id==1){//Si es efectivo
+
+             $("#pago_efectivo").val(subtotal.toFixed(decimales));
+             $("#pago_alternativo").val("0.00");
+
+        }else{
+
+            var pago_efectivo = document.getElementById('pago_efectivo').value;
+            var pago_alternativo = document.getElementById('pago_alternativo').value;
+
+            if(Number(pago_alternativo).toFixed(decimales) <= venta_totalfinal.toFixed(decimales)){
+
+                let efectivo = venta_totalfinal.toFixed(decimales) - pago_alternativo;
+                $("#pago_efectivo").val(efectivo.toFixed(decimales));
+
+
+            }else{           
+                 $("#pago_efectivo").val("0.00");
+                 $("#pago_alternativo").val(venta_totalfinal.toFixed(decimales));
+            }
+        }
+
+     /************ FIN PAGO COMBINADO  ***********************/  
     
     html = "";
     html += "<div class='box' hidden>";
@@ -1630,91 +1651,221 @@ function buscarporcodigojsx()
    var cantidad = 1;
    var check_agrupar = document.getElementById('check_agrupar').checked;
    
-    if (check_agrupar){
-        agrupado = 1; }
-    else{
-        agrupado = 0; }
-   //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
+
+    if(Number(codigo)!=0){
     
-    document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
-    
-    var codigobalanza = 1;
-    
-    if(codigobalanza==1){
-        
-        var identificador =  codigo.substring(0,3);
-        
-        if(identificador==215){
-            
-                resultado = procesarCodigoBarras(codigo);
-            
-                var verificador = resultado['verificador'];
-                var codigoProducto = resultado['codigoProducto'];
-                var cantidad = Number(resultado['cantidad'])/1000;
-                
-                codigo = codigoProducto;
+        if (check_agrupar){
+            agrupado = 1; }
+        else{
+            agrupado = 0; }
+       //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
+
+        document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+
+        var codigobalanza = 1;
+
+        if(codigobalanza==1 && codigo.length >= 12){
+
+            var identificador =  codigo.substring(0,3);
+            //alert("identificado: "+identificador);
+            if(identificador==215){
+
+                    resultado = procesarCodigoBarras(codigo);
+
+                    var verificador = resultado['verificador'];
+                    var codigoProducto = resultado['codigoProducto'];
+                    var cantidad = Number(resultado['cantidad'])/1000;
+
+                    codigo = codigoProducto;
+            }
+
+            if(identificador==205){
+
+                    resultado = procesarCodigoBarras(codigo);
+
+                    var verificador = resultado['verificador'];
+                    var codigoProducto = resultado['codigoProducto'];
+                    var cantidad = Number(resultado['cantidad'])/1000;
+
+                    codigo = codigoProducto;
+            }
+
+            if(identificador==224){
+
+                    resultado = procesarCodigoBarras(codigo);
+
+                    var verificador = resultado['verificador'];
+                    var codigoProducto = resultado['codigoProducto'];
+                    var cantidad = Number(resultado['cantidad']);
+
+                    codigo = codigoProducto;
+            }
+
+
+            ///Este viene en formato CodigoProducto|PrecioTotal
+            if(identificador==200){
+
+                    resultado = procesarCodigoBarras2(codigo);
+                    //alert(JSON.stringify(resultado));
+                    var verificador = resultado['verificador'];
+                    var codigoProducto = resultado['codigoProducto'];
+                    var cantidad = Number(resultado['cantidad']);
+                    var preciototal = Number(resultado['preciototal']);
+
+                    codigo = codigoProducto;
+            }
+
+
+
+            //alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
         }
+
+        //alert("codigo: "+codigo+" cantidad: "+cantidad+" agrupado"+agrupado);
+        //revisará si existe algun producto con el codigo especificado
+        $.ajax({url: controlador,
+
+               type:"POST",
+               data:{codigo:codigo, cantidad:cantidad, agrupado:agrupado},
+               success:function(respuesta){
+
+                   res = JSON.parse(respuesta);
+
+                   if(res != true)
+                    alert(JSON.stringify(res));
+
+                   tablaproductos();
+
+               },
+               error:function(respuesta){
+                   alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
+
+                   $("#codigo").select();
+
+               },
+                complete: function (respuesta) {
+                   if (respuesta==null){
+                        alert('El producto no se encuentra registrado o se encuentra agostado en inventario..!!!');
+                    }              
+                 document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+                  $("#codigo").select();
+
+                }
+            });
+
+
+        document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+
+    }else{
         
-        if(identificador==205){
-            
-                resultado = procesarCodigoBarras(codigo);
-            
-                var verificador = resultado['verificador'];
-                var codigoProducto = resultado['codigoProducto'];
-                var cantidad = Number(resultado['cantidad'])/1000;
-                
-                codigo = codigoProducto;
-        }
+        $("#codigo").focus();
+        $("#codigo").select();        
+        alert("ADVERTENCIA: Código no válido...!");
         
-        if(identificador==224){
-            
-                resultado = procesarCodigoBarras(codigo);
-            
-                var verificador = resultado['verificador'];
-                var codigoProducto = resultado['codigoProducto'];
-                var cantidad = Number(resultado['cantidad']);
-                
-                codigo = codigoProducto;
-        }
-        
-        //alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
     }
     
-    //revisará si existe algun producto con el codigo especificado
-    $.ajax({url: controlador,
-        
-           type:"POST",
-           data:{codigo:codigo, cantidad:cantidad, agrupado:agrupado},
-           success:function(respuesta){
-               
-               res = JSON.parse(respuesta);
-               
-               if(res != true)
-                alert(JSON.stringify(res));
-               
-               tablaproductos();
-
-           },
-           error:function(respuesta){
-               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
-               
-               $("#codigo").select();
-
-           },
-            complete: function (respuesta) {
-               if (respuesta==null){
-                    alert('El producto no se encuentra registrado o se encuentra agostado en inventario..!!!');
-                }              
-             document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
-              $("#codigo").select();
-              
-            }
-        });
-           
-        
-    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
 
 }
+
+/*
+function buscarporcodigojsx()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + 'venta/ingresarporcodigo';
+    var codigo = document.getElementById('codigo').value.trim();
+    var cantidad = 1;
+
+    var check_agrupar = document.getElementById('check_agrupar').checked;
+    var agrupado = check_agrupar ? 1 : 0;
+
+    document.getElementById('oculto').style.display = 'block';
+
+    var identificador3 = codigo.substring(0, 3);
+    var identificador4 = codigo.substring(0, 4);
+
+    /*
+     * BALANZA FORMATO PRECIO TOTAL
+     * Ejemplo: 2000003150403
+     * 2000003 = código producto
+     * 1       = sin uso
+     * 50403    = precio total 50.403 Bs
+     */
+    
+/*    if (identificador4 === '2000' && codigo.length === 13) {
+
+        var resultado = procesarCodigoBarras2(codigo);
+
+
+        if (resultado.error) {
+            
+            alert(resultado.mensaje);
+            document.getElementById('oculto').style.display = 'none';
+            $("#codigo").select();
+            
+            return;
+        }
+
+        codigo = resultado.codigoProducto;
+        cantidad = Number(resultado.cantidad);
+    }
+    
+    
+
+    /*
+     * BALANZAS FORMATO CÓDIGO + CANTIDAD
+     */
+/*    else if (identificador3 === '215') {
+
+        var resultado = procesarCodigoBarras(codigo);
+
+        codigo = resultado['codigoProducto'];
+        cantidad = Number(resultado['cantidad']) / 1000;
+    }
+
+    else if (identificador3 === '205') {
+
+        var resultado = procesarCodigoBarras(codigo);
+
+        codigo = resultado['codigoProducto'];
+        cantidad = Number(resultado['cantidad']) / 1000;
+    }
+
+    else if (identificador3 === '224') {
+
+        var resultado = procesarCodigoBarras(codigo);
+
+        codigo = resultado['codigoProducto'];
+        cantidad = Number(resultado['cantidad']);
+    }
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {
+            codigo: codigo,
+            cantidad: cantidad,
+            agrupado: agrupado
+        },
+        success: function(respuesta) {
+
+            var res = JSON.parse(respuesta);
+
+            if (res !== true) {
+                alert(JSON.stringify(res));
+            }
+
+            tablaproductos();
+        },
+        error: function() {
+            alert('ERROR: no existe el producto con el código seleccionado o no tiene existencia en inventario...!!');
+            $("#codigo").select();
+        },
+        complete: function() {
+            document.getElementById('oculto').style.display = 'none';
+            $("#codigo").select();
+        }
+    });
+}
+*/
 
 function buscarporcodigojs(){
     
@@ -2121,57 +2272,69 @@ function buscarPorSerie(){
     let controlador = `${base_url}venta/buscar_serie`;
     let serie = $('#codigo').val();
 
-    $('#oculto').css('display','block'); //mostrar el bloque del loader
-    
-    $.ajax({
-        url: controlador,
-        type:"POST",
-        cache: false,
-        data:{
-            serie:serie,
-        },
-        success:(respuesta)=>{
-            let precio = 0;
-            let factor_nombre = "";
-            res = JSON.parse(respuesta);
-            if(res[0].venta_id == null){
-                if (res.length>0){
-                    if (res[0].existencia > 0){                        
-                        if (res[0].detallecomp_series == serie){
-                            factor = 1;
-                            precio = res[0].producto_precio;
-                            factor_nombre = "";
+    if(Number(serie)!=0){
+
+
+            $('#oculto').css('display','block'); //mostrar el bloque del loader
+
+            $.ajax({
+                url: controlador,
+                type:"POST",
+                cache: false,
+                data:{
+                    serie:serie,
+                },
+                success:(respuesta)=>{
+
+                    let precio = 0;
+                    let factor_nombre = "";
+                    res = JSON.parse(respuesta);
+                    if(res[0].venta_id == null){
+                        if (res.length>0){
+                            if (res[0].existencia > 0){                        
+                                if (res[0].detallecomp_series == serie){
+                                    factor = 1;
+                                    precio = res[0].producto_precio;
+                                    factor_nombre = "";
+                                }
+                                precio_unidad = precio; //res[0]["producto_precio"];
+                                html = `<select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor${res[0]["producto_id"]}' name='select_factor${res[0]["producto_id"]}' onchange='mostrar_saldo(${JSON.stringify(res[0])})'>"
+                                            <option value='${factor_nombre}'>${res[0]["producto_unidad"]} ${res[0]["moneda_descripcion"]}:${precio_unidad.fixed(2)}</option>
+                                        </select>`;
+                                $("#selector").html(html);
+                                ingresorapidojs2(factor, res[0],serie);
+                                //ingresorapidojs(factor,res[0]);
+                            }else{    
+                                alert('La serie ya se encuentra resgistrada o ya está vendida...!');
+                            }
+                        }else{
+                            alert('El producto no se encuentra registrado con el código especificado...!!'); 
                         }
-                        precio_unidad = precio; //res[0]["producto_precio"];
-                        html = `<select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor${res[0]["producto_id"]}' name='select_factor${res[0]["producto_id"]}' onchange='mostrar_saldo(${JSON.stringify(res[0])})'>"
-                                    <option value='${factor_nombre}'>${res[0]["producto_unidad"]} ${res[0]["moneda_descripcion"]}:${precio_unidad.fixed(2)}</option>
-                                </select>`;
-                        $("#selector").html(html);
-                        ingresorapidojs2(factor, res[0],serie);
-                        //ingresorapidojs(factor,res[0]);
-                    }else{    
-                        alert('La serie ya se encuentra resgistrada o ya está vendida...!');
-                    }
-                }else{
-                    alert('El producto no se encuentra registrado con el código especificado...!!'); 
+                    }else{
+                        alert(`La serie ya se encuentra registrada en la venta N° ${res[0].venta_id}`);
+                    }        
+                },
+                error:function(respuesta){
+                    alert('ERROR: No existe el producto con la serie seleccionada...!!');
+                    $("#codigo").select();
+                },
+                complete: function (respuesta) {
+                    if (respuesta == null){
+                        alert('El producto no se encuentra registrado o se encuentra agotado en inventario..!!!');
+                    }              
+                    $('#oculto').css('display','none'); //ocultar el bloque del loader
+                    $("#codigo").select();
                 }
-            }else{
-                alert(`La serie ya se encuentra registrada en la venta N° ${res[0].venta_id}`);
-            }        
-        },
-        error:function(respuesta){
-            alert('ERROR: No existe el producto con la serie seleccionada...!!');
-            $("#codigo").select();
-        },
-        complete: function (respuesta) {
-            if (respuesta == null){
-                alert('El producto no se encuentra registrado o se encuentra agotado en inventario..!!!');
-            }              
+            });
             $('#oculto').css('display','none'); //ocultar el bloque del loader
-            $("#codigo").select();
-        }
-    });
-    $('#oculto').css('display','none'); //ocultar el bloque del loader
+            
+    }else{
+        
+        $("#codigo").focus();
+        $("#codigo").select();        
+        alert("ADVERTENCIA: Código no válido...!");
+    }
+    
 }
 
 function cantidad_en_detalle(producto_id){
@@ -2494,6 +2657,7 @@ function actualizar_losprecios(detalleven_id)
                 data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
                 success:function(respuesta){
                     tablaproductos();
+                    //calculardesc(); // Se añadio por el pago combinado
                    // tabladetalle();
 
                 }        
@@ -2536,6 +2700,25 @@ function actualizar_portotal(detalleven_id)
         var input = $('#sumatoria_total');
         input.focus().select();
     });
+
+}
+
+function calcular_porcantidad()
+{
+    //var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador =  base_url+"venta/actualizarprecio";
+    var detalleven_id = document.getElementById("calcular_detalleven_id").value;
+    var precio = document.getElementById("calcular_precio").value;
+    //var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById("calcular_cantidad").value; 
+    var total    = document.getElementById("calcular_total").value; 
+    
+    precio = Number(total) / Number(cantidad);    
+    
+    //$("#calcular_cantidad").val(cantidad);
+    $("#calcular_precio").val(precio);
 
 }
 
@@ -2829,12 +3012,12 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
         }
             
         
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuentoparcial+","+descuento+", round("+precio+"*"+cantidad+" ,2) ,'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
-        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
-        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+        datos1 +="0,1,"+producto.producto_id+","+sqlString(producto.producto_codigo)+","+cantidad+","+sqlString(producto.producto_unidad)+","+costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 += descuentoparcial+","+descuento+", round("+precio+"*"+cantidad+" ,2) ,"+sqlString(producto.producto_caracteristicas)+","+sqlString(preferencias)+",0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += sqlString(producto.producto_nombre)+","+sqlString(producto.producto_unidad)+","+sqlString(producto.producto_marca)+",";
+        datos1 += producto.categoria_id+","+sqlString(producto.producto_codigobarra)+",";        
+        datos1 += producto.producto_envase+","+sqlString(producto.producto_nombreenvase)+","+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),"+sqlString(unidadfactor)+","+preferencia_id+","+clasificador_id+","+tipo_cambio;
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -3105,12 +3288,12 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
         
         }
         
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+descuentoparcial+","+(precio-descuentoparcial)+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
-        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
-        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+        datos1 +="0,1,"+producto.producto_id+","+sqlString(producto.producto_codigo)+","+cantidad+","+sqlString(producto.producto_unidad)+","+costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 += descuento+","+descuentoparcial+","+(precio-descuentoparcial)+"*"+cantidad+","+sqlString(producto.producto_caracteristicas)+","+sqlString(preferencias)+",0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += sqlString(producto.producto_nombre)+","+sqlString(producto.producto_unidad)+","+sqlString(producto.producto_marca)+",";
+        datos1 += producto.categoria_id+","+sqlString(producto.producto_codigobarra)+",";        
+        datos1 += producto.producto_envase+","+sqlString(producto.producto_nombreenvase)+","+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),"+sqlString(unidadfactor)+","+preferencia_id+","+clasificador_id+","+tipo_cambio;
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -3194,7 +3377,7 @@ function cambiarcantidadjs(e,prod_id)
 
                 $.ajax({url: controlador,
                     type:"POST",
-                    data:{sql:sql},
+                    data:{sql:sql, prod_id:prod_id },
                     success:function(respuesta){
                         //var r = JSON.parse(respuesta);
                         //alert("llego hasta aqui");
@@ -3209,7 +3392,12 @@ function cambiarcantidadjs(e,prod_id)
 
                 alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
                 tablaproductos();
+        }else{
+            
+                alert('ADVERTENCIA: La cantidad no puede ser CERO...!');
+                tablaproductos();
         }
+        
         
         
     }
@@ -4638,11 +4826,12 @@ function registrarventa(cliente_id){
     
     var cad =   ""+forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
-                +","+venta_descuentoparcial+","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+",'"+venta_glosa+"'"
+                +","+venta_descuentoparcial+","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+sqlString(venta_glosa)
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id
-                +","+venta_ice+","+venta_giftcard+",'"+venta_detalletransaccion+"'";
+                +","+entrega_id+","+sqlString(venta_numeromesa)+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id
+                +","+venta_ice+","+venta_giftcard+","+sqlString(venta_detalletransaccion);
                 
+    
     //alert(cad);
     if (tipo_transaccion==2){ //Si es al credito
         
@@ -5645,6 +5834,7 @@ function registrar_factura(venta_id){
                 //alert(factura_id);
                 //alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
                 //window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
+                
                 alert(JSON.stringify(resultado));
                 
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
@@ -5704,6 +5894,15 @@ function tabla_ventas(filtro)
     var moneda_tc = document.getElementById('moneda_tc').value;
     let dosificacion_documentosector = document.getElementById('dosificacion_documentosector').value;
     
+    
+
+    let ruta      = "";
+    let cuf       = "";
+    let tamanio   = "";
+    let nit_emisor   = "";
+    let num_fact   = "";
+    let cadenaQR = "";
+
     $.ajax({url:controlador,
         type:"POST",
         data:{filtro:filtro},
@@ -5773,8 +5972,20 @@ function tabla_ventas(filtro)
                     html += "                           <!--<span class='btn btn-facebook'>-->";
                     html += "                           <font size='3' face='Arial narrow'> <b>Total "+parametro_moneda_descripcion+': '+Number(v[i]['venta_total']).toFixed(decimales)+"</b></font><br>";
                     html += "                           <!--</span>-->";
-                    html += "                               Efectivo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_efectivo']).toFixed(decimales)+"<br>";
-                    html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(decimales);
+                    
+                    if(v[i]['forma_id']==1){
+                        
+                        html += "                               Efectivo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_efectivo']).toFixed(decimales)+"<br>";
+                        html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(decimales);
+                        
+                    }else{
+                        
+                    html += "                               Pago Alternativo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_pagoalternativo']).toFixed(decimales)+"<br>";
+                        html += "                               Efectivo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_pagoefectivo']).toFixed(decimales);
+                        
+                    }
+                    
+                    
                     html += "                       </td>";
 //alert(v[i]["venta_numerotransmes"]);
                     html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['venta_id']+((v[i]['venta_numeroventa']>0)?" / 00"+v[i]['venta_numeroventa']:"")+((v[i]['venta_numerotransmes']>0)?" / 00"+v[i]['venta_numerotransmes']:"")+"</b></font>";
@@ -5815,7 +6026,16 @@ function tabla_ventas(filtro)
                         if(v[i]['factura_enviada'] == 2){
                             html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" VALIDADA<sub>["+v[i]['factura_id']+"]</sub></small></b></span> ";
                         }else{
-                        
+    
+                            if(v[i]['factura_enviada'] == 3){
+                                        html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0; font-size:14px;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
+                                        html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO VALIDADA<sub>["+v[i]['factura_id']+"]</sub></small> </button>";                                                                   
+                                        //Boton quitar generar facturar
+                                        html += "<a class='btn btn-facebook btn-sm' data-toggle='modal' style='background: black; width:23px; height:23px; padding-left: 7px;' data-target='#modalanular_noenviada' title='Quitar asociacion de factura y emitir una nueva' onclick='cargar_modal_anular_malemitida("+v[i]["factura_id"]+","+v[i]["venta_id"]+","+v[i]["factura_numero"]+","+'"'+v[i]["factura_razonsocial"]+'"'+","+v[i]["factura_total"]+","+'"'+v[i]["factura_fecha"]+'"'+")'>";
+                                        html += "<fa class='fa fa-times'> </fa> </a>";                                            
+
+                                        
+                            }else{                                                
                                 if (paquete==null ){
 
                                       //html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
@@ -5824,20 +6044,14 @@ function tabla_ventas(filtro)
                                         if (v[i]['venta_tipodoc']==1){
                                             
                                             html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0; font-size:14px;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
-                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO ENVIADA<sub>["+v[i]['factura_id']+"]</sub></small> </button>";                           
+                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO ENVIADA<sub>["+v[i]['factura_id']+"]</sub></small> </button>";
+                            
+                                            //Boton quitar generar facturar
+                                            html += "<a class='btn btn-facebook btn-sm' data-toggle='modal' style='background: black; width:23px; height:23px; padding-left: 7px;' data-target='#modalanular_noenviada' title='Quitar asociacion de factura y emitir una nueva' onclick='cargar_modal_anular_malemitida("+v[i]["factura_id"]+","+v[i]["venta_id"]+","+v[i]["factura_numero"]+","+'"'+v[i]["factura_razonsocial"]+'"'+","+v[i]["factura_total"]+","+'"'+v[i]["factura_fecha"]+'"'+")'>";
+                                            html += "<fa class='fa fa-times'> </fa> </a>";                                            
                                         
                                         }
-//                                        else{
-//                                            if(generar_factura == 1){
-//                                                if(dosificado == 1){
-//                                                    if(v[i]['venta_total'] > 0){
-//                                                    
-//                                                    
-//                                        
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                            
 
                                 }else{
 
@@ -5845,6 +6059,7 @@ function tabla_ventas(filtro)
                                       html += "<fa class='fa fa-chain'> </fa>FACT.Nº: "+v[i]['factura_numero']+" VALID. PENDIENTE </button>";
 
                                  }
+                             }
                         }     
                         
                     }
@@ -5991,6 +6206,19 @@ function tabla_ventas(filtro)
                     
                     let archivoxml = dosificacion_documentosector+v[i]['factura_id']+".xml";
                     html += "                           <a href='"+base_url+"resources/xml/"+archivoxml+"' download='Descargar archivo "+archivoxml+"' title='Descargar archivo "+archivoxml+"' class='btn btn-xs btn-twitter'><fa class='fa fa-code'> </fa> </a>";
+                    
+                    if (v[i]['venta_tipodoc']==1){
+                            ruta      = v[i]['factura_ruta'];
+                            cuf       = v[i]['factura_cuf'];
+                            tamanio   = v[i]['factura_tamanio'];
+                            nit_emisor   = v[i]['factura_nitemisor'];
+                            num_fact   = v[i]['factura_numero'];
+
+                            cadenaQR = ruta+'nit='+nit_emisor+'&cuf='+cuf+'&numero='+num_fact+'&t='+tamanio;
+                            //alert(ruta+" *** "+'nit='+nit_emisor+" *** "+'&cuf='+cuf+" *** "+'&numero='+num_fact+" *** "+'&t='+tamanio);
+
+                            html += "                           <a href='"+cadenaQR+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: brown;' title='Verificar Factura' target='_BLANK'><fa class='fa fa-link' aria-hidden='true'></fa></a>";
+                    }
                     
                     html += "                           <a href='"+base_url+"venta/rehacer_venta/"+v[i]['venta_id']+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: black;' title='Rehacer Factura'><fa class='fa fa-recycle' aria-hidden='true'></fa></a>";
                     
@@ -6587,109 +6815,17 @@ function modificar_venta(cliente_id)
     var venta_ice = document.getElementById('venta_ice').value;
     var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
     var venta_glosa = "'"+document.getElementById('venta_glosa').value+"'"; 
-    
-    
+    var pago_alternativo = document.getElementById('pago_alternativo').value; 
+    var pago_efectivo = document.getElementById('pago_efectivo').value; 
+       
     var hora = new Date();
     
     var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
     
     
-    
-    //var tipo_transaccion = document.getElementById('tipo_transaccion').value; 
-    //var pedido_id = document.getElementById('pedido_id').value;
-    //var orden_id = document.getElementById('orden_id').value; 
-    //var usuarioprev_id = document.getElementById('usuarioprev_id').value;
-    //var nit = document.getElementById('nit').value;
-    //var razon = document.getElementById('razon_social').value; 
-    //var factura_complementoci = document.getElementById('cliente_complementoci').value;
-    //let cliente_email = document.getElementById('email').value;
-    //var venta_descuentoparcial = document.getElementById('venta_descuentoparcial').value; 
-    //var facturado = document.getElementById('facturado').checked;
-    
-    
-    /*
-    var moneda_id = 1; 
-    var estado_id = 1; 
-    
-    var venta_comision = document.getElementById('venta_comision').value; 
-    var venta_tipocambio = document.getElementById('venta_tipocambio').value; 
-    var detalleserv_id = document.getElementById('detalleserv_id').value;
-    
-    
-    
-    
-    var tiposerv_id = document.getElementById('tiposerv_id').value;
-    var venta_numeromesa = document.getElementById('venta_numeromesa').value;
-    var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
-    var parametro_imprimirticket = document.getElementById('parametro_imprimirticket').value;
-    
-    let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
-    
-    var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
-
-    
-    
-    var dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
-
-    var registroeventos_codigo = document.getElementById('evento_contingencia').value;
-    var parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
-    var punto_venta = document.getElementById('punto_venta').value;
-    let parametro_puntos = document.getElementById('parametro_puntos').value;
-    
-    /*if (registroeventos_codigo>0){
-        
-        var fecha_cafc = document.getElementById('fecha_cafc').value;
-        var hora_cafc = document.getElementById('hora_cafc').value;
-        var numfact_cafc = document.getElementById('numfact_cafc').value;
-        var codigo_cafc = document.getElementById('codigo_cafc').value;
-        // si esta tiqueado para que mande todo en uno; caso contrario manda al finalizar la venta
-        var mandar_enuno  = $('#mandar_enuno:checked').val();
-    }else{
-        var mandar_enuno  = 0;
-        var fecha_cafc = "";
-        var hora_cafc = "";
-        var numfact_cafc = 0;
-        var codigo_cafc = "";
-        
-    }*/
-//    
-//    alert("registroeventos_codigo: "+registroeventos_codigo+
-//          " * fecha_cafc: "+fecha_cafc+
-//          " * numfact_cafc: "+numfact_cafc+
-//          " * codigo_cafc: "+codigo_cafc);
-    //alert(venta_efectivo);
-    //alert(venta_descuento);
-    /*if(codigoexcepcion==true){
-        codigo_excepcion = 1;
-    }else{
-        codigo_excepcion = 0;
-    }*/
-    
-   // alert(codigo_excepcion);
-    
-    /*var venta_numeroventa = 0;
-    var venta_tipodoc = 0;
-    var entrega_id = 1;
-    var entregaestado_id = 1;
-
-
-    if (parametro_modulorestaurante==1){
-        venta_numeroventa = numero_venta();
-    }
-    if(parametro_imprimirticket == 1){
-        venta_numeroventa = numero_venta();
-    }*/
-    
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
-    /*if( facturado == 1){     
-        venta_tipodoc = 1;}
-    else{
-        venta_tipodoc = 0;}
-    */
-    /*facturado:facturado,*/
-    
-        //alert(modificar_credito);
+
         $.ajax({url: controlador,
             type:"POST",
             data:{venta_id:venta_id, cliente_id:cliente_id, forma_pago:forma_pago, tipo_transaccion:tipo_transaccion,
@@ -6699,12 +6835,11 @@ function modificar_venta(cliente_id)
                   cuotas:cuotas, cuota_inicial:cuota_inicial, credito_interes:credito_interes,
                   modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, metodo_frances:metodo_frances,
                   banco:banco_id, venta_giftcard:venta_giftcard, venta_ice: venta_ice,
-                  venta_detalletransaccion:venta_detalletransaccion, venta_glosa:venta_glosa},
+                  venta_detalletransaccion:venta_detalletransaccion, venta_glosa:venta_glosa,pago_efectivo:pago_efectivo, pago_alternativo:pago_alternativo },
             success:function(respuesta){
-                //window.opener.location.reload();
+
                 window.close();
-                //eliminardetalleventa();
-                //alert("Cambios Guardados...!");
+
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -7295,6 +7430,7 @@ function cargar_factura2(venta_id){
                     var total_descuento = 0;
                     var total_final = 0;
                     var ocultar_boton = 0;
+                    
                     for (var i=0; i< registros.length; i++){
                         
                         cont = cont+1;
@@ -7311,8 +7447,15 @@ function cargar_factura2(venta_id){
                         html += "<font style='size:7px; font-family: arial;'> ";
 
                         
+                        let codigo_producto="";
                         
-                        html += registros[i]['detallefact_descripcion'];
+                        if (registros[i]['detallefact_codigo']!=null || registros[i]['detallefact_codigo'] !='' || registros[i]['detallefact_codigo']!='-'){
+                            codigo_producto = registros[i]['detallefact_codigo'] 
+                        }else{
+                            codigo_producto = "<b style='color: red'>SIN CODIGO</b>"                             
+                        }
+                        
+                        html += codigo_producto+" "+registros[i]['detallefact_descripcion'];
                         
                         //productos no homologados
                         if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 )){
@@ -7323,22 +7466,25 @@ function cargar_factura2(venta_id){
                         if(registros[i]['detallefact_preferencia'].length>0 && registros[i]['detallefact_preferencia']!='null' && registros[i]['detallefact_preferencia']!='-' ){
                             html += registros[i]['detallefact_preferencia']; }
 
-                        if(registros[i]['detallefact_caracteristicas'].length>0 && registros[i]['detallefact_caracteristicas']!='null' && registros[i]['detallefact_caracteristicas']!='-' ) {
-                            html += "<br>.nl2br("+registros[i]['detallefact_caracteristicas']+");"; }
-                        html += "</font>";
-                        html += "</td>";
-                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
-                        html += Number(registros[i]["detallefact_precio"]).toFixed(decimales);
-                        html += "</font></td>";
-                        html += "<td></td>";
-                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
-                        html += Number(registros[i]["detallefact_subtotal"]).toFixed(decimales);
-                        html += "</font></td>";
-                        html += "<td></td>";
-                        html += "<td>&nbsp;";
-                        //html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
-                        html += "</td>";
-                        html += "</tr>";
+                        if(registros[i]['detallefact_caracteristicas'].length>0 && registros[i]['detallefact_caracteristicas']!='null' && registros[i]['detallefact_caracteristicas']!='-'  && registros[i]['detallefact_caracteristicas']!=' ' ) {
+                            
+                            html += "<br>.nl2br("+registros[i]['detallefact_caracteristicas']+");"; 
+                        }
+                        
+                            html += "</font>";
+                            html += "</td>";
+                            html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                            html += Number(registros[i]["detallefact_precio"]).toFixed(decimales);
+                            html += "</font></td>";
+                            html += "<td></td>";
+                            html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                            html += Number(registros[i]["detallefact_subtotal"]).toFixed(decimales);
+                            html += "</font></td>";
+                            html += "<td></td>";
+                            html += "<td>&nbsp;";
+                            //html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                            html += "</td>";
+                            html += "</tr>";
                         
                         if (Number(registros[i]["detallefact_subtotal"])<=0){
                             ocultar_boton = 1;
@@ -7351,7 +7497,7 @@ function cargar_factura2(venta_id){
                     $("#generar_razon").val(registros[0]['cliente_razon']);
                     $("#generar_detalle").html(html);
                     $("#generar_venta_id").val(registros[0]['venta_id']);
-                    $("#generar_monto").val(Number(total_final).toFixed(decimales));
+                    $("#generar_monto").val(Number(registros[0]['venta_total']).toFixed(decimales));
                     
                     //alert(resultado[0]["cdi_codigoclasificador"]);
                                         
@@ -8254,7 +8400,7 @@ function seleccion_documento(){
         miInput.type = 'text';        
     }
     
-    
+    mostrar_complemento();
 }
 
 function formatearFecha(fechaISO) {
@@ -8270,121 +8416,173 @@ function formatearFecha(fechaISO) {
     return `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
 }
 
-function solicitudCufd(punto_venta=0){
-    
+function solicitudCufd(punto_venta = 0) {
+
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'dosificacion/cufd';
-    var opcion = confirm("Esta a punto de generar el C.U.F.D. para el PUNTO DE VENTA "+punto_venta+", el cual reemplazará el existente...! \n ¿Desea Continuar?");
-    
-    if (opcion == true) {
-        //alert("gegegegenerando cufd: "+punto_venta);
-        //document.getElementById('loader_revocado').style.display = 'block';  
-        
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{punto_venta:punto_venta},
-                success:function(respuesta){
-                    var datos = JSON.parse(respuesta);
-                    //var datos =  JSON.parse(registros);
-                let registros = datos['respuesta'];
-                let lafalla = datos['falla']
-                    
-                    /*console.log(registros);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
-                    console.log(registros.RespuestaVerificarNit.transaccion);*/
-                    //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
-                    if(lafalla != ""){
-                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
-                       // document.getElementById('loader_revocado').style.display = 'none';
-                    }else{
+    var controlador = base_url + 'dosificacion/cufd';
 
-                        let codigo = registros.RespuestaCufd.codigo;
-                        let codigoControl = registros.RespuestaCufd.codigoControl;
-                        let direccion = registros.RespuestaCufd.direccion;
-                        let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
-                        let transaccion = registros.RespuestaCufd.transaccion;
+    var opcion = confirm(
+        "Está a punto de generar el C.U.F.D. para el PUNTO DE VENTA " +
+        punto_venta +
+        ", el cual reemplazará el existente...!\n¿Desea Continuar?"
+    );
 
-                        //alert(registros);
-                        if(transaccion == true){
-                           // $("#modal_mensajeadvertencia").modal("show");
-                            almacenar_cufd((registros['RespuestaCufd']),punto_venta);
-                            
-                            $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
-                            
-                            
-                        }
-                    else{
-                        alert(JSON.stringify(registros));
-                    }
-                    // document.getElementById('loader_cufd').style.display = 'none';
-                    //alert("hola");
-                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
-
-                    }*/
-                    }
-
-                },
-                error:function(respuesta){
-                    let datos = JSON.parse(respuesta);
-                    let registros = datos['respuesta'];
-                    let lafalla = datos['falla']
-                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
-                }
-        }); 
-        
+    if (opcion !== true) {
+        return;
     }
-   // alert("llegaaa hasta aqui...!!");
-    tablaproductos();
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        dataType: "json",
+        data: {
+            punto_venta: punto_venta
+        },
+        success: function (datos) {
+
+            let registros = datos.respuesta;
+            let lafalla = datos.falla;
+
+            if (lafalla !== "" && lafalla !== null) {
+                alert(
+                    "No se pudo generar el C.U.F.D.\n\n" +
+                    "Respuesta: " + JSON.stringify(registros) + "\n\n" +
+                    "Detalle: " + JSON.stringify(lafalla)
+                );
+                return;
+            }
+
+            if (!registros || !registros.RespuestaCufd) {
+                alert("Respuesta inválida del servidor:\n" + JSON.stringify(datos));
+                return;
+            }
+
+            let respuestaCufd = registros.RespuestaCufd;
+
+            let codigo = respuestaCufd.codigo;
+            let codigoControl = respuestaCufd.codigoControl;
+            let direccion = respuestaCufd.direccion;
+            let fechaVigencia = respuestaCufd.fechaVigencia;
+            let transaccion = respuestaCufd.transaccion;
+
+            if (transaccion === true) {
+
+                almacenar_cufd(respuestaCufd, punto_venta);
+
+                $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
+
+                alert("C.U.F.D. generado correctamente.");
+
+            } else {
+                alert("SIAT rechazó la solicitud:\n" + JSON.stringify(respuestaCufd));
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            let mensaje = "Error al comunicarse con el servidor.\n\n";
+
+            mensaje += "Estado: " + textStatus + "\n";
+            mensaje += "Error: " + errorThrown + "\n\n";
+
+            if (jqXHR.responseJSON) {
+                mensaje += JSON.stringify(jqXHR.responseJSON);
+            } else if (jqXHR.responseText) {
+                mensaje += jqXHR.responseText;
+            }
+
+            alert(mensaje);
+        }
+    });
 }
 
-function generarCufd(punto_venta=0){
-    
+function generarCufd(punto_venta = 0) {
+
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'dosificacion/cufd';
+    var controlador = base_url + 'dosificacion/cufd';
 
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        dataType: "json",
+        data: {
+            punto_venta: punto_venta
+        },
+        success: function (datos) {
 
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{punto_venta:punto_venta},
-                success:function(respuesta){
-                    var datos = JSON.parse(respuesta);
-                    //var datos =  JSON.parse(registros);
-                let registros = datos['respuesta'];
-                let lafalla = datos['falla']
-                    
-                    if(lafalla != ""){
-                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
-                    }else{
+            let registros = datos.respuesta;
+            let lafalla = datos.falla;
 
-                        let codigo = registros.RespuestaCufd.codigo;
-                        let codigoControl = registros.RespuestaCufd.codigoControl;
-                        let direccion = registros.RespuestaCufd.direccion;
-                        let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
-                        let transaccion = registros.RespuestaCufd.transaccion;
+            if (lafalla && lafalla !== "" && Object.keys(lafalla).length > 0) {
 
-                        if(transaccion == true){
-                          
-                            almacenar_cufd((registros['RespuestaCufd']),punto_venta);
-                            
-                            $("#vigencia_cufd").val(formatearFecha(fechaVigencia));
-                            
-                            
-                        }
-                    else{
-                        alert(JSON.stringify(registros));
-                    }
-                    }
+                let mensaje = "No se pudo generar el C.U.F.D.\n\n";
 
-                },
-                error:function(respuesta){
-                    let datos = JSON.parse(respuesta);
-                    let registros = datos['respuesta'];
-                    let lafalla = datos['falla']
-                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                mensaje += registros + "\n\n";
+
+                if (lafalla.codigo) {
+                    mensaje += "Código: " + lafalla.codigo + "\n";
                 }
-        });         
-    tablaproductos();
+
+                if (lafalla.mensaje) {
+                    mensaje += "Detalle: " + lafalla.mensaje;
+                } else {
+                    mensaje += "Detalle: " + JSON.stringify(lafalla);
+                }
+
+                alert(mensaje);
+                return;
+            }
+
+            if (!registros || !registros.RespuestaCufd) {
+                alert("Respuesta inválida del servidor:\n" + JSON.stringify(datos));
+                return;
+            }
+
+            let respuestaCufd = registros.RespuestaCufd;
+
+            if (respuestaCufd.transaccion === true) {
+
+                almacenar_cufd(respuestaCufd, punto_venta);
+
+                $("#vigencia_cufd").val(formatearFecha(respuestaCufd.fechaVigencia));
+
+                tablaproductos();
+
+            } else {
+                alert("SIAT rechazó la solicitud:\n" + JSON.stringify(respuestaCufd));
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            let mensaje = "Error al comunicarse con el servidor.\n\n";
+
+            mensaje += "Estado: " + textStatus + "\n";
+            mensaje += "Error: " + errorThrown + "\n\n";
+
+            if (jqXHR.responseJSON) {
+
+                let datos = jqXHR.responseJSON;
+
+                mensaje += datos.respuesta ? datos.respuesta + "\n\n" : "";
+
+                if (datos.falla) {
+                    if (datos.falla.codigo) {
+                        mensaje += "Código: " + datos.falla.codigo + "\n";
+                    }
+
+                    if (datos.falla.mensaje) {
+                        mensaje += "Detalle: " + datos.falla.mensaje;
+                    } else {
+                        mensaje += "Detalle: " + JSON.stringify(datos.falla);
+                    }
+                }
+
+            } else if (jqXHR.responseText) {
+                mensaje += jqXHR.responseText;
+            }
+
+            alert(mensaje);
+        }
+    });
 }
 
 function almacenar_cufd(datos,punto_venta=0){
@@ -8462,22 +8660,8 @@ function cambiar_tipoemision()
                 $("#modal_tipoemision").modal("hide");
                
                     alert(JSON.stringify(registros));
+                                        
                     location.reload();
-                
-//                if(parametro_tipoemision == 1){
-//                    
-//                    var mensaje;                    
-//                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
-//                    
-//                    if (opcion == true) {
-//                        
-//                        
-//                        //solicitudCufd(punto_venta);                      
-//                    }
-//                  document.getElementById("ejemplo").innerHTML = mensaje;
-//                }
-                
-                //document.getElementById('loader_documento').style.display = 'none';
                 
             },
             error:function(respuesta){
@@ -9023,6 +9207,29 @@ function placa_atendida_hoy(numeroplaca) {
     return resultado;
 }
 
+function reajustar_totales() {
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url + 'venta/reajustar_totales';
+    let venta_id = document.getElementById('generar_venta_id').value; // valor de la venta
+    let resultado = false; // valor por defecto
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: { venta_id: venta_id },
+        success: function (respuesta) {
+
+            //cargar_factura(venta_id);
+            cargar_factura2(venta_id)
+        },
+        error: function () {
+            resultado = false;
+        }
+    });
+
+}
+
 function buscar_placa(e){    
     
     let base_url = document.getElementById('base_url').value;
@@ -9421,6 +9628,84 @@ function procesarCodigoBarras(codigo) {
     
 }
 
+function procesarCodigoBarras2(codigo) {
+
+    codigo = String(codigo).trim();
+
+    var verificador = codigo.substring(12, 13);
+    var codigoProducto = codigo.substring(0, 7);
+    var separador = codigo.substring(7, 8);
+
+    // Precio: posiciones 8 a 11
+    // Ejemplo: 5040 = 50.40 Bs
+    var preciototal = Number(codigo.substring(8, codigo.length)) / 1000;
+
+    var cantidad = 1;
+    var precio = 0;
+
+    if (codigo.length !== 13) {
+        return {
+            error: true,
+            mensaje: 'Código de balanza inválido. Debe tener 13 dígitos.'
+        };
+    }
+
+    if (codigo.substring(0, 4) !== '2000') {
+        return {
+            error: true,
+            mensaje: 'El código no corresponde a etiqueta de balanza.'
+        };
+    }
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url + 'venta/buscarproducto';
+
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        async: false,
+        data: {
+            codigoproducto: codigoProducto
+        },
+        success: function(respuesta) {
+
+            var registro = JSON.parse(respuesta);
+
+            if (Array.isArray(registro) && registro.length > 0) {
+
+                precio = Number(registro[0]["producto_precio"]);
+
+                if (precio > 0 && preciototal > 0) {
+                    
+                    cantidad = preciototal / precio;                    
+                    
+                } else {
+                    cantidad = 1;
+                }
+
+            } else {
+                cantidad = 1;
+            }
+        },
+        error: function() {
+            cantidad = 1;
+        }
+    });
+
+    //alert(precio);
+    //alert(cantidad+" ** "+precio+" ** "+preciototal);
+    
+    return {
+        error: false,
+        verificador: verificador,
+        codigoProducto: codigoProducto,
+        separador: separador,
+        cantidad: cantidad,
+        preciototal: preciototal,
+        precio: precio
+    };
+}
+
 function guardar_venta_temporal(){
     
     let base_url = document.getElementById('base_url').value;
@@ -9471,7 +9756,7 @@ function mostras_ventas_guardadas(){
                     let html =  "";
                     for(var i=0; i<vg.length;i++){
              
-                        html += "<button class='btn btn-warning btn-xs' onclick='cargar_venta("+JSON.stringify(vg[i]["codigo_venta"])+")' title='"+vg[i]["codigo_venta"]+" "+vg[i]["nombre_venta"]+"'><fa class='fa fa-cart-arrow-down'></fa> <br>"+Number(vg[i]["totalbs"]).toFixed(2)+"<br>"+"</button>";
+                        html += "<button class='btn btn-warning btn-xs' onclick='cargar_venta("+JSON.stringify(vg[i]["codigo_venta"])+")' title='"+vg[i]["codigo_venta"]+" "+vg[i]["nombre_venta"]+" RESP.:"+vg[i]["usuario_nombre"]+"'><fa class='fa fa-cart-arrow-down'></fa> <br>"+Number(vg[i]["totalbs"]).toFixed(2)+"<br>"+"</button>";
                         
                     }
                     
@@ -9937,6 +10222,7 @@ function cargar_ventas_excel(){
 }
 
 function calcular_servicios(){
+    
     let datos_montodescuentotarifadignidad = document.getElementById('datos_montodescuentotarifadignidad').value;
     let datos_tasaaseo = document.getElementById('datos_tasaaseo').value;
     let datos_tasaalumbrado = document.getElementById('datos_tasaalumbrado').value;
@@ -10340,6 +10626,153 @@ function guardar_temporal(){
 }
 
 
+/* carga las facturas no enviadas, mal emitidas */
+function cargar_modal_anular_malemitida(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
+{
+    var decimales = Number(document.getElementById('parametro_decimales').value);
+    
+//    alert(decimales);
+    //alert(factura_id+" *** "+venta_id+" *** "+factura_numero+" *** "+factura_razon+" *** "+factura_total+" *** "+factura_fecha);
+    
+    $("#facturamal_id").val(factura_id);
+    $("#ventamal_id").val(venta_id);
+    $("#facturamal_numero").val(factura_numero);
+    $("#facturamal_monto").val(Number(factura_total).toFixed(decimales));
+    $("#facturamal_fecha").val(formato_fecha(factura_fecha));
+    $("#facturamal_cliente").val(factura_razon);
+    
+    
+    
+    /*let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'factura/get_correo';
+    $.ajax({url:controlador,
+                    type:"POST",
+                    data:{venta_id: venta_id},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        if(res != null){
+                            //$("#facturamal_correo").val(res['cliente_email']);
+                        }
+                    },
+            });*/
+
+}
+
+function anular_factura_electronica_malemitida()
+{
+    var factura_id = document.getElementById("facturamal_id").value; 
+    var venta_id = document.getElementById("ventamal_id").value; 
+    var factura_numero = document.getElementById("facturamal_numero").value; 
+    var factura_razon = document.getElementById("facturamal_cliente").value; 
+    var factura_total = document.getElementById("facturamal_monto").value; 
+    var factura_fecha = document.getElementById("facturamal_fecha").value;
+    //var motivo_id = document.getElementById("motivo_anulacion").value;
+    //let factura_correo = document.getElementById("factura_correo").value;
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/quitar_factura_malemitida/'+factura_id+"/"+venta_id;
+    
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
+            
+            document.getElementById('loadermal').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        //mostrar_facturas();
+                       //alert("Anulacion exitosa!.");
+                       if(res){
+                           cargar_factura(venta_id);
+                       }else{ alert("ADVERTENCIA: Anulación Fallida..!"); }
+                        
+                        //document.getElementById('loadermal').style.display = 'none';
+                        //$('#boton_cerrarmal').click();
+                    },
+            });
+            
+            document.getElementById('loadermal').style.display = 'none';
+        }else{
+            document.getElementById('loadermal').style.display = 'none';
+        }
+
+}
+
+function mostrar_complemento(){
+    var tipo_doc_identidad = document.getElementById("tipo_doc_identidad").value;
+    
+    
+    if(tipo_doc_identidad==1){
+        document.getElementById('div_complemento').style.display = 'block';        
+    }else{
+        document.getElementById('div_complemento').style.display = 'none';                
+    }
+    
+    
+    
+}
+
+function habilitar_pagoalternativo() {
+
+    let input = document.getElementById("pago_alternativo");
+    let boton = document.getElementById("btn_pagoalternativo");
+    let icono = document.getElementById("icon_pagoalternativo");
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/bitacora_pago/';   
+    let operacion = 0;
+            
+            
+                if (input.disabled) {
+                    // Habilitar
+                    input.disabled = false;
+                    input.focus();
+
+                    boton.classList.remove("btn-warning");
+                    boton.classList.add("btn-danger");
+
+                    icono.classList.remove("fa-lock");
+                    icono.classList.add("fa-unlock");
+
+                    $("#pago_alternativo").select();
+                    
+                    operacion = 1;
+
+                } else {
+                    // Deshabilitar
+                    let venta_totalfinal = document.getElementById("venta_totalfinal").value;
+
+                    input.disabled = true;
+
+                    boton.classList.remove("btn-danger");
+                    boton.classList.add("btn-warning");
+
+                    icono.classList.remove("fa-unlock");
+                    icono.classList.add("fa-lock");
+
+                    $("#pago_alternativo").val(venta_totalfinal);
+                    $("#pago_efectivo").val("0.00");
+                    //alert("por aquiii");
+                    operacion = 0;
+                }
+
+        
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{operacion:operacion},
+                    success:function(result){
+                        res = JSON.parse(result);                        
+
+                    },
+            });
+
+    
+}
+
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
@@ -10424,6 +10857,36 @@ function borrar_datos_cliente(){
     
     
     document.getElementById("codigoexcepcion").checked = false;
+
+ //*************** INPUTS PAGO ALTERNATIVO *********************** 
+ 
+    const filaAlternativo = document.getElementById('filaAlternativo');
+    const filaEfectivo    = document.getElementById('filaEfectivo');
+
+    
+    filaAlternativo.style.display = 'none';
+    filaEfectivo.style.display    = 'none';
+    
+    let input = document.getElementById("pago_alternativo");
+    let boton = document.getElementById("btn_pagoalternativo");
+    let icono = document.getElementById("icon_pagoalternativo");
+    
+        let venta_totalfinal = document.getElementById("venta_totalfinal").value;
+        
+        input.disabled = true;
+
+        boton.classList.remove("btn-danger");
+        boton.classList.add("btn-warning");
+
+        icono.classList.remove("fa-unlock");
+        icono.classList.add("fa-lock");
+        
+        $("#pago_alternativo").val("0.00");
+        $("#pago_efectivo").val("0.00");    
+
+    
+	
+ //*************** FIN INPUTS PAGO ALTERNATIVO ***********************
 
     
     $("#razon_social").css("background-color", "gray");

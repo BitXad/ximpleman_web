@@ -121,11 +121,12 @@ class Producto extends CI_Controller{
                     $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
                     $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
                     $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-                    $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                    //$data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                    $data['nis_codigos'] = $this->ProductosServicios_model->get_productosServicios_principal();
                     
                     $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                     $data['parametro'] = $this->Parametro_model->get_parametro(1);
-                    $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_actividad();
+                    $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_principal();
                     
                     $data['resultado'] = 1;
                     $data['page_title'] = "Producto";
@@ -257,6 +258,14 @@ class Producto extends CI_Controller{
                         'producto_codigounidadsin' => $codigounidad,
                     );
                     
+
+                $validacion_codigos = $this->Producto_model->validar_codigos_producto_unicos($params, 0);
+                if (!$validacion_codigos['valido']) {
+                    $this->session->set_flashdata('mensaje_error', implode('<br>', $validacion_codigos['errores']));
+                    redirect('producto/add');
+                    return;
+                }
+
                     $producto_id = $this->Producto_model->add_producto($params);
                     
                     $this->Inventario_model->ingresar_producto_inventario($producto_id);
@@ -266,7 +275,9 @@ class Producto extends CI_Controller{
                 $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
                 $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-                $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                //$data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                $data['nis_codigos'] = $this->ProductosServicios_model->get_productosServicios_principal();
+                
                 $data['unidades'] = $this->Producto_model->get_all_unidad();
                 $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                 $data['parametro'] = $this->Parametro_model->get_parametro(1);
@@ -444,6 +455,14 @@ class Producto extends CI_Controller{
 
                 //var_dump($params);
                 
+
+                $validacion_codigos = $this->Producto_model->validar_codigos_producto_unicos($params, $producto_id);
+                if (!$validacion_codigos['valido']) {
+                    $this->session->set_flashdata('mensaje_error', implode('<br>', $validacion_codigos['errores']));
+                    redirect('producto/edit/'.$producto_id);
+                    return;
+                }
+
                 $this->Producto_model->update_producto($producto_id,$params);
                 
                 $this->Inventario_model->update_inventario($producto_id, $params);
@@ -472,13 +491,14 @@ class Producto extends CI_Controller{
             }else{
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
-                $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                //$data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                //$data['nis_codigos'] = $this->ProductosServicios_model->get_productosServicios_principal();
                 $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
                 
                 $this->load->model('Subcategoria_producto_model');
                 $data['all_subcategoria_producto'] = $this->Subcategoria_producto_model->get_all_subcategoria_de_categoria($data['producto']['categoria_id']);
                 
-                $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                $data['nis_codigos'] = $this->ProductosServicios_model->get_productosServicios_principal();
                 $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
                 
                 
@@ -624,6 +644,24 @@ class Producto extends CI_Controller{
     }
  
     function rapido(){
+        
+        
+         $producto_nombre      = trim($this->input->post('producto_nombre'));
+        $producto_codigobarra = trim($this->input->post('producto_codigobarra'));
+        $producto_codigo      = trim($this->input->post('producto_codigo'));
+
+        $duplicados = $this->Producto_model->verificar_duplicados_producto(
+            $producto_nombre,
+            $producto_codigobarra,
+            $producto_codigo
+        );
+
+        if ($duplicados['nombre'] || $duplicados['codigobarra'] || $duplicados['codigo']) {
+            $this->session->set_flashdata('error', 'No se puede guardar porque existen datos duplicados en Nombre, Código de Barra o Código.');
+            redirect('producto/index'); // cambia la ruta si corresponde
+            return;
+        }
+        
         
         $data['sistema'] = $this->sistema;
         
@@ -833,30 +871,32 @@ class Producto extends CI_Controller{
 
             $this->Compra_model->ejecutar($sql);
             
-        //************ inicio bitacora 
-            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            //************ inicio bitacora 
 
-            $venta_id = 0;//$this->input->post("venta_id");            
-            $usuario_id = $this->session_data['usuario_id'];
-            $bitacoracaja_fecha = "date({$now})";
-            $bitacoracaja_hora = "time({$now})";
-            
-            $producto_nombre = $this->input->post('producto_nombre');
-            $producto_codigo = $this->input->post('producto_codigo');
-            $bitacoracaja_evento = "'REGISTRO RAPIDO DEL PRODUCTO, ID: {$producto_id}, NOMBRE: {$producto_nombre} ,COD: {$producto_codigo}, COSTO: {$producto_costo},PRECIO: {$producto_precio}'";
-            
-            $bitacoracaja_montoreg = 0;
-            $bitacoracaja_montocaja = 0;
-            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
+                $usuario_id = $this->session_data['usuario_id'];
 
+                $evento = "REGISTRO RAPIDO DEL PRODUCTO, "
+                        . "ID: {$producto_id}, "
+                        . "NOMBRE: {$producto_nombre}, "
+                        . "COD: {$producto_codigo}, "
+                        . "COSTO: {$producto_costo}, "
+                        . "PRECIO: {$producto_precio}";
 
-            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
-                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-            $this->Venta_model->ejecutar($sql);
-        //************ fin bitacora bitacora              
-            
+                $data_bitacora = array(
+                    'bitacoracaja_fecha'     => date('Y-m-d'),
+                    'bitacoracaja_hora'      => date('H:i:s'),
+                    'bitacoracaja_evento'    => $evento,
+                    'usuario_id'             => $usuario_id,
+                    'bitacoracaja_montoreg'  => 0,
+                    'bitacoracaja_montocaja' => 0,
+                    'bitacoracaja_tipo'      => 3,
+                    'caja_id'                => $this->caja_id
+                );
+
+                $this->db->insert('bitacora_caja', $data_bitacora);
+
+            //************ fin bitacora         
+
             
             
             
@@ -1404,7 +1444,7 @@ class Producto extends CI_Controller{
                 $bitacora_objetivo = "dar de baja el producto";
                 $bitacora_fecha = date("Y-m-d");
                 $bitacora_hora = date("H:i:s");
-                $bitacora_sql = "updade producto set estado_id = 2 where producto_id =".$producto['producto_id']."; Producto: ".$producto["producto_nombre"]."; Codigo: ".$producto["producto_codigo"];
+                $bitacora_sql = "updade producto set estado_id = 2 where producto_id =".$producto['producto_id']."; Producto: ".str_replace(array("\\", "'", "\""), array("\\\\", "\\'", "\\\""), $producto["producto_nombre"])."; Codigo: ".$producto["producto_codigo"];
                 $bitacora_valoranterior = "estado_id = 1";
                 $bitacora_valornuevo = "estado_id = 2";
                 $usuario_id = $this->session_data['usuario_id'];
@@ -1448,7 +1488,7 @@ class Producto extends CI_Controller{
                 $bitacora_objetivo = "Alta de producto";
                 $bitacora_fecha = date("Y-m-d");
                 $bitacora_hora = date("H:i:s");
-                $bitacora_sql = "updade producto set estado_id = 1 where producto_id =".$producto['producto_id']." Producto: ".$producto["producto_nombre"]."; Codigo: ".$producto["producto_codigo"];
+                $bitacora_sql = "updade producto set estado_id = 1 where producto_id =".$producto['producto_id']." Producto: ".str_replace(array("\\", "'", "\""), array("\\\\", "\\'", "\\\""), $producto["producto_nombre"])."; Codigo: ".$producto["producto_codigo"];
                 $bitacora_valoranterior = "estado_id = 2";
                 $bitacora_valornuevo = "estado_id = 1";
                 $usuario_id = $this->session_data['usuario_id'];
@@ -1851,6 +1891,58 @@ class Producto extends CI_Controller{
             show_404();
         }
     }
+
+    public function validar_duplicados_ajax()
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+
+        $producto_nombre      = $this->input->post('producto_nombre', true);
+        $producto_codigobarra = $this->input->post('producto_codigobarra', true);
+        $producto_codigo      = $this->input->post('producto_codigo', true);
+        $producto_id          = $this->input->post('producto_id', true);
+
+        $resultado = $this->Producto_model->verificar_duplicados_producto(
+            $producto_nombre,
+            $producto_codigobarra,
+            $producto_codigo,
+            $producto_id
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($resultado);
+    }
     
     
+
+    /*
+     * AJAX: Validacion en tiempo real de codigos del formulario Producto.
+     */
+    public function validar_codigos_producto_ajax()
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+            return;
+        }
+
+        $producto_id = (int)$this->input->post('producto_id');
+
+        $codigos = array(
+            'producto_codigo'        => $this->input->post('producto_codigo', true),
+            'producto_codigobarra'   => $this->input->post('producto_codigobarra', true),
+            'producto_codigofactor'  => $this->input->post('producto_codigofactor', true),
+            'producto_codigofactor1' => $this->input->post('producto_codigofactor1', true),
+            'producto_codigofactor2' => $this->input->post('producto_codigofactor2', true),
+            'producto_codigofactor3' => $this->input->post('producto_codigofactor3', true),
+            'producto_codigofactor4' => $this->input->post('producto_codigofactor4', true),
+        );
+
+        $respuesta = $this->Producto_model->validar_codigos_producto_unicos($codigos, $producto_id);
+
+        $this->output
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($respuesta));
+    }
+
 }

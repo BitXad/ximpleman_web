@@ -26,7 +26,7 @@
         padding : 0 0 0 0;
         border-spacing : 0 0;
         border-collapse : collapse;
-        font-family: Arial narrow;
+        font-family: Arial;
         font-size: 7pt;
 
     }
@@ -36,7 +36,7 @@
     }
     div#content {
         background : #ddd;
-        font-size : 7px;
+        font-size : 8px;
         margin : 0 0 0 0;
         padding : 0 5px 0 5px;
         border-left : 1px solid #aaa;
@@ -55,7 +55,7 @@
         <td style="padding: 0;">
             <table class="table" style="width: <?php echo $ancho; ?>;" >
                 <tr>
-                    <td style="padding:0;">        
+                    <td style="padding:0;" colspan="4">        
                         <center>
                             <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                             <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
@@ -92,8 +92,8 @@
                 </td>
             </tr>
 
-        </table>
-        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
+<!--        </table>
+        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >-->
             <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
                 <td align="center"><b>#</b></td>
                 <td align="center"><b>DETALLE</b></td>
@@ -120,7 +120,7 @@
                     if($d['detalleserv_glosa']){
                         $laglosa = "; ".$d['detalleserv_glosa'];
                     }
-                      echo $d['detalleserv_descripcion'].$laglosa.$tipotrabajo." (".$d['detalleserv_codigo'].")";
+                      echo $d['detalleserv_descripcion'].$laglosa; //.$tipotrabajo." (".$d['detalleserv_codigo'].")";
                       echo "<div><span style='font-weight: bold'>Fecha Aprox. Entrega:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
                       echo " - ".$d['detalleserv_horaentrega']."</div>";
                       echo "<div><span class='text-bold'>Responsable Técnico: </span>".$d["respusuario_nombre"]."</div>"
@@ -188,6 +188,11 @@
             <font size="2">
                    
             </font>
+            <p>
+                NOTA: Pasado los 90 días la Empresa NO SE HARÁ responsable por deterioro o pérdida de la Pieza y se considerará como ABANDONO con un COSTO de Almacenamiento.
+            </p>
+            
+            
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
             </center>
          </td>

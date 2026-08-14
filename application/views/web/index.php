@@ -600,7 +600,8 @@ function mostrar() {
         
         
         <div class="container">
-        <!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
+            
+        <!--<h2><?php /*echo $seccion1[0]['seccion_titulo']; ?></h2>
         
                 <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
                     <h3><?php echo $seccion1[0]['seccion_descripcion']; ?></h3>
@@ -608,7 +609,7 @@ function mostrar() {
         
                     <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
         <h5><?php echo $seccion1[0]['seccion_texto']; ?></h5>
-                <?php } ?>-->
+                <?php }*/ ?>-->
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
             

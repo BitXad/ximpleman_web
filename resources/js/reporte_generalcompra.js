@@ -248,7 +248,63 @@ function buscarproducto(e) {
         tablareproducto();
     }
 }
+
 function tablareproducto(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'compra/buscarcompra';
+    var parametro = document.getElementById('buscar_elproducto').value
+    document.getElementById('loader_bproducto').style.display = 'block';
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro},
+            success:function(respuesta){
+                $("#encontrados").val("- 0 -");
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){   
+                    /*var cont = 0;
+                    var cant_total = 0;
+                    var total_detalle = 0;*/
+                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+                    html += "<table class='table table-striped no-print' id='mitabla'>";
+                    html += "<tr>"
+                    html += "<th>N</th>";
+                    //html += "<th>ID</th>";
+                    html += "<th>Producto</th>";
+                    html += "<th></th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar' id='tablareproducto'>";
+                    for (var i = 0; i < n ; i++){
+                        html += "<tr>";
+                        html += "<td class='text-center'>"+(i+1)+"</td>";
+                        html += "<td>";
+                        html += "<div class='col-md-12'>";
+                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<button type='button' onclick='repoproducto("+JSON.stringify(registros[i]["producto_nombre"])+", "+registros[i]["producto_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-search'></i></button>";
+                        //html += "</div>";
+                        html += "</td>";
+                        html += "</tr>";
+                   }
+                        html += "</tbody>"
+                   $("#tablareproducto").html(html);
+                    document.getElementById('loader_bproducto').style.display = 'none';
+                }else{
+                    document.getElementById('loader_bproducto').style.display = 'none';
+                }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tablareproducto").html(html);
+        }
+    });
+}
+
+function tablareproductoxxxx(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'compra/buscarcompra';
     var parametro = document.getElementById('buscar_elproducto').value

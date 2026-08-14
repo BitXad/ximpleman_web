@@ -8,6 +8,7 @@ class Mesa extends CI_Controller{
     
     private $sistema;
     private $parametros;
+    private $caja_id = 0;
     
     function __construct()
     {
@@ -36,6 +37,21 @@ class Mesa extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        
+        //*********** Administracion de caja *********
+                $usuario_id = $this->session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+
+                if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->caja_id = 0;
+                }else{
+                    $this->caja_id = $caja[0]["caja_id"];
+
+                }
+
+                
+        //*********** FIN Administracion de caja *********
         
         
     } 
@@ -324,6 +340,43 @@ class Mesa extends CI_Controller{
             $sql = "update mesa set estado_id = {$estado_id} where mesa_id = {$mesa_id} ";
             $this->Venta_model->ejecutar($sql);
             
+            
+                //**************** bitacora caja
+
+                $mesa = $this->Venta_model->consultar("
+                    SELECT mesa_id, mesa_nombre, estado_id
+                    FROM mesa
+                    WHERE mesa_id = {$mesa_id}
+                    LIMIT 1
+                ");
+
+                $bitacoracaja_evento = "OCUPE MESA";
+
+                if (!empty($mesa)) {
+                    $m = $mesa[0];
+
+                    $bitacoracaja_evento =
+                        "OCUPE MESA => MESA ID: ".$m['mesa_id'].
+                        " *** MESA: ".$m['mesa_nombre'].
+                        " *** PEDIDO ID: ".$pedido_id.
+                        " *** USUARIO ID: ".$usuario_id.
+                        " *** FECHA: ".date('Y-m-d H:i:s');
+                }
+
+                $data_bitacora = array(
+                    'bitacoracaja_fecha'     => date('Y-m-d'),
+                    'bitacoracaja_hora'      => date('H:i:s'),
+                    'bitacoracaja_evento'    => $bitacoracaja_evento,
+                    'usuario_id'             => $usuario_id,
+                    'bitacoracaja_montoreg'  => 0,
+                    'bitacoracaja_montocaja' => 0,
+                    'bitacoracaja_tipo'      => 11,
+                    'caja_id'                => $this->caja_id
+                );
+
+                $this->db->insert('bitacora_caja', $data_bitacora);
+
+                //****************** fin bitacora caja                 
             //
 //            $sql = "select * pedido where pedido_id = {$pedido_id} ";
 //            $resultado = $this->Venta_model->consultar($sql);
@@ -412,35 +465,118 @@ class Mesa extends CI_Controller{
     /*
     * Modificar detalle
     */
-    function modificar_detalle(){
-
+    function modificar_detalle()
+    {
         if ($this->input->is_ajax_request()) {
-            
-            $detalleped_precio = $this->input->post("detalleped_precio"); 
-            $detalleped_cantidad = $this->input->post("detalleped_cantidad"); 
-            $detalleped_id = $this->input->post("detalleped_id"); 
-            $pedido_id = $this->input->post("pedido_id"); 
-            
-            $sql = "update detalle_pedido set
+
+            $detalleped_precio   = (float)$this->input->post("detalleped_precio");
+            $detalleped_cantidad = (float)$this->input->post("detalleped_cantidad");
+            $detalleped_id       = (int)$this->input->post("detalleped_id");
+            $pedido_id           = (int)$this->input->post("pedido_id");
+
+            if ($detalleped_id <= 0 || $pedido_id <= 0) {
+                echo json_encode(false);
+                return;
+            }
+
+            // Datos anteriores
+            $detalle_anterior = $this->Venta_model->consultar("
+                SELECT *
+                FROM detalle_pedido
+                WHERE detalleped_id = {$detalleped_id}
+                LIMIT 1
+            ");
+
+            // Modificar detalle
+            $subtotal = $detalleped_cantidad * $detalleped_precio;
+
+            $sql1 = "
+                UPDATE detalle_pedido SET
                     detalleped_precio = {$detalleped_precio},
                     detalleped_cantidad = {$detalleped_cantidad},
-                    detalleped_subtotal = {$detalleped_cantidad} * {$detalleped_precio},
-                    detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
-                    where detalleped_id = {$detalleped_id}";
+                    detalleped_subtotal = {$subtotal},
+                    detalleped_total = {$subtotal}
+                WHERE detalleped_id = {$detalleped_id}
+            ";
+            $this->Venta_model->ejecutar($sql1);
+
+            // Actualizar total pedido
+            $sql = "
+                UPDATE pedido p SET
+                    p.pedido_subtotal = (
+                        SELECT IFNULL(SUM(d.detalleped_subtotal), 0)
+                        FROM detalle_pedido d
+                        WHERE d.pedido_id = {$pedido_id}
+                    ),
+                    p.pedido_total = (
+                        SELECT IFNULL(SUM(d.detalleped_total), 0)
+                        FROM detalle_pedido d
+                        WHERE d.pedido_id = {$pedido_id}
+                    )
+                WHERE p.pedido_id = {$pedido_id}
+            ";
             $this->Venta_model->ejecutar($sql);
+
+            // Datos actuales del pedido
+            $pedido = $this->Venta_model->consultar("
+                SELECT mesa_id, pedido_id, pedido_fecha, pedido_total
+                FROM pedido
+                WHERE pedido_id = {$pedido_id}
+                LIMIT 1
+            ");
+
+            $bitacoracaja_evento = "MODIFIQUE DETALLE DE MESA:";
+
+            if (!empty($pedido)) {
+                $p = $pedido[0];
+
+                $bitacoracaja_evento =
+                    "MODIFIQUE DETALLE DE MESA => MESA ID: ".$p['mesa_id'].
+                    " *** PEDIDO ID: ".$p['pedido_id'].
+                    " *** FECHA REG.: ".$p['pedido_fecha'].
+                    " *** TOTAL ACTUAL: ".number_format($p['pedido_total'],2,".",",");
+            }
+
+            if (!empty($detalle_anterior)) {
+                $d = $detalle_anterior[0];
             
+            $bitacoracaja_evento .= "  //  ";
+
+                $bitacoracaja_evento .=
+                    " *** DATOS ANTERIORES: ".
+                    "DETALLE ID: ".$d['detalleped_id'].
+                    " | PRECIO: ".number_format($d['detalleped_precio'],2,".",",").
+                    " | CANTIDAD: ".number_format($d['detalleped_cantidad'],2,".",",").
+                    " | SUBTOTAL: ".number_format($d['detalleped_subtotal'],2,".",",").
+                    " | TOTAL: ".number_format($d['detalleped_total'],2,".",",");
+            }
             
-            $sql = "update pedido p
-                    set
-                    p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
-                    p.pedido_total = p.pedido_subtotal
-                    where p.pedido_id = {$pedido_id}";
-            $this->Venta_model->ejecutar($sql);
-            
+            $bitacoracaja_evento .= "  //  ";
+
+            $bitacoracaja_evento .=
+                " *** DATOS MODIFICADOS: ".
+                "DETALLE ID: ".$detalleped_id.
+                " | PRECIO: ".number_format($detalleped_precio,2,".",",").
+                " | CANTIDAD: ".number_format($detalleped_cantidad,2,".",",").
+                " | SUBTOTAL: ".number_format($subtotal,2,".",",").
+                " | TOTAL: ".number_format($subtotal,2,".",",");
+
+            // Registrar bitácora
+            $data_bitacora = array(
+                'bitacoracaja_fecha'     => date('Y-m-d'),
+                'bitacoracaja_hora'      => date('H:i:s'),
+                'bitacoracaja_evento'    => $bitacoracaja_evento,
+                'usuario_id'             => $this->session_data['usuario_id'],
+                'bitacoracaja_montoreg'  => 0,
+                'bitacoracaja_montocaja' => 0,
+                'bitacoracaja_tipo'      => 11,
+                'caja_id'                => $this->caja_id
+            );
+
+            $this->db->insert('bitacora_caja', $data_bitacora);
+
             echo json_encode(true);
         }
-
-
     }
     /*
     * mostra detalle mesa
@@ -468,7 +604,33 @@ class Mesa extends CI_Controller{
 
         if ($this->input->is_ajax_request()) {
             
-            $detalleped_id = $this->input->post("detalleped_id");             
+            $detalleped_id = $this->input->post("detalleped_id");    
+            
+                //**************** bitacora caja
+
+                 $bitacoracaja_evento = "(SELECT CONCAT(
+                                                    'ELIMINE ITEM DE MESA => PEDIDO ID: ', 
+                                                    pedido_id,
+                                                    ' *** PROD.: ', detalleped_nombre,
+                                                    ' *** COD.: ', detalleped_codigo,
+                                                    ' *** CANT.: ',round(detalleped_cantidad,2),
+                                                    ' *** PRECIO: ', round(detalleped_precio,2),
+                                                    ' *** TOTAL: ', round(detalleped_total,2)
+                                                ) AS resultado
+                                                FROM detalle_pedido
+                                                WHERE detalleped_id = {$detalleped_id})";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",".$bitacoracaja_evento.",".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja         
+                
             $sql = "delete from detalle_pedido where detalleped_id = {$detalleped_id} ";
             $this->Venta_model->ejecutar($sql);
                         
@@ -489,6 +651,29 @@ class Mesa extends CI_Controller{
             
             $pedido_id = $this->input->post("pedido_id"); 
 
+
+                //**************** bitacora caja
+
+                 $bitacoracaja_evento = "(SELECT CONCAT(
+                                                    'ELIMINE MESA SELECCIONADA => MESA ID: ', 
+                                                    mesa_id,
+                                                    ' *** PEDIDO ID: ', pedido_id,
+                                                    ' *** FECHA REG.: ',pedido_fecha,
+                                                    ' *** TOTAL: ', round(pedido_total,2)
+                                                ) AS resultado
+                                                FROM pedido
+                                                WHERE pedido_id = {$pedido_id})";
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",".$bitacoracaja_evento.",".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja            
             
             $sql = "update mesa set estado_id = 38 where mesa_id = (select mesa_id from pedido where pedido_id = {$pedido_id})";
             $this->Venta_model->ejecutar($sql);
@@ -498,6 +683,11 @@ class Mesa extends CI_Controller{
 
             $sql = "delete from pedido where pedido_id = {$pedido_id} ";
             $this->Venta_model->ejecutar($sql);
+            
+            
+            
+                        
+            
                  
             echo json_encode(true);
             
@@ -627,6 +817,23 @@ class Mesa extends CI_Controller{
             //liberamos la mesa ocupada
             $sql = "update mesa set estado_id = 38 where mesa_id = {$mesa_ocupada}";
             $this->Venta_model->ejecutar($sql);
+            
+
+                //**************** bitacora caja
+
+                $bitacoracaja_evento = "CAMBIE DE MESA, MESA ORIGEN ID.: ".$mesa_ocupada.", MESA DESTINO ID.: ".$mesa_disponible;
+                $bitacoracaja_tipo = 11;
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $now = "'".date("Y-m-d H:i:s")."'";
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
+                        ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+
+                $this->Venta_model->ejecutar($sql);
+                //****************** fin bitacora caja            
+            
             
             
             echo json_encode(true);

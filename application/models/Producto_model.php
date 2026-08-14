@@ -14,6 +14,24 @@ class Producto_model extends CI_Model
     /*
      * Get producto by producto_id
      */
+    function get_miproducto($producto_id)
+    {
+        $producto = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `producto`
+
+            WHERE
+                `producto_id` = ?
+        ",array($producto_id))->row_array();
+
+        return $producto;
+    }
+    /*
+     * Get producto by producto_id
+     */
     function get_producto($producto_id)
     {
         $producto = $this->db->query("
@@ -342,14 +360,15 @@ class Producto_model extends CI_Model
      */
     function es_producto_registrado($producto_nombre)
     {
-        $sql = "SELECT
-                      count(p.producto_id) as resultado
-                  FROM
-                      producto p
-                 WHERE
-                      p.producto_nombre = '".$producto_nombre."'";
+        // Evita error SQL cuando el nombre contiene comillas simples o dobles: MAC'S, 10" etc.
+        // Antes se concatenaba: p.producto_nombre = '".$producto_nombre."'
+        $producto = $this->db
+            ->select('COUNT(p.producto_id) as resultado', false)
+            ->from('producto p')
+            ->where('p.producto_nombre', $producto_nombre)
+            ->get()
+            ->row_array();
 
-        $producto = $this->db->query($sql)->row_array();
         return $producto['resultado'];
     }
     /* prodcutos con existencia minima */
@@ -502,7 +521,7 @@ class Producto_model extends CI_Model
     function buscar_allproducto($parametro){
         $producto = $this->db->query("
             SELECT
-                p.producto_id, p.producto_nombre
+                p.producto_id, p.producto_nombre, p.producto_codigobarra
             FROM
                 inventario p, estado e
             WHERE
@@ -635,4 +654,177 @@ class Producto_model extends CI_Model
         $producto = $this->db->query($sql);
         return true;
     }
+    
+    public function verificar_duplicados_producto($producto_nombre, $producto_codigobarra, $producto_codigo, $producto_id = 0)
+    {
+        $respuesta = array(
+            'nombre' => false,
+            'codigobarra' => false,
+            'codigo' => false
+        );
+
+        if ($producto_nombre !== '') {
+            $this->db->from('producto');
+            $this->db->where('UPPER(TRIM(producto_nombre)) =', mb_strtoupper(trim($producto_nombre), 'UTF-8'));
+            if ((int)$producto_id > 0) {
+                $this->db->where('producto_id <>', (int)$producto_id);
+            }
+            $respuesta['nombre'] = ($this->db->count_all_results() > 0);
+        }
+
+        if ($producto_codigobarra !== '') {
+            $this->db->from('producto');
+            $this->db->where('TRIM(producto_codigobarra) =', trim($producto_codigobarra));
+            if ((int)$producto_id > 0) {
+                $this->db->where('producto_id <>', (int)$producto_id);
+            }
+            $respuesta['codigobarra'] = ($this->db->count_all_results() > 0);
+        }
+
+        if ($producto_codigo !== '') {
+            $this->db->from('producto');
+            $this->db->where('TRIM(producto_codigo) =', trim($producto_codigo));
+            if ((int)$producto_id > 0) {
+                $this->db->where('producto_id <>', (int)$producto_id);
+            }
+            $respuesta['codigo'] = ($this->db->count_all_results() > 0);
+        }
+
+        return $respuesta;
+    }
+    
+
+    /*
+     * Valida codigos de producto.
+     * Reglas:
+     * 1) producto_codigo y producto_codigobarra SI pueden ser iguales entre si.
+     * 2) producto_codigofactor, producto_codigofactor1..4 NO pueden ser iguales
+     *    a producto_codigo ni a producto_codigobarra.
+     * 3) Los codigos de factores NO pueden repetirse entre si.
+     * 4) Ningun codigo puede existir en otro producto.
+     */
+    public function validar_codigos_producto_unicos($codigos, $producto_id = 0)
+    {
+        $respuesta = array(
+            'valido' => true,
+            'errores' => array(),
+            'duplicados' => array()
+        );
+
+        $normalizar = function($valor) {
+            $valor = trim((string)$valor);
+            return mb_strtoupper($valor, 'UTF-8');
+        };
+
+        $valores = array(
+            'producto_codigo'        => $normalizar(isset($codigos['producto_codigo']) ? $codigos['producto_codigo'] : ''),
+            'producto_codigobarra'   => $normalizar(isset($codigos['producto_codigobarra']) ? $codigos['producto_codigobarra'] : ''),
+            'producto_codigofactor'  => $normalizar(isset($codigos['producto_codigofactor']) ? $codigos['producto_codigofactor'] : ''),
+            'producto_codigofactor1' => $normalizar(isset($codigos['producto_codigofactor1']) ? $codigos['producto_codigofactor1'] : ''),
+            'producto_codigofactor2' => $normalizar(isset($codigos['producto_codigofactor2']) ? $codigos['producto_codigofactor2'] : ''),
+            'producto_codigofactor3' => $normalizar(isset($codigos['producto_codigofactor3']) ? $codigos['producto_codigofactor3'] : ''),
+            'producto_codigofactor4' => $normalizar(isset($codigos['producto_codigofactor4']) ? $codigos['producto_codigofactor4'] : ''),
+        );
+
+        $nombres = array(
+            'producto_codigo'        => 'Código Producto',
+            'producto_codigobarra'   => 'Código de Barras',
+            'producto_codigofactor'  => 'Código Factor Nivel 1',
+            'producto_codigofactor1' => 'Código Factor Nivel 2',
+            'producto_codigofactor2' => 'Código Factor Nivel 3',
+            'producto_codigofactor3' => 'Código Factor Nivel 4',
+            'producto_codigofactor4' => 'Código Factor Nivel 5',
+        );
+
+        $principales = array('producto_codigo', 'producto_codigobarra');
+        $factores = array('producto_codigofactor', 'producto_codigofactor1', 'producto_codigofactor2', 'producto_codigofactor3', 'producto_codigofactor4');
+
+        foreach ($factores as $factor) {
+            if ($valores[$factor] === '') { continue; }
+
+            foreach ($principales as $principal) {
+                if ($valores[$principal] !== '' && $valores[$factor] === $valores[$principal]) {
+                    $respuesta['errores'][] = $nombres[$factor].' no puede ser igual a '.$nombres[$principal].' ['.$valores[$factor].'].'.
+                                             ' Solo Código Producto y Código de Barras pueden ser iguales entre sí.';
+                }
+            }
+        }
+
+        $vistos = array();
+        foreach ($factores as $factor) {
+            if ($valores[$factor] === '') { continue; }
+
+            if (isset($vistos[$valores[$factor]])) {
+                $respuesta['errores'][] = $nombres[$factor].' está repetido con '.$nombres[$vistos[$valores[$factor]]].' ['.$valores[$factor].'].'.
+                                         ' Los códigos de factores no pueden repetirse entre sí.';
+            } else {
+                $vistos[$valores[$factor]] = $factor;
+            }
+        }
+
+        $codigos_buscar = array();
+        foreach ($valores as $valor) {
+            if ($valor !== '' && !in_array($valor, $codigos_buscar, true)) {
+                $codigos_buscar[] = $valor;
+            }
+        }
+
+        if (!empty($codigos_buscar)) {
+            $campos_bd = array(
+                'producto_codigo',
+                'producto_codigobarra',
+                'producto_codigofactor',
+                'producto_codigofactor1',
+                'producto_codigofactor2',
+                'producto_codigofactor3',
+                'producto_codigofactor4'
+            );
+
+            $where_partes = array();
+            $binds = array();
+
+            foreach ($campos_bd as $campo_bd) {
+                $placeholders = implode(',', array_fill(0, count($codigos_buscar), '?'));
+                $where_partes[] = "UPPER(TRIM($campo_bd)) IN ($placeholders)";
+                foreach ($codigos_buscar as $codigo) {
+                    $binds[] = $codigo;
+                }
+            }
+
+            $sql = "SELECT producto_id, producto_nombre, producto_codigo, producto_codigobarra, producto_codigofactor,
+                           producto_codigofactor1, producto_codigofactor2, producto_codigofactor3, producto_codigofactor4
+                    FROM producto
+                    WHERE ".implode(' OR ', $where_partes);
+
+            if ((int)$producto_id > 0) {
+                $sql = "SELECT * FROM (".$sql.") AS x WHERE x.producto_id <> ?";
+                $binds[] = (int)$producto_id;
+            }
+
+            $registros = $this->db->query($sql, $binds)->result_array();
+
+            foreach ($registros as $registro) {
+                foreach ($campos_bd as $campo_bd) {
+                    $valor_bd = $normalizar(isset($registro[$campo_bd]) ? $registro[$campo_bd] : '');
+
+                    if ($valor_bd !== '' && in_array($valor_bd, $codigos_buscar, true)) {
+                        $respuesta['duplicados'][] = array(
+                            'codigo' => $valor_bd,
+                            'campo' => $campo_bd,
+                            'producto_id' => $registro['producto_id'],
+                            'producto_nombre' => $registro['producto_nombre']
+                        );
+
+                        $respuesta['errores'][] = 'El código ['.$valor_bd.'] ya existe en otro producto: '.$registro['producto_nombre'].' ID '.$registro['producto_id'].'.';
+                    }
+                }
+            }
+        }
+
+        $respuesta['errores'] = array_values(array_unique($respuesta['errores']));
+        $respuesta['valido'] = empty($respuesta['errores']);
+
+        return $respuesta;
+    }
+
 }

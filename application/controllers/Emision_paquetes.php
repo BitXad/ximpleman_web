@@ -101,7 +101,7 @@ class Emision_paquetes extends CI_Controller{
 //                        
 
                 
-                
+
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
@@ -110,9 +110,11 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
-                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+//                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+//                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+                    if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))      
+                            $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
 
 
                          if ($dosificacion['docsec_codigoclasificador']==13)
@@ -126,9 +128,12 @@ class Emision_paquetes extends CI_Controller{
                              $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                     
                 }
+                
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
-                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+//                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==3 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+//                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==45 || $dosificacion['docsec_codigoclasificador']==51)
+
+                        if (in_array($dosificacion['docsec_codigoclasificador'], [2, 3, 6, 8, 11, 12, 16, 17, 23, 39, 45, 51, 55]))       
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                         
                         if ($dosificacion['docsec_codigoclasificador']==13)
@@ -642,7 +647,7 @@ class Emision_paquetes extends CI_Controller{
                 //*************************************************************************
                 //       SERVICIOS FACTURACION ELECTRONICA
                 //*************************************************************************
-                $documentos_sector = array(2,3,6,8,11,12,16,17,23,39,45,51);
+                $documentos_sector = array(2,3,6,8,11,12,16,17,23,39,45,51,55);
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 

@@ -260,11 +260,14 @@ function tabla_inventario(){
                     html += "	<th>Categoría</th>";                    
                     html += "	<th>Unidad</th>";
                     html += "	<th>Costo ("+nombre_moneda+")</th>";
+                    
 //                    html += "	<th>Compras</th>";
 //                    html += "	<th>Ventas</th>";
 //                    html += "	<th>Pedidos</th>";
                     html += "	<th>Saldo</th>";
                     html += "	<th>Total ("+nombre_moneda+")</th>";
+                    
+
                     
                     try{
                     
@@ -518,7 +521,8 @@ function tabla_inventario_saldos(){
 //                    html += "	<th>Pedidos</th>";
                     html += "	<th>Saldo</th>";
                     html += "	<th>Total ("+nombre_moneda+")</th>";
-                    
+
+
                     try{
                     
                     html += "	<th>Total (";
@@ -537,6 +541,9 @@ function tabla_inventario_saldos(){
                         alert("ADVERTENCIA: No existen monedas registradas/activas...!");
                     }
                     
+                    html += "	<th>Pre. Venta ("+nombre_moneda+")</th>";
+                    html += "	<th>Total ("+nombre_moneda+")</th>";
+                    
                     html += "	<th colspan='6'>Saldos/Presentaciones</th>";
                     html += "</tr>";
                     html += "<tbody class='buscar'>";
@@ -548,6 +555,10 @@ function tabla_inventario_saldos(){
                     var total = 0;
                     var total_final = 0;
                     var existencia = 0;
+                    var total_venta = 0;
+                    var total_finalventa = 0;
+                    var existencia = 0;
+                    
                     var margen = " style='padding:0; text-align: right;'";
                     var categoria = "";
                     
@@ -584,6 +595,12 @@ function tabla_inventario_saldos(){
                         }
                         html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</d></td>";
+
+                        total_venta = inv[i]["producto_precio"]*inv[i]["existencia"]; 
+                        total_finalventa += total_venta;
+                        html += "	<td "+margen+"><b style='margin-right: 10px;'>"+ Number(inv[i]["producto_precio"]).toFixed(decimales)+"</b></td>";
+                        html += "	<td "+margen+"><b style='margin-right: 10px;'>"+ Number(total_finalventa).toFixed(decimales)+"</b></td>";
+
 
                         factor = 0;
                         producto_factor = 0;
@@ -2393,10 +2410,168 @@ function mostrar_kardex_global(){
     
 }
 
+function generarexcel_saldos(){
+    
+    var decimales = document.getElementById('decimales').value;
+    var base_url = document.getElementById('base_url').value;
+    var fecha = document.getElementById('fechainventario').value;
+    var controlador = base_url+'inventario/generar_excel_saldos';    
+    
+
+     //parametro = document.getElementById('filtrar').value;   
+     //controlador = base_url+'ingreso/buscarallingreso/';
+    var showLabel = true;
+    
+    var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{fecha:fecha},
+           success:function(result){
+                var factura = JSON.parse(result);
+                var tam = factura.length;
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var otramoneda_nombre = "";
+                var total_otram = Number(0);
+                var total_venta = Number(0);
+                html = "";
+                if (tam>0){
+                  /* **************INICIO Generar Excel JavaScript************** */
+                    var CSV = 'sep=,' + '\r\n\n';
+                    //This condition will generate the Label/Header
+                    if (showLabel) {
+                        var row = "";
+
+                        //This loop will extract the label from 1st index of on array
+                        
+
+                            //Now convert each value to string and comma-seprated
+                            
+                            row += 'N°' + ',';
+                            row += 'DESCRIPCION' + ',';
+                            row += 'CODIGO' + ',';
+                            row += 'MARCA' + ',';
+                            row += 'INDUSTRIA' + ',';
+                            row += 'CATEGORIA' + ',';
+                            row += 'UNIDAD' + ',';
+                            row += 'COSTO(' +nombre_moneda+ '),';
+                            row += 'SALDO' + ',';
+                            row += 'TOTAL(' +nombre_moneda+ '),';
+                            row += 'TOTAL(';
+                            if(lamoneda_id == 1){
+                                otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                            }
+                            row += otramoneda_nombre+ '),';
+       
+                            row += 'PREC. VENTA(' +nombre_moneda+ '),';
+                            row += 'TOTAL VENTA(' +nombre_moneda+ '),';
+       
+                        row = row.slice(0, -1);
+
+                        //append Label row with line break
+                        CSV += row + '\r\n';
+                    }
+                    
+                    //1st loop is to extract each row
+                    for (var i = 0; i < tam; i++) {
+                        var row = "";
+                        //2nd loop will extract each column and convert it in string comma-seprated
+                        
+                            row += '='+Number(i+1)+',';;
+                            row += '"' +factura[i]["producto_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_codigo"]+ '",';
+                            row += '"' +factura[i]["producto_marca"]+ '",';
+                            row += '"' +factura[i]["producto_industria"]+ '",';
+                            row += '"' +factura[i]["categoria_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_unidad"]+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            if(lamoneda_id == 1){
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
+                                //total_otramoneda += total_otram;
+                            }
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
+                           
+                            row += '"' +Number(factura[i]["producto_precio"]).toFixed(decimales)+ '",';                                 
+                            total_venta = Number(factura[i]["producto_precio"]*factura[i]["existencia"]);
+                            
+                            row += '"' +numberFormat(Number(total_venta).toFixed(decimales))+ '",';
+                           
+
+                        
+                        row.slice(0, row.length - 1);
+
+                        //add a line break after each row
+                        CSV += row + '\r\n';
+                    }
+                    
+                    if (CSV == '') {        
+                        alert("Invalid data");
+                        return;
+                    }
+                    
+                    //Generate a file name
+                    var fileName = "Inventario_";
+                    //this will remove the blank-spaces from the title and replace it with an underscore
+                    fileName += reportitle.replace(/ /g,"_");   
+
+                    //Initialize file format you want csv or xls
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                    // Now the little tricky part.
+                    // you can use either>> window.open(uri);
+                    // but this will not work in some browsers
+                    // or you will not get the correct file extension    
+
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");    
+                    link.href = uri;
+
+                    //set the visibility hidden so it will not effect on your web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
+
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    /* **************F I N  Generar Excel JavaScript************** */
+                   
+                   
+                   
+                   
+                   //document.getElementById('loader').style.display = 'none';
+            }
+         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_factura").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });   
+
+}
+
 function generarexcel(){
     
     var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
+    //var fecha = document.getElementById('fechainventario').value;
     var controlador = base_url+'inventario/generar_excel';    
     
 
@@ -2460,7 +2635,7 @@ function generarexcel(){
                         var row = "";
                         //2nd loop will extract each column and convert it in string comma-seprated
                         
-                            row += 'i+1,';
+                            row += '='+Number(i+1)+',';
                             row += '"' +factura[i]["producto_nombre"]+ '",';
                             row += '"' +factura[i]["producto_codigo"]+ '",';
                             row += '"' +factura[i]["producto_marca"]+ '",';
@@ -2540,12 +2715,12 @@ function generarexcel(){
 
 }
 
-function generarexcel_saldos(){
+function generarexcel_realizable(){
     
     var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
-    var fecha = document.getElementById('fechainventario').value;
-    var controlador = base_url+'inventario/generar_excel_saldos';    
+    //var fecha = document.getElementById('fechainventario').value;
+    var controlador = base_url+'inventario/generar_excel';    
     
 
      //parametro = document.getElementById('filtrar').value;   
@@ -2557,8 +2732,9 @@ function generarexcel_saldos(){
 
     $.ajax({url: controlador,
            type:"POST",
-           data:{fecha:fecha},
+           data:{},
            success:function(result){
+               
                 var factura = JSON.parse(result);
                 var tam = factura.length;
                 var nombre_moneda = document.getElementById('nombre_moneda').value;
@@ -2566,6 +2742,7 @@ function generarexcel_saldos(){
                 var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
                 var otramoneda_nombre = "";
                 var total_otram = Number(0);
+                
                 html = "";
                 if (tam>0){
                   /* **************INICIO Generar Excel JavaScript************** */
@@ -2574,11 +2751,9 @@ function generarexcel_saldos(){
                     if (showLabel) {
                         var row = "";
 
-                        //This loop will extract the label from 1st index of on array
-                        
+                        //This loop will extract the label from 1st index of on array                        
 
-                            //Now convert each value to string and comma-seprated
-                            
+                            //Now convert each value to string and comma-seprated                            
                             row += 'N°' + ',';
                             row += 'DESCRIPCION' + ',';
                             row += 'CODIGO' + ',';
@@ -2586,7 +2761,8 @@ function generarexcel_saldos(){
                             row += 'INDUSTRIA' + ',';
                             row += 'CATEGORIA' + ',';
                             row += 'UNIDAD' + ',';
-                            row += 'COSTO(' +nombre_moneda+ '),';
+                            row += 'COSTO' + ',';
+                            row += 'PRECIO(' +nombre_moneda+ '),';
                             row += 'SALDO' + ',';
                             row += 'TOTAL(' +nombre_moneda+ '),';
                             row += 'TOTAL(';
@@ -2608,7 +2784,7 @@ function generarexcel_saldos(){
                         var row = "";
                         //2nd loop will extract each column and convert it in string comma-seprated
                         
-                            row += '='+i+'+1,';
+                            row += '='+Number(i+1)+',';
                             row += '"' +factura[i]["producto_nombre"]+ '",';
                             row += '"' +factura[i]["producto_codigo"]+ '",';
                             row += '"' +factura[i]["producto_marca"]+ '",';
@@ -2616,13 +2792,14 @@ function generarexcel_saldos(){
                             row += '"' +factura[i]["categoria_nombre"]+ '",';
                             row += '"' +factura[i]["producto_unidad"]+ '",';
                             row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_precio"]).toFixed(decimales)+ '",';
                             row += '"' +Number(factura[i]["existencia"]).toFixed(decimales)+ '",';
-                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_precio"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
                             if(lamoneda_id == 1){
-                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
+                                total_otram = Number(factura[i]["producto_precio"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
                                 //total_otramoneda += total_otram;
                             }else{
-                                total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
+                                total_otram = Number(factura[i]["producto_precio"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
                                 //total_otramoneda += total_otram;
                             }
                             row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';

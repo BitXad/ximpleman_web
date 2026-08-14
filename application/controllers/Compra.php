@@ -29,6 +29,7 @@ class Compra extends CI_Controller{
         $this->load->model('Banco_model');
         $this->load->model('Sincronizacion_model');
         $this->load->model('Venta_model');
+        $this->load->model('ProductosServicios_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -71,6 +72,26 @@ class Compra extends CI_Controller{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
+    }
+
+
+    /**
+     * Registra eventos de caja de forma segura.
+     * Evita errores SQL cuando el texto contiene comillas simples, dobles u otros caracteres especiales.
+     */
+    private function registrar_bitacora_caja($evento, $tipo = 3, $montoreg = 0, $montocaja = 0, $caja_id = null)
+    {
+        $usuario_id = isset($this->session_data['usuario_id']) ? $this->session_data['usuario_id'] : 0;
+        $this->db->insert('bitacora_caja', array(
+            'bitacoracaja_fecha'     => date('Y-m-d'),
+            'bitacoracaja_hora'      => date('H:i:s'),
+            'bitacoracaja_evento'    => $evento,
+            'usuario_id'             => $usuario_id,
+            'bitacoracaja_montoreg'  => $montoreg,
+            'bitacoracaja_montocaja' => $montocaja,
+            'bitacoracaja_tipo'      => $tipo,
+            'caja_id'                => ($caja_id === null ? $this->caja_id : $caja_id)
+        ));
     }
     
     /*
@@ -754,7 +775,8 @@ class Compra extends CI_Controller{
                  $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
                  $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
                  $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-                 $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
+                 //$data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
+                 $data['nis_codigos'] = $this->ProductosServicios_model->get_productosServicios_principal();
 
                  if ($bandera==0) { //Crear compra nueva
                   $this->Compra_model->volvermal($compra_id);
@@ -1356,25 +1378,12 @@ class Compra extends CI_Controller{
            
            
            
-                //************ inicio bitacora 
-                    $now = "'".date("Y-m-d H:i:s")."'";
-
-                    $usuario_id = $this->session_data['usuario_id'];
-
-                    $bitacoracaja_fecha = "date({$now})";
-                    $bitacoracaja_hora = "time({$now})";
-                    $bitacoracaja_evento = "concat('ACTUALICE PRECIOS Y COSTOS => COMPRA: {$compra_id}',' ** DETALLE => ','{$misproductos}')";
-                    $bitacoracaja_montoreg = 0;
-                    $bitacoracaja_montocaja = 0;
-                    $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS
-
-
-                    $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                            usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
-                            $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                            $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-                    $this->Venta_model->ejecutar($sql);
-                //************ fin botacora bitacora    
+                //************ inicio bitacora segura
+                    $this->registrar_bitacora_caja(
+                        "ACTUALICE PRECIOS Y COSTOS => COMPRA: {$compra_id} ** DETALLE => {$misproductos}",
+                        3
+                    );
+                //************ fin bitacora segura
            
         } // FIN ACTUALIZAR COSTOS
 
@@ -1625,25 +1634,12 @@ class Compra extends CI_Controller{
             
                    
                    
-                    //************ inicio bitacora 
-                        $now = "'".date("Y-m-d H:i:s")."'";
-
-                        $usuario_id = $this->session_data['usuario_id'];
-
-                        $bitacoracaja_fecha = "date({$now})";
-                        $bitacoracaja_hora = "time({$now})";
-                        $bitacoracaja_evento = "concat('GUARDE COMPRA  => ID: {$compra_id}',' ** ','{$compra_params}')";
-                        $bitacoracaja_montoreg = 0;
-                        $bitacoracaja_montocaja = 0;
-                        $bitacoracaja_tipo = 3; //2 operaciones sobre COMPRAS
-
-
-                        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
-                                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-                        $this->Venta_model->ejecutar($sql);
-                //************ fin botacora bitacora  
+                    //************ inicio bitacora segura
+                        $this->registrar_bitacora_caja(
+                            "GUARDE COMPRA => ID: {$compra_id} ** {$compra_params}",
+                            3
+                        );
+                //************ fin bitacora segura
                    
                    
                    
@@ -1673,19 +1669,22 @@ function ingresarproducto()
 {
     if ($this->input->is_ajax_request()) {
         
-        $compra_id = $this->input->post('compra_id');
-        $producto_id = $this->input->post('producto_id');
-        $cantidad = $this->input->post('cantidad'); 
-        $descuento = $this->input->post('descuento'); 
-        $producto_costo = $this->input->post('producto_costo');
-        $producto_precio = $this->input->post('producto_precio');
-        $agrupar = $this->input->post('agrupar');
-        $fecha_venc = $this->input->post('producto_fechavenc');
-        $factor = $this->input->post('producto_factor');
-        $moneda_tc = $this->input->post('moneda_tc');
-        $moneda_id = $this->input->post('moneda_id'); // moneda de producto
-        $numerolote = $this->input->post('numerolote'); 
+        $compra_id = (int)$this->input->post('compra_id');
+        $producto_id = (int)$this->input->post('producto_id');
+        $cantidad = (float)$this->input->post('cantidad'); 
+        $descuento = (float)$this->input->post('descuento'); 
+        $producto_costo = (float)$this->input->post('producto_costo');
+        $producto_precio = (float)$this->input->post('producto_precio');
+        $agrupar = (int)$this->input->post('agrupar');
+        $fecha_venc = $this->input->post('producto_fechavenc', true);
+        $factor = (float)$this->input->post('producto_factor');
+        $factor = ($factor > 0) ? $factor : 1;
+        $moneda_tc = (float)$this->input->post('moneda_tc');
+        $moneda_id = (int)$this->input->post('moneda_id'); // moneda de producto
+        $numerolote = $this->input->post('numerolote', true); 
         $nuevacan = $cantidad * $factor;
+        $fecha_venc_sql = $this->db->escape($fecha_venc);
+        $numerolote_sql = $this->db->escape($numerolote);
         
         /*if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
                 precio = precio * 1;
@@ -1743,12 +1742,12 @@ function ingresarproducto()
         ".$producto_costo.",
         ".$nuevacan.",
         ".$producto_precio.",
-        '".$fecha_venc."',
+        ".$fecha_venc_sql.",
         ".$descuento.",
         (".$producto_costo.") * ".$nuevacan.",
         (".$producto_costo." - ".$descuento.") * ".$nuevacan.",
          ".$moneda_tc.",
-         '".$numerolote."'
+         ".$numerolote_sql."
         
         from producto where producto_id = ".$producto_id."
     )";
@@ -1806,27 +1805,23 @@ function updateDetalle()
 {
     if($this->acceso(1)){
         
-    $detallecomp_id = $this->input->post('detallecomp_id');
-    $cantidad = $this->input->post('cantidad'); 
-    $descuento = $this->input->post('descuento'); 
-    $producto_costo = $this->input->post('costo');
-    $producto_precio = $this->input->post('precio');   
-    $producto_id = $this->input->post('producto_id');    
-    $compra_id = $this->input->post('compra_id');
+    $detallecomp_id = (int)$this->input->post('detallecomp_id');
+    $cantidad = (float)$this->input->post('cantidad'); 
+    $descuento = (float)$this->input->post('descuento'); 
+    $producto_costo = (float)$this->input->post('costo');
+    $producto_precio = (float)$this->input->post('precio');   
+    $producto_id = (int)$this->input->post('producto_id');    
+    $compra_id = (int)$this->input->post('compra_id');
 
-    $sql = "UPDATE detalle_compra_aux
-    SET
-    
-    
-    detallecomp_costo = ".$producto_costo.",
-    detallecomp_cantidad = ".$cantidad.",
-    detallecomp_precio = ".$producto_precio.",
-    detallecomp_descuento = ".$descuento.",
-    detallecomp_subtotal = ".$cantidad." * ".$producto_costo.",
-    detallecomp_total = (".$cantidad.") * (".$producto_costo." - ".$descuento.")          
-    WHERE detallecomp_id = ".$detallecomp_id."
-    ";
-    $this->Compra_model->ejecutar($sql);
+    $this->db->where('detallecomp_id', $detallecomp_id);
+    $this->db->update('detalle_compra_aux', array(
+        'detallecomp_costo'     => $producto_costo,
+        'detallecomp_cantidad'  => $cantidad,
+        'detallecomp_precio'    => $producto_precio,
+        'detallecomp_descuento' => $descuento,
+        'detallecomp_subtotal'  => $cantidad * $producto_costo,
+        'detallecomp_total'     => $cantidad * ($producto_costo - $descuento)
+    ));
     
     return true;
     }
@@ -2069,25 +2064,17 @@ function notaingreso($compra_id){
 function modificarproveedor()
 {
     if($this->acceso(1)){
-    $proveedor_id = $this->input->post('proveedor_id');
-    $nit = $this->input->post('nit');
-    $razon = $this->input->post('razon'); 
-    $codigo = $this->input->post('codigo'); 
-    $autorizacion = $this->input->post('autorizacion');
+        $proveedor_id = (int)$this->input->post('proveedor_id');
 
-    $sql = "UPDATE proveedor
-    SET
-    
-    
-    proveedor_nit = '".$nit."',
-    proveedor_razon = '".$razon."',
-    proveedor_codigo = '".$codigo."',
-    proveedor_autorizacion = '".$autorizacion."'       
-    WHERE proveedor_id = ".$proveedor_id."
-    ";
-    $this->Compra_model->ejecutar($sql);
-    
-    return true;
+        $this->db->where('proveedor_id', $proveedor_id);
+        $this->db->update('proveedor', array(
+            'proveedor_nit'          => $this->input->post('nit', true),
+            'proveedor_razon'        => $this->input->post('razon', true),
+            'proveedor_codigo'       => $this->input->post('codigo', true),
+            'proveedor_autorizacion' => $this->input->post('autorizacion', true)
+        ));
+        
+        return true;
     }
 }
 
@@ -2453,16 +2440,10 @@ function compra_rapida(){
                 $bitacoracaja_fecha = "date({$now})";
                 $bitacoracaja_hora = "time({$now})";
 //                $bitacoracaja_evento = "(select  concat('ELIMINE VENTA FALLIDA: ID ->',venta_id,' * FORMA PAGO: ',forma_id,' * TRANSAC.: ',tipotrans_id,' * USUARIO: ',usuario_id,' * CLIENTE: ',cliente_id,' * MONEDA: ',moneda_id,' * ESTADO: ',estado_id,' * FECHA:',venta_fecha,' * ',venta_hora,' * SUBTOTAL: ',round(venta_subtotal,2),' * DESC.: ',round(venta_descuentoparcial,2),' * DESC.TOT.: ',round(venta_descuento,2),' * TOTAL: ',round(venta_total,2),' * EFECT.: ',round(venta_efectivo,2),' * CAMBIO: ',round(venta_cambio,2),' * GLOSA: ',venta_glosa) as ven from venta where venta_id = {$venta_id})";
-                $bitacoracaja_evento =  "concat('CONSOLIDE UN TRASPASO: ID ->',{$compra_id},' OPERACION: ','{$sql}')" ;
-                $bitacoracaja_montoreg = 0;
-                $bitacoracaja_montocaja = 0;
-                $bitacoracaja_tipo = 3; //2 operaciones sobre traspasos
-
-                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
-                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-                $this->Venta_model->ejecutar($sql);
+                $this->registrar_bitacora_caja(
+                    "CONSOLIDE UN TRASPASO: ID -> {$compra_id} OPERACION: {$sql}",
+                    3
+                );
         //************ fin botacora bitacora           
         
         echo json_encode(true);
@@ -2600,19 +2581,13 @@ function compra_rapida(){
             $bitacoracaja_fecha = "date({$now})";
             $bitacoracaja_hora = "time({$now})";
             $cadena = $res[0]["resultado"];
-            $bitacoracaja_evento = "concat('ELIMINE COMPRA VACIA: ', 'COMPRA: {$compra_id}',' CONSULTA: {$cadena}')";
-            //$usuario_id = esta mas arriba;
-            $bitacoracaja_montoreg = 0;
-            $bitacoracaja_montocaja = 0;
-            $bitacoracaja_tipo = 1; //2 operaciones sobre ventas
-            $usuario_id = $this->session_data['usuario_id']; //2 operaciones sobre ventas
-
-
-            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
-                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
-            $this->Venta_model->ejecutar($sql);
+            $this->registrar_bitacora_caja(
+                "ELIMINE COMPRA VACIA: COMPRA: {$compra_id} CONSULTA: {$cadena}",
+                1,
+                0,
+                0,
+                0
+            );
 
             //****************** fin bitacora caja *************** 
                 
@@ -2626,4 +2601,348 @@ function compra_rapida(){
             show_404();
         }              
     }
+    
+    
+    public function exportar_excel_filtrado()
+{
+    $fecha_inicio = $this->input->get('fecha_inicio');
+    $fecha_fin    = $this->input->get('fecha_fin');
+    $cliente_id   = $this->input->get('cliente_id');
+    $estado_id    = $this->input->get('estado_id');
+    $usuario_id   = $this->input->get('usuario_id');
+
+    // Aquí llamas a tu modelo y generas el Excel
+}
+
+    /**********************************************************************
+     * CARGA DE FACTURA XML PARA COMPRAS
+     **********************************************************************/
+    private function responder_json_xml($data)
+    {
+        if (ob_get_length()) { @ob_clean(); }
+        $this->output
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($data));
+    }
+
+    private function xml_valor_local($xml, $nombre)
+    {
+        $r = $xml->xpath('//*[local-name()="'.$nombre.'"]');
+        return (isset($r[0])) ? trim((string)$r[0]) : '';
+    }
+
+    private function xml_hijo_local($nodo, $nombre)
+    {
+        $r = $nodo->xpath('./*[local-name()="'.$nombre.'"]');
+        return (isset($r[0])) ? trim((string)$r[0]) : '';
+    }
+
+    private function decimal_xml($valor)
+    {
+        $valor = trim((string)$valor);
+        $valor = str_replace(',', '.', $valor);
+        return is_numeric($valor) ? $valor : 0;
+    }
+
+    public function cargar_factura_xml()
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+            return;
+        }
+
+        try {
+            if (empty($_FILES['archivo_xml']['tmp_name'])) {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'Debe seleccionar un archivo XML.'));
+                return;
+            }
+
+            $nombre = isset($_FILES['archivo_xml']['name']) ? $_FILES['archivo_xml']['name'] : '';
+            $ext = strtolower(pathinfo($nombre, PATHINFO_EXTENSION));
+            if ($ext !== 'xml') {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'El archivo debe tener extensión .xml.'));
+                return;
+            }
+
+            $contenido = file_get_contents($_FILES['archivo_xml']['tmp_name']);
+            if ($contenido === false || trim($contenido) === '') {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'El archivo XML está vacío o no se puede leer.'));
+                return;
+            }
+
+            // Quita BOM y caracteres basura antes del primer "<"
+            $contenido = preg_replace('/^\xEF\xBB\xBF/', '', $contenido);
+            $pos_xml = strpos($contenido, '<');
+            if ($pos_xml !== false && $pos_xml > 0) {
+                $contenido = substr($contenido, $pos_xml);
+            }
+
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_string($contenido, 'SimpleXMLElement', LIBXML_NOCDATA);
+            if (!$xml) {
+                $errores = libxml_get_errors();
+                libxml_clear_errors();
+                $msg_error = 'No se pudo leer el XML. Verifique que el archivo no esté dañado.';
+                if (!empty($errores[0])) {
+                    $msg_error .= ' Detalle: '.trim($errores[0]->message);
+                }
+                $this->responder_json_xml(array('ok' => false, 'msg' => $msg_error));
+                return;
+            }
+
+            $usuario_id = isset($this->session_data['usuario_id']) ? (int)$this->session_data['usuario_id'] : 0;
+
+            $numero_factura = $this->xml_valor_local($xml, 'numeroFactura');
+            if ($numero_factura === '') {
+                $numero_factura = $this->xml_valor_local($xml, 'numeroFacturaCompraVenta');
+            }
+            $numero_factura = (int)$numero_factura;
+
+            if ($numero_factura <= 0) {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'No se encontró el nodo numeroFactura en el XML.'));
+                return;
+            }
+
+            $detalles = $xml->xpath('//*[local-name()="detalle"]');
+            if (!$detalles || count($detalles) == 0) {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'El XML no contiene nodos de detalle.'));
+                return;
+            }
+
+            $this->db->trans_begin();
+
+            // Si el operador vuelve a cargar la misma factura, se limpia la carga anterior.
+            $this->Compra_model->borrar_detalle_factura_xml($numero_factura, $usuario_id);
+
+            $insertados = 0;
+            
+            $sql = "delete from detalle_factura_xml where numerofactura = {$numero_factura}";
+            $this->Venta_model->ejecutar($sql);
+            
+            foreach ($detalles as $det) {
+                $actividad = $this->xml_hijo_local($det, 'actividadEconomica');
+                if ($actividad === '') {
+                    $actividad = $this->xml_valor_local($xml, 'codigoActividad');
+                }
+
+                $params = array(
+                    'numerofactura'          => $numero_factura,
+                    'actividadeconomica'     => $actividad,
+                    'codigoproductosin'      => $this->xml_hijo_local($det, 'codigoProductoSin'),
+                    'codigoproducto'         => $this->xml_hijo_local($det, 'codigoProducto'),
+                    'descripcion'            => $this->xml_hijo_local($det, 'descripcion'),
+                    'cantidad'               => $this->decimal_xml($this->xml_hijo_local($det, 'cantidad')),
+                    'unidadmedida'           => $this->xml_hijo_local($det, 'unidadMedida'),
+                    'preciounitario'         => $this->decimal_xml($this->xml_hijo_local($det, 'precioUnitario')),
+                    'montodescuento'         => $this->decimal_xml($this->xml_hijo_local($det, 'montoDescuento')),
+                    'subtotal'               => $this->decimal_xml($this->xml_hijo_local($det, 'subTotal')),
+                    'usuario_id'             => $usuario_id,
+                    'producto_id'            => 0,
+                    'producto_codigobarras'  => '',
+                    'producto_nombre'        => ''
+                );
+
+
+                
+                $this->Compra_model->insertar_detalle_factura_xml($params);
+                $insertados++;
+            }
+
+            if ($this->db->trans_status() === false) {
+                $this->db->trans_rollback();
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'No se pudo guardar el detalle del XML en la base de datos.'));
+                return;
+            }
+
+            $this->db->trans_commit();
+
+            $this->responder_json_xml(array(
+                'ok' => true,
+                'msg' => 'XML cargado correctamente.',
+                'numerofactura' => $numero_factura,
+                'items' => $this->Compra_model->get_detalle_factura_xml($numero_factura, $usuario_id),
+                'total_items' => $insertados
+            ));
+            return;
+
+        } catch (Exception $e) {
+            if ($this->db->trans_status() === false) {
+                @ $this->db->trans_rollback();
+            }
+            log_message('error', 'Error cargar_factura_xml: '.$e->getMessage());
+            $this->responder_json_xml(array('ok' => false, 'msg' => 'Error interno al procesar el XML: '.$e->getMessage()));
+            return;
+        }
+    }
+
+    public function detalle_factura_xml()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        $numero_factura = (int)$this->input->post('numerofactura');
+        $usuario_id = isset($this->session_data['usuario_id']) ? (int)$this->session_data['usuario_id'] : 0;
+        $this->responder_json_xml($this->Compra_model->get_detalle_factura_xml($numero_factura, $usuario_id));
+    }
+
+    public function buscar_producto_factura_xml()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        $parametro = $this->input->post('parametro', true);
+        $this->responder_json_xml($this->Compra_model->buscar_producto_para_xml($parametro));
+    }
+
+    public function vincular_producto_factura_xml()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        $detalle_id = (int)$this->input->post('detalle_id');
+        $producto_id = (int)$this->input->post('producto_id');
+        $usuario_id = isset($this->session_data['usuario_id']) ? (int)$this->session_data['usuario_id'] : 0;
+        $ok = $this->Compra_model->vincular_producto_factura_xml($detalle_id, $producto_id, $usuario_id);
+        $this->responder_json_xml(array('ok' => $ok));
+    }
+
+    public function enlazar_productocodigo()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        
+            $codigo_proveedor = $this->input->post('codigo_proveedor');
+            $producto_id = $this->input->post('producto_id');
+            
+            $sql = "update producto set producto_codigo = '{$codigo_proveedor}' where producto_id = {$producto_id}";
+            $this->Compra_model->ejecutar($sql);
+            
+            echo json_encode(true);
+    }
+
+    public function desenlazar_productocodigo()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        
+            $codigo_proveedor = $this->input->post('codigo_proveedor');
+            $producto_id = $this->input->post('producto_id');
+            
+            $sql = "update producto set producto_codigo = producto_codigobarra where producto_id = {$producto_id}";
+            $this->Compra_model->ejecutar($sql);
+            
+            echo json_encode(true);
+    }
+
+    public function pasar_factura_xml_a_compra()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+
+        try {
+            
+            $numero_factura = (int)$this->input->post('numerofactura');
+            $usuario_id = isset($this->session_data['usuario_id']) ? (int)$this->session_data['usuario_id'] : 0;
+            $moneda_tc = (float)$this->input->post('moneda_tc');
+            if ($moneda_tc <= 0) { $moneda_tc = 1; }
+
+            $pendientes = $this->Compra_model->contar_detalle_factura_xml_sin_producto($numero_factura, $usuario_id);
+            if ($pendientes > 0) {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'Existen '.$pendientes.' items sin producto enlazado.'));
+                return;
+            }
+
+            $items = $this->Compra_model->get_detalle_factura_xml($numero_factura, $usuario_id);
+            if (count($items) == 0) {
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'No existen items cargados para traspasar.'));
+                return;
+            }
+
+            $this->db->trans_begin();
+
+            $compra_id = $this->Compra_model->crear_compra($usuario_id);
+            $subtotal_compra = 0;
+            $descuento_compra = 0;
+            $total_compra = 0;
+            
+            
+            
+            foreach ($items as $it) {
+                
+                $producto_id = (int)$it['producto_id'];
+                $producto = $this->Producto_model->get_miproducto($producto_id);
+                
+                //var_dump($producto);
+                
+                $moneda_id = isset($producto['moneda_id']) ? (int)$producto['moneda_id'] : 1;
+                $codigo = isset($producto['producto_codigobarra']) ? $producto['producto_codigobarra'] : $it['codigoproducto'];
+                $unidad = isset($producto['producto_unidad']) ? $producto['producto_unidad'] : $it['unidadmedida'];
+                $precio_venta = isset($producto['producto_precio']) ? (float)$producto['producto_precio'] : (float)$it['preciounitario'];
+                
+                $cantidad = (float)$it['cantidad'];
+                $costo = (float)$it['preciounitario'];
+                $desc_total = (float)$it['montodescuento'];
+                $desc_unitario = ($cantidad > 0) ? ($desc_total / $cantidad) : 0;
+                //$subtotal = (float)$it['subtotal'];
+                
+                //if ($subtotal <= 0) { 
+                //    $subtotal = $cantidad * $costo; }
+                $subtotal = $cantidad * $costo; 
+                    
+                //$total = $subtotal - $desc_total;
+                $total = $subtotal - $desc_total;
+
+                $this->Compra_model->add_detalle_compra_aux(array(
+                    'compra_id' => $compra_id,
+                    'moneda_id' => $moneda_id,
+                    'producto_id' => $producto_id,
+                    'detallecomp_codigo' => $codigo,
+                    'detallecomp_cantidad' => $cantidad,
+                    'detallecomp_unidad' => $unidad,
+                    'detallecomp_costo' => $costo,
+                    'detallecomp_precio' => $precio_venta,
+                    'detallecomp_subtotal' => $subtotal,
+                    'detallecomp_descuento' => $desc_unitario,
+                    'detallecomp_total' => $total,
+                    'detallecomp_descglobal' => 0,
+                    'detallecomp_fechavencimiento' => null,
+                    'detallecomp_tipocambio' => $moneda_tc,
+                    'cambio_id' => null,
+                    'detallecomp_tc' => $moneda_tc,
+                    'detallecomp_series' => null,
+                    'detallecomp_numerolote' => null
+                ));
+
+                $subtotal_compra += $subtotal;
+                $descuento_compra += $desc_total;
+                $total_compra += $total;
+            }
+
+            $this->Compra_model->update_compra($compra_id, array(
+                'compra_subtotal' => $subtotal_compra,
+                'compra_descuento' => $descuento_compra,
+                'compra_total' => $total_compra,
+                'compra_totalfinal' => $total_compra,
+                'compra_numdoc' => $numero_factura,
+                'compra_glosa' => 'Compra generada desde factura XML Nro. '.$numero_factura
+            ));
+
+            if ($this->db->trans_status() === false) {
+                $this->db->trans_rollback();
+                $this->responder_json_xml(array('ok' => false, 'msg' => 'No se pudo generar la compra desde el XML.'));
+                return;
+            }
+
+            $this->db->trans_commit();
+
+            $this->responder_json_xml(array(
+                'ok' => true,
+                'msg' => 'Compra generada correctamente.',
+                'compra_id' => $compra_id,
+                'url' => site_url('compra/edit/'.$compra_id.'/1')
+            ));
+            return;
+
+        } catch (Exception $e) {
+            if ($this->db->trans_status() === false) {
+                @ $this->db->trans_rollback();
+            }
+            log_message('error', 'Error pasar_factura_xml_a_compra: '.$e->getMessage());
+            $this->responder_json_xml(array('ok' => false, 'msg' => 'Error interno al generar la compra: '.$e->getMessage()));
+            return;
+        }
+    }
+
+
 }

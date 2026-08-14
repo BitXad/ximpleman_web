@@ -68,8 +68,9 @@
                     <thead>
                         <tr>
                             <th width="50px">#</th>
-                            <th>SINCRONIZACION DE CODIGOS</th>
-                            <th width="100px" class="no-print"></th>
+                            <th width="50px" class="no-print"></th>
+                            <th width="50px" class="no-print"></th>
+                            <th >SINCRONIZACION DE CODIGOS</th>
                         </tr>
                     </thead>
                     <tbody class="buscar">
@@ -78,15 +79,18 @@
                         foreach ($sincronizaciones as $sincronizacion) {?>
                             <tr>
                                 <td><?= $i ?></td>
-                                <td><?= $sincronizacion['sincronizacion_descripcion'] ?></td>                            
                                 <td>
                                     <button class="btn btn-primary btn-xs" title="Sincronizar <?= strtolower($sincronizacion['sincronizacion_descripcion']) ?>" onclick="sincronizar(<?= $sincronizacion['sincronizacion_id'] ?>)">
-                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                        <i class="fa-solid fa-arrows-rotate"></i> Sincronizar
                                     </button>
+                                </td>
+                                <td>
+                                
                                     <a class="btn btn-info btn-xs" title="Ver datos" href="<?= site_url("sincronizacion/show_sincronizacion/{$sincronizacion['sincronizacion_id']}") ?>" target="_blank">
-                                        <i class="fa-solid fa-eye"></i>
+                                        <i class="fa-solid fa-eye"></i> Ver Datos
                                     </a>
                                 </td>
+                                <td><?= $sincronizacion['sincronizacion_descripcion'] ?></td>                            
                             </tr>
                         <?php
                             $i++; 

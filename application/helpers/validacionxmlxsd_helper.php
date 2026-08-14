@@ -111,11 +111,6 @@
     //}
 
 
-
-
-
-
-
 declare(strict_types = 1);
 class ValidacionXSD {
 
@@ -136,7 +131,7 @@ class ValidacionXSD {
      */
     public function validar(string $filexml, string $xsd) {
         
-//        echo "VALIDANDO XML: ".$filexml." CON SU XSD: ".$xsd;
+        //echo "VALIDANDO XML: ".$filexml." CON SU XSD: ".$xsd;
         
         if (!file_exists($filexml) || !file_exists($xsd)) {
             echo "Archivo <b>$filexml</b> o <b>$xsd</b> no existe.";

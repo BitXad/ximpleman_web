@@ -9,6 +9,8 @@
 <!-- JS de Select2 y jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="<?php echo base_url('resources/js/validar_codigos_producto.js'); ?>" type="text/javascript"></script>
+
 
 
 <?php $decimales = $parametro['parametro_decimales']; ?>
@@ -102,6 +104,37 @@
         var esteporcent = $("#porcentaje").val();
         $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
     }
+
+    function calcularPrecioVenta() {
+        
+        var costo = $("#producto_costo").val();
+
+        const tabla = [
+            { desde: 0,   factor: 3.00, base: 0   },
+            { desde: 50,  factor: 1.20, base: 150 },
+            { desde: 100, factor: 1.40, base: 210 },
+            { desde: 300, factor: 1.37, base: 490 }
+        ];
+
+        // Buscar el tramo (equivalente a BUSCARV(...;VERDADERO))
+        let tramo = tabla[0];
+
+        for (let i = 0; i < tabla.length; i++) {
+            if (costo >= tabla[i].desde) {
+                tramo = tabla[i];
+            } else {
+                break;
+            }
+        }
+
+        // Aplicar la fórmula
+        const venta = tramo.base + ((costo - tramo.desde) * tramo.factor);
+        
+         $("#producto_precio").val(Number(venta).toFixed(2));
+
+        //return Math.round(venta);
+    }
+    
 </script>
 <script>
     <script>
@@ -152,6 +185,12 @@ function es_null($val){
             <div class="row" id='loader'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
+
+            <?php if ($this->session->flashdata('mensaje_error')) { ?>
+                <div class="alert alert-danger">
+                    <?php echo $this->session->flashdata('mensaje_error'); ?>
+                </div>
+            <?php } ?>
             <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
@@ -311,6 +350,8 @@ function es_null($val){
                                 }
                                                                                             ?>" class="form-control" id="porcentaje" />
                             <a href="#" class="btn btn-warning" title="Calcular Porcentaje" onclick="calcularporc()">
+                                <span class="fa fa-snowflake-o"></span> </a>
+                            <a href="#" class="btn btn-info" title="Calcular precio de venta" onclick="calcularPrecioVenta()">
                                 <span class="fa fa-snowflake-o"></span> </a>
                         </div>
                     </div>

@@ -95,7 +95,7 @@ function cargar_vehiculo(viaje_id){
                             
                             // Reservado
                             if (Number(registros[i]["estado_pasaje"])==52){
-                                html += "<button class='btn "+color+"' style='font-size: 9px; line-height:7px; border-color: black;' onclick='mostrar_menu("+registros[i]["venta_id"]+","+registros[i]["pasaje_id"]+","+registros[i]["pasaje_numero"]+","+JSON.stringify(registros[i]["pasaje_nombre"])+","+JSON.stringify(registros[i]["asiento_numero"])+")' title='"+registros[i]["pasaje_nombre"]+" ** LIMITE: "+registros[i]["pasaje_fechalimiteres"]+" - "+registros[i]["pasaje_horalimiteres"]+ "'>";
+                                html += "<button class='btn "+color+"' style='font-size: 9px; line-height:7px; border-color: black;' onclick='mostrar_menu("+registros[i]["venta_id"]+","+registros[i]["pasaje_id"]+","+JSON.stringify(registros[i]["pasaje_numero"])+","+JSON.stringify(registros[i]["pasaje_nombre"])+","+JSON.stringify(registros[i]["asiento_numero"])+")' title='"+registros[i]["pasaje_nombre"]+" ** LIMITE: "+registros[i]["pasaje_fechalimiteres"]+" - "+registros[i]["pasaje_horalimiteres"]+ "'>";
                                 html += "<img src='"+base_url+"resources/images/transporte/libre.png' width='35px;' height='35px;' >";
                                 html += "<br>"+registros[i]["asiento_numero"];
                                 html += "<sub><br>RESERVA</sub>";
@@ -113,7 +113,7 @@ function cargar_vehiculo(viaje_id){
                             
                             // Vendido
                             if (Number(registros[i]["estado_pasaje"])==54){
-                                html += "<button class='btn "+color+"' style='font-size: 9px; line-height:7px; border-color: black;' onclick='mostrar_menu("+registros[i]["venta_id"]+","+registros[i]["pasaje_id"]+","+registros[i]["pasaje_numero"]+","+JSON.stringify(registros[i]["pasaje_nombre"])+","+JSON.stringify(registros[i]["asiento_numero"])+")' title='"+registros[i]["pasaje_nombre"]+"'>";
+                                html += "<button class='btn "+color+"' style='font-size: 9px; line-height:7px; border-color: black;' onclick='mostrar_menu("+registros[i]["venta_id"]+","+registros[i]["pasaje_id"]+","+JSON.stringify(registros[i]["pasaje_numero"])+","+JSON.stringify(registros[i]["pasaje_nombre"])+","+JSON.stringify(registros[i]["asiento_numero"])+")' title='"+registros[i]["pasaje_nombre"]+"'>";
                                 html += "<img src='"+base_url+"resources/images/transporte/libre.png' width='35px;' height='35px;' >";
                                 html += "<br>"+registros[i]["asiento_numero"];
                                 html += "<sub><br>VENDIDO</sub>";
@@ -152,44 +152,27 @@ function cargar_datos_venta(){
     
     input_total = document.getElementById("input_total").value; 
     
+    //alert(JSON.stringify(reservas));
+    
+    if(reservas!=""){        
+        $("#generar_nit").val(reservas[0]["pasaje_documento"]);
+        $("#generar_razon").val(reservas[0]["pasaje_nombre"]);
+    }else{
+        $("#generar_nit").val("");
+        $("#generar_razon").val("");        
+    }
+    
     
     $("#total_bs").val(input_total);
     //$("#input_total").val("0.00");
     $("#total_final_bs").val(input_total);
     $("#efectivo_bs").val(input_total);
     $("#cambio_bs").val("0.00");
-/*
-    let viaje_id = document.getElementById('select_viaje').value;
-    
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'vehiculo/get_cliente/';
-
-    //$("#boton"+registros[i]["asiento_x"]+registros[i]["asiento_y"]).html(html);
-    
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{viaje_id:viaje_id, asiento_id:asiento_id},
-            success:function(respuesta){     
-                              
-               var registros =  JSON.parse(respuesta);
-                
-//                for(var i=0; i<registros.length; i++){
-//
-//
-//                }
-                
-    
-            },
-            error:function(respuesta){
-                
-            }
-    });   
-    */
-    
     
     
 }
 
+var reservas=[];
 function cargar_tabla(viaje_id){
     
 //    let vehiculo_id = 1; //SOlo para efectos de prueba
@@ -211,16 +194,29 @@ function cargar_tabla(viaje_id){
                 
                 let html = "";
                 let precio_total = 0;
+                let tipo_boton = "btn-info";
+                let estilo = "";
                 for(var i=0; i<registros.length; i++){
 
                     if (registros != null){                  
+                        
+                        reservas = registros;
                         
                         precio_total += Number(registros[i]["pasaje_precio"]);
                         
                     	html += "<tr>";
 //                        html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
-                        html += "<button class='btn btn-xs btn-info' onclick='modal_datos("+JSON.stringify(registros[i])+")' style='padding:0;'><fa class='fa fa-address-card '> </fa> "+ registros[i]["pasaje_nombre"]+"</button>";
+  
+                        if(registros[i]["pasaje_nombre"]=="SIN NOMBRE"){
+                                tipo_boton = "btn-default";                            
+                                estilo = "style='background: gray;'";                            
+                        }else{
+                                tipo_boton = "btn-info";
+                                estilo = "";                                                            
+                        }
+                            
+                        html += "<button class='btn btn-xs "+tipo_boton+"' "+estilo+" onclick='modal_datos("+JSON.stringify(registros[i])+")' style='padding:0;'><fa class='fa fa-address-card '> </fa> "+registros[i]["pasaje_nombre"]+"</button>";
                        
                         if(registros[i]["pasaje_tieneequipaje"]==1){                       
                             html += "<br><sub id='equipaje"+registros[i]["pasaje_id"]+"'>"+registros[i]["pasaje_detalleequipaje"]+"</sub>";
@@ -366,7 +362,9 @@ function registrar_equipaje_adjunto(pasaje_id){
     let viaje_id = document.getElementById('select_viaje').value;    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'vehiculo/quitar_pasaje/';
+    
     $("#pasaje_id2").val(pasaje_id);
+    document.getElementById('detalle_equipaje').value = "";
     document.getElementById('boton_equipaje').click();
 
 }
@@ -515,7 +513,7 @@ function modal_datos(datos){
         let option = document.createElement("option");
         option.value = Number(datos["viaje_precio1"]).toFixed(2);
         option.textContent = "Bs "+Number(datos["viaje_precio1"]).toFixed(2);
-//        option.selected = true;
+//       option.selected = true;
 //        firstOptionAdded = true;
         select.appendChild(option);        
         
@@ -540,13 +538,12 @@ function modal_datos(datos){
     }
     
         
-    document.getElementById('viaje_precio').value = Number(datos["pasaje_precio"]).toFixed(2);
+    //document.getElementById('viaje_precio').value = Number(datos["pasaje_precio"]).toFixed(2);
 
+    select.selectedIndex = 1;
     
     $("#boton_datos").click();
-//    
-//    $("#viaje_pasaje").val(datos["pasaje_numero"])
-//    $("#viaje_asiento").val(datos["pasaje_numero"])
+
     
 }
 
@@ -641,7 +638,8 @@ function finalizar_venta_pasaje(){
     
     //alert(acuenta+" *** "+fechareserva+" *** "+horareserva);
        
-       
+    //alert(operacion);
+     
     if( facturado == 1){   venta_tipodoc = 1;}
     else{ venta_tipodoc = 0;}
 
@@ -658,7 +656,9 @@ function finalizar_venta_pasaje(){
 
                    var registros =  JSON.parse(respuesta);
 
+                    //Dibujar la flota
                     cargar_vehiculo(viaje_id);
+                    
                     //cargar_tabla(viaje_id);
 
                 },
@@ -1086,7 +1086,7 @@ function nomina_equipaje(){
 
 function mostrar_menu(venta_id,pasaje_id,pasaje_numero, pasaje_nombre, asiento_numero){
     
-    //alert(venta_id+" *** "+pasaje_numero+" *** "+pasaje_nombre);
+//    alert(venta_id+" *** "+pasaje_numero+" *** "+pasaje_nombre);
     document.getElementById("transaccion").innerText = "TRANSACCION Nº: "+venta_id;
     document.getElementById("asiento").innerText = "PASAJE Nº: "+pasaje_numero+" *** ASIENTO: "+asiento_numero;
     document.getElementById("pasajero").innerText = "PASAJERO: "+pasaje_nombre;

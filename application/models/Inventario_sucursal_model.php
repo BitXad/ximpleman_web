@@ -14,10 +14,11 @@ class Inventario_sucursal_model extends CI_Model
     /* obtiene inventario de productos de las sucursales */
     function get_inventario_sucursales()
     {
-        $sql = "SELECT ii.*, i.*, c.categoria_nombre
+        $sql = "SELECT ii.*, i.*, c.categoria_nombre, p.*
                 FROM inventario_sucursales ii
                 left join inventario i on ii.producto_id = i.producto_id
                 left join categoria_producto c on i.categoria_id = c.categoria_id
+                left join producto p on p.producto_id = i.producto_id
                 ORDER By c.categoria_nombre asc, i.producto_nombre asc";
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -26,10 +27,11 @@ class Inventario_sucursal_model extends CI_Model
     /* obtiene inventario de productos de las sucursales de una busqueda */
     function get_inventario_sucursalesparametro($parametro)
     {
-        $sql = "SELECT ii.*, i.*, c.categoria_nombre
+        $sql = "SELECT ii.*, i.*, c.categoria_nombre, p.*
                 FROM inventario_sucursales ii
                 left join inventario i on ii.producto_id = i.producto_id
                 left join categoria_producto c on i.categoria_id = c.categoria_id
+                left join producto p on p.producto_id = i.producto_id
                 WHERE
                     i.producto_nombre like '%".$parametro."%' or i.producto_codigobarra like '%".$parametro."%' or i.producto_codigo like '%".$parametro."%'
                 ORDER By c.categoria_nombre asc, i.producto_nombre asc";

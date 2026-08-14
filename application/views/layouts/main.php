@@ -181,6 +181,7 @@
                 <li>
                     <a href="#"><i class="fa fa-connectdevelop"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
+
                         <?php
                         if($rolusuario[12-1]['rolusuario_asignado'] == 1){
                         ?>
@@ -542,6 +543,17 @@
                 <li>
                     <a href="#"><i class="fa fa-cogs"></i> <span>Parámetros</span></a>
                     <ul class="treeview-menu">
+                        
+                        <?php
+                       
+                        if($rolusuario[121-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('empresa');?>"><i class="fa fa-sitemap "></i>Empresa</a>
+                        </li>
+                        <?php } ?>
+                        
+                        
                         <?php
                         if($rolusuario[124-1]['rolusuario_asignado'] == 1){
                         ?>
@@ -555,15 +567,10 @@
                         <li>
                             <a href="<?php echo site_url('destino_producto');?>"><i class="fa fa-tasks"></i>Destino Producto</a>
                         </li> 
-                        <?php
-                        }
-                        if($rolusuario[121-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i>Empresa</a>
-                        </li>
-                        <?php
-                        }
+                        <?php } ?>
+                        
+                        <?php 
+                        
                         if($rolusuario[122-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -821,10 +828,10 @@
                         if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario Valorado</a>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario Fisico-Valorado</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('inventario/inventario_saldos');?>"><i class="fa fa-cubes"></i> Inventario Saldos Por Fecha </a>
+                            <a href="<?php echo site_url('inventario/inventario_saldos');?>"><i class="fa fa-calendar"></i> Inventario Por Fecha </a>
                             
                         </li>
                         <li>
@@ -1080,7 +1087,7 @@
                 </li>
                 
                 <li>
-                    <a href="#"><i class="fa fa-paste"></i> <span>Facturación</span></a>
+                    <a href="#"><i class="fa fa-file-text"></i> <span>Facturación</span></a>
                     <ul class="treeview-menu">
                         
                         <?php

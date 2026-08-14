@@ -22,6 +22,8 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+
+<input type="hidden"  id="moneda_descripcion" class="form-control" value="<?php echo $parametro["moneda_descripcion"]; ?>">
 <!-------------------------------------------------------->
 
 <div class="box-header">

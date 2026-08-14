@@ -155,13 +155,6 @@
             $diasRestantes = floor(($validTo - $now) / (60 * 60 * 24));
             //$diasRestantes = -2;
 
-        //    if ($now < $validFrom) {
-        //        echo "⚠️ El certificado (Firma Digital) aún no es válido.\n";
-        //    } elseif ($now > $validTo) {
-        //        echo "❌ El certificado (Firma Digital) ha expirado.\n";
-        //    } else {
-        //        echo "✅ El certificado (Firma Digital) está vigente.\n";
-        //        
                 // Avisar si faltan menos de 30 días
                 if ($diasRestantes >=1 && $diasRestantes <=5) { ?>
 

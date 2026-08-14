@@ -179,6 +179,9 @@ class Usuario extends CI_Controller
                         'usuario_imagen' => $foto,
                         'parametro_id' => $this->input->post('parametro_id'),
                         'puntoventa_codigo' => $this->input->post('punto_venta'),
+                        'usuario_turno' => $this->input->post('usuario_turno'),
+                        'usuario_inicioturno' => $this->input->post('usuario_inicioturno'),
+                        'usuario_finturno' => $this->input->post('usuario_finturno'),
                     );
 
 
@@ -881,4 +884,15 @@ class Usuario extends CI_Controller
             show_error('El Usuario que intentas quitar autorización no existe!....');
         }
     }
+    
+    public function expulsar_usuario($usuario_id){
+        // seguridad básica
+        //$usuario_nombre = $this->db->escape_like_str($usuario_nombre);
+
+            $this->db->like('data', 's:1:"'.$usuario_id.'"');
+            $this->db->delete('ci_session');
+        //$this->session->set_flashdata('msg', 'Usuario expulsado correctamente');
+        redirect('usuario/index');
+    }
+    
 }

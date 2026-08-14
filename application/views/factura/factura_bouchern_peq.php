@@ -253,8 +253,8 @@
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_nit']; ?><?php if ($factura[0]['cdi_codigoclasificador']!=5){ echo "  ".$factura[0]["cliente_complementoci"];} ?></td>
                             </tr>
                             <tr>
-                                <td class="text-right text-bold" style="padding: 0;">COD. CLIENTE:</td><!-- PONER CODIGO DE CLIENTE -->
-                                <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_codigocliente']; ?> <br></td>
+                                <td class="text-right text-bold" style="padding: 0;">FACTURA No:</td><!-- PONER CODIGO DE CLIENTE -->
+                                <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_numero']; ?> <br></td>
                             </tr>
                             <?php
                             $linea_factura = "style='border-bottom-width: dashed 1px; #000;'";

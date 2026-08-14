@@ -597,37 +597,29 @@ function buscar_mensualeros()
 function tabla_resultados(){
     
     let html = "";
-    
-    let capital = 0;
-    let interes = 0;
-    let descuento = 0;
-    let total = 0;
-    let cancelado = 0;
+
+    let total_recaudacion = 0;
 
     for(let i = 0; i<registros.length; i++){ 
 
-	capital += Number(registros[i]['cuota_capital']);
-	interes += Number(registros[i]['cuota_interes']);
-	descuento += Number(registros[i]['cuota_descuento']);
-	total += Number(registros[i]['cuota_total']);
-	cancelado += Number(registros[i]['cuota_cancelado']);
+	total_recaudacion += Number(registros[i]['registroparqueo_total']);
+
 
         html += "    <tr>";
         html += "        <td>"+(i+1)+"</td>";
         html += "        <td>"+registros[i]['cliente_nombre']+"</td>";
-        html += "        <td style='text-align: center;'>00"+registros[i]['credito_id']+"</td>";
-        html += "        <td style='text-align: center;'>00"+registros[i]['venta_id']+"</td>";
-        html += "        <td style='text-align: center;'>00"+registros[i]['cuota_numcuota']+"</td>";
-        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_capital'])+"</td>";
-        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_interes'])+"</td>";
-        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_descuento'])+"</td>";
-        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_total'])+"</td>";
-        html += "        <td style='text-align: center;'>"+formato_numerico(registros[i]['cuota_moradias'])+"</td>";
-        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['cuota_fechalimite'])+"</td>";
-        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['cuota_cancelado'])+"</td>";
-        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['cuota_fecha'])+' - '+registros[i]['cuota_hora']+"</td>";
-        html += "        <td style='text-align: center;'>"+registros[i]['estado_descripcion']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['cliente_codigo']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['tarifa_tipo']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['registroparqueo_modalidad']+"</td>";
+        html += "        <td style='text-align: right;'>"+registros[i]['registroparqueo_puesto']+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_fecha(registros[i]['registroparqueo_fechaingreso'])+" - "+registros[i]['registroparqueo_horaingreso']+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_fecha(registros[i]['registroparqueo_fechasalida'])+" - "+registros[i]['registroparqueo_horasalida']+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_fecha(registros[i]['registroparqueo_fechalimite'])+"</td>";
+        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['registroparqueo_fechaingreso'])+"</td>";
+        html += "        <td style='text-align: center;'>"+formato_fecha(registros[i]['registroparqueo_fechasalida'])+"</td>";
+        html += "        <td style='text-align: right;'>"+formato_numerico(registros[i]['registroparqueo_total'])+"</td>";
         html += "        <td style='text-align: center;'>"+registros[i]['usuario_nombre']+"</td>";
+        html += "        <td style='text-align: center;'>"+registros[i]['estado_descripcion']+"</td>";
         html += "    </tr>";
         //alert("aqui termina");
     }
@@ -637,14 +629,13 @@ function tabla_resultados(){
     html +="    <th></th>";
     html +="    <th></th>";
     html +="    <th></th>";
-    html +="    <th style='text-align: right;'>"+formato_numerico(capital)+"</th>";
-    html +="    <th style='text-align: right;'>"+formato_numerico(interes)+"</th>";
-    html +="    <th style='text-align: right;'>"+formato_numerico(descuento)+"</th>";
-    html +="    <th style='text-align: right;'>"+formato_numerico(total)+"</th>";
+    html +="    <th style='text-align: right;'>"+"</th>";
+    html +="    <th style='text-align: right;'>"+"</th>";
+    html +="    <th style='text-align: right;'>"+"</th>";
+    html +="    <th style='text-align: right;'>"+"</th>";
     html +="    <th></th>";
     html +="    <th></th>";
-    html +="    <th style='text-align: right;'>"+formato_numerico(cancelado)+"</th>";
-    html +="    <th></th>";
+    html +="    <th style='text-align: right;'>"+formato_numerico(total_recaudacion)+"</th>";
     html +="    <th></th>";
     html +="    <th></th>";
     html +="</tr>";

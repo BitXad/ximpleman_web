@@ -1,7 +1,9 @@
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
-<script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
-   
+<!--<script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>-->
+<script src="<?php echo base_url('resources/js/compra_index.js'); ?>" type="text/javascript"></script>   
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -58,6 +60,9 @@
 <input type="text" id="modificar_detalle" value="0" name="modificar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
 <input type="text" id="eliminar_detalle" value="0" name="eliminar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
 <input type="text" id="monedaparam_id" value="0" name="monedaparam_id"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="moneda_descripcion" value="0" name="moneda_descripcion"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="lamoneda" value="0" name="lamoneda"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="compra_descglobal" value="0" name="compra_descglobal"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
 <input type="text" id="autorizado" value="<?php echo $autorizado["usuario_autorizado"]; ?>" name="autorizado" hidden>
 
 <!-------------------------------------------------------->
@@ -155,11 +160,15 @@
                 <?php } ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0" onclick="llevar_invacero()"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
                 <!--<a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro <?php echo $sistema["sistema_modulocompras"]; ?></small></a>-->
-                
+
+
+                <button type="button" style="width: 78px; margin-right: 1px; margin-top: 1px" class="btn btn-primary btn-foursquarexs" onclick="abrir_carga_factura_xml()">
+                    <font size="5"><span class="fa fa-file-code-o"></span></font><br><small>Cargar XML</small>
+                </button>
                 <button type="button"
                         style="width: 78px; margin-right: 1px; margin-top: 1px"
                         class="btn btn-success btn-foursquarexs"
-                        onclick="exportar_excel_filtrado('mitabla','compras_filtradas.xls')">
+                        onclick="exportar_excel_filtrado()">
                     <font size="5"><span class="fa fa-file-excel-o"></span></font><br>
                     <small>Excel</small>
                 </button>
@@ -400,7 +409,7 @@
                     <i class="fa fa-paperclip"></i>
                 </button>
                    
-                <a href="#" data-toggle="modal" data-target="#anularmodal<?php echo $c['compra_id'] ?>" class="btn btn-xs btn-warning" title="Anular Compra" >
+                <a href="#" data-toggle="modal" data-target="#anularmodal<?php echo $c['compra_id'] ?>" class="btn btn-xs btn-danger" title="Anular Compra" >
                     <i class="fa fa-minus-circle "></i>
                 </a>
             <?php } ?>
@@ -408,26 +417,32 @@
                     <div class="modal fade" id="anularmodal<?php echo $c['compra_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header" style="background: #3399cc;">
+                                    <b>ANULAR OPERACIÓN</b>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la <?php echo $sistema["sistema_modulocompras"]; ?> No.: <?php echo $c['compra_id']; ?>? 
-                                        </b>
-                                    </h4>
                                 </div>
                                 <div class="modal-body" align="center">
+                                    
+                                    <div class="col-md-6">
+                                        <center>
+                                         <em class="fa fa-warning x4"></em> 
+                                            <b>Desea anular la Compra No.: <?php echo $c['compra_id']; ?>? </b>                                            
+                                        </center>                                    
+                                    </div>
+                                    
                                     <h4>Esta <?php echo $sistema["sistema_modulocompras"]; ?> puede tener una orden de Pago, tomar en cuenta.</h4>
                                     <h4 class="text-bold">
                                         <?php echo $mensajecred; ?>
                                     </h4>
                                 </div>
                                 <div class="modal-footer" align="right">
-                                    <a href="<?php echo site_url('compra/anular/'.$c['compra_id']); ?>" class="btn btn-xs btn-warning"  type="submit">
-                                        <h5><span class="fa fa-check"></span>   Anular  </h5>
-                                    </a>
-                                    <button class="btn btn-xs btn-danger" data-dismiss="modal">
-                                        <h5><span class="fa fa-close"></span>   Cancelar  </h5>
+                                    
+                                    <a href="<?php echo site_url('compra/anular/'.$c['compra_id']); ?>" class="btn btn-md btn-danger"  type="submit">
+                                        <span class="fa fa-check"></span>   Anular </a>
+                                    <button class="btn btn-md btn-default" data-dismiss="modal">
+                                        <span class="fa fa-close"></span>   Cancelar  
                                     </button>
                                 </div>
                             </div>
@@ -483,6 +498,7 @@
 
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    
                     <tr>
                         <th>#</th>
                         <th>Id</th>
@@ -635,75 +651,112 @@
 <!----------------------- FIN MODAL BACKUP ----------------------------------->
 <!------------------------------------------------------------------------------->
 
+
+
+<!-- MODAL CARGA FACTURA XML -->
+<div class="modal fade" id="modalFacturaXml" tabindex="-1" role="dialog" aria-labelledby="modalFacturaXml" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog modal-lg" role="document" style="width: 95%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#337ab7;color:white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-file-code-o"></i> Cargar factura XML</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="xml_numerofactura" value="0">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label>Archivo XML de factura</label>
+                        <input type="file" id="archivo_factura_xml" accept=".xml,text/xml" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label>&nbsp;</label><br>
+                        <button type="button" class="btn btn-success" onclick="subir_factura_xml()"><i class="fa fa-download"></i> Cargar factura XML</button>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label>&nbsp;</label><br>
+                        <a href="<?php echo base_url("producto/add"); ?>" target="_blank" class="btn btn-facebook"><i class="fa fa-cubes"></i> Producto Nuevo</a>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label>Estado</label>
+                        <div id="xml_estado" class="alert alert-info" style="padding:7px;margin-bottom:0;">Seleccione un archivo XML.</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive" style="max-height:420px;overflow-y:auto;">
+                    <table class="table table-bordered table-condensed table-striped" id="mitabla">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nro. Factura</th>
+                                <th>Act. Econ.</th>
+                                <th>Cod. SIN</th>
+                                <th>Cod. Producto</th>
+                                <th>Descripción XML</th>
+                                <th>Cant.</th>
+                                <th>Unidad</th>
+                                <th>P. Unit.</th>
+                                <th>Desc.</th>
+                                <th>Subtotal</th>
+                                <th>Producto ID</th>
+                                <th>Cód. Barras</th>
+                                <th>Producto enlazado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_factura_xml"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="pasar_factura_xml_a_compra()"><i class="fa fa-cart-plus"></i> Pasar a compra nueva</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-function exportar_excel_filtrado(tableId, filename){
-    var table = document.getElementById(tableId);
-    if(!table){
-        alert("No se encontró la tabla: " + tableId);
-        return;
-    }
+$(document).ready(function () {
+    $('#buscar_producto_xml').on('keyup', function () {
+        var texto = $(this).val().toLowerCase();
 
-    // Clonar tabla para no alterar la vista
-    var clone = table.cloneNode(true);
-
-    // Eliminar columnas no-print (botones/acciones)
-    var ths = clone.querySelectorAll('th.no-print, td.no-print');
-    for (var i=0; i<ths.length; i++){
-        ths[i].parentNode.removeChild(ths[i]);
-    }
-
-    // Quitar filas ocultas por el filtro (display:none)
-    // Nota: como clonamos, no tiene estilos calculados; por eso revisamos el original.
-    var originalRows = table.querySelectorAll('tbody tr');
-    var cloneRows    = clone.querySelectorAll('tbody tr');
-
-    for (var r = cloneRows.length - 1; r >= 0; r--){
-        var rowOriginal = originalRows[r];
-        if(!rowOriginal) continue;
-
-        // Si la fila original está oculta, la quitamos del clon
-        if (rowOriginal.style.display === 'none') {
-            cloneRows[r].parentNode.removeChild(cloneRows[r]);
-        }
-    }
-
-    // Si no hay filas visibles
-    var visibles = clone.querySelectorAll('tbody tr');
-    if(visibles.length === 0){
-        alert("No hay registros visibles para exportar.");
-        return;
-    }
-
-    // Armar HTML Excel
-    var html = `
-        <html xmlns:o="urn:schemas-microsoft-com:office:office"
-              xmlns:x="urn:schemas-microsoft-com:office:excel"
-              xmlns="http://www.w3.org/TR/REC-html40">
-        <head>
-            <meta charset="utf-8">
-            <!--[if gte mso 9]>
-            <xml>
-              <x:ExcelWorkbook>
-                <x:ExcelWorksheets>
-                  <x:ExcelWorksheet>
-                    <x:Name>Hoja1</x:Name>
-                    <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
-                  </x:ExcelWorksheet>
-                </x:ExcelWorksheets>
-              </x:ExcelWorkbook>
-            </xml>
-            <![endif]-->
-        </head>
-        <body>` + clone.outerHTML + `</body></html>`;
-
-    var blob = new Blob([html], {type: "application/vnd.ms-excel;charset=utf-8;"});
-
-    // Descargar
-    var link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename || "export.xls";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
+        $('#tabla_productos_xml tr').each(function () {
+            var fila = $(this).text().toLowerCase();
+            $(this).toggle(fila.indexOf(texto) !== -1);
+        });
+    });
+});
 </script>
+
+
+<!-- MODAL BUSCADOR PRODUCTO PARA XML -->
+<div class="modal fade" id="modalProductoXml" tabindex="-1" role="dialog" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#00a65a;color:white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-search"></i> Seleccionar producto: <label id="nombre_producto">LECHE PIL 900ML</label></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="xml_detalle_id_producto" value="0">
+                <div class="input-group">
+                    <input type="text" id="buscar_producto_xml" class="form-control" placeholder="Buscar por nombre, código o código de barras" onkeypress="buscar_producto_xml_enter(event)">
+                    <span class="input-group-btn"><button class="btn btn-success" onclick="buscar_producto_xml()"><i class="fa fa-search"></i> Buscar</button></span>
+                </div>
+                <br>
+                <div class="table-responsive" style="max-height:360px;overflow-y:auto;">
+                    
+                    <table class="table table-bordered table-condensed table-striped" id="mitabla">
+                        <thead><tr><th>#</th><th>ID</th><th>Producto</th><th>Código. Barras</th><th>Costo</th><th>Unidad</th><th>Acción</th></tr></thead>
+                        <tbody id="tabla_productos_xml"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button></div>
+        </div>
+    </div>
+</div>
+
+

@@ -130,12 +130,13 @@ function mostrar_facturas() {
 
                                     if (factura["estado_id"]!=3){//si la factura NO esta anulada
 
-                                        if(factura[i]["estado_id"]==1){
+                                        if(factura[i]["estado_id"]==1){ // Si la factura esta activa
 
-                                            if (parametro_tiposisistema == 1){
+                                            if (parametro_tiposisistema == 1){ // Si es facturacion LCV
                                                 html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
                                             }
                                             else{
+                                                
                                                 if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
                                                     html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
                                                 html += "<fa class='fa fa-trash'> </fa> </button>";
@@ -143,28 +144,49 @@ function mostrar_facturas() {
                                                     html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
                                                     html += "<fa class='fa fa-trash'> </fa> </a>";
                                                 }
+                                                
                                             }
                                         }
 
                                     }
                                     
+                                    
+                                       // if (factura[i]['venta_tipodoc']==1){
+                                                ruta      = factura[i]['factura_ruta'];
+                                                cuf       = factura[i]['factura_cuf'];
+                                                tamanio   = factura[i]['factura_tamanio'];
+                                                nit_emisor   = factura[i]['factura_nitemisor'];
+                                                num_fact   = factura[i]['factura_numero'];
+
+                                                cadenaQR = ruta+'nit='+nit_emisor+'&cuf='+cuf+'&numero='+num_fact+'&t='+tamanio;
+                                                //alert(ruta+" *** "+'nit='+nit_emisor+" *** "+'&cuf='+cuf+" *** "+'&numero='+num_fact+" *** "+'&t='+tamanio);
+
+                                                html += "                           <a href='"+cadenaQR+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: brown;' title='Verificar Factura' target='_BLANK'><fa class='fa fa-link' aria-hidden='true'></fa></a>";
+                                       // }
+                                    
                                     if(factura[i]["estado_id"]==3){
                                         if (parametro_tiposisistema != 1){
+                                            
                                             html += " <a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_forzado' onclick='cargar_modal_anularforzado("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+(factura[i]["factura_efectivo"]-factura[i]["factura_cambio"])+","+'"'+factura[i]["factura_fecha"]+'"'+")' title='Forzar Anulación'>";
                                             html += "<fa class='fa fa-minus-circle'> </fa> </a>";
+                                            
                                         }
                                     }
                                     
                                     if(factura[i]["estado_id"]==3){
                                         if (parametro_tiposisistema != 1){
+                                            
                                             html += "<a class='btn btn-facebook btn-xs' data-toggle='modal' data-target='#modalrevertir_factura' onclick='cargar_modal_revertir("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+(factura[i]["factura_efectivo"]-factura[i]["factura_cambio"])+","+'"'+factura[i]["factura_fecha"]+'"'+")' title='Revertir Anulación'>";
                                             html += "<fa class='fa fa-recycle'> </fa> </a>";
+                                            
                                         }
                                     }
 
 
                                             totalfinal += Number(factura[i]["factura_subtotal"]);                
                                 }
+                                
+                                
                                 html += "</td>";
                                 html += "   <td>"+i+"</td>";
                                 html += "   <td>2</td>";
@@ -173,17 +195,35 @@ function mostrar_facturas() {
 
 
                                 html += "<br>";
-
+                                
+                                //ESTADO DE LA FACTURA
+                                /*
                                 if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
                                     
                                     html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
                                 
                                 }else{
                                     
-                                    html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
                                 
+                                }*/
+                                
+                                if (factura[i]["factura_enviada"]==0){
+                                    html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>NO ENVIADA</small></span>";                                    
                                 }
-
+                                
+                                if (factura[i]["factura_enviada"]==1){                                
+                                    html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>ENVIADA</small></span>";                        
+                                }
+                                
+                                if (factura[i]["factura_enviada"]==2){
+                                    html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small><fa class='fa fa-heartbeat' style='color:black;'></fa> VALIDADA</small></span>";                        
+                                }
+                                
+                                if (factura[i]["factura_enviada"]==3){
+                                    html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small><fa class='fa fa-heartbeat' style='color:black;'></fa> NO VALIDADA</small></span>";
+                                }
+                                //FIN ESTADO DE LA FACTURA
+                                
                                 html += "</center></td>";
 
 
@@ -197,6 +237,7 @@ function mostrar_facturas() {
                                 
                                 
                                 let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
+                                
                                 html += "   <td>"+factura[i]["factura_nit"]+"</td>";
                                 html += "   <td>"+factura[i]["factura_complementoci"]+"</td>";
                                 html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
@@ -1429,6 +1470,47 @@ function revertir_anulacion(escorreo)
                     type:"POST",
                     data:{factura_id:factura_id, venta_id:venta_id, motivo_id:motivo_id,
                           factura_correo:factura_correo, escorreo:escorreo},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        mostrar_facturas();
+                        alert(JSON.stringify(res));
+                        
+                        document.getElementById('loaderforz').style.display = 'none';
+                        $('#boton_cerrarforz').click();
+                    },
+            });
+            
+            document.getElementById('loaderforz').style.display = 'none';
+        }else{
+            document.getElementById('loaderforz').style.display = 'none';
+        }
+
+}
+
+function revertir_falsonegativo()
+{
+    var factura_id = document.getElementById("facturaforz_id2").value; 
+    var venta_id = document.getElementById("ventaforz_id2").value; 
+    var factura_numero = document.getElementById("facturaforz_numero2").value; 
+    var factura_razon = document.getElementById("facturaforz_cliente2").value; 
+    var factura_total = document.getElementById("facturaforz_monto2").value; 
+    var factura_fecha = document.getElementById("facturaforz_fecha2").value;
+    var motivo_id = 0;//document.getElementById("motivoforz_anulacion2").value;
+//    let factura_correo = document.getElementById("facturaforz_correo2").value;
+//    factura_correo = $.trim(factura_correo);
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/revertir_falsonegativo';
+    
+        var r = confirm("Esta a punto de REVERTIR LA ANULACION DE LA FACTURA.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n ¿Desea Continuar?");
+        if (r == true) {
+            
+            document.getElementById('loaderforz').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{factura_id:factura_id, venta_id:venta_id, motivo_id:motivo_id},
                     success:function(result){
                         res = JSON.parse(result);
                         mostrar_facturas();

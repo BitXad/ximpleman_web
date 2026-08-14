@@ -409,17 +409,7 @@ border-bottom : 1px solid #aaa;*/
             
             <b>TOTAL TRANSAC. POR VENTAS Bs.:</b> <?php echo number_format($total,2,".",","); ?>
             <br><b>TOTAL DESC. POR VENTAS Bs.:</b> <?php echo number_format($descuentos_globales[0]["descuentos"],2,".",","); ?>
-<!--            <br><b>EFECTIVO INICIAL Bs: 
-                <?php
-                if(isset($caja)){
-                    echo $caja["caja_apertura"];
-                }else{
-                    echo "0.00";
-                }
-                ?>
-                </b>
-            <br>INGRESOS Bs: <?php echo "0.00"; ?>
-            <br>EGRESOS Bs:<?php echo "0.00"; ?>            -->
+            
         </td>          
     </tr>
     <tr>
@@ -431,16 +421,20 @@ border-bottom : 1px solid #aaa;*/
     <?php  
             //$tamanio_letra2 = "10px";
             $total_ingresos = 0;
+            $total_transferencias = 0;
             $total_egresos = 0;
             $total_ingresos_efectivo = 0;
             $total_egresos_efectivo = 0;
             $ban = 0;
             foreach($transacciones as $t){
-                    $total_ingresos += $t["ingresos"];
+                
+                    $total_ingresos += $t["ingresos"] + $t["transferencias"];
+                    $total_transferencias += $t["transferencias"];
                     $total_egresos += $t["egresos"];
                     
+                    $total_ingresos_efectivo += $t["ingresos"];
+                    
                     if($t["forma"]=="EFECTIVO"&&($t["transaccion"]=="CONTADO" ||$t["transaccion"]=="CREDITO")){
-                        $total_ingresos_efectivo += $t["ingresos"];
                         $total_egresos_efectivo += $t["egresos"];
                     }
                     
@@ -452,11 +446,12 @@ border-bottom : 1px solid #aaa;*/
                     <?php } ?>
                 <tr>
                     <?php $detalle = "<b>".substr($t["operacion"],0,17)."." ."</b><br><small style='font-family:<?= $fuente  ?> Narrow; font-size:10px;'>".$t["transaccion"]." ".$t["forma"]; ?>
-                <td colspan="2" style="padding: 3px; border-top: dashed 1px #000; line-height: 10px; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["egresos"]>0)?"(-){$detalle}":$detalle."</small>"; ?></td>
+                <td  style="padding: 2px; border-top: dashed 1px #000; line-height: 10px; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["egresos"]>0)?"(-){$detalle}":$detalle."</small>"; ?></td>
                 
-                <td style="padding: 3px; border-top: dashed 1px #000; text-align: right; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["ingresos"]>0)?number_format($t["ingresos"],$decimales,".",","):""; ?></td>
+                <td style="padding: 2px; border-top: dashed 1px #000; text-align: right; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["ingresos"]>0)?number_format($t["ingresos"],$decimales,".",","):""; ?> </td>
+                <td style="padding: 2px; border-top: dashed 1px #000; text-align: right; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["transferencias"]>0)?number_format($t["transferencias"],$decimales,".",","):""; ?></td>
                 
-                <td style="padding: 3px; border-top: dashed 1px #000; text-align: right; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["egresos"]>0)?number_format($t["egresos"],$decimales,".",","):""; ?></td>
+                <td style="padding: 2px; border-top: dashed 1px #000; text-align: right; font-size: <?= $tamanio_letra2 ?>"><?php echo ($t["egresos"]>0)?number_format($t["egresos"],$decimales,".",","):""; ?></td>
     
                 </tr>
     
@@ -471,26 +466,17 @@ border-bottom : 1px solid #aaa;*/
     </tr>
     
     <tr>
+        <td colspan="2" style="font-size: <?= $tamanio_letra ?>; padding:0px; "><b>TOTAL TRANSFERENCIAS Bs</b></td>
+        <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-top: solid 2px #000;"></td>
+        <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-top: solid 2px #000;"><b><?php echo number_format($total_transferencias,$decimales,".",","); ?></b></td>
+    </tr>
+    
+    <tr>
         <!--<td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 1px #000;"></td>-->
         <td colspan="2" style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 1px #000;"><b>TOTAL EGRESOS Bs</b></td>
         <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 1px #000;"></td>
         <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 1px #000;"><b><?php echo number_format($total_egresos,$decimales,".",","); ?></b></td>
-    </tr>
-    
-    <tr>
-        <td colspan="2" style="font-size: <?= $tamanio_letra ?>; padding:0px; border-top: solid 1px #000;"><b>INGRESOS EFECTIVO Bs</b></td>
-        <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-top: solid 1px #000;"><b><?php echo number_format($total_ingresos_efectivo,$decimales,".",","); ?></b></td>
-        <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-top: solid 1px #000;"></td>
-    </tr>
-    
-    <tr>
-        <!--<td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 2px #000;"></td>-->
-        <td colspan="3" style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 2px #000;"><b>EGRESOS EFECTIVO Bs</b></td>
-<!--        <td style="font-size: 12px; padding:0px; border-bottom: solid 1px #000;"></td>-->
-        <td style="font-size: <?= $tamanio_letra ?>; padding:0px; border-bottom: solid 2px #000;"><b><?php echo number_format($total_egresos_efectivo,$decimales,".",","); ?></b></td>
-    </tr>
-    
-
+    </tr>   
     
     <tr>
         
@@ -508,74 +494,6 @@ border-bottom : 1px solid #aaa;*/
         </td>
     </tr>
     
-    
-    <!-- comment -->
-        <?php if(isset($caja)){ ?>
-    
-        <?php $array = array('200', '100', '50','20','10','5','2','1','0.50','0.20','0.10','0.05'); 
-          $cantidad = count($array);
-          $totaldinero = 0; ?>
-
-<!--        <tr>
-            <td></td>
-            <td colspan="2" style="text-align: right;">
-        <?php
-            for ($i = 0; $i<$cantidad; $i++){
-                $money = $array[$i];
-                $totaldinero += $caja["caja_corte".str_replace ( ".", '', $money)] * $money;  
-        ?>
-
-            <td align="left" style="padding: 0;" colspan="2"><?php echo $money." ".substr($moneda['moneda_descripcion'],0,3)." X ".$caja["caja_corte".str_replace ( ".", '', $money)]; ?></td>
-            <td align="right" style="padding: 0;"><?php echo number_format($caja["caja_corte".str_replace ( ".", '', $money)] * $money,2,'.',','); ?></td>
-            <td align="right" style="padding: 0;"> </td>
-            
-                <?php
-                
-                    if ($caja["caja_corte".str_replace ( ".", '', $money)]>0){ 
-                       echo $money." ".substr($moneda['moneda_descripcion'],0,3)." X ".$caja["caja_corte".str_replace ( ".", '', $money)]; ?> =  <?php echo number_format($caja["caja_corte".str_replace ( ".", '', $money)] * $money,2,'.',',')."<br>"; 
-                    
-                } ?>
-
-    <?php } ?>
-            </td>
-            <td></td>
-
-        </tr>-->
-
-
-<!--        <tr>
-            <td align="center" style="padding: 0; border-top: solid 2px #000;" colspan="2"><b>TOTAL</b></td>
-            <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"><?php echo $moneda['moneda_descripcion']." ".$money; ?></td>
-            <td colspan="4" align="right" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 12px; border-top: solid 2px #000; border-bottom: solid 2px #000; "><b><?php echo "EFECTIVO REGISTRADO Bs: ".number_format($totaldinero,2,'.',','); ?></b></td>
-            <td align="right" style="padding: 0; border-top: solid 2px #000;"> </td>
-        </tr>-->
-
-<!--        <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
-
-        <td colspan="5" style="padding: 0;"  >
-
-
-        </td>          
-        </tr>-->
-
-        <?php } ?>
-    <!-- comment -->
-    
-<!--     <tr>
-        <td style="padding: 0; border-top: solid 2px #000; border-bottom: solid 2px #000; font-size: <?= $tamanio_letra2 ?>" colspan="4">
-        
-        <center style="font-size: 12px; font-weight: bold;">- REPORTE DE TRANSACCIONES -</center>
-        
-        RANGO NUMERACION VENTAS: <?php echo $resumen[0]["desde"]." - ".$resumen[0]["hasta"]; ?>
-        <br>CANTIDAD TOTAL VENTAS: <?php echo $total_ventas[0]["total_ventas"]; ?>
-        <br>VENTAS VALIDAS: <?php echo $validas[0]["ventas_validas"]; ?>
-        <br>VENTAS MAL EMITIDAS: <?php echo $mal_emitidas[0]["mal_emitidas"]; ?>
-        <br>VENTAS ANULADAS: <?php echo $anuladas[0]["anuladas"]; ?>
-            
-        </td>
-       
-
-    </tr>    -->
     
     <tr>
         <td colspan="4" style="padding: 0; font-family: <?= $fuente  ?>; font-size: 14px; border-bottom: solid 2px #000; text-align: right;">

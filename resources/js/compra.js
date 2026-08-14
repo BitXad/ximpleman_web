@@ -829,13 +829,13 @@ function cambiarproveedores(compra_id,proveedor_id) {
                 
              
                     html = registros[p]['proveedor_nombre'];
-                     $("#provedordecompra").html(html);
+                     $("#provedordecompra").text(html);
 
                     html = "<input id='prove_id' type='hidden' value='"+proveedor_id+"'>";
                      $("#prove_iden").html(html);
 
                     html = registros[p]['proveedor_codigo'];
-                     $("#provedorcodigo").html(html);
+                     $("#provedorcodigo").text(html);
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                      var html5 = "<a href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-sq-lg btn-success' style='width: 120px !important; height: 120px !important;'><i class='fa fa-money fa-4x'></i><br>Finalizar<br>Compra<br></a>";
@@ -899,13 +899,13 @@ function crearproveedor(compra_id) {
                 
              
                     html = registros[p]['proveedor_nombre'];
-                     $("#provedordecompra").html(html);
+                     $("#provedordecompra").text(html);
 
                     html = "<input id='prove_id' type='hidden' value='"+proveedor_id+"'>";
                      $("#prove_iden").html(html);
 
                     html = registros[p]['proveedor_codigo'];
-                     $("#provedorcodigo").html(html);
+                     $("#provedorcodigo").text(html);
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                     $("#provedorboton").html(html);
@@ -1320,7 +1320,7 @@ function compraproveedor(opcion)
                         if (Number(registros[i]["elestado"])==1) {
                             html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
                             html +="<button data-toggle='modal'  class='btn btn-xs btn-github' title='Ver compras perdidas' onclick='cargar_datosbackup("+registros[i]["compra_id"]+")'> <i class='fa fa-paperclip'></i> </button>";
-                            html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
+                            html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-danger' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
                         }
                         /*****modal anula compra ***/
                         html += "  <div class='modal fade' id='anularmodal"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
@@ -1501,10 +1501,10 @@ function fechadecompra(filtro)
 
                                 html +="<button data-toggle='modal'  class='btn btn-xs btn-github' title='Ver compras perdidas' onclick='cargar_datosbackup("+registros[i]["compra_id"]+")'> <i class='fa fa-paperclip'></i> </button>";
 
-                                html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
+                                html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-danger' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
                                 
                               if(select_compra==6)
-                                html +="<button class='btn btn-xs btn-danger' title='Eliminar compra Perdida' onclick='eliminar_compra_fallida("+registros[i]["compra_id"]+")'> <i class='fa fa-trash'></i> </button>";
+                                html +="<button class='btn btn-xs btn-facebook' style='background:black' title='Eliminar compra Perdida' onclick='eliminar_compra_fallida("+registros[i]["compra_id"]+")'> <i class='fa fa-trash'></i> </button>";
 0                           
                             }else{
                                 html += "<br><span class='btn btn-info' style='line-height: 10px; font-size: 10px; padding:0;'><fa class='fa fa-lock'> </fa> Algunas operaciones<br>requieren autorización <span>";
@@ -2637,4 +2637,191 @@ function actualizar_precio(){
                 });
     
         }
+}
+
+/*********************** FACTURA XML -> COMPRA ************************/
+var facturaXmlActual = 0;
+
+function abrir_carga_factura_xml() {
+    facturaXmlActual = 0;
+    $('#xml_numerofactura').val('0');
+    $('#archivo_factura_xml').val('');
+    $('#tabla_factura_xml').html('');
+    $('#xml_estado').removeClass('alert-danger alert-success').addClass('alert-info').html('Seleccione un archivo XML.');
+    $('#modalFacturaXml').modal('show');
+}
+
+function subir_factura_xml() {
+    var archivo = document.getElementById('archivo_factura_xml');
+    if (!archivo || archivo.files.length === 0) {
+        alert('Seleccione un archivo XML.');
+        return;
+    }
+    var formData = new FormData();
+    formData.append('archivo_xml', archivo.files[0]);
+    $('#xml_estado').removeClass('alert-danger alert-success').addClass('alert-info').html('Cargando XML...');
+    $.ajax({
+        url: base_url + 'compra/cargar_factura_xml',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function (r) {
+            if (r && r.ok) {
+                facturaXmlActual = r.numerofactura;
+                $('#xml_numerofactura').val(r.numerofactura);
+                $('#xml_estado').removeClass('alert-info alert-danger').addClass('alert-success').html('Factura XML cargada. Items: ' + r.total_items + ' | Nro.: ' + r.numerofactura);
+                render_tabla_factura_xml(r.items || []);
+            } else {
+                $('#xml_estado').removeClass('alert-info alert-success').addClass('alert-danger').html((r && r.msg) ? r.msg : 'No se pudo cargar el XML.');
+            }
+        },
+        error: function (xhr) {
+            var msg = 'Error al subir el XML.';
+            if (xhr && xhr.responseText) {
+                var limpio = String(xhr.responseText).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                if (limpio.length > 0) msg += ' ' + limpio.substring(0, 300);
+            }
+            $('#xml_estado').removeClass('alert-info alert-success').addClass('alert-danger').html(msg);
+        }
+    });
+}
+
+function render_tabla_factura_xml(items) {
+    var html = '';
+    var dec = parseInt($('#decimales').val() || '2', 10);
+    if (!items || items.length === 0) {
+        $('#tabla_factura_xml').html('<tr><td colspan="15" class="text-center">Sin items cargados.</td></tr>');
+        return;
+    }
+    for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        var enlazado = Number(it.producto_id) > 0;
+        html += '<tr' + (enlazado ? '' : ' class="warning"') + '>';
+        html += '<td>' + (i + 1) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.numerofactura) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.actividadeconomica) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.codigoproductosin) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.codigoproducto) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.descripcion) + '</td>';
+        html += '<td class="text-right">' + Number(it.cantidad || 0).toFixed(dec) + '</td>';
+        html += '<td>' + limpiar_html_xml(it.unidadmedida) + '</td>';
+        html += '<td class="text-right">' + Number(it.preciounitario || 0).toFixed(dec) + '</td>';
+        html += '<td class="text-right">' + Number(it.montodescuento || 0).toFixed(dec) + '</td>';
+        html += '<td class="text-right"><b>' + Number(it.subtotal || 0).toFixed(dec) + '</b></td>';
+        html += '<td class="text-center">' + (enlazado ? it.producto_id : '<span class="label label-warning">Pendiente</span>') + '</td>';
+        html += '<td>' + limpiar_html_xml(it.producto_codigobarras || it.producto_codigobarra || '') + '</td>';
+        html += '<td>' + limpiar_html_xml(it.producto_nombre_bd || '') + '</td>';
+        html += '<td><button type="button" class="btn btn-xs btn-primary" onclick="abrir_buscador_producto_xml(' + it.detalle_id + ',\'' + limpiar_js_xml(it.descripcion) + '\')"><i class="fa fa-link"></i> Seleccionar</button></td>';
+        html += '</tr>';
+    }
+    $('#tabla_factura_xml').html(html);
+}
+
+function abrir_buscador_producto_xml(detalle_id, descripcion) {
+    $('#xml_detalle_id_producto').val(detalle_id);
+    $('#buscar_producto_xml').val(descripcion || '');
+    $('#tabla_productos_xml').html('');
+    $('#modalProductoXml').modal('show');
+    buscar_producto_xml();
+}
+
+function buscar_producto_xml_enter(e) {
+    var tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla === 13) buscar_producto_xml();
+}
+
+function buscar_producto_xml() {
+    var parametro = $('#buscar_producto_xml').val();
+    $.ajax({
+        url: base_url + 'compra/buscar_producto_factura_xml',
+        type: 'POST',
+        data: {parametro: parametro},
+        dataType: 'json',
+        success: function (r) {
+            var html = '';
+            if (!r || r.length === 0) {
+                $('#tabla_productos_xml').html('<tr><td colspan="7" class="text-center">No se encontraron productos.</td></tr>');
+                return;
+            }
+            for (var i = 0; i < r.length; i++) {
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td>' + r[i].producto_id + '</td>';
+                html += '<td><b>' + limpiar_html_xml(r[i].producto_nombre) + '</b></td>';
+                html += '<td>' + limpiar_html_xml(r[i].producto_codigo) + '</td>';
+                html += '<td>' + limpiar_html_xml(r[i].producto_codigobarra) + '</td>';
+                html += '<td>' + limpiar_html_xml(r[i].producto_unidad) + '</td>';
+                html += '<td><button type="button" class="btn btn-xs btn-success" onclick="vincular_producto_xml(' + r[i].producto_id + ')"><i class="fa fa-check"></i> Elegir</button></td>';
+                html += '</tr>';
+            }
+            $('#tabla_productos_xml').html(html);
+        },
+        error: function () { alert('Error al buscar productos.'); }
+    });
+}
+
+function vincular_producto_xml(producto_id) {
+    var detalle_id = $('#xml_detalle_id_producto').val();
+    $.ajax({
+        url: base_url + 'compra/vincular_producto_factura_xml',
+        type: 'POST',
+        data: {detalle_id: detalle_id, producto_id: producto_id},
+        dataType: 'json',
+        success: function (r) {
+            if (r && r.ok) {
+                $('#modalProductoXml').modal('hide');
+                recargar_detalle_factura_xml();
+            } else {
+                alert('No se pudo enlazar el producto.');
+            }
+        },
+        error: function () { alert('Error al enlazar producto.'); }
+    });
+}
+
+function recargar_detalle_factura_xml() {
+    var nf = $('#xml_numerofactura').val();
+    $.ajax({
+        url: base_url + 'compra/detalle_factura_xml',
+        type: 'POST',
+        data: {numerofactura: nf},
+        dataType: 'json',
+        success: function (r) { render_tabla_factura_xml(r || []); }
+    });
+}
+
+function pasar_factura_xml_a_compra() {
+    var nf = $('#xml_numerofactura').val();
+    if (!nf || Number(nf) <= 0) {
+        alert('Primero cargue una factura XML.');
+        return;
+    }
+    if (!confirm('¿Desea generar una compra nueva con los items enlazados?')) return;
+    $.ajax({
+        url: base_url + 'compra/pasar_factura_xml_a_compra',
+        type: 'POST',
+        data: {numerofactura: nf, moneda_tc: ($('#moneda_tc').val() || 1)},
+        dataType: 'json',
+        success: function (r) {
+            if (r && r.ok) {
+                alert('Compra generada correctamente. Nro.: ' + r.compra_id);
+                window.location.href = r.url;
+            } else {
+                alert((r && r.msg) ? r.msg : 'No se pudo generar la compra.');
+            }
+        },
+        error: function () { alert('Error al generar la compra.'); }
+    });
+}
+
+function limpiar_html_xml(v) {
+    if (v === null || v === undefined) return '';
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function limpiar_js_xml(v) {
+    if (v === null || v === undefined) return '';
+    return String(v).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r?\n/g, ' ');
 }

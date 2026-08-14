@@ -319,7 +319,7 @@
 <div class="modal fade" id="modalfactura" tabindex="-1" role="dialog" aria-labelledby="modalfactura">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" style="background-color: lightgray;">
                             
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -328,7 +328,8 @@
                                 <h4 class="modal-title" id="myModalLabel"><b>EMITIR FACTURA</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                  
                             </center>
-                        
+                        </div>
+                    <div class="modal-body" style="padding-top: 0px; font-family: Arial;">
                             
                             <div class="row">
                                 <!--<div class="">-->
@@ -355,7 +356,7 @@
                                     <div class="col-md-6">
                                         <b>RAZON SOCIAL:</b>
                                         <div class="input-group">
-                                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left; font-size:10pt;" onkeypress="validar_laentrada(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncampo(2)">
+                                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left; font-size:10pt;" onkeypress="validar_laentrada(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncampo(2)" onKeyUp="this.value = this.value.toUpperCase();">
                                             <datalist id="listaclientes"></datalist>
                                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
@@ -378,8 +379,7 @@
                             </div>
 
                             
-                    </div>
-                    <div class="modal-body" style="padding-top: 0px; font-family: Arial;">
+
                         <!--------------------- TABLA---------------------------------------------------->
                         
                         <div class="box-body table-responsive" style="font-family: Arial;">
@@ -429,7 +429,7 @@
                             <!--<input type="text" id="generar_detalle" value="-" class="form-control btn btn-xs btn-default" style="text-align: left;">-->
        
                             <div class="col-md-4">
-                                <label for="usuario_idx" class="control-label">TOTAL Bs</label>
+                                <label for="usuario_idx" class="control-label">TOTAL Bs <button class="btn btn-danger" title="Calcular totales" onclick="reajustar_totales();"><fa class="fa fa-calculator"></fa></button></label>
 
                                 <input type="text" id="generar_venta_id" value="0.00" hidden >
                                 <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: right; font-weight: bold; font-size: 15pt;">
@@ -827,3 +827,84 @@ function generarexcel() {
     }
 }
 </script>
+
+
+
+<!------------------------ INICIO modal para confirmar anulacion de factura no enviada ------------------->
+<div class="modal fade" id="modalanular_noenviada" tabindex="-1" role="dialog" aria-labelledby="modalanularlabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center" style="background: #edb62b">
+                <b style="color: white;">ANULAR FACTURA NO ENVIADA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="factura_numero" class="control-label">ADVERTENCIA: Esta a punto de anular la factura no enviada!.</label>
+                </div>
+                <div class="col-md-12 text-center" id="loadermal" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                  <input type="hidden" name="facturamal_id" value="00" class="form-control" id="facturamal_id" readonly="true" />
+                  <input type="hidden" name="ventamal_id" value="00" class="form-control" id="ventamal_id" readonly="true" />
+
+                <div class="col-md-4">
+                    <label for="facturamal_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_numero" value="00" class="form-control" id="facturamal_numero" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_monto" value="0.00" class="form-control" id="facturamal_monto" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_fecha" value="0.00" class="form-control" id="facturamal_fecha" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="facturamal_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_cliente" value="-" class="form-control" id="facturamal_cliente" readonly="true"  />
+                    </div>
+                </div>
+                <!--<div class="col-md-12">
+                    <label for="facturamal_correo" class="control-label">Correo Electrónico</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_correo" value="-" class="form-control" id="facturamal_correo" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="dosificacion_nitemisor" class="control-label">Motivo Anulación</label>
+                    <div class="form-group">
+
+                        <select id="motivo_anulacion" class="form-control">
+
+                            <?php /* foreach ($motivos as $motivo) {?>
+
+                                <option value="<?= $motivo['cma_id']; ?>"><?= $motivo['cma_descripcion']; ?></option>
+
+                            <?php } */ ?>
+
+                        </select>
+
+                    </div>
+                </div>-->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="anular_factura_electronica_malemitida()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->

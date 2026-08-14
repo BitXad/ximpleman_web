@@ -129,7 +129,7 @@ class Compra_model extends CI_Model
                 compra c, estado e, proveedor p, tipo_transaccion t, usuario u, detalle_compra dc, producto s
 
             WHERE
-                s.producto_codigobarra = '{$parametro}'
+                s.producto_codigobarra = ?
                 and dc.producto_id = s.producto_id
                 and c.compra_id = dc.compra_id
                 and c.estado_id = e.estado_id
@@ -137,15 +137,14 @@ class Compra_model extends CI_Model
                 and c.tipotrans_id = t.tipotrans_id
                 and c.usuario_id=u.usuario_id
             ORDER BY c.compra_id DESC";
-        $compra = $this->db->query($sql)->result_array();
+        $compra = $this->db->query($sql, array($parametro))->result_array();
 
-        //echo $sql;
         return $compra;
     }
     
     function buscarprovedo($parametro)
     {
-        $compra = $this->db->query("
+        $sql = "
             SELECT
                 *, c.estado_id as 'elestado'
 
@@ -157,12 +156,11 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 and c.usuario_id=u.usuario_id
-                and (p.proveedor_nombre like '%".$parametro."%' or c.compra_id = '$parametro')
+                and (p.proveedor_nombre like ? or c.compra_id = ?)
 
             ORDER BY `compra_id` DESC
-
-            
-        ")->result_array();
+        ";
+        $compra = $this->db->query($sql, array('%'.$parametro.'%', $parametro))->result_array();
 
         return $compra;
     }
@@ -355,22 +353,16 @@ class Compra_model extends CI_Model
 
             $venta_id = 0;//$this->input->post("venta_id");            
             $usuario_id = $this->session_data['usuario_id'];
-            $bitacoracaja_fecha = "date({$now})";
-            $bitacoracaja_hora = "time({$now})";
-            
-            $bitacoracaja_evento = "'GENERE UNA COMPRA NUEVA, ID: {$compra_id}'";
-
-            
-            $bitacoracaja_montoreg = 0;
-            $bitacoracaja_montocaja = 0;
-            $bitacoracaja_tipo = 3; //2 operaciones sobre compras
-
-
-            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
-                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-            $this->Venta_model->ejecutar($sql);
+            $this->db->insert('bitacora_caja', array(
+                'bitacoracaja_fecha'     => date('Y-m-d'),
+                'bitacoracaja_hora'      => date('H:i:s'),
+                'bitacoracaja_evento'    => "GENERE UNA COMPRA NUEVA, ID: {$compra_id}",
+                'usuario_id'             => $usuario_id,
+                'bitacoracaja_montoreg'  => 0,
+                'bitacoracaja_montocaja' => 0,
+                'bitacoracaja_tipo'      => 3,
+                'caja_id'                => $this->caja_id
+            ));
         //************ fin bitacora bitacora            
         
         
@@ -606,5 +598,125 @@ class Compra_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
     
+
+    /**********************************************************************
+     * DETALLE FACTURA XML
+     **********************************************************************/
+    function insertar_detalle_factura_xml($params)
+    {
+        $this->db->insert('detalle_factura_xml', $params);
+        return $this->db->insert_id();
+    }
+
+    function borrar_detalle_factura_xml($numero_factura, $usuario_id)
+    {
+        $this->db->where('numerofactura', (int)$numero_factura);
+        $this->db->where('usuario_id', (int)$usuario_id);
+        return $this->db->delete('detalle_factura_xml');
+    }
+
+    private function columna_producto_codigobarras()
+    {
+        if ($this->db->field_exists('producto_codigobarra', 'producto')) {
+            return 'producto_codigobarra';
+        }
+        if ($this->db->field_exists('producto_codigobarras', 'producto')) {
+            return 'producto_codigobarras';
+        }
+        if ($this->db->field_exists('producto_codigo', 'producto')) {
+            return 'producto_codigo';
+        }
+        return '';
+    }
+
+    function get_detalle_factura_xml($numero_factura, $usuario_id)
+    {
+        $col_barra = $this->columna_producto_codigobarras();
+
+        $select = 'd.*, p.producto_nombre AS producto_nombre_bd, p.producto_codigo, p.producto_codigobarra ';
+        if ($col_barra !== '') {
+            $select .= ', p.'.$col_barra.' AS producto_codigobarra';
+        } else {
+            $select .= ', "" AS producto_codigobarra';
+        }
+
+        $this->db->select($select, false);
+        $this->db->from('detalle_factura_xml d');
+        $this->db->join('producto p', 'p.producto_id = d.producto_id', 'left');
+        $this->db->where('d.numerofactura', (int)$numero_factura);
+        $this->db->where('d.usuario_id', (int)$usuario_id);
+        $this->db->order_by('d.detalle_id', 'ASC');
+        return $this->db->get()->result_array();
+    }
+
+    function contar_detalle_factura_xml_sin_producto($numero_factura, $usuario_id)
+    {
+        $this->db->where('numerofactura', (int)$numero_factura);
+        $this->db->where('usuario_id', (int)$usuario_id);
+        $this->db->group_start();
+        $this->db->where('producto_id <=', 0);
+        $this->db->or_where('producto_id IS NULL', null, false);
+        $this->db->group_end();
+        return (int)$this->db->count_all_results('detalle_factura_xml');
+    }
+
+    function buscar_producto_para_xml($parametro)
+    {
+        $parametro = trim((string)$parametro);
+        $col_barra = $this->columna_producto_codigobarras();
+
+        $select = 'producto_id, producto_nombre, producto_codigo, producto_precio, producto_ultimocosto, producto_unidad, moneda_id';
+        if ($col_barra !== '') {
+            $select .= ', '.$col_barra.' AS producto_codigobarra';
+        } else {
+            $select .= ', "" AS producto_codigobarra';
+        }
+
+        $this->db->select($select, false);
+        $this->db->from('producto');
+        if ($parametro !== '') {
+            $this->db->group_start();
+            $this->db->like('producto_nombre', $parametro);
+            $this->db->or_like('producto_codigo', $parametro);
+            $this->db->or_like('producto_codigobarra', $parametro);
+            if ($col_barra !== '') {
+                $this->db->or_like($col_barra, $parametro);
+            }
+            if (is_numeric($parametro)) {
+                $this->db->or_where('producto_id', (int)$parametro);
+            }
+            $this->db->group_end();
+        }
+        $this->db->order_by('producto_nombre', 'ASC');
+        $this->db->limit(50);
+        return $this->db->get()->result_array();
+    }
+
+    function vincular_producto_factura_xml($detalle_id, $producto_id, $usuario_id)
+    {
+        $producto = $this->Producto_model->get_producto((int)$producto_id);
+        if (!$producto) { return false; }
+
+        $cod_barra = '';
+        if (isset($producto['producto_codigobarra'])) {
+            $cod_barra = $producto['producto_codigobarra'];
+        } elseif (isset($producto['producto_codigobarras'])) {
+            $cod_barra = $producto['producto_codigobarras'];
+        } elseif (isset($producto['producto_codigo'])) {
+            $cod_barra = $producto['producto_codigo'];
+        }
+
+        $params = array(
+            'producto_id' => (int)$producto_id,
+            'producto_codigobarras' => $cod_barra,
+            'producto_nombre' => isset($producto['producto_nombre']) ? $producto['producto_nombre'] : ''
+        );
+
+        $this->db->where('detalle_id', (int)$detalle_id);
+        $this->db->where('usuario_id', (int)$usuario_id);
+        return $this->db->update('detalle_factura_xml', $params);
+    }
+
+
 }
 

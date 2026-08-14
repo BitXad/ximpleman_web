@@ -74,7 +74,7 @@ class Credito extends CI_Controller{
     function indexDeuda()
     {
         $data['parametro'] =  $this->parametros;
-        $data['sistema'] = $this->sistema;
+        $data['sistema'] = $this->sistema;  
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];

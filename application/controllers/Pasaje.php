@@ -305,4 +305,33 @@ public function get_search_values_by_clm()
   $data['pasaje'] = $this->Pasaje_model->get_all_with_asso_pasaje();
   $this->load->view('pasaje/index',$data);
 }
+
+
+public function registrar_controlabordaje_modal($pasaje_id = 0, $accion = '', $viaje_id = 0)
+{
+    if (!$this->session->userdata('logged_in')) {
+        redirect('usuario/login');
+    }
+
+    $this->load->model('Pasaje_model');
+
+    $estado = '';
+
+    if ($accion == 'ABORDO') {
+        $estado = 'A BORDO';
+    } elseif ($accion == 'NOPRESENTE') {
+        $estado = 'NO PRESENTE';
+    }
+
+    if ($pasaje_id > 0 && $estado != '') {
+        $params = array(
+            'pasaje_controlabordaje' => $estado
+        );
+
+        $this->Pasaje_model->update_pasaje($pasaje_id, $params);
+    }
+
+    redirect('viaje/control_abordaje/'.$viaje_id);
+}
+
  }

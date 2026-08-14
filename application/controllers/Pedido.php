@@ -1010,11 +1010,13 @@ class Pedido extends CI_Controller{
             
             $sql = "insert into venta(forma_id, tipotrans_id, usuario_id, cliente_id, moneda_id, estado_id, 
             venta_fecha, venta_hora, venta_subtotal, venta_descuento, venta_total, venta_efectivo, 
-            venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id)
+            venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id,
+            venta_ice, venta_giftcard, venta_detalletransaccion, venta_numerotransmes, venta_pagoalternativo, venta_pagoefectivo, venta_descuentoparcial)
 
             (select 1 as forma_id,".$tipotrans_id.", ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
             date({$now}) as venta_fecha, time({$now}) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
-            0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
+            0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id,
+            0, 0, 0, 0, 0, pedido_total, 0
             from pedido
             where pedido_id=".$pedido_id." ) ";            
             $venta_id = $this->Pedido_model->ejecutar($sql);

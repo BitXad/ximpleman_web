@@ -105,8 +105,33 @@
                 <div class="row" id='loader2'  style='display:none; text-align: center'>
                     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                 </div>
-                <div class="col-md-12">
-                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
+                
+                <div class="col-md-6">
+                    <label for="select_aplicacion" class="control-label"><span class="text-danger">*</span>Aplicación</label>
+                    <select name="select_aplicacion" class="form-control" id="select_aplicacion">
+                        <option value="1">CATEGORIAS Y UNIDADES</option>
+                        <option value="2">SOLO CATEGORIAS</option>
+                        <option value="3">SOLO UNIDADES</option>
+                    </select>
+                </div>
+                
+                
+                <div class="col-md-3">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Cod. Actividad</label>
+                    <div class="form-group">
+                        <input type="text" name="codigo_actividad" value="00" class="form-control" id="codigo_actividad" readonly/>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Cod. Producto</label>
+                    <div class="form-group">
+                        <input type="text" name="codigo_producto" value="00" class="form-control" id="codigo_producto" readonly/>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Categoria Producto</label>
 <!--                    <div class="form-group">
                         <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
                     </div>
@@ -115,27 +140,17 @@
                         <option value="00">- SELECCIONAR CATEGORIA -</option>
                         <option value="0">- APLICAR A TODAS LAS CATEGORIAS -</option>
                         <?php 
-                            foreach($categorias as $categoria){ ?>
-                                <option value="<?php echo $categoria['categoria_id']; ?>">    
+                            foreach($categorias as $categoria){
+                        
+                                $selected = ($categoria['categoria_id'] == 1) ? ' selected="selected"' : ""; ?>
+                        
+                                <option value="<?php echo $categoria['categoria_id']; ?>" <?php echo $selected; ?> >    
                                     <?php echo $categoria['categoria_nombre']; ?>
                                 </option>
+                                
                         <?php    } ?>
                             
                     </select>
-                </div>
-                
-                <div class="col-md-4">
-                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Actividad</label>
-                    <div class="form-group">
-                        <input type="text" name="codigo_actividad" value="00" class="form-control" id="codigo_actividad" readonly/>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Producto</label>
-                    <div class="form-group">
-                        <input type="text" name="codigo_producto" value="00" class="form-control" id="codigo_producto" readonly/>
-                    </div>
                 </div>
                 
                     <div class="col-md-4">
@@ -146,7 +161,7 @@
                                 <?php 
                                 foreach($unidades as $unidad)
                                 {
-                                    //$selected = ($unidad['unidad_id'] == $producto['producto_unidad']) ? ' selected="selected"' : "";
+                                    $selected = ($unidad['unidad_id'] == 1) ? ' selected="selected"' : "";
 
                                     echo '<option value="'.$unidad['unidad_id'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
                                 } 
@@ -163,7 +178,7 @@
             </div>
             
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" onclick="homologar_categoria()"><fa class="fa fa-floppy-o"></fa> Actualizar Codigo</button>
+                <button type="button" class="btn btn-success" onclick="homologar_categoria()"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
                 <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             

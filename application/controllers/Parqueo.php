@@ -708,22 +708,33 @@ class Parqueo extends CI_Controller{
         if($usuario_id>0){
             $condicion1 = " and c.usuario_id = {$usuario_id} ";
         }else $condicion1 = "";
-        
+
+            
+            
             $sql = "SELECT 
-                    c.cliente_nombre,
-                    t.tarifa_tipo,
-                    r.*
-                  FROM
-                    cliente c,
-                    tarifa_parqueo t,
-                    registro_parqueo r
-                  WHERE
-                    r.registroparqueo_fechaingreso >= '2020-10-01' AND 
-                    r.registroparqueo_fechaingreso <= '2025-10-31' AND 
-                    r.tarifa_id = t.tarifa_id AND 
-                    r.cliente_id = c.cliente_id AND 
-                    r.tarifa_id >= 5 AND 
-                    r.tarifa_id <= 7";
+                        t.tarifa_tipo,
+                        r.*,
+                        c.cliente_nombre,
+                        c.cliente_codigo,
+                        e.estado_descripcion,
+                        u.usuario_nombre
+                        
+                    FROM registro_parqueo r
+                    INNER JOIN tarifa_parqueo t 
+                        ON t.tarifa_id = r.tarifa_id
+                    LEFT JOIN cliente c 
+                        ON c.cliente_id = r.cliente_id
+                    LEFT JOIN estado e 
+                        ON e.estado_id = r.estado_id    
+
+                    LEFT JOIN usuario u 
+                        ON u.usuario_id = r.usuario_idingreso    
+                        
+                    WHERE r.registroparqueo_fechaingreso >= '{$fecha_desde}'
+                      AND r.registroparqueo_fechaingreso <=  '{$fecha_hasta}'
+                      AND r.registroparqueo_modalidad = 'MENSUAL'
+                      AND r.tarifa_id BETWEEN 5 AND 7;";
+            
             $resultado = $this->Venta_model->consultar($sql);
         
         echo json_encode($resultado);

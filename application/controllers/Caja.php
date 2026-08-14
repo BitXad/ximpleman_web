@@ -172,10 +172,10 @@ class Caja extends CI_Controller{
                     'caja_apertura' => $this->input->post('caja_apertura'),
                     'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
                     'caja_horaapertura' => $this->input->post('caja_horaapertura'),
-                    'caja_cierre' => $this->input->post('caja_cierre'),
+                    'caja_cierre' => $caja_cierre,
                     'caja_horacierre' => $this->input->post('caja_horacierre'),
                     'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-                    'caja_diferencia' => $this->input->post('caja_diferencia'),
+                    'caja_diferencia' => $caja_diferencia,
                     'caja_corte1000' => $this->input->post('caja_corte1000'),
                     'caja_corte500' => $this->input->post('caja_corte500'),
                     'caja_corte200' => $this->input->post('caja_corte200'),
@@ -308,8 +308,31 @@ class Caja extends CI_Controller{
 
             if($this->form_validation->run())     
             {
-                $caja_diferencia = $this->input->post('caja_cierre') - $this->input->post('saldo_caja');
-                $caja_transacciones = $this->input->post('saldo_caja') - $this->input->post('caja_apertura');
+                // El saldo_caja llega desde el REPORTE DE MOVIMIENTO DIARIO:
+                // efectivo esperado = apertura + ingresos efectivo - egresos efectivo.
+                $saldo_caja = (float)str_replace(',', '', $this->input->post('saldo_caja'));
+                $caja_cierre = (float)str_replace(',', '', $this->input->post('caja_cierre'));
+
+                // IMPORTANTE:
+                // Se respeta el input original de la vista: name="caja_diferencia".
+                // El modal solo muestra la diferencia, no debe crear otro campo con el mismo name.
+                $caja_diferencia_post = $this->input->post('caja_diferencia');
+                $caja_diferencia_post = str_replace(',', '', $caja_diferencia_post);
+                $caja_diferencia = ($caja_diferencia_post === null || $caja_diferencia_post === '') ? 0 : (float)$caja_diferencia_post;
+
+                // Movimiento total del periodo: ventas, ingresos, cobros, egresos, compras y pagos.
+                // Si no llega desde JS, se mantiene compatibilidad con el cálculo anterior.
+                $caja_transacciones = (float)$this->input->post('caja_transacciones');
+                if($caja_transacciones == 0){
+                    $caja_transacciones = $saldo_caja - (float)$this->input->post('caja_apertura');
+                }
+
+                $caja_efectivo = ($this->input->post('caja_efectivo') !== null) ? (float)$this->input->post('caja_efectivo') : $saldo_caja;
+                $caja_credito  = ($this->input->post('caja_credito') !== null) ? (float)$this->input->post('caja_credito') : 0;
+                $resumen_transacciones = $this->input->post('resumen_transacciones');
+                if($resumen_transacciones == null || $resumen_transacciones == ''){
+                    $resumen_transacciones = $this->input->post('transacciones');
+                }
                 
                 $estado = 31;
                 $params = array(
@@ -320,10 +343,10 @@ class Caja extends CI_Controller{
                     'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
                     'caja_horaapertura' => $this->input->post('caja_horaapertura'),*/
                     'caja_transacciones' => $caja_transacciones,
-                    'caja_cierre' => $this->input->post('caja_cierre'),
+                    'caja_cierre' => $caja_cierre,
                     'caja_horacierre' => $this->input->post('caja_horacierre'),
                     'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-                    'caja_diferencia' => $caja_diferencia, //$this->input->post('caja_diferencia'),
+                    'caja_diferencia' => $caja_diferencia,
                     'caja_corte1000' => $this->input->post('caja_corte1000'),
                     'caja_corte500' => $this->input->post('caja_corte500'),
                     'caja_corte200' => $this->input->post('caja_corte200'),
@@ -338,9 +361,10 @@ class Caja extends CI_Controller{
                     'caja_corte020' => $this->input->post('caja_corte020'),
                     'caja_corte010' => $this->input->post('caja_corte010'),
                     'caja_corte005' => $this->input->post('caja_corte005'),
-                    'caja_efectivo' => $this->input->post('caja_efectivo'),
-                    'caja_credito' => $this->input->post('caja_credito'),
+                    'caja_efectivo' => $caja_efectivo,
+                    'caja_credito' => $caja_credito,
                     'caja_transregistradas' => $this->input->post('transacciones'),
+                    'caja_transrealizadas' => $resumen_transacciones,
                 );
 
                 $this->Caja_model->update_caja($caja_id, $params);
@@ -615,6 +639,10 @@ class Caja extends CI_Controller{
 
             if($this->form_validation->run())     
             {
+                $saldo_caja = (float)str_replace(',', '', $this->input->post('saldo_caja'));
+                $caja_cierre = (float)str_replace(',', '', $this->input->post('caja_cierre'));
+                $caja_diferencia = round($caja_cierre - $saldo_caja, 2);
+
                 $estado = 31;
                 $params = array(
                     'estado_id' => $estado,
@@ -623,11 +651,11 @@ class Caja extends CI_Controller{
                     'caja_apertura' => $this->input->post('caja_apertura'),
                     'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
                     'caja_horaapertura' => $this->input->post('caja_horaapertura'),*/
-                    'caja_transacciones' => $this->input->post('saldo_caja'),
-                    'caja_cierre' => $this->input->post('caja_cierre'),
+                    'caja_transacciones' => ($this->input->post('caja_transacciones') !== null ? $this->input->post('caja_transacciones') : $this->input->post('saldo_caja')),
+                    'caja_cierre' => $caja_cierre,
                     'caja_horacierre' => $this->input->post('caja_horacierre'),
                     'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-                    'caja_diferencia' => $this->input->post('caja_diferencia'),
+                    'caja_diferencia' => $caja_diferencia,
                     'caja_corte1000' => $this->input->post('caja_corte1000'),
                     'caja_corte500' => $this->input->post('caja_corte500'),
                     'caja_corte200' => $this->input->post('caja_corte200'),

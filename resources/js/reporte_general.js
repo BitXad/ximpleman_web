@@ -49,6 +49,7 @@ function reporte_general(){
                     //$("#encontrados").val("- "+n+" -");
                     html = "";
                     for (var i = 0; i < n ; i++){
+                        
                         total += Number(registros[i]["detalleven_total"]);
                         cantidades += Number(registros[i]["detalleven_cantidad"]);
                         if(filtrar == 1 || filtrar == 2){
@@ -146,7 +147,7 @@ function reporte_general(){
                         }
                         html += "<td align='center'>";
                         html += registros[i]["cliente_codigo"];
-                        html += "</td>"; 
+                        html += "</td>";                         
                         
                         html += "<td align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td class='no-print'>";
@@ -164,9 +165,15 @@ function reporte_general(){
                             html += "<a href='"+base_url+"produccion/imprimir_nota/"+registros[i]['produccion_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de producción'><span class='fa fa-print'></span></a>";
                         }
                         html += "</td>";
+                        
                         html += "</tr>";
-                    }
+                        
+                        
+                    } //Fin del ciclo
+                    
+                    
                         html += "<tr>";
+                        html += "<th></th>";
                         html += "<th></th>";
                         html += "<th></th>";
                         html += "<th></th>";

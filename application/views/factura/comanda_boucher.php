@@ -259,13 +259,7 @@ border-bottom : 1px solid #aaa;
                 <?php echo "EFECTIVO ".$moneda_descripcion." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
                 <?php echo "CAMBIO ".$moneda_descripcion." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>            
             </font>
-            
-            <?php if($venta[0]['tipotrans_id']==2){ ?>
-            <font size="1">
-                <br>CUOTA INIC. <?php echo $moneda_descripcion; ?>: <?php echo number_format($venta[0]['credito_cuotainicial'],$decimales,'.',','); ?>
-                <br>SALDO <?php echo $moneda_descripcion; ?>: <?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?><br>
-            </font>
-            <?php } ?>
+
             
         </td>          
     </tr>

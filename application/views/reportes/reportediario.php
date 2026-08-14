@@ -188,6 +188,7 @@
                         <th id='fondoprint' style='width: 10%' class='text-center'>INGRESO</th>
                         <th id='fondoprint' style='width: 10%' class='text-center'>EGRESO</th>
                         <th id='fondoprint' style='width: 10%' class='text-center'>TRANS.</th>
+                        <th id='fondoprint' style='width: 10%' class='text-center'>EGRS.</th>
                         <th id='fondoprint' style='width: 10%' class='text-center'>UTILD</th>
                     </tr>
                     <tbody id='tablatotalresultados'></tbody>
@@ -196,13 +197,12 @@
                         <td style="text-align: center;" colspan="3">
                             <br><br>
                             ________________________<br>ENTREGADO POR
-                        </td>
-                        <td></td>
+                        </td> 
                         <td style="text-align: center;" colspan="2">
                             <br><br>
                             ________________________<br>REVISADO POR
                         </td>
-                        <td style="text-align: right;" colspan="4">
+                        <td style="text-align: right;" colspan="5">
                             <p class="subtitulo">EFECTIVO EN CAJA <?php echo $parametro['moneda_descripcion']; ?> :.......................</p>
                             <p class="subtitulo">UTILIDAD BRUTA <?php echo $parametro['moneda_descripcion']; ?> :.......................</p>
                             <p class="subtitulo">GASTOS OPERAT. <?php echo $parametro['moneda_descripcion']; ?> :.......................</p>

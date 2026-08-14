@@ -125,9 +125,12 @@
                                 <?php
                                     }else{
                                 ?>
-                                <a href="https://www.google.com/maps/dir/<?php echo $e["empresa_latitud"].",".$e["empresa_longitud"]; ?>" target="_blank" title="<?php echo "lat.:".$e["empresa_latitud"].", long.:".$e["empresa_longitud"]?>">
+<!--                                <a href="https://www.google.com/maps/dir/<?php echo $e["empresa_latitud"].",".$e["empresa_longitud"]; ?>" target="_blank" title="<?php echo "lat.:".$e["empresa_latitud"].", long.:".$e["empresa_longitud"]?>">
                                     <img src="<?php echo base_url('resources/images/blue.png'); ?>" width="30" height="30">
-                                </a>
+                                </a>-->
+                                    <a href="https://www.google.com/maps/dir/?api=1&destination=<?php echo $e["empresa_latitud"].",".$e["empresa_longitud"]; ?>" target="_blank" title="<?php echo "lat.:".$e["empresa_latitud"].", long.:".$e["empresa_longitud"]?>">
+                                        <img src="<?php echo base_url('resources/images/blue.png'); ?>" width="30" height="30">
+                                    </a>
                                 <?php
                                     }
                                 ?>

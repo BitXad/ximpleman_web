@@ -256,6 +256,8 @@ function obtenerTransaccionesRegistradas($texto = '')
     </div>
 </div>
 
+
+
 <!-- DataTables + Buttons -->
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>

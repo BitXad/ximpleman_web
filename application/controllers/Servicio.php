@@ -943,10 +943,11 @@ class Servicio extends CI_Controller{
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
             
             $this->load->model('Detalle_serv_model');
-	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
-            
+	    $detalleserv = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            $data['detalle_serv'] = $detalleserv;
             $this->load->model('Detalle_venta_model');
-	    $data['detalle_venta'] = $this->Detalle_serv_model->get_detalle_venta($servicio_id);
+	    //$data['detalle_venta'] = $this->Detalle_serv_model->get_detalle_venta($servicio_id);
+	    //$data['detalle_venta'] = $this->Servicio_model->get_productos_servicio($detalle_serv[0]["detalleserv_id"]);
             
             $empresa_id = 1;
             $this->load->model('Empresa_model');
@@ -1021,7 +1022,10 @@ class Servicio extends CI_Controller{
             
             $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
             
+          //  $data['productos'] = $this->Servicio_model->get_productos_servicio($detalleserv_id);
+            
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['tipo_usuario'] = $this->session_data['tipousuario_descripcion'];
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);

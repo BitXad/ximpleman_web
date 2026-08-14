@@ -251,8 +251,11 @@ class Inventario_model extends CI_Model
         return $producto;
     }
 
+    
+    
     function get_producto_codigo($codigo,$cantidad,$agrupado)
     {
+        
         $usuario_id = $this->session_data['usuario_id'];
 
         // verificar si el producto existe
@@ -291,7 +294,7 @@ class Inventario_model extends CI_Model
         }else{
             
                 $producto_id = $producto[0]["producto_id"];
-                $cantidad = $producto[0]["cantidad"]; //la cantidad a vender
+                //$cantidad = $producto[0]["cantidad"]; //la cantidad a vender
                 $existencia = $producto[0]["existencia"]; //la existencia actual
                 
                 //
@@ -308,7 +311,7 @@ class Inventario_model extends CI_Model
                 if ($existencia >= ($cantidad + $cantidad_reservada)){
                     
                 
-                        if(empty($resultado)||$agrupado==0){
+                        if(empty($resultado)||$agrupado==0){ //Si no es agrupado
 
 
                                 $sql = "insert into detalle_venta_aux(producto_id,venta_id,moneda_id,detalleven_codigo,
@@ -333,7 +336,7 @@ class Inventario_model extends CI_Model
                                         producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
                                         0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
                                         0,0,producto_unidad,0,6.96, 
-                                        1 as cantidad, producto_precio as precio, 1 * producto_precio,1 * producto_precio
+                                        {$cantidad} as cantidad, producto_precio as precio, {$cantidad} * producto_precio,{$cantidad} * producto_precio
                                          from inventario where producto_codigobarra = '{$codigo}' or producto_codigobarra = '{$codigo}') union
 
                                          (select producto_id, 0, moneda_id, producto_codigobarra, 
@@ -423,7 +426,164 @@ class Inventario_model extends CI_Model
                 }
         }
     }
+    
+/*
+    function get_producto_codigo($codigo, $cantidad, $agrupado)
+    {
+        $usuario_id = (int) $this->session_data['usuario_id'];
+        $codigo = trim((string)$codigo);
+        $cantidad = (float)$cantidad;
+        $agrupado = (int)$agrupado;
 
+        if ($codigo === '') {
+            return "ADVERTENCIA: Código vacío, verifique e intente nuevamente...!";
+        }
+
+        if ($cantidad <= 0) {
+            return "ADVERTENCIA: La cantidad debe ser mayor a cero...!";
+        }
+
+        $codigo_esc = $this->db->escape($codigo);
+
+        $sql = "
+            SELECT *,
+                CASE
+                    WHEN producto_codigobarra = {$codigo_esc} THEN {$cantidad}
+                    WHEN producto_codigofactor  = {$codigo_esc} THEN producto_factor
+                    WHEN producto_codigofactor1 = {$codigo_esc} THEN producto_factor1
+                    WHEN producto_codigofactor2 = {$codigo_esc} THEN producto_factor2
+                    WHEN producto_codigofactor3 = {$codigo_esc} THEN producto_factor3
+                    WHEN producto_codigofactor4 = {$codigo_esc} THEN producto_factor4
+                    ELSE 0
+                END AS cantidad_vender,
+
+                CASE
+                    WHEN producto_codigobarra = {$codigo_esc} THEN producto_precio
+                    WHEN producto_codigofactor  = {$codigo_esc} THEN producto_preciofactor
+                    WHEN producto_codigofactor1 = {$codigo_esc} THEN producto_preciofactor1
+                    WHEN producto_codigofactor2 = {$codigo_esc} THEN producto_preciofactor2
+                    WHEN producto_codigofactor3 = {$codigo_esc} THEN producto_preciofactor3
+                    WHEN producto_codigofactor4 = {$codigo_esc} THEN producto_preciofactor4
+                    ELSE producto_precio
+                END AS precio_vender,
+
+                CASE
+                    WHEN producto_codigobarra = {$codigo_esc} THEN producto_unidad
+                    WHEN producto_codigofactor  = {$codigo_esc} THEN producto_unidadfactor
+                    WHEN producto_codigofactor1 = {$codigo_esc} THEN producto_unidadfactor1
+                    WHEN producto_codigofactor2 = {$codigo_esc} THEN producto_unidadfactor2
+                    WHEN producto_codigofactor3 = {$codigo_esc} THEN producto_unidadfactor3
+                    WHEN producto_codigofactor4 = {$codigo_esc} THEN producto_unidadfactor4
+                    ELSE producto_unidad
+                END AS unidad_vender
+            FROM inventario
+            WHERE 
+                producto_codigobarra = {$codigo_esc}
+                OR producto_codigofactor = {$codigo_esc}
+                OR producto_codigofactor1 = {$codigo_esc}
+                OR producto_codigofactor2 = {$codigo_esc}
+                OR producto_codigofactor3 = {$codigo_esc}
+                OR producto_codigofactor4 = {$codigo_esc}
+            LIMIT 1
+        ";
+
+        $producto = $this->db->query($sql)->row_array();
+
+        if (empty($producto)) {
+            return "ADVERTENCIA: No existe un producto con el código {$codigo}, verifique la existencia y vuelva a intentar...!";
+        }
+
+        $producto_id = (int)$producto['producto_id'];
+        $existencia = (float)$producto['existencia'];
+        $cantidad_vender = (float)$cantidad; //$producto['cantidad_vender'];
+        $precio_vender = (float)$producto['precio_vender'];
+
+        if ($cantidad_vender <= 0) {
+            return "ADVERTENCIA: El código encontrado no tiene una cantidad válida configurada...!";
+        }
+
+        $resultado = $this->db
+            ->where('producto_id', $producto_id)
+            ->where('usuario_id', $usuario_id)
+            ->get('detalle_venta_aux')
+            ->row_array();
+
+        $cantidad_reservada = empty($resultado) ? 0 : (float)$resultado['detalleven_cantidad'];
+
+        if ($existencia < ($cantidad_vender + $cantidad_reservada)) {
+            return "La cantidad solicitada es mayor a la del inventario disponible...!";
+        }
+
+        if (empty($resultado) || $agrupado == 0) {
+
+            $subtotal = $cantidad_vender * $precio_vender;
+
+            $data = array(
+                'producto_id' => $producto_id,
+                'venta_id' => 0,
+                'moneda_id' => $producto['moneda_id'],
+                'detalleven_codigo' => $producto['producto_codigobarra'],
+                'detalleven_unidad' => $producto['producto_unidad'],
+                'detalleven_costo' => $producto['producto_costo'],
+                'detalleven_descuento' => 0,
+                'detalleven_descuentoparcial' => 0,
+                'detalleven_caracteristicas' => $producto['producto_caracteristicas'],
+                'detalleven_preferencia' => '',
+                'detalleven_comision' => $producto['producto_comision'],
+                'detalleven_tipocambio' => $producto['producto_tipocambio'],
+                'usuario_id' => $usuario_id,
+                'existencia' => $existencia,
+                'producto_nombre' => $producto['producto_nombre'],
+                'producto_unidad' => $producto['producto_unidad'],
+                'producto_marca' => $producto['producto_marca'],
+                'categoria_id' => $producto['categoria_id'],
+                'producto_codigobarra' => $producto['producto_codigobarra'],
+                'detalleven_envase' => $producto['producto_envase'],
+                'detalleven_nombreenvase' => $producto['producto_nombreenvase'],
+                'detalleven_costoenvase' => $producto['producto_costoenvase'],
+                'detalleven_precioenvase' => $producto['producto_precioenvase'],
+                'detalleven_cantidadenvase' => $producto['producto_cantidadenvase'],
+                'detalleven_garantiaenvase' => 0,
+                'detalleven_devueltoenvase' => 0,
+                'detalleven_montodevolucion' => 0,
+                'detalleven_prestamoenvase' => 0,
+                'promocion_id' => 0,
+                'clasificador_id' => 0,
+                'detalleven_unidadfactor' => $producto['unidad_vender'],
+                'preferencia_id' => 0,
+                'detalleven_tc' => 6.96,
+                'detalleven_cantidad' => $cantidad_vender,
+                'detalleven_precio' => $precio_vender,
+                'detalleven_subtotal' => $subtotal,
+                'detalleven_total' => $subtotal
+            );
+
+            $this->db->insert('detalle_venta_aux', $data);
+
+        } else {
+
+            $detalleven_id = (int)$resultado['detalleven_id'];
+            $descuento = (float)$resultado['detalleven_descuento'];
+
+            $sql_update = "
+                UPDATE detalle_venta_aux
+                SET 
+                    detalleven_cantidad = detalleven_cantidad + {$cantidad_vender},
+                    detalleven_subtotal = detalleven_precio * (detalleven_cantidad),
+                    detalleven_descuento = {$descuento},
+                    detalleven_total = (detalleven_precio - {$descuento}) * (detalleven_cantidad)
+                WHERE 
+                    detalleven_id = {$detalleven_id}
+                    AND producto_id = {$producto_id}
+                    AND usuario_id = {$usuario_id}
+            ";
+
+            $this->db->query($sql_update);
+        }
+
+        return true;
+    }
+*/
     function ingresorapidojsx($cantidad, $producto_id, $nombre_factor)
     {
         $usuario_id = $this->session_data['usuario_id'];
@@ -541,7 +701,7 @@ class Inventario_model extends CI_Model
             from inventario i 
             left join detalle_compra dc on dc.producto_id = i.producto_id 
             where i.estado_id = 1 
-            and dc.detallecomp_series like '%$serie%'
+            and dc.detallecomp_series like '%".$this->db->escape_like_str($serie)."%'
             group by i.producto_id
             order by i.producto_nombre"
         )->result_array();
@@ -586,10 +746,10 @@ class Inventario_model extends CI_Model
 //        left join categoria_producto c on c.categoria_id = p.categoria_id
 //        left join detalle_compra dc on dc.producto_id = p.producto_id 
 //        WHERE p.estado_id=1 
-//        and p.producto_nombre like '%$parametro%' 
-//        or p.producto_codigobarra like '%$parametro%' 
-//        or p.producto_codigo like '%$parametro%'
-//        or dc.detallecomp_series like '%$parametro%'
+//        and p.producto_nombre like '%".$this->db->escape_like_str($parametro)."%' 
+//        or p.producto_codigobarra like '%".$this->db->escape_like_str($parametro)."%' 
+//        or p.producto_codigo like '%".$this->db->escape_like_str($parametro)."%'
+//        or dc.detallecomp_series like '%".$this->db->escape_like_str($parametro)."%'
 //        GROUP BY p.categoria_id, p.producto_id
 //        ORDER By c.categoria_nombre, p.producto_nombre asc";
         
@@ -600,9 +760,9 @@ class Inventario_model extends CI_Model
         /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
         
         WHERE p.estado_id=1 
-        and p.producto_nombre like '%$parametro%' 
-        or p.producto_codigobarra like '%$parametro%' 
-        or p.producto_codigo like '%$parametro%'         
+        and p.producto_nombre like '%".$this->db->escape_like_str($parametro)."%' 
+        or p.producto_codigobarra like '%".$this->db->escape_like_str($parametro)."%' 
+        or p.producto_codigo like '%".$this->db->escape_like_str($parametro)."%'         
         GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
         //============================================================
@@ -621,10 +781,10 @@ class Inventario_model extends CI_Model
                       LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
                       WHERE 
                            p.estado_id = e.estado_id
-                           and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
-                           or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
-                           or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%'
-                           or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
+                           and(p.producto_nombre like '%".$this->db->escape_like_str($parametro)."%' or p.producto_codigobarra like '%".$this->db->escape_like_str($parametro)."%'
+                           or p.producto_codigo like '%".$this->db->escape_like_str($parametro)."%' or p.producto_marca like '%".$this->db->escape_like_str($parametro)."%'
+                           or p.producto_industria like '%".$this->db->escape_like_str($parametro)."%' or p.producto_caracteristicas like '%".$this->db->escape_like_str($parametro)."%'
+                           or p.producto_principioact like '%".$this->db->escape_like_str($parametro)."%' or p.producto_accionterap like '%".$this->db->escape_like_str($parametro)."%')
                            ".$categoriaestado."
 
                       GROUP by cp.categoria_id, p.producto_id 
@@ -642,8 +802,8 @@ class Inventario_model extends CI_Model
         left join categoria_producto c on c.categoria_id = p.categoria_id
         /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
         WHERE p.estado_id=1 
-        and p.producto_principioact like '%$parametro%' 
-        or p.producto_accionterap like '%$parametro%'    
+        and p.producto_principioact like '%".$this->db->escape_like_str($parametro)."%' 
+        or p.producto_accionterap like '%".$this->db->escape_like_str($parametro)."%'    
         GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
         $producto = $this->db->query($sql)->result_array();
@@ -657,7 +817,7 @@ class Inventario_model extends CI_Model
             left join categoria_producto c on c.categoria_id = p.categoria_id
             left join detalle_compra dc on dc.producto_id = p.producto_id 
             WHERE p.estado_id=1 
-            and dc.detallecomp_series like '%$parametro%'
+            and dc.detallecomp_series like '%".$this->db->escape_like_str($parametro)."%'
             GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
         return $this->db->query($sql)->result_array();
@@ -942,13 +1102,13 @@ class Inventario_model extends CI_Model
     function get_inventario_coti($parametro)
     {
         $sql = "SELECT i.* FROM inventario i
-              WHERE i.estado_id=1 and (i.producto_nombre like '%".$parametro."%' or i.producto_codigobarra like '%".$parametro."%'
+              WHERE i.estado_id=1 and (i.producto_nombre like '%".$this->db->escape_like_str($parametro)."%' or i.producto_codigobarra like '%".$this->db->escape_like_str($parametro)."%'
                   or i.producto_codigofactor = '".$parametro."'
                   or i.producto_codigofactor1 = '".$parametro."'
                   or i.producto_codigofactor2 = '".$parametro."'
                   or i.producto_codigofactor3 = '".$parametro."'
                   or i.producto_codigofactor4 = '".$parametro."'
-                  or producto_codigo like '%".$parametro."%')
+                  or producto_codigo like '%".$this->db->escape_like_str($parametro)."%')
                   
               GROUP BY
                 i.producto_id
@@ -1425,7 +1585,7 @@ class Inventario_model extends CI_Model
         
         $sql = "select  p.*,c.categoria_nombre FROM inventario p
                 left join categoria_producto c on c.categoria_id = p.categoria_id
-                WHERE p.estado_id=1 and p.existencia>0 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
+                WHERE p.estado_id=1 and p.existencia>0 and p.producto_nombre like '%".$this->db->escape_like_str($parametro)."%' or p.producto_codigobarra like '%".$this->db->escape_like_str($parametro)."%' or p.producto_codigo like '%".$this->db->escape_like_str($parametro)."%'
                 GROUP BY p.categoria_id, p.producto_id
                 ORDER By c.categoria_nombre, p.producto_nombre asc";
         

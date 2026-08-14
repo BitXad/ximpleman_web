@@ -398,7 +398,7 @@ border-bottom : 1px solid #aaa;
                             
                             
                             <?php
-                            if($opc == 12){ //Comercializacion de hidrocarburos
+                            if($opc == 12 || $opc == 55){ //Comercializacion de hidrocarburos
                             ?>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Placa/B-Sisa/Vin:</b></td>
@@ -464,7 +464,7 @@ border-bottom : 1px solid #aaa;
                         
                             
                             <?php
-                            if($opc == 12){ //Comercializacion de hidrocarburos
+                            if($opc == 12 || $opc == 55){ //Comercializacion de hidrocarburos
                             ?>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Tipo Envase:</b></td>

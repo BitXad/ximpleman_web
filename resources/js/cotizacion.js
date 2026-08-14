@@ -957,6 +957,9 @@ function fechacotizacion(parametro){
                         
                         html += " <a href='"+base_url+"cotizacion/cotizarecibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"cotizacion/recibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
+                        html += " <button class='btn btn-warning btn-xs' onclick='cotizacion_a_ventas("+registros[i]["cotizacion_id"]+")' title='Pasar cotización a ventas'><fa class='fa fa-cart-plus'></fa> </button>";
+                        html += " <button class='btn btn-default btn-xs' onclick='clonar_cotizacion("+registros[i]["cotizacion_id"]+")' title='Copiar cotización'><fa class='fa fa-copy'></fa> </button>";
+                        
                         html += "  <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["cotizacion_id"]+"' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
                         html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                         html += " <div class='modal fade' id='modalanular"+registros[i]['cotizacion_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
@@ -986,7 +989,6 @@ function fechacotizacion(parametro){
                         html += "    <div class='modal-footer aligncenter'>";
                         html += "   <center>";                                        
                         html += "  <a href='"+base_url+"cotizacion/remove/"+registros[i]['cotizacion_id']+"' class='btn btn-danger  btn-sm'><em class='fa fa-pencil'></em> Si </a>";
-
                         html += "  <a href='#' class='btn btn-success btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
                         html += "  </center>";
 
@@ -1071,4 +1073,66 @@ function pasar_a_ventas(){
 
     });
 
+}
+
+function cotizacion_a_ventas(cotizacion_id){
+
+    var base_url = document.getElementById('base_url').value;
+    //var cotizacion_id = document.getElementById('cotizacion_id').value;
+    var controlador = base_url+"cotizacion/pasar_a_ventas/"+cotizacion_id;
+    var url = base_url+"venta/ventas";
+
+    var answer = window.confirm("ADVERTENCIA: Esta a punto de pasar esta cotización a ventas.\n Esta operación eliminará la venta en curso, si es que existiera.\n ¿Desea continuar?");
+
+    if (answer) {
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{cotizacion_id: cotizacion_id},
+                success:function(respuesta){
+
+                    alert("Proceso realizado con exito");
+                     window.open(url, '_blank');
+                }
+
+
+
+        });
+    
+    }
+
+}
+
+function clonar_cotizacion(cotizacion_id){
+
+    var base_url = document.getElementById('base_url').value;
+    //var cotizacion_id = document.getElementById('cotizacion_id').value;
+    var controlador = base_url+"cotizacion/clonar_cotizacion/"+cotizacion_id;
+    var url = base_url+"venta/ventas";
+
+    var answer = window.confirm("ADVERTENCIA: Esta a punto de clonar la cotización selecionada.\n ¿Desea continuar?");
+
+    if (answer) {
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{cotizacion_id: cotizacion_id},
+                success:function(respuesta){
+                    
+                    res = JSON.parse(respuesta);
+                    
+                    if (res>0){
+                        
+                        var url = base_url+"cotizacion/add/"+res;
+                        alert("Proceso realizado con exito");
+                        window.open(url, '_blank');
+                        
+                    }
+                    
+                     
+                }
+
+
+
+        });
+    
+    }
 }

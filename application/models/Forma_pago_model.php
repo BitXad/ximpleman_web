@@ -38,6 +38,14 @@ class Forma_pago_model extends CI_Model
         $forma_pago = $this->db->query("select * from forma_pago")->result_array();
         return $forma_pago;
     }
+    /*
+     * Get forma_pago by forma_id
+     */
+    function get_all_forma_activo()
+    {
+        $forma_pago = $this->db->query("select * from forma_pago where estado_id = 1")->result_array();
+        return $forma_pago;
+    }
     
     /*
      * Get all forma_pago count
