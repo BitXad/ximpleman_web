@@ -1079,39 +1079,311 @@ function get_busqueda($condicion)
     /*
     * Ventas del mes actual de un usuario
     */
-    function anular_operacion($venta_id, $usuario_id){
-        
-        
-        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = {$venta_id}";
-        $this->db->query($sql);
-        
-        $sql =" update pasaje set                
-                factura_id = 0,
-                cliente_id = 0,
-                pasaje_nombre = '',
-                pasaje_telefono = '',
-                pasaje_documento = '',
-                estado_id = 50,
-                usuario_id = {$usuario_id},
-                venta_id = 0,
-                cdi_codigoclasificador = 0
-                where venta_id = {$venta_id}";
-        
-        $this->db->query($sql);
-        
-        return $venta_id;
+    public function anular_operacion_auditada($pasaje_id,$usuario_id,$motivo,$caja_id=0,$autorizador_id=0,$venta_id_cliente=0){
+        $pasaje_id=(int)$pasaje_id;
+        $usuario_id=(int)$usuario_id;
+        $caja_id=(int)$caja_id;
+        $autorizador_id=(int)$autorizador_id;
+        $venta_id_cliente=(int)$venta_id_cliente;
+        $motivo=trim((string)$motivo);
+
+        if($pasaje_id<=0 || $usuario_id<=0 || $motivo===''){
+            return array('ok'=>false,'mensaje'=>'Datos incompletos para anular.');
+        }
+
+        $this->db->trans_begin();
+        try{
+            // La fuente de verdad es el pasaje seleccionado, NO el venta_id enviado por JS.
+            $pasaje_origen=$this->db->query(
+                "SELECT p.*,a.asiento_numero FROM pasaje p LEFT JOIN asientos a ON a.asiento_id=p.asiento_id WHERE p.pasaje_id=? FOR UPDATE",
+                array($pasaje_id)
+            )->row_array();
+
+            if(!$pasaje_origen) throw new Exception('El pasaje seleccionado no existe.');
+            if(!in_array((int)$pasaje_origen['estado_id'],array(52,54),true)){
+                throw new Exception('El pasaje ya no se encuentra vendido o reservado y no puede anularse.');
+            }
+
+            $venta_id=(int)$pasaje_origen['venta_id'];
+            $origen='PASAJE_LEGACY';
+            $venta=array();
+            $tabla_venta='';
+
+            // 1) Venta de pasajes actual.
+            if($venta_id>0){
+                $venta=$this->db->query(
+                    "SELECT vp.*,f.forma_nombre FROM venta_pasaje vp LEFT JOIN forma_pago f ON f.forma_id=vp.forma_id WHERE vp.venta_id=? FOR UPDATE",
+                    array($venta_id)
+                )->row_array();
+                if($venta){
+                    $origen='VENTA_PASAJE';
+                    $tabla_venta='venta_pasaje';
+                }
+            }
+
+            // 2) Compatibilidad con cabeceras antiguas almacenadas en venta.
+            if(!$venta && $venta_id>0){
+                $venta=$this->db->query(
+                    "SELECT v.*,f.forma_nombre FROM venta v LEFT JOIN forma_pago f ON f.forma_id=v.forma_id WHERE v.venta_id=? FOR UPDATE",
+                    array($venta_id)
+                )->row_array();
+                if($venta){
+                    $origen='VENTA_LEGACY';
+                    $tabla_venta='venta';
+                }
+            }
+
+            if($venta && isset($venta['estado_id']) && (int)$venta['estado_id']===3){
+                throw new Exception('La venta ya se encuentra anulada.');
+            }
+
+            // Si la cabecera existe anulamos todos los pasajes asociados a ella.
+            // Si venta_id=0 (datos historicos), anulamos unicamente el pasaje seleccionado.
+            if($venta_id>0){
+                $pasajes=$this->db->query(
+                    "SELECT p.*,a.asiento_numero FROM pasaje p LEFT JOIN asientos a ON a.asiento_id=p.asiento_id WHERE p.venta_id=? AND p.estado_id IN (52,54) FOR UPDATE",
+                    array($venta_id)
+                )->result_array();
+                if(!$pasajes){
+                    // Cabecera inconsistente: por seguridad no dejamos sin atender el pasaje que el operador selecciono.
+                    $pasajes=array($pasaje_origen);
+                }
+            }else{
+                $pasajes=array($pasaje_origen);
+            }
+
+            $u=$this->db->query("SELECT puntoventa_codigo FROM usuario WHERE usuario_id=?",array($usuario_id))->row_array();
+            $sucursal_id=$u?(int)$u['puntoventa_codigo']:0;
+
+            $importe_original=0;
+            $forma_id_original=0;
+            $forma_nombre_original='SIN FORMA';
+            $estado_venta_original=null;
+            $viaje_id=(int)$pasaje_origen['viaje_id'];
+
+            if($venta){
+                $importe_original=isset($venta['venta_total'])?(float)$venta['venta_total']:0;
+                $forma_id_original=isset($venta['forma_id'])?(int)$venta['forma_id']:0;
+                $forma_nombre_original=!empty($venta['forma_nombre'])?$venta['forma_nombre']:'SIN FORMA';
+                $estado_venta_original=isset($venta['estado_id'])?(int)$venta['estado_id']:null;
+                if(isset($venta['viaje_id']) && (int)$venta['viaje_id']>0) $viaje_id=(int)$venta['viaje_id'];
+            }else{
+                foreach($pasajes as $px) $importe_original+=(float)$px['pasaje_precio'];
+            }
+
+            // Snapshot siempre conserva tanto la cabecera encontrada como el pasaje origen.
+            $snapshot=array(
+                'origen'=>$origen,
+                'venta_id_resuelto'=>$venta_id,
+                'venta_id_recibido'=>$venta_id_cliente,
+                'cabecera'=>$venta?:null,
+                'pasaje_origen'=>$pasaje_origen
+            );
+
+            $this->db->insert('venta_pasaje_anulacion',array(
+                'venta_id'=>$venta_id,
+                'viaje_id'=>$viaje_id,
+                'usuario_anula_id'=>$usuario_id,
+                'usuario_autoriza_id'=>$autorizador_id,
+                'anulacion_fecha'=>date('Y-m-d'),
+                'anulacion_hora'=>date('H:i:s'),
+                'anulacion_motivo'=>$motivo,
+                'sucursal_id'=>$sucursal_id,
+                'caja_id'=>$caja_id,
+                'importe_original'=>$importe_original,
+                'forma_id_original'=>$forma_id_original,
+                'forma_nombre_original'=>$forma_nombre_original,
+                'estado_venta_original'=>$estado_venta_original,
+                'venta_snapshot'=>json_encode($snapshot,JSON_UNESCAPED_UNICODE)
+            ));
+            $anulacion_id=(int)$this->db->insert_id();
+            if($anulacion_id<=0) throw new Exception('No se pudo registrar la auditoria de anulacion. Verifique el script de actualizacion de anulaciones legacy.');
+
+            foreach($pasajes as $x){
+                $this->db->insert('venta_pasaje_anulacion_detalle',array(
+                    'anulacion_id'=>$anulacion_id,
+                    'venta_id'=>$venta_id,
+                    'pasaje_id'=>(int)$x['pasaje_id'],
+                    'viaje_id'=>(int)$x['viaje_id'],
+                    'asiento_id'=>(int)$x['asiento_id'],
+                    'asiento_numero'=>$x['asiento_numero'],
+                    'pasaje_numero'=>$x['pasaje_numero'],
+                    'pasaje_nombre'=>$x['pasaje_nombre'],
+                    'pasaje_documento'=>$x['pasaje_documento'],
+                    'pasaje_telefono'=>$x['pasaje_telefono'],
+                    'pasaje_precio'=>$x['pasaje_precio'],
+                    'estado_pasaje_original'=>$x['estado_id'],
+                    'pasaje_snapshot'=>json_encode($x,JSON_UNESCAPED_UNICODE)
+                ));
+            }
+
+            // Nunca DELETE. Solo cambia el estado de la cabecera si existe.
+            if($tabla_venta==='venta_pasaje'){
+                $this->db->where('venta_id',$venta_id)->update('venta_pasaje',array('estado_id'=>3));
+            }elseif($tabla_venta==='venta'){
+                $this->db->where('venta_id',$venta_id)->update('venta',array('estado_id'=>3));
+            }
+
+            // El registro pasaje es la ocupacion operativa del asiento. La evidencia completa
+            // ya quedo en la auditoria; se libera para que pueda volver a venderse.
+            foreach($pasajes as $x){
+                $this->db->where('pasaje_id',(int)$x['pasaje_id'])->update('pasaje',array(
+                    'factura_id'=>0,
+                    'cliente_id'=>0,
+                    'pasaje_nombre'=>'',
+                    'pasaje_telefono'=>'',
+                    'pasaje_documento'=>'',
+                    'estado_id'=>50,
+                    'usuario_id'=>0,
+                    'venta_id'=>0,
+                    'cdi_codigoclasificador'=>0,
+                    'pasaje_bloqueado_hasta'=>null,
+                    'pasaje_fechalimiteres'=>null,
+                    'pasaje_horalimiteres'=>null
+                ));
+            }
+
+            if($this->db->trans_status()===false) throw new Exception('Error de base de datos durante la anulacion.');
+            $this->load->model('Bitacora_transporte_model');
+            $this->Bitacora_transporte_model->registrar('ANULACION','VENTA_PASAJE',$venta_id,array('venta'=>$venta,'pasajes'=>$pasajes),array('estado_id'=>3,'motivo'=>$motivo),array('venta_id'=>$venta_id,'viaje_id'=>(int)$pasaje_origen['viaje_id'],'pasaje_id'=>$pasaje_id,'usuario_id'=>$usuario_id,'observacion'=>$motivo));
+            $this->db->trans_commit();
+
+            $numero_mostrar=$venta_id>0 ? (string)$venta_id : ('PASAJE '.$pasaje_id);
+            return array(
+                'ok'=>true,
+                'mensaje'=>'Operacion '.$numero_mostrar.' anulada y registrada para auditoria.',
+                'venta_id'=>$venta_id,
+                'pasaje_id'=>$pasaje_id,
+                'anulacion_id'=>$anulacion_id,
+                'origen'=>$origen
+            );
+        }catch(Exception $e){
+            $this->db->trans_rollback();
+            return array('ok'=>false,'mensaje'=>$e->getMessage());
+        }
     }
-    
+
+    /*
+     * Pasa temporalmente una reserva al estado EN PROCESO (51) para que
+     * aparezca en la tabla de Venta de Pasajes. No borra la venta_id original;
+     * eso permite restaurarla si el usuario cancela la consolidación.
+     */
+    function preparar_consolidar_reserva($venta_id, $viaje_id, $usuario_id){
+        $venta_id = (int)$venta_id;
+        $viaje_id = (int)$viaje_id;
+        $usuario_id = (int)$usuario_id;
+
+        if($venta_id <= 0 || $viaje_id <= 0){
+            return array('ok'=>false, 'mensaje'=>'No se pudo identificar la reserva o el viaje.');
+        }
+
+        // No mezclar una reserva con otra operación temporal del mismo usuario.
+        $pendientes = $this->db->query(
+            "SELECT COUNT(*) cantidad FROM pasaje WHERE viaje_id = ? AND estado_id = 51 AND usuario_id = ?",
+            array($viaje_id, $usuario_id)
+        )->row_array();
+
+        if(!empty($pendientes) && (int)$pendientes['cantidad'] > 0){
+            return array('ok'=>false, 'mensaje'=>'Ya existen pasajes en proceso. Finalice o quite esa operación antes de consolidar la reserva.');
+        }
+
+        $reserva = $this->db->query(
+            "SELECT v.venta_id, v.viaje_id, v.venta_codigoreserva, v.venta_fechareserva, v.venta_horareserva,
+                    COUNT(p.pasaje_id) cantidad, COALESCE(SUM(p.pasaje_precio),0) total
+             FROM venta_pasaje v
+             INNER JOIN pasaje p ON p.venta_id = v.venta_id
+             WHERE v.venta_id = ? AND v.viaje_id = ? AND p.estado_id = 52
+             GROUP BY v.venta_id, v.viaje_id, v.venta_codigoreserva, v.venta_fechareserva, v.venta_horareserva",
+            array($venta_id, $viaje_id)
+        )->row_array();
+
+        if(empty($reserva) || (int)$reserva['cantidad'] <= 0){
+            return array('ok'=>false, 'mensaje'=>'La operación seleccionada no tiene pasajes reservados disponibles para consolidar.');
+        }
+
+        $this->db->trans_start();
+        $this->db->query(
+            "UPDATE pasaje
+             SET estado_id = 51, usuario_id = ?, pasaje_bloqueado_hasta = DATE_ADD(NOW(), INTERVAL 5 MINUTE)
+             WHERE venta_id = ? AND viaje_id = ? AND estado_id = 52",
+            array($usuario_id, $venta_id, $viaje_id)
+        );
+        $this->db->trans_complete();
+
+        if($this->db->trans_status() === false){
+            return array('ok'=>false, 'mensaje'=>'No fue posible preparar la reserva para consolidación.');
+        }
+
+        return array(
+            'ok'=>true,
+            'mensaje'=>'Reserva cargada correctamente.',
+            'venta_id'=>(int)$reserva['venta_id'],
+            'codigo'=>$reserva['venta_codigoreserva'],
+            'cantidad'=>(int)$reserva['cantidad'],
+            'total'=>(float)$reserva['total'],
+            'fecha_limite'=>$reserva['venta_fechareserva'],
+            'hora_limite'=>$reserva['venta_horareserva']
+        );
+    }
+
+    function cancelar_consolidar_reserva($venta_id, $usuario_id){
+        $venta_id = (int)$venta_id;
+        $usuario_id = (int)$usuario_id;
+
+        if($venta_id <= 0){
+            return array('ok'=>false, 'mensaje'=>'No existe una consolidación activa.');
+        }
+
+        $this->db->trans_start();
+        $this->db->query(
+            "UPDATE pasaje
+             SET estado_id = 52, pasaje_bloqueado_hasta = NULL
+             WHERE venta_id = ? AND estado_id = 51 AND usuario_id = ?",
+            array($venta_id, $usuario_id)
+        );
+        $this->db->trans_complete();
+
+        return array(
+            'ok'=>$this->db->trans_status() !== false,
+            'mensaje'=>$this->db->trans_status() !== false ? 'La reserva volvió a su estado anterior.' : 'No fue posible cancelar la consolidación.'
+        );
+    }
+
     /*
     * Verificamos si la transaccion es reserva
     */
     function verificar_reserva($venta_id){
-        
-        $sql =  "select * from   venta_pasaje v
-                LEFT OUTER JOIN cliente c ON c.cliente_id = v.cliente_id
-                LEFT OUTER JOIN pasaje p ON p.venta_id = v.venta_id
-                LEFT OUTER JOIN asientos a ON a.asiento_id  = p.asiento_id
-                where v.venta_id = {$venta_id} and p.estado_id = 52";
+        $venta_id = (int)$venta_id;
+
+        /*
+         * En muchas reservas de pasajes cliente_id queda en 0 porque los datos
+         * del pasajero se almacenan directamente en la tabla pasaje. Por eso
+         * no debemos depender solamente de cliente.cliente_nombre.
+         */
+        $sql = "SELECT
+                    v.*,
+                    p.*,
+                    a.*,
+                    COALESCE(NULLIF(TRIM(c.cliente_nombre), ''),
+                             NULLIF(TRIM(p.pasaje_nombre), ''),
+                             'SIN NOMBRE') AS pasajero_nombre,
+                    COALESCE(NULLIF(TRIM(c.cliente_nombre), ''),
+                             NULLIF(TRIM(p.pasaje_nombre), ''),
+                             'SIN NOMBRE') AS cliente_nombre,
+                    COALESCE(NULLIF(TRIM(c.cliente_telefono), ''),
+                             NULLIF(TRIM(p.pasaje_telefono), ''),
+                             '') AS pasajero_telefono,
+                    COALESCE(NULLIF(TRIM(c.cliente_nit), ''),
+                             NULLIF(TRIM(p.pasaje_documento), ''),
+                             '') AS pasajero_documento
+                FROM venta_pasaje v
+                LEFT JOIN cliente c ON c.cliente_id = v.cliente_id
+                INNER JOIN pasaje p ON p.venta_id = v.venta_id
+                LEFT JOIN asientos a ON a.asiento_id = p.asiento_id
+                WHERE v.venta_id = {$venta_id}
+                  AND p.estado_id = 52
+                ORDER BY p.pasaje_id ASC";
+
         return $this->db->query($sql)->result_array();
     }
     
@@ -1131,4 +1403,83 @@ function get_busqueda($condicion)
         return $this->db->query($sql)->result_array();
     }
     
+
+
+    /**
+     * Configuracion de reservas por ruta. Los valores por defecto permiten
+     * desplegar el cambio aun antes de personalizar cada ruta.
+     */
+    public function configuracion_reserva_viaje($viaje_id){
+        $row = $this->db->query(
+            "SELECT r.ruta_id,
+                    COALESCE(r.ruta_reserva_minutos,30) reserva_minutos,
+                    COALESCE(r.ruta_reserva_alerta_minutos,10) alerta_minutos,
+                    COALESCE(r.ruta_reserva_extension_max_minutos,120) extension_max_minutos,
+                    COALESCE(r.ruta_reserva_requiere_autorizacion,1) requiere_autorizacion,
+                    COALESCE(r.ruta_reserva_rol_autoriza,30) rol_autoriza
+             FROM viaje v INNER JOIN ruta r ON r.ruta_id=v.ruta_id
+             WHERE v.viaje_id=? LIMIT 1", array((int)$viaje_id)
+        )->row_array();
+        return $row ?: array('ruta_id'=>0,'reserva_minutos'=>30,'alerta_minutos'=>10,'extension_max_minutos'=>120,'requiere_autorizacion'=>1,'rol_autoriza'=>30);
+    }
+
+    /** Libera reservas vencidas y conserva trazabilidad del motivo. */
+    public function liberar_reservas_vencidas($viaje_id = 0, $motivo = 'VENCIMIENTO AUTOMATICO'){
+        $params=array();
+        $filtro='';
+        if((int)$viaje_id>0){ $filtro=' AND v.viaje_id=?'; $params[]=(int)$viaje_id; }
+        $reservas=$this->db->query(
+            "SELECT DISTINCT v.venta_id,v.viaje_id,v.usuario_id,v.venta_fechareserva,v.venta_horareserva
+             FROM venta_pasaje v
+             INNER JOIN pasaje p ON p.venta_id=v.venta_id AND p.estado_id=52
+             WHERE v.estado_id=52
+               AND TIMESTAMP(v.venta_fechareserva,v.venta_horareserva) < NOW()".$filtro,
+            $params
+        )->result_array();
+        $liberadas=0;
+        foreach($reservas as $r){
+            $this->db->trans_begin();
+            try{
+                $cab=$this->db->query("SELECT * FROM venta_pasaje WHERE venta_id=? FOR UPDATE",array((int)$r['venta_id']))->row_array();
+                if(!$cab || (int)$cab['estado_id']!==52){ $this->db->trans_rollback(); continue; }
+                $pasajes=$this->db->query("SELECT pasaje_id,asiento_id,pasaje_numero,pasaje_nombre,pasaje_documento,pasaje_telefono,pasaje_precio FROM pasaje WHERE venta_id=? AND estado_id=52 FOR UPDATE",array((int)$r['venta_id']))->result_array();
+                if(!$pasajes){ $this->db->trans_rollback(); continue; }
+                $this->db->insert('reserva_evento',array(
+                    'venta_id'=>(int)$r['venta_id'],'viaje_id'=>(int)$r['viaje_id'],'evento_tipo'=>'LIBERACION',
+                    'evento_fecha'=>date('Y-m-d H:i:s'),'usuario_id'=>null,'usuario_autoriza_id'=>null,
+                    'evento_motivo'=>$motivo,'limite_anterior'=>($r['venta_fechareserva'].' '.$r['venta_horareserva']),
+                    'limite_nuevo'=>null,'evento_detalle'=>json_encode($pasajes, JSON_UNESCAPED_UNICODE)
+                ));
+                $this->db->where('venta_id',(int)$r['venta_id'])->update('venta_pasaje',array(
+                    'estado_id'=>3,'reserva_liberada_at'=>date('Y-m-d H:i:s'),'reserva_motivo_liberacion'=>$motivo
+                ));
+                $this->db->where('venta_id',(int)$r['venta_id'])->where('estado_id',52)->update('pasaje',array(
+                    'estado_id'=>50,'usuario_id'=>0,'venta_id'=>0,'pasaje_bloqueado_hasta'=>null,
+                    'pasaje_fechalimiteres'=>null,'pasaje_horalimiteres'=>null
+                ));
+                if($this->db->trans_status()===false) throw new Exception('Error liberando reserva');
+                $this->load->model('Bitacora_transporte_model');
+                $this->Bitacora_transporte_model->registrar('LIBERACION','RESERVA',(int)$r['venta_id'],array('estado_id'=>52,'limite'=>$r['venta_fechareserva'].' '.$r['venta_horareserva'],'pasajes'=>$pasajes),array('estado_id'=>3,'pasajes_liberados'=>count($pasajes)),array('venta_id'=>(int)$r['venta_id'],'reserva_id'=>(int)$r['venta_id'],'viaje_id'=>(int)$r['viaje_id'],'usuario_id'=>null,'observacion'=>$motivo));
+                $this->db->trans_commit(); $liberadas++;
+            }catch(Exception $e){ $this->db->trans_rollback(); log_message('error','Liberacion automatica reserva: '.$e->getMessage()); }
+        }
+        return $liberadas;
+    }
+
+    /** Valida las credenciales y el rol requerido para autorizar una extension. */
+    public function validar_autorizador_reserva($login,$clave,$rol_id){
+        $u=$this->db->query(
+            "SELECT u.usuario_id,u.usuario_nombre,u.tipousuario_id
+             FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id
+             WHERE u.usuario_login=? AND u.usuario_clave=? AND u.estado_id=1
+               AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1",
+            array(trim($login),md5((string)$clave),(int)$rol_id)
+        )->row_array();
+        return $u ?: false;
+    }
+
+    public function auditar_transporte($accion,$venta_id,$anterior=NULL,$nuevo=NULL,$extra=array()){
+        $this->load->model('Bitacora_transporte_model'); $extra['venta_id']=(int)$venta_id;
+        return $this->Bitacora_transporte_model->registrar($accion,'VENTA_PASAJE',(int)$venta_id,$anterior,$nuevo,$extra);
+    }
 }

@@ -81,13 +81,71 @@
         
     <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
     
+<?php
+/*
+ * Regla global de impresión Ximpleman:
+ * FACTURADORA = boucher/térmico, NORMAL = carta.
+ * Solo afecta la salida de impresión; no altera la presentación en pantalla.
+ */
+$_ximp_param = array();
+if (isset($parametro) && is_array($parametro)) {
+    $_ximp_param = (isset($parametro[0]) && is_array($parametro[0])) ? $parametro[0] : $parametro;
+} elseif (isset($this->parametros) && is_array($this->parametros)) {
+    $_ximp_param = $this->parametros;
+}
+$_ximp_tipo_impresora = isset($_ximp_param['parametro_tipoimpresora'])
+    ? strtoupper(trim((string)$_ximp_param['parametro_tipoimpresora'])) : 'NORMAL';
+$_ximp_ancho_boucher = (isset($_ximp_param['parametro_anchofactura']) && is_numeric($_ximp_param['parametro_anchofactura']) && (float)$_ximp_param['parametro_anchofactura'] > 0)
+    ? (float)$_ximp_param['parametro_anchofactura'] : 7;
+$_ximp_margen_boucher = (isset($_ximp_param['parametro_margenfactura']) && is_numeric($_ximp_param['parametro_margenfactura']))
+    ? (float)$_ximp_param['parametro_margenfactura'] : 0;
+?>
+<style type="text/css">
+@media print {
+    <?php if ($_ximp_tipo_impresora === 'FACTURADORA') { ?>
+    html, body { width: <?php echo $_ximp_ancho_boucher; ?>cm !important; max-width: <?php echo $_ximp_ancho_boucher; ?>cm !important; margin:0 !important; padding:0 !important; }
+    .content-wrapper, .right-side, .content, .box, .box-body {
+        width: <?php echo $_ximp_ancho_boucher; ?>cm !important;
+        max-width: <?php echo $_ximp_ancho_boucher; ?>cm !important;
+        min-width:0 !important;
+        margin-left: <?php echo $_ximp_margen_boucher; ?>cm !important;
+        padding-left:0 !important; padding-right:0 !important;
+    }
+    .table-responsive { overflow:visible !important; width:100% !important; }
+    table { max-width:100% !important; font-size:7pt !important; }
+    table th, table td { padding:2px !important; white-space:normal !important; word-break:break-word; }
+    h1,h2,h3,.box-title { font-size:10pt !important; }
+    <?php } else { ?>
+    /* NORMAL: los reportes conservan su diseño de carta y orientación propia. */
+    <?php } ?>
+}
+</style>
 </head>
 
 
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
 <!--<input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />-->
 
-<body class="hold-transition skin-<?php echo $sistema["sistema_color"]; ?> sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
+<body class="hold-transition skin-<?php echo $sistema["sistema_color"]; ?>
+
+<?php
+$tx_controller = strtolower((string)$this->router->fetch_class());
+$tx_method = strtolower((string)$this->router->fetch_method());
+
+$tx_transport_controllers = array(
+    'transporte','abordaje','equipaje','tarifa','vehiculo','viaje',
+    'parada','tramo','conductor','ayudante','ruta'
+);
+$tx_transporte_activo = in_array($tx_controller,$tx_transport_controllers,true);
+
+function tx_menu_activo($controller,$actual){
+    if(is_array($controller)){
+        return in_array($actual,$controller,true) ? 'active' : '';
+    }
+    return $actual===$controller ? 'active' : '';
+}
+?>
+ sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
@@ -400,42 +458,234 @@
                         
                     </ul>
                 </li>
-                <li <?php  echo( (isset($parametro["parametro_modulorestaurante"])?$parametro["parametro_modulorestaurante"]:0) == 3)?"":"hidden"; ?>>
-                    
-                    <a href="#"><i class="fa fa-truck"></i> <span>Transporte</span></a>
-                    <ul class="treeview-menu">
-                        
-                        <li>
-                            <a href="<?php echo site_url('transporte');?>"><i class="fa fa-ticket"></i> Venta de Pasajes</a>
-                        </li>
-                        
-                        <li>
-                            <a href="<?php echo site_url('vehiculo');?>"><i class="fa fa-bus"></i> Vehiculos</a>
-                        </li>
-                        
-                        <li>
-                            <a href="<?php echo site_url('viaje');?>"><i class="fa fa-map"></i> Viajes</a>
-                        </li>
-                        
-                        <li>
-                            <a href="<?php echo site_url('parada');?>"><i class="fa fa-map-marker"></i> Paradas</a>
-                        </li>
-                        
-                        <li>
-                            <a href="<?php echo site_url('conductor');?>"><i class="fa fa-users"></i> Conductores</a>
-                        </li>
-
-                        <li>
-                            <a href="<?php echo site_url('ayudante');?>"><i class="fa fa-user"></i> Ayudantes</a>
-                        </li>
-                                                
-                        <li>
-                            <a href="<?php echo site_url('ruta');?>"><i class="fa fa-road"></i> Rutas</a>
-                        </li>
-                        
-                        
-                    </ul>
+                <?php
+                $lotes_roles = isset($rol) ? $rol : array();
+                $lotes_admin = isset($tipousuario_id) && (int)$tipousuario_id === 1;
+                $lotes_ver = $lotes_admin || (isset($lotes_roles[223]) && (int)$lotes_roles[223]['rolusuario_asignado']===1) || (isset($lotes_roles[224]) && (int)$lotes_roles[224]['rolusuario_asignado']===1) || (isset($lotes_roles[225]) && (int)$lotes_roles[225]['rolusuario_asignado']===1) || (isset($lotes_roles[226]) && (int)$lotes_roles[226]['rolusuario_asignado']===1);
+                if($lotes_ver){ ?>
+                <li class="treeview <?php echo in_array(strtolower($this->router->fetch_class()),array('proyecto','proyecto_lote'))?'active menu-open':''; ?>">
+                  <a href="#"><i class="fa fa-map-o"></i> <span>Proyectos / Lotes</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo site_url('proyecto'); ?>"><i class="fa fa-building"></i> Proyectos</a></li>
+                    <li><a href="<?php echo site_url('proyecto'); ?>"><i class="fa fa-map"></i> Mapas y Lotes</a></li>
+                    <li><a href="<?php echo site_url('venta/ventas'); ?>"><i class="fa fa-shopping-cart"></i> Venta de Lotes</a></li>
+                    <li><a href="<?php echo site_url('cliente'); ?>"><i class="fa fa-users"></i> Clientes</a></li>
+                  </ul>
                 </li>
+                <?php }
+                                // El menú Transporte pertenece exclusivamente al modo TRANSPORTE.
+                // parametro_modulorestaurante: 0=COMERCIAL, 1=RESTAURANTE, 2=FARMACIA, 3=TRANSPORTE.
+                if ((int)(isset($parametro['parametro_modulorestaurante']) ? $parametro['parametro_modulorestaurante'] : 0) === 3) {
+                ?>
+                <li class="treeview <?php echo $tx_transporte_activo ? 'active menu-open' : ''; ?>">
+    <a href="#">
+        <i class="fa fa-truck"></i>
+        <span>Transporte</span>
+        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+    </a>
+    <ul class="treeview-menu" <?php echo $tx_transporte_activo ? 'style="display:block;"' : ''; ?>>
+        <li><a href="<?php echo site_url('transporte_dashboard'); ?>"><i class="fa fa-dashboard"></i> Dashboard Transporte</a></li>
+        <li><a href="<?php echo site_url('transporte'); ?>"><i class="fa fa-ticket"></i> Venta de pasajes</a></li>
+
+        <li class="<?php echo ($tx_controller==='transporte' && $tx_method==='pasajes') ? 'active' : ''; ?>">
+            <a href="<?php echo site_url('transporte/pasajes'); ?>"><i class="fa fa-search"></i> Buscar / Reimprimir Pasajes</a>
+        </li>
+        <li class="<?php echo ($tx_controller==='viaje' && $tx_method==='abordaje') ? 'active' : ''; ?>">
+            <a href="<?php echo site_url('viaje/abordaje'); ?>"><i class="fa fa-qrcode"></i> Control de Abordaje</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('equipaje',$tx_controller); ?>">
+            <a href="<?php echo site_url('equipaje'); ?>"><i class="fa fa-suitcase"></i> Control de Equipaje</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('tarifa',$tx_controller); ?>">
+            <a href="<?php echo site_url('tarifa'); ?>"><i class="fa fa-money"></i> Tarifas</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('vehiculo',$tx_controller); ?>">
+            <a href="<?php echo site_url('vehiculo'); ?>"><i class="fa fa-bus"></i> Vehículos</a>
+        </li>
+        <li class="<?php echo ($tx_controller==='vehiculo' && $tx_method==='disenador') ? 'active' : ''; ?>">
+            <a href="<?php echo site_url('vehiculo/disenador'); ?>"><i class="fa fa-th"></i> Diseñador de Vehículos</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('viaje',$tx_controller); ?>">
+            <a href="<?php echo site_url('viaje'); ?>"><i class="fa fa-map"></i> Viajes</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('parada',$tx_controller); ?>">
+            <a href="<?php echo site_url('parada'); ?>"><i class="fa fa-map-marker"></i> Paradas</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('tramo',$tx_controller); ?>">
+            <a href="<?php echo site_url('tramo'); ?>"><i class="fa fa-random"></i> Tramos / Paradas de Ruta</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('conductor',$tx_controller); ?>">
+            <a href="<?php echo site_url('conductor'); ?>"><i class="fa fa-users"></i> Conductores</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('ayudante',$tx_controller); ?>">
+            <a href="<?php echo site_url('ayudante'); ?>"><i class="fa fa-user"></i> Ayudantes</a>
+        </li>
+        <li class="<?php echo tx_menu_activo('ruta',$tx_controller); ?>">
+            <a href="<?php echo site_url('ruta'); ?>"><i class="fa fa-road"></i> Rutas</a>
+        </li>
+        
+        <?php
+        $tx_reportes = array(
+            'reporte_transporte',
+            'reporte_viaje',
+            'reporte_ocupacion',
+            'reporte_ventas_ruta',
+            'reporte_ventas_destino',
+            'reporte_ventas_horario',
+            'reporte_vehiculo',
+            'reporte_conductor',
+            'reporte_reservas',
+            'reporte_anulaciones',
+            'reporte_descuentos',
+            'reporte_cortesias',
+            'reporte_formas_pago',
+            'reporte_pasajeros',
+            'reporte_equipajes',
+            'reporte_abordaje',
+            'reporte_rentabilidad_viaje'
+        );
+
+        $tx_reportes_activo = in_array($tx_controller, $tx_reportes);
+        ?>
+
+        <li class="treeview <?php echo $tx_reportes_activo ? 'active menu-open' : ''; ?>">
+
+            <a href="#">
+                <i class="fa fa-bar-chart"></i>
+                <span>Reportes</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+
+            <ul class="treeview-menu">
+
+                <li class="<?php echo ($tx_controller==='reporte_transporte') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_transporte/ventas_fecha'); ?>">
+                        <i class="fa fa-calendar"></i>
+                        Ventas por fecha
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_viaje') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_viaje'); ?>">
+                        <i class="fa fa-bus"></i>
+                        Reporte por viaje
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_ocupacion') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_ocupacion'); ?>">
+                        <i class="fa fa-percent"></i>
+                        Ocupación
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_ventas_ruta') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_ventas_ruta'); ?>">
+                        <i class="fa fa-road"></i>
+                        Ventas por ruta
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_ventas_destino') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_ventas_destino'); ?>">
+                        <i class="fa fa-map-marker"></i>
+                        Ventas por destino
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_ventas_horario') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_ventas_horario'); ?>">
+                        <i class="fa fa-clock-o"></i>
+                        Ventas por horario
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_vehiculo') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_vehiculo'); ?>">
+                        <i class="fa fa-bus"></i>
+                        Por vehículo
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_conductor') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_conductor'); ?>">
+                        <i class="fa fa-id-card"></i>
+                        Por conductor
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_reservas') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_reservas'); ?>">
+                        <i class="fa fa-calendar-check-o"></i>
+                        Reservas
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_anulaciones') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_anulaciones'); ?>">
+                        <i class="fa fa-ban"></i>
+                        Anulaciones
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_descuentos') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_descuentos'); ?>">
+                        <i class="fa fa-percent"></i>
+                        Descuentos
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_cortesias') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_cortesias'); ?>">
+                        <i class="fa fa-gift"></i>
+                        Cortesías
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_formas_pago') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_formas_pago'); ?>">
+                        <i class="fa fa-credit-card"></i>
+                        Formas de pago
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_pasajeros') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_pasajeros'); ?>">
+                        <i class="fa fa-users"></i>
+                        Pasajeros
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_equipajes') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_equipajes'); ?>">
+                        <i class="fa fa-suitcase"></i>
+                        Equipajes
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_abordaje') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_abordaje'); ?>">
+                        <i class="fa fa-check-square-o"></i>
+                        Abordaje / No Show
+                    </a>
+                </li>
+
+                <li class="<?php echo ($tx_controller==='reporte_rentabilidad_viaje') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url('reporte_rentabilidad_viaje'); ?>">
+                        <i class="fa fa-line-chart"></i>
+                        Rentabilidad por viaje
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        
+
+    </ul>
+</li>
+                <?php } // fin modo TRANSPORTE ?>
                 <li>
                     <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
                     <ul class="treeview-menu">

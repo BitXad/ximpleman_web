@@ -29,8 +29,18 @@ class Ruta extends CI_Controller{
  /*
 * Listing of ruta
  */
+    private function permiso_transporte($rol_id){
+        $uid=isset($this->session_data['usuario_id'])?(int)$this->session_data['usuario_id']:0;
+        if($uid<=0) return false;
+        $r=$this->db->query("SELECT 1 ok FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id WHERE u.usuario_id=? AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1",array($uid,(int)$rol_id))->row_array();
+        return !empty($r);
+    }
+    private function negar_permiso($mensaje){ show_error($mensaje,403,'Acceso denegado'); return false; }
+
+
 public function index()
 {
+        if(!$this->permiso_transporte(221)){ $this->negar_permiso('No tiene permiso para administrar rutas.'); return; }
      $data['sistema'] = $this->sistema;
   try{
       $data['noof_page'] = 0;
@@ -82,7 +92,8 @@ try{
   * Editing a ruta
  */
  public function edit($ruta_id)
- {   
+ {
+        if(!$this->permiso_transporte(221)){ $this->negar_permiso('No tiene permiso para administrar rutas.'); return; }   
      $data['sistema'] = $this->sistema;
   try{
    $data['ruta'] = $this->Ruta_model->get_ruta($ruta_id);

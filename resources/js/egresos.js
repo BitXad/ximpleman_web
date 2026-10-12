@@ -49,9 +49,8 @@ function buscar_egresos()
         mostrar_ocultar_buscador("ocultar");
         fechadeegreso(filtro);
     }else if(opcion == 4){
-        filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-        fechadeegreso(filtro);
+        mostrar_ocultar_buscador("mostrar");
+        return;
     }else if(opcion == 5){
         mostrar_ocultar_buscador("mostrar");
     }
@@ -64,6 +63,10 @@ function buscar_por_fechas()
     var controlador = base_url+"egreso";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+
+    if (!validar_rango_reporte(fecha_desde, fecha_hasta, 366)) {
+        return;
+    }
    
     filtro = " and date(egreso_fecha) >= '"+fecha_desde+"'  and  date(egreso_fecha) <='"+fecha_hasta+"' ";
     

@@ -23,6 +23,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- font-awesome icons -->
 <link href="<?php echo $raiz;?>css/font-awesome.css" rel="stylesheet"> 
 
+<!-- OpenStreetMap / Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <!-- //font-awesome icons -->
 <!-- js -->
 <script src="<?php echo $raiz;?>js/jquery-1.11.1.min.js"></script>
@@ -75,6 +79,9 @@ function mostrar(a) {
     }else{
         $('#map').css({ 'width':'100%', 'height':'400px' });
         $('#mosmapa').text("Cerrar mapa");
+        if (typeof map !== 'undefined' && map !== null) {
+            setTimeout(function(){ map.invalidateSize(); }, 200);
+        }
     }
 
 }
@@ -423,8 +430,19 @@ function toggle(source) {
                     <div class="col-md-4">
                             <label for="cliente_foto" class="control-label"><fa class="fa fa-picture-o"></fa> Foto</label>
                             <div class="form-group">
-                                <input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+                                <input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, image/jpg, image/gif" />
                                 <input type="hidden" name="cliente_foto1" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto1" />
+
+                                <div id="contenedor_vista_previa_foto" style="margin-top:10px; text-align:center;">
+                                    <img id="vista_previa_foto"
+                                         src="<?php echo base_url('resources/images/clientes/'.$cliente['cliente_foto']); ?>"
+                                         alt="Vista previa de la foto"
+                                         class="img-thumbnail img-circle"
+                                         style="width:100px; height:100px; object-fit:cover;">
+                                    <div id="nombre_foto_previa" class="text-muted" style="font-size:11px; margin-top:5px;">
+                                        Foto actual
+                                    </div>
+                                </div>
                             </div>
                     </div>
 
@@ -456,92 +474,75 @@ function toggle(source) {
                         <div id="oculto1" style="visibility:hidden">
                         <div id="map"></div>
                         <script type="text/javascript">
-                            var marker;          //variable del marcador
-                            var coords_lat = {};    //coordenadas obtenidas con la geolocalización
-                            var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+                            var map = null;
+                            var marker = null;
 
+                            function initMap() {
+                                var milat = parseFloat($('#cliente_latitud').val());
+                                var milng = parseFloat($('#cliente_longitud').val());
 
-                            //Funcion principal
-                            initMap = function () 
-                            {
-                                //usamos la API para geolocalizar el usuario
+                                // Si ya existen coordenadas guardadas, se usan directamente.
+                                if (!isNaN(milat) && !isNaN(milng)) {
+                                    setMapa(milat, milng);
+                                    return;
+                                }
 
-                                //milat = document.getElementById('cliente_latitud').value;
-                                milat = $('#cliente_latitud').val();
-                                //milng = document.getElementById('cliente_longitud').value;
-                                milng = $('#cliente_longitud').val();
-
+                                // Si no existen coordenadas, intenta obtener la ubicación actual.
+                                if (navigator.geolocation) {
                                     navigator.geolocation.getCurrentPosition(
-                                    function (position){
-                                        if(milat == 'undefined' || milat == null || milat ==""){
-                                            coords_lat =  {
-                                            lat: position.coords.latitude,
-                                            };
-                                            //milat = position.coords.latitude;
-                                        }else{
-                                            coords_lat =  {
-                                            lat: milat,
-                                            };
-                                        }
-                                        if(milng == 'undefined' || milng == null || milng ==""){
-                                            coords_lng =  {
-                                              lng: position.coords.longitude,
-                                            };
-                                            //lng = position.coords.longitude;
-                                        }else{
-                                            coords_lng =  {
-                                              lng: milng,
-                                            };
-                                        } 
-                                        /*coords_lat =  {
-                                            lat: milat,
-                                            };
-
-                                        coords_lng =  {
-                                              lng: milng,
-                                            };*/
-                                        setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
-
-
-                                      },function(error){console.log(error);});
+                                        function(position) {
+                                            setMapa(position.coords.latitude, position.coords.longitude);
+                                        },
+                                        function(error) {
+                                            console.log(error);
+                                            // Coordenadas por defecto: Cochabamba.
+                                            setMapa(-17.3895, -66.1568);
+                                        },
+                                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+                                    );
+                                } else {
+                                    setMapa(-17.3895, -66.1568);
+                                }
                             }
 
-                            function setMapa (coords_lat, coords_lng)
-                            {
-                                //document.getElementById("cliente_latitud").value = coords_lat.lat;
-                               // document.getElementById("cliente_longitud").value = coords_lng.lng;
-                                  //Se crea una nueva instancia del objeto mapa
-                                  var map = new google.maps.Map(document.getElementById('map'),
-                                  {
-                                    zoom: 17,
-                                    center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+                            function setMapa(lat, lng) {
+                                lat = parseFloat(lat);
+                                lng = parseFloat(lng);
 
-                                  });
+                                document.getElementById('cliente_latitud').value = lat;
+                                document.getElementById('cliente_longitud').value = lng;
 
-                                  //Creamos el marcador en el mapa con sus propiedades
-                                  //para nuestro obetivo tenemos que poner el atributo draggable en true
-                                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
-                                  marker = new google.maps.Marker({
-                                    map: map,
-                                    draggable: true,
-                                    animation: google.maps.Animation.DROP,
-                                    position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+                                if (map !== null) {
+                                    map.remove();
+                                }
 
-                                  });
-                                  //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
-                                  //cuando el usuario a soltado el marcador
-                                  //marker.addListener('click', toggleBounce);
+                                map = L.map('map').setView([lat, lng], 17);
 
-                                  marker.addListener( 'dragend', function (event)
-                                  {
-                                    //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
-                                    document.getElementById("cliente_latitud").value = this.getPosition().lat();
-                                    document.getElementById("cliente_longitud").value = this.getPosition().lng();
-                                  });
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    maxZoom: 19,
+                                    attribution: '&copy; OpenStreetMap contributors'
+                                }).addTo(map);
+
+                                marker = L.marker([lat, lng], {
+                                    draggable: true
+                                }).addTo(map);
+
+                                marker.on('dragend', function(event) {
+                                    var posicion = event.target.getLatLng();
+                                    document.getElementById('cliente_latitud').value = posicion.lat;
+                                    document.getElementById('cliente_longitud').value = posicion.lng;
+                                });
+
+                                // También permite seleccionar la ubicación haciendo clic en el mapa.
+                                map.on('click', function(event) {
+                                    marker.setLatLng(event.latlng);
+                                    document.getElementById('cliente_latitud').value = event.latlng.lat;
+                                    document.getElementById('cliente_longitud').value = event.latlng.lng;
+                                });
                             }
+
                             initMap();
                         </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                     </div>
@@ -809,5 +810,35 @@ function toggle(source) {
         });
 </script> 
 <!-- //main slider-banner --> 
+<script type="text/javascript">
+    $(document).ready(function(){
+        var fotoActual = $('#vista_previa_foto').attr('src');
+
+        $('#cliente_foto').on('change', function(event){
+            var archivo = event.target.files && event.target.files[0] ? event.target.files[0] : null;
+
+            if (!archivo) {
+                $('#vista_previa_foto').attr('src', fotoActual);
+                $('#nombre_foto_previa').text('Foto actual');
+                return;
+            }
+
+            if (archivo.type && archivo.type.indexOf('image/') !== 0) {
+                alert('Seleccione un archivo de imagen válido.');
+                $(this).val('');
+                $('#vista_previa_foto').attr('src', fotoActual);
+                $('#nombre_foto_previa').text('Foto actual');
+                return;
+            }
+
+            var lector = new FileReader();
+            lector.onload = function(e) {
+                $('#vista_previa_foto').attr('src', e.target.result);
+                $('#nombre_foto_previa').text(archivo.name);
+            };
+            lector.readAsDataURL(archivo);
+        });
+    });
+</script>
 </body>
 </html>

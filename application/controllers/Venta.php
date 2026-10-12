@@ -23,6 +23,7 @@ class Venta extends CI_Controller{
         parent::__construct();
         $this->load->model([
             'Venta_model',
+            'Tarifa_model',
             'Sincronizacion_model',
             'Inventario_model',
             'Pedido_model',
@@ -112,8 +113,9 @@ class Venta extends CI_Controller{
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
         
-        $rolusuario = $this->session_data['rol'];
-        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+        $rolusuario = isset($this->session_data['rol']) ? $this->session_data['rol'] : array();
+        $indice = (int)$id_rol - 1;
+        if(isset($rolusuario[$indice]['rolusuario_asignado']) && (int)$rolusuario[$indice]['rolusuario_asignado'] === 1){
             return true;
         }else{
 //            $data['_view'] = 'login/mensajeacceso';
@@ -572,7 +574,10 @@ class Venta extends CI_Controller{
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         require_once(APPPATH.'controllers/Dosificacion.php');
         if($this->acceso(12)){
-        //**************** inicio contenido ***************        
+            
+
+        //**************** inicio contenido ***************   
+            
         $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -582,7 +587,7 @@ class Venta extends CI_Controller{
         $data['page_title'] = $this->sistema["sistema_moduloventas"];
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        
+
         $cliente_array = $this->Cliente_model->get_cliente_by_id($cliente_id);
         if(sizeof($cliente_array)>0)
         {
@@ -593,9 +598,8 @@ class Venta extends CI_Controller{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
             
         }        
-        
-                
-        $mostrar_placa = 0; //NO MORTRAR
+               
+        $mostrar_placa = 0; //NO MOSTRAR
         if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12 || $data['dosificacion'][0]['docsec_codigoclasificador'] == 55)
         {    
             $mostrar_placa = 1; //MOSTRA        
@@ -603,6 +607,18 @@ class Venta extends CI_Controller{
         
         $data['mostrar_placa'] = $mostrar_placa;
         
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 3 || $mostrar_placa == 1 ){
+            $sql = "select * from pais order by pais_descripcion";
+            $data['paises'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select * from moneda order by moneda_codigoclasificador";
+            $data['monedas'] = $this->Venta_model->consultar($sql);
+        }
+        
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 13){
+            $sql = "select * from factura_servicios where factura_id = 0";
+            $data['factura_servicios'] = $this->Venta_model->consultar($sql);
+        }
         
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
@@ -613,34 +629,33 @@ class Venta extends CI_Controller{
         $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        //$data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
-        $data['mesas'] = $this->Mesa_model->get_all_mesa();
-        $data['usuario_id'] = $usuario_id;
+        $data['sucursales'] = $this->Venta_model->Consultar("select * from sucursales");
+        
+        $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
+        
+        $data['usuario_id'] = $usuario_id;        
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
 //        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
         $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
-        $data['empresa_email'] = $this->empresa["empresa_email"];
         $data['almacenes'] = $this->Inventario_model->get_almacenes();
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
+        //Obtener punto de venta
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
-        
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
-        $data['empresa_email'] = $this->empresa["empresa_email"];
+        $data['empresa_email'] = $this->empresa["empresa_email"];        
+        $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
         
-        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
-        //echo $sql;
-        $data['cufd'] = $this->Venta_model->consultar($sql);
-        
+        $data['ventas_guardadas'] = $this->Venta_model->get_ventas_guardadas();
+        $data['cufd'] = [];
 
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
-            
-           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
-       
 
                     $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, {$now}) * -1) AS horas_vigencia, date(cufd_fecharegistro) as fecharegistro from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
                     //echo $sql;
@@ -657,7 +672,24 @@ class Venta extends CI_Controller{
                     
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
-        }        
+                    $sql = "select * from actividad";
+                    $data['actividades'] = $this->Venta_model->consultar($sql);                                       
+                    
+                    $dosif="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
+                    $token = $this->db->query($dosif)->row_array();
+                    $data['diasdo'] = $token;
+
+                    $cuissql="SELECT DATEDIFF(date(cuis_fechavigencia), CURDATE()) AS dias FROM cuis WHERE tipopuntoventa_codigo = {$punto_venta} ORDER BY cuis_id DESC LIMIT 1";
+                    $cuis = $this->db->query($cuissql)->row_array();
+                    $data['cuis'] = $cuis;                    
+
+        }
+        
+        //Reiniciar numero de venta diaria
+            $this->reiniciar_ventas();
+        
+        //Actualizar inventario
+            $this->actualizar_inventario();
 
         $data['_view'] = 'venta/ventas';
         $this->load->view('layouts/main',$data);
@@ -1085,6 +1117,46 @@ class Venta extends CI_Controller{
                 //******** REGISTRA LA TABLA VENTA
                 
                 $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+                // Un cobro QR validado sólo puede generar una venta. La ruta normal no cambia.
+                $qr_cobro_id = (int) $this->input->post('qr_cobro_id');
+                if ($qr_cobro_id > 0) {
+                    $qr = $this->db->where('cobro_id', $qr_cobro_id)
+                        ->where('usuario_id', $usuario_id)->get('atc_qr_cobro')->row_array();
+                    $forma_qr = $this->db->select('forma_nombre')->where('forma_id', (int) $forma_id)
+                        ->get('forma_pago')->row_array();
+                    if (!$qr || !$forma_qr || stripos($forma_qr['forma_nombre'], 'QR') === false
+                        || $tipo_transaccion != 1
+                        || round((float) $qr['monto'] * 100) !== round((float) $venta_total * 100)
+                        || (string) $venta_detalletransaccion !== (string) $qr['referencia_atc']) {
+                        $this->output->set_status_header(409);
+                        echo json_encode(array('error' => 'El cobro QR no corresponde a esta venta.'));
+                        return;
+                    }
+                    try {
+                        $this->load->library('Atc_qr_simple');
+                        $confirmacion = $this->atc_qr_simple->verify($qr['referencia_atc']);
+                        $pago = isset($confirmacion['data']) ? $confirmacion['data'] : array();
+                        if (empty($confirmacion['success']) || ($pago['estado'] ?? '') !== 'PAGADO'
+                            || (string) ($pago['numeroReferencia'] ?? '') !== (string) $qr['referencia_atc']
+                            || (string) ($pago['numeroReferenciaOriginante'] ?? '') !== (string) $qr['referencia_origen']
+                            || ($pago['moneda'] ?? '') !== 'BOB'
+                            || !isset($pago['importe'])
+                            || round((float) $pago['importe'] * 100) !== round((float) $qr['monto'] * 100)) {
+                            throw new RuntimeException('ATC no confirmó este pago.');
+                        }
+                    } catch (Exception $e) {
+                        $this->output->set_status_header(409);
+                        echo json_encode(array('error' => $e->getMessage()));
+                        return;
+                    }
+                    $this->db->where('cobro_id', $qr_cobro_id)->where('estado', 'PAGADO')
+                        ->update('atc_qr_cobro', array('estado' => 'FINALIZANDO'));
+                    if ($this->db->affected_rows() !== 1) {
+                        $this->output->set_status_header(409);
+                        echo json_encode(array('error' => 'Este cobro QR ya está finalizándose o fue utilizado.'));
+                        return;
+                    }
+                }
                     
                 $tabla_ventas = "venta";
                 $campo_llave = "venta_id";
@@ -1103,6 +1175,17 @@ class Venta extends CI_Controller{
                
                 
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                if ($qr_cobro_id > 0 && !$venta_id) {
+                    $this->db->where('cobro_id', $qr_cobro_id)->where('estado', 'FINALIZANDO')
+                        ->update('atc_qr_cobro', array('estado' => 'PAGADO'));
+                    $this->output->set_status_header(500);
+                    echo json_encode(array('error' => 'No se pudo registrar la venta; el pago QR sigue confirmado.'));
+                    return;
+                }
+                if ($qr_cobro_id > 0 && $venta_id > 0) {
+                    $this->db->where('cobro_id', $qr_cobro_id)->where('estado', 'FINALIZANDO')
+                        ->update('atc_qr_cobro', array('estado' => 'FINALIZADO', 'venta_id' => $venta_id));
+                }
                 
 
                 //contabilidar las ventas
@@ -4772,26 +4855,22 @@ function anular_traspaso($traspaso_id){
             
             if($this->parametros['parametro_tiposistema'] == 1){// Si es diferente a Sistema de facturacion computarizado(1)
             
-                $filtro = $this->input->post('filtro');
+                $filtro = trim((string)$this->input->post('filtro'));
 
-                if ($filtro == null){
-                    $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date({$now})");
+                if ($filtro === '' || preg_match('/^and\s+1$/i', $filtro)){
+                    $filtro = " and v.venta_fecha = date({$now})";
                 }
-                else{
-                    $result = $this->Venta_model->get_ventas($filtro);            
-                }
+                $result = $this->Venta_model->get_ventas($filtro);
                 
             }
             else{ //Si es facturacion electronica
             
-                $filtro = $this->input->post('filtro');
+                $filtro = trim((string)$this->input->post('filtro'));
 
-                if ($filtro == null){
-                    $result = $this->Venta_model->get_ventas_enlinea(" and v.venta_fecha = date({$now})");
+                if ($filtro === '' || preg_match('/^and\s+1$/i', $filtro)){
+                    $filtro = " and v.venta_fecha = date({$now})";
                 }
-                else{
-                    $result = $this->Venta_model->get_ventas_enlinea($filtro);            
-                }
+                $result = $this->Venta_model->get_ventas_enlinea($filtro);
                 
                 
                 
@@ -11536,199 +11615,520 @@ function anular_traspaso($traspaso_id){
     }
 
     public function finalizar_venta_pasaje(){
-        
-        $pasaje_id = $this->input->post('pasaje_id');
-        $viaje_id = $this->input->post('viaje_id');
-//        $viaje_precio = $this->input->post('viaje_precio');
-//        $nombre = $this->input->post('nombre');
-//        $select_documento = $this->input->post('select_documento');
-//        $total_bs = $this->input->post('total_bs');
-//        $descuento_bs = $this->input->post('descuento_bs');
-//        $total_final_bs = $this->input->post('total_final_bs');
-//        $efectivo_bs = $this->input->post('efectivo_bs');
-//        $cambio_bs = $this->input->post('cambio_bs');
-        
-        $dosificacion = $this->dosificacion;
-        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
-        
-        $forma_id = $this->input->post('forma_pago'); //
-        $tipotrans_id = 1; //$this->input->post('tipotrans_id');
-        $usuario_id = $this->session_data['usuario_id'];
-        $cliente_id = $this->input->post('cliente_id');
-        $moneda_id = 1;
-        $operacion = $this->input->post('operacion');
-        
-        if($operacion==1){ $estado_id = 1; }// si es venta
-        if($operacion==2){ $estado_id = 52; }//si es reserva
-        
-        $venta_fecha = "date({$now})";
-        $venta_hora = "time({$now})";;
-        $venta_subtotal = $this->input->post('total_bs');
-        $venta_descuentoparcial = 0;
-        $venta_descuento = $this->input->post('descuento_bs');
-        $venta_total = $this->input->post('total_final_bs');
-        $venta_efectivo = $this->input->post('efectivo_bs');
-        $venta_cambio = $this->input->post('cambio_bs');
-        $venta_glosa = $this->input->post('glosa');
-        $acuenta = $this->input->post('acuenta');
-        $fechareserva = $this->input->post('fechareserva');
-        $horareserva = $this->input->post('horareserva');
-        $venta_comision = 0;
-        $venta_tipocambio = 1;
-        $detalleserv_id = 0;
-        $venta_tipodoc = $this->input->post('venta_tipodoc'); //Si 1 es facturado * si es 0 No facturado
-        $tiposerv_id = 0;
-        $entrega_id = 0;
-        $venta_fechaentrega = 'NULL';
-        $venta_horaentrega = 'NULL';
 
-        
-        //****************** contador de transacicones mensuales
-        $venta_numeroventa = 0;
-        $venta_numeromesa = 0;
-        $venta_numerotransmes = 0;
-        
-        if($this->parametros["parametro_contarventas"]==1){// Si contador de transacciones esta activada
-            
-            $venta_numeroventa = $this->numero_venta();
-                    
+        /*
+         * TRANSACCION ATOMICA PARA VENTA / RESERVA DE PASAJES
+         * ----------------------------------------------------
+         * Toda la persistencia local de la operacion se ejecuta bajo una sola
+         * transaccion InnoDB. Si cualquier validacion o escritura falla se hace
+         * ROLLBACK, evitando ventas sin asiento o asientos vendidos sin venta.
+         *
+         * La emision electronica (SIAT) NO se ejecuta dentro de esta transaccion:
+         * un servicio HTTP externo no participa del ROLLBACK de MySQL. Cuando
+         * venta_tipodoc = 1 la respuesta devuelve requiere_factura=true para que
+         * el front-end continúe con la emision solamente DESPUES del COMMIT.
+         */
+
+        $viaje_id = (int)$this->input->post('viaje_id');
+        $forma_id = (int)$this->input->post('forma_pago');
+        $usuario_id = (int)$this->session_data['usuario_id'];
+        $cliente_id = (int)$this->input->post('cliente_id');
+        $facturacion_tipo_documento = (int)$this->input->post('facturacion_tipo_documento');
+        $facturacion_documento = trim((string)$this->input->post('facturacion_documento'));
+        $facturacion_complemento = trim((string)$this->input->post('facturacion_complemento'));
+        $facturacion_razon_social = trim((string)$this->input->post('facturacion_razon_social'));
+        $facturacion_email = trim((string)$this->input->post('facturacion_email'));
+        $operacion = (int)$this->input->post('operacion');
+        $consolidar_venta_id = (int)$this->input->post('consolidar_venta_id');
+        $venta_tipodoc = (int)$this->input->post('venta_tipodoc') === 1 ? 1 : 0;
+
+        $descuento_solicitado = round((float)$this->input->post('descuento_bs'), 2);
+        $tipodescuento_id = (int)$this->input->post('tipodescuento_id');
+        $descuento_motivo = trim((string)$this->input->post('descuento_motivo'));
+        $efectivo_solicitado = round((float)$this->input->post('efectivo_bs'), 2);
+        $total_cliente = round((float)$this->input->post('total_bs'), 2);
+        $total_final_cliente = round((float)$this->input->post('total_final_bs'), 2);
+        $acuenta = round((float)$this->input->post('acuenta'), 2);
+        $fechareserva = trim((string)$this->input->post('fechareserva'));
+        $horareserva = trim((string)$this->input->post('horareserva'));
+        $venta_glosa = trim((string)$this->input->post('glosa'));
+
+        if($viaje_id <= 0 || $usuario_id <= 0){
+            $this->output->set_content_type('application/json')->set_status_header(400)
+                ->set_output(json_encode(array('ok'=>false, 'mensaje'=>'Viaje o usuario no valido.')));
+            return;
         }
-                
-        if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
 
-            //Verificar si es el mes correcto
-            $numeroMes = date("n");
+        // Datos de facturación independientes de pasaje_nombre/pasaje_documento.
+        if($cliente_id > 0){
+            $cliente_facturacion = $this->db->query(
+                "SELECT cliente_id,cliente_nit,cliente_ci,cliente_razon,cliente_nombre,cliente_email,cdi_codigoclasificador,cliente_complementoci
+                 FROM cliente WHERE cliente_id=? LIMIT 1",
+                array($cliente_id)
+            )->row_array();
+            if($cliente_facturacion){
+                if($facturacion_documento===''){
+                    $facturacion_documento = trim((string)(
+                        !empty($cliente_facturacion['cliente_nit']) ? $cliente_facturacion['cliente_nit'] : $cliente_facturacion['cliente_ci']
+                    ));
+                }
+                if($facturacion_razon_social===''){
+                    $facturacion_razon_social = trim((string)(
+                        !empty($cliente_facturacion['cliente_razon']) ? $cliente_facturacion['cliente_razon'] : $cliente_facturacion['cliente_nombre']
+                    ));
+                }
+                if($facturacion_email==='') $facturacion_email=trim((string)$cliente_facturacion['cliente_email']);
+                if($facturacion_tipo_documento<=0) $facturacion_tipo_documento=(int)$cliente_facturacion['cdi_codigoclasificador'];
+                if($facturacion_complemento==='') $facturacion_complemento=trim((string)$cliente_facturacion['cliente_complementoci']);
+            }else{
+                $cliente_id=0;
+            }
+        }
 
-            if($numeroMes != $dosificacion["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
+        if($facturacion_documento==='') $facturacion_documento='0';
+        if($facturacion_razon_social==='') $facturacion_razon_social='SIN NOMBRE';
+        if($facturacion_tipo_documento<=0) $facturacion_tipo_documento=1;
 
-                $SQLcontador = "update dosificacion d set
-                                d.dosificacion_numerotransmes = (SELECT COUNT(*) AS cantidad_ventas FROM venta
-                                WHERE MONTH(venta_fecha) = MONTH(CURRENT_DATE()) AND YEAR(venta_fecha) = YEAR(CURRENT_DATE()))
-                                ,d.dosificacion_mesactual = MONTH({$now})";
+        if($venta_tipodoc===1){
+            if($facturacion_documento==='' || $facturacion_documento==='0')
+                return $this->output->set_content_type('application/json')->set_status_header(400)
+                    ->set_output(json_encode(array('ok'=>false,'mensaje'=>'La factura requiere NIT/documento del cliente de facturación.')));
+            if($facturacion_razon_social==='' || strtoupper($facturacion_razon_social)==='SIN NOMBRE')
+                return $this->output->set_content_type('application/json')->set_status_header(400)
+                    ->set_output(json_encode(array('ok'=>false,'mensaje'=>'La factura requiere razón social del cliente de facturación.')));
+        }
 
-                $contador_mes = $this->Venta_model->Consultar($SQLcontador);
-                $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+        if(!in_array($operacion, array(1,2), true)){
+            $this->output->set_content_type('application/json')->set_status_header(400)
+                ->set_output(json_encode(array('ok'=>false, 'mensaje'=>'La operacion solicitada no es valida.')));
+            return;
+        }
 
+        if($descuento_solicitado < 0 || $efectivo_solicitado < 0 || $acuenta < 0){
+            $this->output->set_content_type('application/json')->set_status_header(400)
+                ->set_output(json_encode(array('ok'=>false, 'mensaje'=>'Los importes no pueden ser negativos.')));
+            return;
+        }
+
+        if($operacion === 2){
+            // Si el operador no modifica el limite, se usa la configuracion de la ruta.
+            if($fechareserva === '' || $horareserva === ''){
+                $cfg_reserva = $this->Venta_model->configuracion_reserva_viaje($viaje_id);
+                $limite_default = new DateTime();
+                $limite_default->modify('+'.max(1,(int)$cfg_reserva['reserva_minutos']).' minutes');
+                $fechareserva = $limite_default->format('Y-m-d');
+                $horareserva = $limite_default->format('H:i');
+            }
+            $fecha_hora_reserva = DateTime::createFromFormat('Y-m-d H:i', $fechareserva.' '.$horareserva);
+            if(!$fecha_hora_reserva || $fecha_hora_reserva->format('Y-m-d H:i') !== $fechareserva.' '.$horareserva){
+                $this->output->set_content_type('application/json')->set_status_header(400)
+                    ->set_output(json_encode(array('ok'=>false, 'mensaje'=>'La fecha u hora limite de la reserva no es valida.')));
+                return;
+            }
+            if($fecha_hora_reserva->getTimestamp() <= time()){
+                $this->output->set_content_type('application/json')->set_status_header(400)
+                    ->set_output(json_encode(array('ok'=>false, 'mensaje'=>'La fecha limite de la reserva debe ser posterior a la hora actual.')));
+                return;
+            }
+        }
+
+        $this->db->trans_begin();
+
+        try {
+            // 1. VALIDAR Y BLOQUEAR VIAJE.
+            $viaje = $this->db->query(
+                "SELECT viaje_id, ruta_id, viaje_fechasalida, viaje_horasalida, viaje_preciopasaje,
+                        viaje_precio1, viaje_precio2, viaje_precio3, estado_id
+                 FROM viaje
+                 WHERE viaje_id = ?
+                 FOR UPDATE",
+                array($viaje_id)
+            )->row_array();
+
+            if(empty($viaje)){
+                throw new Exception('El viaje seleccionado ya no existe.');
             }
 
-            $venta_numerotransmes = $dosificacion["dosificacion_numerotransmes"]+1;
+            // Venta y reserva solo se permiten en HABILITADO PARA VENTA (61) o EMBARQUE (56).
+            if(!in_array((int)$viaje['estado_id'], array(61,56), true)){
+                $estado = $this->db->query('SELECT estado_descripcion FROM estado WHERE estado_id = ? AND estado_tipo = 13 LIMIT 1', array((int)$viaje['estado_id']))->row_array();
+                $nombre_estado = !empty($estado['estado_descripcion']) ? $estado['estado_descripcion'] : ('ID '.(int)$viaje['estado_id']);
+                throw new Exception('El viaje está en estado '.$nombre_estado.' y no admite nuevas ventas ni reservas.');
+            }
 
-        }
-                                        
-            //****************** fin contador de transacicones mensuales        
-        
-            $entrega_usuarioid = 0;
-            $entrega_estadoid = 0;
-            $usuarioprev_id = 0;
-            $pedido_id = 0;
-            $orden_id = 0;
-            $banco_id = 0;
-            $venta_ice = 0;
-            $venta_giftcard = 0;
-            $venta_detalletransaccion = 0;
+            // 2. VALIDAR FORMA DE PAGO. Se registra atomicamente en venta_pasaje.forma_id.
+            $forma_pago = $this->db->query(
+                "SELECT forma_id, forma_nombre, estado_id FROM forma_pago WHERE forma_id = ? LIMIT 1",
+                array($forma_id)
+            )->row_array();
 
-            if($operacion==1){ //Si operacion es venta
+            if(empty($forma_pago) || (isset($forma_pago['estado_id']) && (int)$forma_pago['estado_id'] !== 1)){
+                throw new Exception('La forma de pago seleccionada no esta disponible.');
+            }
 
-                $venta_acuentareserva = 0;
-                $venta_fechareserva = null;
-                $venta_horareserva = null;
-                $venta_formapagoreserva_id = 0;
-                $venta_codigoreserva = 0;
+            // 3. VALIDAR Y BLOQUEAR LOS ASIENTOS/PASAJES DEL CAJERO.
+            $pasajes_bloqueados = $this->db->query(
+                "SELECT p.pasaje_id, p.asiento_id, p.viaje_id, p.pasaje_numero,
+                        p.pasaje_precio, p.pasaje_nombre, p.pasaje_documento, p.pasaje_telefono,
+                        p.rutaparada_origen_id,p.rutaparada_destino_id,p.pasaje_tramo_origen_orden,p.pasaje_tramo_destino_orden,
+                        p.pasaje_edad, p.pasaje_sexo, p.pasaje_origen, p.pasaje_destino,
+                        p.tarifa_id, p.tarifatipopasajero_id, p.pasaje_tarifa_base, p.pasaje_tarifa_ajuste,
+                        p.pasaje_es_cortesia, p.cortesiamotivo_id, p.pasaje_cortesia_motivo,
+                        p.estado_id, p.usuario_id, p.venta_id,
+                        p.pasaje_bloqueado_hasta, p.pasaje_tieneequipaje,
+                        p.pasaje_detalleequipaje, p.pasaje_fechahoraequipaje
+                 FROM pasaje p
+                 WHERE p.viaje_id = ?
+                   AND p.estado_id = 51
+                   AND p.usuario_id = ?
+                 ORDER BY p.pasaje_id
+                 FOR UPDATE",
+                array($viaje_id, $usuario_id)
+            )->result_array();
 
-            }else{ //Si es reserva
-                
-                $venta_codigoreserva = $this->generarCodigoReserva();
-                $venta_total = 0;
-                $venta_fechareserva = $fechareserva;
-                $venta_horareserva = $horareserva;
-                $venta_formapagoreserva_id = $forma_id;
+            if(empty($pasajes_bloqueados)){
+                throw new Exception('No existen asientos bloqueados para finalizar esta operacion.');
+            }
 
-                if ($acuenta>0){
-
-                    $venta_acuentareserva = $acuenta;
+            $subtotal_db = 0.00;
+            $pasaje_ids = array();
+            foreach($pasajes_bloqueados as $pasaje){
+                if((int)$pasaje['asiento_id'] <= 0){
+                    throw new Exception('Existe un pasaje sin asiento valido. Actualice el mapa e intente nuevamente.');
                 }
-                else{
-                    $venta_acuentareserva = "0";
+                if(trim((string)$pasaje['pasaje_nombre'])==='' || strtoupper(trim((string)$pasaje['pasaje_nombre']))==='SIN NOMBRE')
+                    throw new Exception('Falta completar el nombre de uno o más pasajeros.');
+                if(trim((string)$pasaje['pasaje_documento'])==='' || trim((string)$pasaje['pasaje_documento'])==='0')
+                    throw new Exception('Falta completar el documento de uno o más pasajeros.');
+
+                if(!empty($pasaje['pasaje_bloqueado_hasta']) && strtotime($pasaje['pasaje_bloqueado_hasta']) < time()){
+                    throw new Exception('El bloqueo de uno o mas asientos vencio. Actualice el mapa y vuelva a seleccionarlos.');
+                }
+                if($this->db->table_exists('viaje_asiento_lock')){$this->db->query("INSERT IGNORE INTO viaje_asiento_lock(viaje_id,asiento_id,lock_actualizado) VALUES(?,?,NOW())",array($viaje_id,(int)$pasaje['asiento_id']));$this->db->query("SELECT viaje_id FROM viaje_asiento_lock WHERE viaje_id=? AND asiento_id=? FOR UPDATE",array($viaje_id,(int)$pasaje['asiento_id']))->row_array();}
+                if(isset($pasaje['pasaje_tramo_origen_orden'])&&isset($pasaje['pasaje_tramo_destino_orden'])){$conf=$this->db->query("SELECT pasaje_id FROM pasaje WHERE viaje_id=? AND asiento_id=? AND pasaje_id<>? AND estado_id IN(51,52,54) AND COALESCE(pasaje_tramo_origen_orden,0)<? AND COALESCE(pasaje_tramo_destino_orden,10000)>? LIMIT 1 FOR UPDATE",array($viaje_id,(int)$pasaje['asiento_id'],(int)$pasaje['pasaje_id'],(int)$pasaje['pasaje_tramo_destino_orden'],(int)$pasaje['pasaje_tramo_origen_orden']))->row_array();if($conf)throw new Exception('Un asiento dejó de estar disponible en el tramo seleccionado. Actualice el mapa.');}
+
+                $precio_pasaje = round((float)$pasaje['pasaje_precio'], 2);
+                // Si el pasaje usa la matriz formal, recalcular justo antes del COMMIT.
+                if($this->db->table_exists('tarifa_tipo_pasajero') && !empty($pasaje['tarifatipopasajero_id'])){
+                    if(!isset($this->Tarifa_model)){
+                        $this->load->model('Tarifa_model');
+                    }
+                    if(!isset($this->Tarifa_model)){
+                        throw new Exception('No fue posible cargar el modelo de tarifas para validar la venta.');
+                    }
+                    $recalc=$this->Tarifa_model->calcular($viaje_id,(int)$pasaje['pasaje_id'],(int)$pasaje['tarifatipopasajero_id']);
+                    if(!$recalc || empty($recalc['ok'])) throw new Exception('No fue posible validar nuevamente la tarifa del asiento.');
+                    if(abs(round((float)$recalc['precio_final'],2)-$precio_pasaje)>0.01)
+                        throw new Exception('La tarifa de uno de los pasajes cambió. Actualice los datos del pasajero antes de finalizar.');
+                }
+                if(!empty($pasaje['pasaje_es_cortesia'])){
+                    if($precio_pasaje != 0.00 || empty($pasaje['cortesiamotivo_id']) || trim((string)$pasaje['pasaje_cortesia_motivo'])===''){
+                        throw new Exception('Existe una cortesía incompleta o con importe distinto de cero.');
+                    }
+                }
+                if($precio_pasaje <= 0 && (empty($pasaje['tarifatipopasajero_id']) || $precio_pasaje<0)){
+                    throw new Exception('Existe un asiento con precio no valido. Corrija el precio antes de finalizar.');
+                }
+
+                $subtotal_db += $precio_pasaje;
+                $pasaje_ids[] = (int)$pasaje['pasaje_id'];
+            }
+            $subtotal_db = round($subtotal_db, 2);
+
+            // 4. VALIDAR PRECIO CONTRA BASE DE DATOS; nunca confiar solamente en JavaScript.
+            if(abs($subtotal_db - $total_cliente) > 0.01){
+                throw new Exception('El total de los pasajes cambio. Total vigente: '.number_format($subtotal_db, 2, '.', '').'.');
+            }
+
+            if($descuento_solicitado > $subtotal_db){
+                throw new Exception('El descuento no puede superar el subtotal de los pasajes.');
+            }
+
+            $tipo_descuento=null;
+            $usuario_autoriza_descuento=null;
+            if($descuento_solicitado > 0){
+                if(!$this->db->table_exists('tipo_descuento_pasaje'))
+                    throw new Exception('El módulo formal de descuentos no está instalado.');
+                if($tipodescuento_id<=0 || $descuento_motivo==='')
+                    throw new Exception('Todo descuento requiere tipo y motivo obligatorio.');
+                $tipo_descuento=$this->db->query("SELECT * FROM tipo_descuento_pasaje WHERE tipodescuento_id=? AND estado_id=1 LIMIT 1",array($tipodescuento_id))->row_array();
+                if(!$tipo_descuento) throw new Exception('El tipo de descuento no está disponible.');
+                if($tipo_descuento['tipodescuento_maxporcentaje']!==null && $tipo_descuento['tipodescuento_maxporcentaje']!=='' && $subtotal_db>0){
+                    $pct=($descuento_solicitado/$subtotal_db)*100;
+                    if($pct>(float)$tipo_descuento['tipodescuento_maxporcentaje']+0.0001)
+                        throw new Exception('El descuento supera el porcentaje máximo permitido para este tipo.');
+                }
+                if((int)$tipo_descuento['tipodescuento_requiereautorizacion']===1){
+                    $ru=$this->db->query("SELECT rolusuario_asignado FROM rol_usuario WHERE tipousuario_id=? AND rol_id=214 LIMIT 1",
+                        array((int)$this->session_data['tipousuario_id']))->row_array();
+                    if(!$ru || (int)$ru['rolusuario_asignado']!==1)
+                        throw new Exception('Este descuento requiere autorización y su usuario no tiene el permiso 214.');
+                    $usuario_autoriza_descuento=$usuario_id;
+                }
+            }else if($tipodescuento_id>0 || $descuento_motivo!==''){
+                throw new Exception('No debe enviarse tipo/motivo cuando el descuento es cero.');
+            }
+
+            $total_final_db = round($subtotal_db - $descuento_solicitado, 2);
+            if(abs($total_final_db - $total_final_cliente) > 0.01){
+                throw new Exception('El total final fue modificado o esta desactualizado. Total correcto: '.number_format($total_final_db, 2, '.', '').'.');
+            }
+
+            if($operacion === 1 && $efectivo_solicitado > 0 && $forma_id === 1 && $efectivo_solicitado + 0.01 < $total_final_db){
+                throw new Exception('El efectivo recibido es menor al total de la venta.');
+            }
+
+            if($operacion === 2 && $acuenta > $total_final_db){
+                throw new Exception('El monto a cuenta no puede superar el total de los pasajes reservados.');
+            }
+
+            $dosificacion = $this->dosificacion;
+            $venta_numeroventa = 0;
+            $venta_numerotransmes = 0;
+
+            if($this->parametros["parametro_contarventas"] == 1){
+                $venta_numeroventa = $this->numero_venta();
+            }
+
+            if($this->parametros["parametro_contarventasmes"] == 1){
+                $numeroMes = (int)date('n');
+                if($numeroMes != (int)$dosificacion["dosificacion_mesactual"]){
+                    $this->db->query(
+                        "UPDATE dosificacion
+                         SET dosificacion_numerotransmes = (
+                                SELECT COUNT(*) FROM venta
+                                WHERE MONTH(venta_fecha) = MONTH(CURRENT_DATE())
+                                  AND YEAR(venta_fecha) = YEAR(CURRENT_DATE())
+                             ),
+                             dosificacion_mesactual = MONTH(CURRENT_DATE())"
+                    );
+                    if($this->db->affected_rows() < 0){
+                        throw new Exception('No fue posible actualizar el contador mensual.');
+                    }
+                    $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                }
+                $venta_numerotransmes = (int)$dosificacion["dosificacion_numerotransmes"] + 1;
+            }
+
+            $estado_venta = ($operacion === 1) ? 1 : 52;
+            $venta_total_guardar = ($operacion === 1) ? $total_final_db : 0;
+            $venta_acuentareserva = ($operacion === 2) ? $acuenta : 0;
+            $venta_fechareserva = ($operacion === 2) ? $fechareserva : null;
+            $venta_horareserva = ($operacion === 2) ? $horareserva : null;
+            $venta_formapagoreserva_id = ($operacion === 2) ? $forma_id : 0;
+            $venta_codigoreserva = ($operacion === 2) ? $this->generarCodigoReserva() : '0';
+            $venta_cambio = ($operacion === 1) ? max(0, round($efectivo_solicitado - $total_final_db, 2)) : 0;
+
+            // 5 y 6. INSERTAR VENTA + REGISTRAR FORMA DE PAGO DENTRO DE LA MISMA TRANSACCION.
+            $insert_venta = array(
+                'forma_id' => $forma_id,
+                'tipotrans_id' => 1,
+                'usuario_id' => $usuario_id,
+                'cliente_id' => $cliente_id,
+                'moneda_id' => 1,
+                'estado_id' => $estado_venta,
+                'venta_fecha' => date('Y-m-d'),
+                'venta_hora' => date('H:i:s'),
+                'venta_subtotal' => $subtotal_db,
+                'venta_descuentoparcial' => 0,
+                'venta_descuento' => $descuento_solicitado,
+                'venta_total' => $venta_total_guardar,
+                'venta_efectivo' => ($operacion === 1) ? $efectivo_solicitado : 0,
+                'venta_cambio' => $venta_cambio,
+                'venta_glosa' => $venta_glosa,
+                'venta_comision' => 0,
+                'venta_tipocambio' => 1,
+                'detalleserv_id' => 0,
+                'venta_tipodoc' => $venta_tipodoc,
+                'tiposerv_id' => 0,
+                'entrega_id' => 0,
+                'venta_fechaentrega' => null,
+                'venta_horaentrega' => null,
+                'venta_numeroventa' => $venta_numeroventa,
+                'venta_numeromesa' => 0,
+                'entrega_usuarioid' => 0,
+                'entrega_estadoid' => 0,
+                'usuarioprev_id' => 0,
+                'pedido_id' => 0,
+                'orden_id' => 0,
+                'banco_id' => 0,
+                'venta_ice' => 0,
+                'venta_giftcard' => 0,
+                'venta_detalletransaccion' => '0',
+                'venta_numerotransmes' => $venta_numerotransmes,
+                'viaje_id' => $viaje_id,
+                'venta_acuentareserva' => $venta_acuentareserva,
+                'venta_fechareserva' => $venta_fechareserva,
+                'venta_horareserva' => $venta_horareserva,
+                'venta_formapagoreserva_id' => $venta_formapagoreserva_id,
+                'venta_codigoreserva' => $venta_codigoreserva,
+                'reserva_usuario_id' => ($operacion === 2 ? $usuario_id : null),
+                'reserva_usuario_confirma_id' => null
+            );
+
+            // PUNTO 16: snapshot de facturación. No se escribe sobre datos del pasajero.
+            if($this->db->field_exists('facturacion_cliente_id','venta_pasaje')){
+                $insert_venta['facturacion_cliente_id']=$cliente_id>0?$cliente_id:null;
+                $insert_venta['facturacion_tipo_documento']=$facturacion_tipo_documento;
+                $insert_venta['facturacion_documento']=$facturacion_documento;
+                $insert_venta['facturacion_complemento']=$facturacion_complemento;
+                $insert_venta['facturacion_razon_social']=$facturacion_razon_social;
+                $insert_venta['facturacion_email']=$facturacion_email;
+
+                $primer_pasajero=!empty($pasajes_bloqueados[0])?$pasajes_bloqueados[0]:array();
+                $doc_pasajero=isset($primer_pasajero['pasaje_documento'])?trim((string)$primer_pasajero['pasaje_documento']):'';
+                $nom_pasajero=isset($primer_pasajero['pasaje_nombre'])?trim((string)$primer_pasajero['pasaje_nombre']):'';
+                $insert_venta['facturacion_diferente_pasajero']=
+                    (strcasecmp($facturacion_documento,$doc_pasajero)!==0 || strcasecmp($facturacion_razon_social,$nom_pasajero)!==0) ? 1 : 0;
+            }
+
+            if(!$this->db->insert('venta_pasaje', $insert_venta)){
+                throw new Exception('No fue posible crear la cabecera de la operacion.');
+            }
+
+            $venta_id = (int)$this->db->insert_id();
+            if($venta_id <= 0){
+                throw new Exception('No se obtuvo el identificador de la venta/reserva.');
+            }
+
+            if($descuento_solicitado > 0){
+                if(!$this->db->table_exists('venta_pasaje_descuento'))
+                    throw new Exception('Falta ejecutar database_actualizacion_descuentos_pasajes.sql.');
+                if(!$this->db->insert('venta_pasaje_descuento',array(
+                    'venta_id'=>$venta_id,'viaje_id'=>$viaje_id,'tipodescuento_id'=>$tipodescuento_id,
+                    'descuento_preciooriginal'=>$subtotal_db,'descuento_importe'=>$descuento_solicitado,
+                    'descuento_preciofinal'=>$total_final_db,'descuento_motivo'=>$descuento_motivo,
+                    'usuario_id'=>$usuario_id,'usuario_autoriza_id'=>$usuario_autoriza_descuento,
+                    'descuento_fechahora'=>date('Y-m-d H:i:s'),'estado_id'=>1
+                ))) throw new Exception('No fue posible registrar la auditoría del descuento.');
+            }
+
+            // 7. ACTUALIZAR LOS PASAJES. Se exige exactamente la misma cantidad bloqueada.
+            $nuevo_estado_pasaje = ($operacion === 1) ? 54 : 52;
+            $datos_pasaje = array(
+                'venta_id' => $venta_id,
+                'estado_id' => $nuevo_estado_pasaje,
+                'pasaje_bloqueado_hasta' => null
+            );
+            if($operacion === 2){
+                $datos_pasaje['pasaje_fechalimiteres'] = $fechareserva;
+                $datos_pasaje['pasaje_horalimiteres'] = $horareserva;
+            }
+
+            $this->db->where('viaje_id', $viaje_id)
+                     ->where('estado_id', 51)
+                     ->where('usuario_id', $usuario_id)
+                     ->where_in('pasaje_id', $pasaje_ids)
+                     ->update('pasaje', $datos_pasaje);
+
+            if($this->db->affected_rows() !== count($pasaje_ids)){
+                throw new Exception('La disponibilidad de los asientos cambio durante la confirmacion. La operacion fue cancelada.');
+            }
+
+            // EQUIPAJE INCLUIDO REGISTRADO DURANTE LA VENTA.
+            // El modal rápido guarda primero los campos legacy. Al confirmar la venta,
+            // se crea dentro de ESTA MISMA TRANSACCIÓN el registro operativo con etiqueta/QR.
+            $equipajes_incluidos_ids = array();
+            if($operacion === 1 && $this->db->table_exists('pasaje_equipaje')){
+                $peso_incluido = 20.00;
+                if($this->db->table_exists('tarifa_equipaje')){
+                    $tar_eq=$this->db->query("SELECT peso_incluido FROM tarifa_equipaje WHERE estado_id=1 AND (ruta_id=? OR ruta_id IS NULL OR ruta_id=0) ORDER BY CASE WHEN ruta_id=? THEN 0 ELSE 1 END,tarifaequipaje_id DESC LIMIT 1",array((int)$viaje['ruta_id'],(int)$viaje['ruta_id']))->row_array();
+                    if($tar_eq) $peso_incluido=(float)$tar_eq['peso_incluido'];
+                }
+                foreach($pasajes_bloqueados as $p_eq){
+                    if((int)$p_eq['pasaje_tieneequipaje']!==1) continue;
+                    $pid=(int)$p_eq['pasaje_id'];
+                    $exist_eq=$this->db->query("SELECT equipaje_id FROM pasaje_equipaje WHERE pasaje_id=? AND equipaje_tipo='INCLUIDO' AND equipaje_estado<>'ANULADO' LIMIT 1 FOR UPDATE",array($pid))->row_array();
+                    if($exist_eq){
+                        $eid=(int)$exist_eq['equipaje_id'];
+                        $this->db->where('equipaje_id',$eid)->update('pasaje_equipaje',array('venta_id'=>$venta_id,'equipaje_descripcion'=>trim((string)$p_eq['pasaje_detalleequipaje'])?:'EQUIPAJE INCLUIDO'));
+                    }else{
+                        $codigo='EQ-'.str_pad($viaje_id,4,'0',STR_PAD_LEFT).'-P'.str_pad($pid,6,'0',STR_PAD_LEFT);
+                        $token=strtoupper(substr(hash('sha256','EQ-'.$pid.'-'.uniqid('',true).mt_rand()),0,24));
+                        $fecha_eq=!empty($p_eq['pasaje_fechahoraequipaje'])?$p_eq['pasaje_fechahoraequipaje']:date('Y-m-d H:i:s');
+                        $this->db->insert('pasaje_equipaje',array(
+                            'pasaje_id'=>$pid,'viaje_id'=>$viaje_id,'venta_id'=>$venta_id,
+                            'equipaje_tipo'=>'INCLUIDO','equipaje_subtipo'=>'INCLUIDO','equipaje_numeroetiqueta'=>$codigo,
+                            'equipaje_cantidad_piezas'=>1,'equipaje_peso'=>0,'equipaje_peso_incluido'=>$peso_incluido,
+                            'equipaje_exceso_kg'=>0,'equipaje_importe'=>0,'forma_id'=>null,'caja_id'=>null,
+                            'equipaje_descripcion'=>trim((string)$p_eq['pasaje_detalleequipaje'])?:'EQUIPAJE INCLUIDO',
+                            'equipaje_observaciones'=>null,'equipaje_qr_token'=>$token,'equipaje_estado'=>'RECIBIDO',
+                            'usuario_recibe_id'=>$usuario_id,'equipaje_fechahorarecepcion'=>$fecha_eq
+                        ));
+                        $eid=(int)$this->db->insert_id();
+                        if($eid<=0) throw new Exception('No fue posible generar la etiqueta del equipaje incluido.');
+                        $this->db->insert('pasaje_equipaje_movimiento',array('equipaje_id'=>$eid,'movimiento_tipo'=>'RECEPCION','movimiento_fechahora'=>$fecha_eq,'usuario_id'=>$usuario_id,'movimiento_observacion'=>'Equipaje incluido registrado durante la venta'));
+                    }
+                    $equipajes_incluidos_ids[]=$eid;
                 }
             }
-                    
-        
-        //$venta_numerotransmes = ;
 
-            $sql = "insert into venta_pasaje(
-                    forma_id, tipotrans_id, usuario_id, cliente_id, moneda_id, estado_id, venta_fecha, venta_hora, 
-                    venta_subtotal, venta_descuentoparcial, venta_descuento, venta_total, venta_efectivo, venta_cambio, 
-                    venta_glosa, venta_comision, venta_tipocambio, detalleserv_id, venta_tipodoc, tiposerv_id, 
-                    entrega_id, venta_fechaentrega, venta_horaentrega, venta_numeroventa, venta_numeromesa, 
-                    entrega_usuarioid, entrega_estadoid, usuarioprev_id, pedido_id, orden_id, banco_id, 
-                    venta_ice, venta_giftcard, venta_detalletransaccion, venta_numerotransmes, viaje_id, 
-                    venta_acuentareserva, venta_fechareserva, venta_horareserva, venta_formapagoreserva_id, venta_codigoreserva)
+            // CONSOLIDACION: anular la cabecera anterior solo despues de reasignar todos sus pasajes.
+            if($consolidar_venta_id > 0){
+                $reserva_anterior = $this->db->query(
+                    "SELECT venta_id, viaje_id, estado_id FROM venta_pasaje WHERE venta_id = ? FOR UPDATE",
+                    array($consolidar_venta_id)
+                )->row_array();
 
-                    value({$forma_id},{$tipotrans_id},{$usuario_id},{$cliente_id},{$moneda_id},
-                    {$estado_id},{$venta_fecha},{$venta_hora},{$venta_subtotal},{$venta_descuentoparcial},
-                    {$venta_descuento},{$venta_total},{$venta_efectivo},{$venta_cambio},'{$venta_glosa}',
-                    {$venta_comision},{$venta_tipocambio},{$detalleserv_id},{$venta_tipodoc},{$tiposerv_id},{$entrega_id},
-                    {$venta_fechaentrega},{$venta_horaentrega},{$venta_numeroventa},{$venta_numeromesa},{$entrega_usuarioid},
-                    {$entrega_estadoid},{$usuarioprev_id},{$pedido_id},{$orden_id},{$banco_id},
-                    {$venta_ice},{$venta_giftcard},{$venta_detalletransaccion},{$venta_numerotransmes},{$viaje_id},
-                    {$venta_acuentareserva},'{$venta_fechareserva}','{$venta_horareserva}', {$venta_formapagoreserva_id},'{$venta_codigoreserva}')";
+                if(empty($reserva_anterior) || (int)$reserva_anterior['viaje_id'] !== $viaje_id){
+                    throw new Exception('La reserva que se intenta consolidar ya no es valida.');
+                }
 
-            //echo $sql;
-        
-        if($operacion==1){ //Si operacion es venta
-            
-            $venta_id = $this->Venta_model->ejecutar($sql);
+                $this->db->where('venta_id', $consolidar_venta_id)->update('venta_pasaje', array('estado_id'=>3, 'reserva_usuario_confirma_id'=>$usuario_id));
+                if($this->db->affected_rows() !== 1){
+                    throw new Exception('No fue posible cerrar la reserva anterior.');
+                }
+            }
 
-                    // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
-                $sql = "update pasaje set
-                        venta_id = {$venta_id},
-                        estado_id = 54
-                        where  
-                        estado_id = 51 and
-                        usuario_id = {$usuario_id} and
-                        viaje_id = {$viaje_id}";
-              //  echo $sql;
-                $this->Venta_model->ejecutar($sql);
+            // 8. REVALIDACION FINAL ANTES DEL COMMIT.
+            $verificacion = $this->db->query(
+                "SELECT COUNT(*) cantidad,
+                        SUM(CASE WHEN estado_id = ? AND venta_id = ? THEN 1 ELSE 0 END) asignados
+                 FROM pasaje
+                 WHERE pasaje_id IN (".implode(',', array_map('intval', $pasaje_ids)).")",
+                array($nuevo_estado_pasaje, $venta_id)
+            )->row_array();
 
+            if((int)$verificacion['cantidad'] !== count($pasaje_ids)
+                || (int)$verificacion['asignados'] !== count($pasaje_ids)){
+                throw new Exception('La comprobacion final de los asientos no fue satisfactoria.');
+            }
+
+            if($this->db->trans_status() === false){
+                throw new Exception('La base de datos reporto un error durante la operacion.');
+            }
+
+            // 9. COMMIT: desde este punto venta/reserva y asientos quedan confirmados juntos.
+            $this->db->trans_commit();
+
+            $this->output->set_content_type('application/json')->set_output(json_encode(array(
+                'ok' => true,
+                'venta_id' => $venta_id,
+                'operacion' => $operacion === 1 ? 'VENTA' : 'RESERVA',
+                'cantidad_pasajes' => count($pasaje_ids),
+                'equipajes_incluidos_cantidad' => count($equipajes_incluidos_ids),
+                'subtotal' => $subtotal_db,
+                'descuento' => $descuento_solicitado,
+                'total' => $total_final_db,
+                'forma_pago_id' => $forma_id,
+                'requiere_factura' => ($operacion === 1 && $venta_tipodoc === 1),
+                'mensaje_factura' => ($operacion === 1 && $venta_tipodoc === 1)
+                    ? 'La venta fue confirmada. La emision electronica debe ejecutarse despues del COMMIT.'
+                    : ''
+            )));
+            return;
+
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+
+            log_message('error', 'Venta/reserva de pasajes revertida: '.$e->getMessage());
+            $this->output->set_content_type('application/json')->set_status_header(409)
+                ->set_output(json_encode(array(
+                    'ok' => false,
+                    'mensaje' => $e->getMessage()
+                )));
+            return;
         }
-        
-        
-        if($operacion==2){ //Si operacion es reserva
-            
-            $venta_id = $this->Venta_model->ejecutar($sql);
-            
-                    // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
-                $sql = "update pasaje set
-                        venta_id = {$venta_id},
-                        estado_id = 52,
-                        pasaje_fechalimiteres = '{$fechareserva}',
-                        pasaje_horalimiteres = '{$horareserva}'
-                        where  
-                        estado_id = 51 and
-                        usuario_id = {$usuario_id} and
-                        viaje_id = {$viaje_id}";
-              //  echo $sql;
-                $this->Venta_model->ejecutar($sql);
-
-        }
-
-        if($operacion==2222){ //reserva
-                    
-            // $sql = "select * from asientos where vehiculo_id = {$vehiculo_id}";
-                 $sql = "update pasaje set
-                         estado_id = 52
-                         
-                         where  
-                        estado_id = 51 and
-                        usuario_id = {$usuario_id} and
-                        viaje_id = {$viaje_id}";
-                 //echo $sql;
-             $this->Venta_model->ejecutar($sql);
-        }
-            
-        
-        echo json_encode(true);
-        
     }
 
     /*************** funcion para mostrar la vista de la factura******************/
@@ -11737,13 +12137,24 @@ function anular_traspaso($traspaso_id){
     //    if($this->acceso(12)||$this->acceso(30)){
     //    //**************** inicio contenido ***************    
 
-        $usuario_id = $this->session_data['usuario_id'];             
-        $viaje_id = $this->input->post("viaje_id");
+        $usuario_id = $this->session_data['usuario_id'];
+        $viaje_id = (int)$this->input->get_post("viaje_id", true);
 
+        if ($viaje_id <= 0) {
+            show_error('Debe seleccionar un viaje antes de imprimir el ultimo pasaje.', 400, 'Viaje no valido');
+            return;
+        }
 
-        $venta_id = $this->Viaje_model->ultima_venta($viaje_id, $usuario_id);
+        // Viaje_model ya dispone de ultimo_pasaje(viaje_id, usuario_id).
+        // Antes se llamaba por error a ultima_venta(), metodo que no existe en este modelo.
+        $venta_id = (int)$this->Viaje_model->ultimo_pasaje($viaje_id, $usuario_id);
 
-         redirect('viaje/imprimir_pasaje/'.$venta_id);
+        if ($venta_id <= 0) {
+            show_error('No se encontro un pasaje vendido por este usuario para el viaje seleccionado.', 404, 'Pasaje no encontrado');
+            return;
+        }
+
+        redirect('viaje/imprimir_pasaje/'.$venta_id);
             //redirect('factura/recibo_boucher/'.$venta_id);        
 
 
@@ -11754,25 +12165,67 @@ function anular_traspaso($traspaso_id){
     
     /*************** funcion para mostrar la vista de la factura******************/
     function anular_operacion(){
+        $this->output->set_content_type('application/json');
 
-    //    if($this->acceso(12)||$this->acceso(30)){
-    //    //**************** inicio contenido ***************    
+        // El operador que solicita la anulacion debe tener el permiso especifico.
+        if(!$this->acceso(205)){
+            $this->output->set_status_header(403)->set_output(json_encode(array(
+                'ok'=>false,
+                'mensaje'=>'No tiene permiso para anular ventas de pasajes.'
+            )));
+            return;
+        }
 
-        $usuario_id = $this->session_data['usuario_id'];             
-        $venta_id = $this->input->post("venta_id");
+        $usuario_id=(int)$this->session_data['usuario_id'];
+        $pasaje_id=(int)$this->input->post('pasaje_id');
+        // venta_id se recibe solo como dato informativo/compatibilidad. La venta real
+        // se resuelve en servidor desde pasaje_id para evitar operaciones Nº 0 o IDs manipulados.
+        $venta_id=(int)$this->input->post('venta_id');
+        $motivo=trim((string)$this->input->post('motivo'));
 
-        $this->Venta_model->anular_operacion($venta_id, $usuario_id);
+        if($pasaje_id<=0 || $motivo===''){
+            $this->output->set_status_header(422)->set_output(json_encode(array(
+                'ok'=>false,
+                'mensaje'=>'Debe identificar el pasaje y registrar un motivo de anulacion.'
+            )));
+            return;
+        }
 
-//         redirect('viaje/imprimir_pasaje/'.$venta_id);
-            //redirect('factura/recibo_boucher/'.$venta_id);        
-        
-        echo json_encode($venta_id);
+        // No se solicitan credenciales adicionales. El usuario autenticado en la sesión
+        // es quien ejecuta y autoriza la anulación, siempre que tenga el permiso 205.
+        // Se conserva usuario_autoriza_id en auditoría por compatibilidad, usando el mismo
+        // usuario de sesión para una anulación normal.
+        $r=$this->Venta_model->anular_operacion_auditada(
+            $pasaje_id,$usuario_id,$motivo,(int)$this->caja_id,$usuario_id,$venta_id
+        );
+        if(empty($r['ok'])) $this->output->set_status_header(409);
+        $this->output->set_output(json_encode($r));
+    }
 
-           //**************** fin contenido ***************
-    //        }
+    /*************** consolidar reserva  ******************/
+    function preparar_consolidar_reserva(){
 
-    }    
-    
+        $usuario_id = (int)$this->session_data['usuario_id'];
+        $venta_id = (int)$this->input->post("venta_id");
+        $viaje_id = (int)$this->input->post("viaje_id");
+
+        $resultado = $this->Venta_model->preparar_consolidar_reserva($venta_id, $viaje_id, $usuario_id);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($resultado));
+    }
+
+    function cancelar_consolidar_reserva(){
+
+        $usuario_id = (int)$this->session_data['usuario_id'];
+        $venta_id = (int)$this->input->post("venta_id");
+
+        $resultado = $this->Venta_model->cancelar_consolidar_reserva($venta_id, $usuario_id);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($resultado));
+    }
+
     /*************** verificar reserva  ******************/
     function verificar_reserva(){
 
@@ -11791,25 +12244,61 @@ function anular_traspaso($traspaso_id){
     }    
     /*************** verificar reserva  ******************/
     function ampliar_reserva(){
+        $usuario_id=(int)$this->session_data['usuario_id'];
+        $venta_id=(int)$this->input->post('venta_id');
+        $fecha_limite=trim((string)$this->input->post('fecha_limite'));
+        $hora_limite=trim((string)$this->input->post('hora_limite'));
+        $motivo=trim((string)$this->input->post('motivo'));
+        $autoriza_login=trim((string)$this->input->post('autoriza_login'));
+        $autoriza_clave=(string)$this->input->post('autoriza_clave');
 
-    //    if($this->acceso(12)||$this->acceso(30)){
-    //    //**************** inicio contenido ***************    
+        if($venta_id<=0 || $motivo===''){
+            echo json_encode(array('ok'=>false,'mensaje'=>'Debe indicar la reserva y el motivo de la extension.')); return;
+        }
+        $nuevo=DateTime::createFromFormat('Y-m-d H:i',$fecha_limite.' '.$hora_limite);
+        if(!$nuevo || $nuevo->format('Y-m-d H:i')!==$fecha_limite.' '.$hora_limite || $nuevo->getTimestamp()<=time()){
+            echo json_encode(array('ok'=>false,'mensaje'=>'El nuevo limite debe ser una fecha/hora futura valida.')); return;
+        }
+        $this->db->trans_begin();
+        try{
+            $res=$this->db->query("SELECT * FROM venta_pasaje WHERE venta_id=? AND estado_id=52 FOR UPDATE",array($venta_id))->row_array();
+            if(!$res) throw new Exception('La reserva ya no se encuentra activa.');
+            $viaje_reserva=$this->db->query("SELECT estado_id FROM viaje WHERE viaje_id=? FOR UPDATE",array((int)$res['viaje_id']))->row_array();
+            if(!$viaje_reserva || !in_array((int)$viaje_reserva['estado_id'],array(61,56),true)){
+                throw new Exception('La reserva no puede ampliarse porque el viaje ya no admite operaciones de reserva.');
+            }
+            $cfg=$this->Venta_model->configuracion_reserva_viaje((int)$res['viaje_id']);
+            $actual=new DateTime($res['venta_fechareserva'].' '.$res['venta_horareserva']);
+            $maximo=(clone $actual)->modify('+'.max(1,(int)$cfg['extension_max_minutos']).' minutes');
+            if($nuevo>$maximo) throw new Exception('La extension supera el maximo permitido para esta ruta ('.$cfg['extension_max_minutos'].' minutos).');
 
-        $usuario_id = $this->session_data['usuario_id'];             
-        $venta_id = $this->input->post("venta_id");
-        $fecha_limite = $this->input->post("fecha_limite");
-        $hora_limite = $this->input->post("hora_limite");
+            $autorizador_id=null;
+            if((int)$cfg['requiere_autorizacion']===1){
+                $aut=$this->Venta_model->validar_autorizador_reserva($autoriza_login,$autoriza_clave,(int)$cfg['rol_autoriza']);
+                if(!$aut) throw new Exception('Las credenciales no corresponden a un usuario autorizado para ampliar reservas.');
+                $autorizador_id=(int)$aut['usuario_id'];
+            }
+            $nuevo_sql=$nuevo->format('Y-m-d H:i:s');
+            $anterior_sql=$actual->format('Y-m-d H:i:s');
+            $this->db->where('venta_id',$venta_id)->update('venta_pasaje',array('venta_fechareserva'=>$fecha_limite,'venta_horareserva'=>$hora_limite));
+            $this->db->where('venta_id',$venta_id)->where('estado_id',52)->update('pasaje',array('pasaje_fechalimiteres'=>$fecha_limite,'pasaje_horalimiteres'=>$hora_limite));
+            $this->db->insert('reserva_extension_historial',array(
+                'venta_id'=>$venta_id,'viaje_id'=>(int)$res['viaje_id'],'limite_anterior'=>$anterior_sql,'limite_nuevo'=>$nuevo_sql,
+                'extension_motivo'=>$motivo,'usuario_solicita_id'=>$usuario_id,'usuario_autoriza_id'=>$autorizador_id,'extension_fecha'=>date('Y-m-d H:i:s')
+            ));
+            $this->db->insert('reserva_evento',array(
+                'venta_id'=>$venta_id,'viaje_id'=>(int)$res['viaje_id'],'evento_tipo'=>'EXTENSION','evento_fecha'=>date('Y-m-d H:i:s'),
+                'usuario_id'=>$usuario_id,'usuario_autoriza_id'=>$autorizador_id,'evento_motivo'=>$motivo,
+                'limite_anterior'=>$anterior_sql,'limite_nuevo'=>$nuevo_sql,'evento_detalle'=>null
+            ));
+            if($this->db->trans_status()===false) throw new Exception('No fue posible registrar la extension.');
+            $this->db->trans_commit();
+            echo json_encode(array('ok'=>true,'mensaje'=>'Reserva ampliada y registrada en historial.'));
+        }catch(Exception $e){
+            $this->db->trans_rollback(); echo json_encode(array('ok'=>false,'mensaje'=>$e->getMessage()));
+        }
+    }
 
-        $sql = "update venta_pasaje set venta_fechareserva = '{$fecha_limite}', venta_horareserva = '{$hora_limite}' where venta_id = '{$venta_id}'";
-        //echo $sql;
-        $this->Venta_model->ejecutar($sql);
-        echo json_encode(true);
-
-           //**************** fin contenido ***************
-    //        }
-
-    }    
-    
     /*************** verificar reserva  ******************/
     function seleccionar_almacen(){
 
@@ -11843,7 +12332,10 @@ function anular_traspaso($traspaso_id){
 
         $datos = $sumatoria_total;
         $sumatoria_total = "";
-        preg_match_all('/[+-]\d+/', $datos, $matches);
+        // Si el primer valor no tiene signo, se considera positivo.
+        // Ej.: 125+6+8+7  => +125, +6, +8, +7
+        // Se mantiene el mismo formato histórico para detalleven_caracteristicas.
+        preg_match_all('/(?:^[+-]?|[+-])\d+(?:\.\d+)?/', trim($datos), $matches);
 
         // Recorrer y mostrar en el formato deseado
         $decimales = $this->parametros["parametro_decimales"];
@@ -11851,6 +12343,9 @@ function anular_traspaso($traspaso_id){
         $total =  number_format($total,$decimales);
         
         foreach ($matches[0] as $num) {
+            if ($num !== '' && $num[0] !== '+' && $num[0] !== '-') {
+                $num = '+' . $num;
+            }
             $sumatoria_total .= $num . " = \n";
         }
         $sql = "update detalle_venta_aux set 
@@ -12270,6 +12765,117 @@ function listar_series_disponibles()
                 
         }
         
+    }
+
+
+    /* ================================================================
+       FACTURAS MASIVAS - reutiliza EXACTAMENTE pdf_generar() existente
+       ================================================================ */
+    private function tx_ids_facturas_lote()
+    {
+        $ids=json_decode((string)$this->input->post('factura_ids'),true);
+        if(!is_array($ids)) $ids=array();
+        $out=array(); foreach($ids as $id){$id=(int)$id;if($id>0)$out[$id]=$id;}
+        return array_values($out);
+    }
+
+    private function tx_directorio_pdf_factura()
+    {
+        $base_url=explode('/',base_url());
+        return $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+    }
+
+    private function tx_generar_pdf_nativo($factura_id)
+    {
+        /* FUENTE ÚNICA: el mismo método que ya usa Venta. */
+        $this->pdf_generar((int)$factura_id);
+        $archivo=$this->tx_directorio_pdf_factura().$this->nombre_archivo.(int)$factura_id.'.pdf';
+        return is_file($archivo)?$archivo:false;
+    }
+
+    public function pdf_facturas_zip()
+    {
+        $ids=$this->tx_ids_facturas_lote();
+        if(empty($ids)) show_error('No existen facturas filtradas para generar.',400);
+        if(!class_exists('ZipArchive')) show_error('La extensión ZIP de PHP no está habilitada.',500);
+        $tmp=tempnam(sys_get_temp_dir(),'facturas_'); @unlink($tmp); $tmp.='.zip';
+        $zip=new ZipArchive();
+        if($zip->open($tmp,ZipArchive::CREATE|ZipArchive::OVERWRITE)!==TRUE) show_error('No se pudo crear el archivo ZIP.',500);
+        foreach($ids as $id){
+            $archivo=$this->tx_generar_pdf_nativo($id);
+            if($archivo){
+                $fac=$this->Factura_model->get_factura_id($id);
+                $numero=(!empty($fac)&&isset($fac[0]['factura_numero']))?$fac[0]['factura_numero']:$id;
+                $zip->addFile($archivo,'Factura_'.$numero.'_ID_'.$id.'.pdf');
+            }
+        }
+        $zip->close();
+        header('Content-Type: application/zip');
+        header('Content-Disposition: attachment; filename="Facturas_'.date('Ymd_His').'.zip"');
+        header('Content-Length: '.filesize($tmp));
+        readfile($tmp); @unlink($tmp); exit;
+    }
+
+    private function tx_cargar_fpdi()
+    {
+        /* Primero Composer, si existe. */
+        $autoloads=array(
+            APPPATH.'libraries/vendor/autoload.php',
+            APPPATH.'vendor/autoload.php',
+            FCPATH.'vendor/autoload.php'
+        );
+        foreach($autoloads as $a){
+            if(is_file($a)){
+                require_once($a);
+                if(class_exists('setasign\\Fpdi\\Fpdi')) return true;
+            }
+        }
+
+        /* Instalación manual incluida. Acepta tanto la estructura directa como
+           carpetas FPDI-master / FPDI-x.y.z creadas al descomprimir GitHub. */
+        $fpdf_candidates=array(
+            APPPATH.'third_party/fpdf/fpdf.php',
+            APPPATH.'third_party/FPDF/fpdf.php'
+        );
+        $fpdi_candidates=array(
+            APPPATH.'third_party/fpdi/src/autoload.php',
+            APPPATH.'third_party/FPDI/src/autoload.php'
+        );
+
+        foreach(glob(APPPATH.'third_party/*FPDF*/fpdf.php') ?: array() as $f) $fpdf_candidates[]=$f;
+        foreach(glob(APPPATH.'third_party/*fpdf*/fpdf.php') ?: array() as $f) $fpdf_candidates[]=$f;
+        foreach(glob(APPPATH.'third_party/*FPDI*/src/autoload.php') ?: array() as $f) $fpdi_candidates[]=$f;
+        foreach(glob(APPPATH.'third_party/*fpdi*/src/autoload.php') ?: array() as $f) $fpdi_candidates[]=$f;
+
+        $fpdf_file=false; foreach(array_unique($fpdf_candidates) as $f){if(is_file($f)){$fpdf_file=$f;break;}}
+        $fpdi_file=false; foreach(array_unique($fpdi_candidates) as $f){if(is_file($f)){$fpdi_file=$f;break;}}
+
+        if($fpdf_file) require_once($fpdf_file);
+        if($fpdi_file) require_once($fpdi_file);
+
+        return class_exists('setasign\\Fpdi\\Fpdi');
+    }
+
+    public function pdf_facturas_unico()
+    {
+        $ids=$this->tx_ids_facturas_lote();
+        if(empty($ids)) show_error('No existen facturas filtradas para generar.',400);
+        if(!$this->tx_cargar_fpdi()){
+            $diag='FPDF: '.(is_file(APPPATH.'third_party/fpdf/fpdf.php')?'OK':'NO ENCONTRADO').' | FPDI: '.(is_file(APPPATH.'third_party/fpdi/src/autoload.php')?'OK':'NO ENCONTRADO');
+            show_error('No se pudo cargar FPDI. '.$diag.'. Ejecute INSTALAR_FPDI_XIMPLEMAN.bat una sola vez. Esta corrección también detecta automáticamente carpetas FPDI-master/FPDF-master.',500,'FPDI no disponible');
+        }
+        $pdf=new \setasign\Fpdi\Fpdi();
+        foreach($ids as $id){
+            $archivo=$this->tx_generar_pdf_nativo($id); if(!$archivo)continue;
+            $paginas=$pdf->setSourceFile($archivo);
+            for($n=1;$n<=$paginas;$n++){
+                $tpl=$pdf->importPage($n); $size=$pdf->getTemplateSize($tpl);
+                $pdf->AddPage($size['orientation'],array($size['width'],$size['height']));
+                $pdf->useTemplate($tpl);
+            }
+        }
+        $nombre='Facturas_'.date('Ymd_His').'.pdf';
+        $pdf->Output('D',$nombre); exit;
     }
 
 }

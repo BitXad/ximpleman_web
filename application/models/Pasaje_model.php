@@ -99,8 +99,17 @@ class Pasaje_model extends CI_Model
       function update_pasaje($pasaje_id,$params)
       {
         try{
+            $campos_auditables=array('pasaje_nombre','pasaje_apellido','pasaje_documento','pasaje_telefono','pasaje_edad','pasaje_sexo','pasaje_origen','pasaje_destino');
+            $auditar=false; foreach($campos_auditables as $c){ if(array_key_exists($c,$params)){ $auditar=true; break; } }
+            $anterior=$auditar?$this->db->get_where('pasaje',array('pasaje_id'=>(int)$pasaje_id))->row_array():null;
             $this->db->where('pasaje_id',$pasaje_id);
-        return $this->db->update('pasaje',$params);
+            $ok=$this->db->update('pasaje',$params);
+            if($ok && $auditar && $anterior){
+                $nuevo=$this->db->get_where('pasaje',array('pasaje_id'=>(int)$pasaje_id))->row_array(); $va=array(); $vn=array();
+                foreach($campos_auditables as $c) if(array_key_exists($c,$params) && (string)($anterior[$c]??'')!==(string)($nuevo[$c]??'')){ $va[$c]=$anterior[$c]??null; $vn[$c]=$nuevo[$c]??null; }
+                if($va){ $this->load->model('Bitacora_transporte_model'); $this->Bitacora_transporte_model->registrar('MODIFICACION_PASAJERO','PASAJE',(int)$pasaje_id,$va,$vn,array('viaje_id'=>(int)($nuevo['viaje_id']??0),'venta_id'=>(int)($nuevo['venta_id']??0),'pasaje_id'=>(int)$pasaje_id)); }
+            }
+            return $ok;
            } catch (Exception $ex) {
              throw new Exception('Pasaje_model model : Error in update_pasaje function - ' . $ex);
            }  
@@ -178,6 +187,10 @@ class Pasaje_model extends CI_Model
 //    {
 //        $this->db->where('pasaje_id', $pasaje_id);
 //        return $this->db->update('pasaje', $params);
-//    }  
-      
- }
+//    }
+
+    public function auditar_transporte($accion,$pasaje_id,$anterior=NULL,$nuevo=NULL,$extra=array()){
+        $this->load->model('Bitacora_transporte_model'); $extra['pasaje_id']=(int)$pasaje_id;
+        return $this->Bitacora_transporte_model->registrar($accion,'PASAJE',(int)$pasaje_id,$anterior,$nuevo,$extra);
+    }
+}

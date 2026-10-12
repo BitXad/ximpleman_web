@@ -25,6 +25,14 @@ class Encomienda extends CI_Controller
         if(is_array($caja) && count($caja)>0){ $this->caja_id=$caja[0]['caja_id']; }
     }
 
+    private function permiso_transporte($rol_id){
+        $uid=isset($this->session_data['usuario_id'])?(int)$this->session_data['usuario_id']:0;
+        if($uid<=0) return false;
+        $r=$this->db->query("SELECT 1 ok FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id WHERE u.usuario_id=? AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1",array($uid,(int)$rol_id))->row_array();
+        return !empty($r);
+    }
+    private function negar_permiso($mensaje){ show_error($mensaje,403,'Acceso denegado'); return false; }
+
     public function index(){
         $data['sistema']=$this->sistema;
         $data['encomiendas']=$this->Encomienda_model->get_all_encomiendas();
@@ -33,6 +41,7 @@ class Encomienda extends CI_Controller
     }
 
     public function add(){
+        if(!$this->permiso_transporte(212)){ $this->negar_permiso('No tiene permiso para registrar equipaje/encomiendas.'); return; }
         $data['sistema']=$this->sistema;
         $data['catalogos']=$this->Encomienda_model->catalogos();
         if(isset($_POST) && count($_POST)>0){
@@ -43,6 +52,24 @@ class Encomienda extends CI_Controller
             $seguro=(float)$this->input->post('encomienda_seguro');
             $acuenta=(float)$this->input->post('encomienda_acuenta');
             $total=$subtotal-$descuento+$recargo+$seguro;
+
+            // Vincular remitente y destinatario con la tabla cliente.
+            // Si el CI ya existe se reutiliza; si no existe se crea automáticamente.
+            $remitente_cliente_id=$this->Encomienda_model->obtener_o_crear_cliente(
+                $this->input->post('encomienda_remitenteci'),
+                $this->input->post('encomienda_remitentenombre'),
+                $this->input->post('encomienda_remitentetelefono'),
+                $this->input->post('encomienda_remitentedireccion'),
+                $this->session_data['usuario_id']
+            );
+            $destinatario_cliente_id=$this->Encomienda_model->obtener_o_crear_cliente(
+                $this->input->post('encomienda_destinatarioci'),
+                $this->input->post('encomienda_destinatarionombre'),
+                $this->input->post('encomienda_destinatariotelefono'),
+                $this->input->post('encomienda_destinatariodireccion'),
+                $this->session_data['usuario_id']
+            );
+
             $params=array(
                 'encomienda_codigo'=>$guia,'encomienda_guia'=>$guia,'encomienda_codigobarra'=>$guia,
                 'usuario_id'=>$this->session_data['usuario_id'],'origen_id'=>$this->input->post('origen_id'),'destino_id'=>$this->input->post('destino_id'),
@@ -62,6 +89,14 @@ class Encomienda extends CI_Controller
                 'encomienda_subtotal'=>$subtotal,'encomienda_descuento'=>$descuento,'encomienda_recargo'=>$recargo,'encomienda_seguro'=>$seguro,
                 'encomienda_total'=>$total,'encomienda_acuenta'=>$acuenta,'encomienda_saldo'=>($total-$acuenta),'encomienda_pagado'=>(($total-$acuenta)<=0?1:0),'encomienda_pagadoen'=>$this->input->post('encomienda_pagadoen')
             );
+            // Los campos de vínculo son opcionales hasta ejecutar el ALTER TABLE incluido.
+            if($this->db->field_exists('remitente_cliente_id','encomienda')){
+                $params['remitente_cliente_id']=$remitente_cliente_id;
+            }
+            if($this->db->field_exists('destinatario_cliente_id','encomienda')){
+                $params['destinatario_cliente_id']=$destinatario_cliente_id;
+            }
+
             $id=$this->Encomienda_model->guardar_encomienda($params);
             if($this->input->post('viaje_id')){ $this->Encomienda_model->asignar_viaje($id,$this->input->post('viaje_id'),$this->session_data['usuario_id']); }
             $this->session->set_flashdata('alert_msg','<div class="alert alert-success text-center">Encomienda registrada correctamente. Guia: '.$guia.'</div>');
@@ -71,7 +106,29 @@ class Encomienda extends CI_Controller
         $this->load->view('layouts/main',$data);
     }
 
+    /**
+     * Busca un cliente por CI para autocompletar remitente/destinatario.
+     * Respuesta JSON pensada para AJAX desde encomienda/add.
+     */
+    public function buscar_cliente_ci(){
+        $ci=trim((string)$this->input->post('ci'));
+        $respuesta=array('encontrado'=>false,'cliente'=>null);
+
+        if($ci!==''){
+            $cliente=$this->Encomienda_model->buscar_cliente_ci($ci);
+            if($cliente){
+                $respuesta['encontrado']=true;
+                $respuesta['cliente']=$cliente;
+            }
+        }
+
+        $this->output
+            ->set_content_type('application/json','utf-8')
+            ->set_output(json_encode($respuesta));
+    }
+
     public function edit($id){
+        if(!$this->permiso_transporte(212)){ $this->negar_permiso('No tiene permiso para registrar equipaje/encomiendas.'); return; }
         $data['sistema']=$this->sistema; $data['encomienda']=$this->Encomienda_model->get_encomienda($id); $data['catalogos']=$this->Encomienda_model->catalogos();
         if(!$data['encomienda']){ show_error('La encomienda no existe.'); }
         if(isset($_POST) && count($_POST)>0){

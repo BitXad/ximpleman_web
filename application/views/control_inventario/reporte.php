@@ -1,3 +1,7 @@
+<?php
+    // Misma configuracion usada en los reportes/facturas del sistema.
+    $decimales = isset($parametro['parametro_decimales']) ? (int)$parametro['parametro_decimales'] : 2;
+?>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
@@ -46,7 +50,20 @@
                 <br><br>
                 <font size="3" face="arial"><b>REPORTE DE AJUSTE DE INVENTARIO</b></font> <br>
                 <font size="1" face="arial"><b><?php echo $control_inventarios["controli_descripcion"]; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+                <?php if(!empty($ajuste)){ ?>
+                    <font size="1" face="arial"><b>AJUSTE N° <?php echo $ajuste['ajuste_id']; ?></b></font><br>
+                    <font size="1" face="arial">Aplicado: <?php echo date("d/m/Y", strtotime($ajuste['ajuste_fecha']))." ".$ajuste['ajuste_hora']; ?></font><br>
+                    <font size="1" face="arial">No contabilizados: <b><?php echo ($ajuste['ajuste_politica_no_contados']=='CERO') ? 'CONSIDERADOS EN 0' : 'SIN CAMBIOS'; ?></b></font><br>
+                    <?php if(!empty($ajuste['ajuste_anulado'])){ ?>
+                        <font size="1" face="arial" color="red"><b>ESTADO: ANULADO</b></font><br>
+                        <font size="1" face="arial">Anulado: <?php echo !empty($ajuste['ajuste_fecha_anulacion']) ? date("d/m/Y", strtotime($ajuste['ajuste_fecha_anulacion']))." ".$ajuste['ajuste_hora_anulacion'] : ''; ?></font><br>
+                        <font size="1" face="arial">Motivo: <?php echo htmlspecialchars($ajuste['ajuste_motivo_anulacion']); ?></font><br>
+                    <?php } else { ?>
+                        <font size="1" face="arial" color="green"><b>ESTADO: APLICADO</b></font><br>
+                    <?php } ?>
+                <?php } else { ?>
+                    <font size="1" face="arial"><b>Vista previa - ajuste aún no consolidado</b></font><br>
+                <?php } ?>
 
             </center>
         </td>
@@ -81,6 +98,7 @@
                             <th >COSTO</th>
                             <th >TOTAL<br>FALTANTE</th>
                             <th >TOTAL<br>SOBRANTE</th>
+                            <th>MOVIMIENTO</th>
                         </tr>
                     </thead>
                     <tbody >
@@ -100,13 +118,17 @@
                                     <td><?php echo $i++; ?></td>
                                     <td><?php echo $p["producto"]; ?></td>
                                     <td style="text-align: center;"><?php echo $p["codigo"]; ?></td>
-                                    <td style="text-align: center;"><?php echo $p["existencia_sistema"]; ?></td>
-                                    <td style="text-align: center;"><?php echo $p["existencia_fisica"]; ?></td>
-                                    <td style="text-align: center;"><?php echo $p["faltante"]; ?></td>
-                                    <td style="text-align: center;"><?php echo $p["sobrante"]; ?></td>
-                                    <td style="text-align: right;"><?php echo number_format($p["costo"],2,".",","); ?></td>
-                                    <td style="text-align: right;"><?php echo number_format($p["total_faltante"],2,".",","); ?></td>
-                                    <td style="text-align: right;"><?php echo number_format($p["total_sobrante"],2,".",","); ?></td>
+                                    <td style="text-align: center;"><?php echo number_format((float)$p["existencia_sistema"], $decimales, ".", ","); ?></td>
+                                    <td style="text-align: center;"><?php echo number_format((float)$p["existencia_fisica"], $decimales, ".", ","); ?></td>
+                                    <td style="text-align: center;"><?php echo number_format((float)$p["faltante"], $decimales, ".", ","); ?></td>
+                                    <td style="text-align: center;"><?php echo number_format((float)$p["sobrante"], $decimales, ".", ","); ?></td>
+                                    <td style="text-align: right;"><?php echo number_format((float)$p["costo"],$decimales,".",","); ?></td>
+                                    <td style="text-align: right;"><?php echo number_format((float)$p["total_faltante"],$decimales,".",","); ?></td>
+                                    <td style="text-align: right;"><?php echo number_format((float)$p["total_sobrante"],$decimales,".",","); ?></td>
+                                    <td style="text-align: center;"><?php
+                                        if(isset($p['ajustedet_tipo'])) echo $p['ajustedet_tipo'];
+                                        else echo ($p['sobrante'] > 0 ? 'ENTRADA' : ($p['faltante'] > 0 ? 'SALIDA' : 'SIN CAMBIO'));
+                                    ?></td>
                                  </tr>
                                  
                         <?php } ?>
@@ -117,8 +139,9 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th><?php echo number_format($total_faltante,2,".",","); ?></th>
-                            <th><?php echo number_format($total_sobrante,2,".",","); ?></th>                            
+                            <th><?php echo number_format((float)$total_faltante,$decimales,".",","); ?></th>
+                            <th><?php echo number_format((float)$total_sobrante,$decimales,".",","); ?></th>
+                            <th></th>
                         </tr>
      
                     </tbody>

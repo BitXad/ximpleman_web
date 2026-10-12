@@ -1042,10 +1042,9 @@ function buscar_compras()
 
     if (opcion == 4)
     {
-        filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-
-    } //Todas las compras
+        mostrar_ocultar_buscador("mostrar");
+        return;
+    } // Todas las compras deshabilitado
 
     if (opcion == 5) {
 
@@ -1130,6 +1129,10 @@ function buscar_por_fecha()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var tipotrans_id = document.getElementById('tipotrans_id').value;
+
+    if (!validar_rango_reporte(fecha_desde, fecha_hasta, 366)) {
+        return;
+    }
 
     var fecha1 = "Desde: " + moment(fecha_desde).format('DD/MM/YYYY');
     var fecha2 = "Hasta: " + moment(fecha_hasta).format('DD/MM/YYYY');

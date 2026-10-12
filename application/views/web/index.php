@@ -67,6 +67,7 @@ function mostrar() {
 
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
+<link href="<?php echo $raiz;?>css/social-login.css?v=1.0.0" rel="stylesheet">
 <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
 <input type="hidden" value="4" id="imagenes_fila" />
 <!-- start-smoth-scrolling -->
@@ -74,7 +75,16 @@ function mostrar() {
     
 <body onload="buscar_por_categoria(<?php echo $parametro[0]['parametro_mostrarcategoria']; ?>)">
 <div id="fb-root"></div>
-<script src="<?= $raiz;?>js/facebookLogin.js"></script>
+<script>
+window.XIMPLEMAN_SOCIAL = {
+    facebookAppId: <?php echo json_encode(isset($facebook_app_id) ? $facebook_app_id : ''); ?>,
+    googleClientId: <?php echo json_encode(isset($google_client_id) ? $google_client_id : ''); ?>,
+    idiomaId: <?php echo (int)$idioma_id; ?>
+};
+</script>
+<script src="<?= $raiz;?>js/facebookLogin.js?v=2.0.0"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="<?= $raiz;?>js/googleLogin.js?v=1.0.0"></script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v8.0&appId=711005146491995&autoLogAppEvents=1" nonce="zwap7FDk"></script>
 <!-- header -->
@@ -1185,150 +1195,105 @@ function mostrar() {
 <!-- Modal: finalizar -->
 
 <!-- Modal: registro -->
-<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header" style="background-color: #000000;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="modalClienteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-login-dialog" role="document">
+    <div class="modal-content modal-login-content">
+      <div class="modal-header modal-login-header">
+        <button type="button" class="close modal-login-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-        <!--<h4 class="modal-title" id="myModalLabel"><i class="fa fa-user"></i> Cliente</h4>-->
-          <img src="<?php echo base_url("resources/web/images/logo.png") ?>" width="30%" height="30%">
+        <img src="<?php echo base_url("resources/web/images/logo.png") ?>" class="modal-login-logo" alt="Logo">
       </div>
-      <!--Body-->
-      <div class="modal-body">
-        <div class="col-md-12"></div>
-        <table class="table table-hover">
-            <tr>
-                <td>    
-                    <div class="col-md-12" style="padding:0; border-bottom: silver;" >
-                        <div class="btn-group" role="group" aria-label="login">
-                            <button class="btn btn-primary"  style="width: 120px;" onclick="inisesion()" id="boton_sesion"><fa class="fa fa-key"></fa> Iniciar Sesion</button>
-                            <button class="btn btn-default" style="width: 120px;" onclick="registrarcli()" id="boton_registro"><fa class="fa fa-user-plus"></fa> Registrate</button>
-                            <!-- Boton "continuar con facebook" -->
-                            <div onlogin="checkLoginState()" class="fb-login-button" data-size="medium" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
-                            <!-- Boton "continuar con facebook" -->
-                        </div>
-                    </div>
-                </td>    
-            </tr>
-            <tr>
-                <td>    
-            
-        <!--         <div class="col-md-2">
 
-                 </div>   -->
-        <!--         <div class="col-md-5"  style="padding:0;">
-                    <button class="btn btn-primary" style="width: 100%" onclick="inisesion()" type="button" >Iniciar Sesion</button>
-                 </div>  -->
+      <div class="modal-body modal-login-body">
+        <div class="login-mode-actions" role="group" aria-label="Acceso de cliente">
+          <button class="btn btn-primary login-action-btn active" onclick="inisesion()" id="boton_sesion" type="button">
+            <i class="fa fa-key"></i> Iniciar sesión
+          </button>
+          <button class="btn btn-default login-action-btn" onclick="registrarcli()" id="boton_registro" type="button">
+            <i class="fa fa-user-plus"></i> Regístrate
+          </button>
+        </div>
 
-                    <div style="display:block;" id="inisesion" >
-                            <br>
+        <div class="social-login-title"><span>o continúa con</span></div>
 
-                        <div>
+        <div class="social-login-actions">
+          <button type="button" class="social-login-btn facebook-login-btn" id="facebook_login_button" onclick="loginFacebookSeguro()">
+            <i class="fa fa-facebook"></i>
+            <span>Continuar con Facebook</span>
+          </button>
+          <div class="google-login-wrap">
+            <div id="google_login_button"></div>
+          </div>
+        </div>
+        <div id="social_login_message" class="social-login-message" aria-live="polite"></div>
 
-                            <div class="col-md-6">
-                                <b><fa class="fa fa-user"></fa> Usuario: </b><input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true" onkeyup="saltar_input(event,1)">
-                           </div>
-                           <div class="col-md-6">
-                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="password" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true" onkeyup="saltar_input(event,2)">
-                               <a href="<?php echo base_url("website/recuperarclave/".$idioma_id); ?>" >¿Olvidaste tu contraseña?</a>
-                           </div>
+        <div id="inisesion" class="login-panel" style="display:block;">
+          <div class="row">
+            <div class="col-md-6 login-field">
+              <label for="cliente_login"><i class="fa fa-user"></i> Usuario / Email</label>
+              <input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required onkeyup="saltar_input(event,1)" autocomplete="username">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_clave"><i class="fa fa-lock"></i> Contraseña</label>
+              <input type="password" class="form-control" value="" id="cliente_clave" name="cliente_clave" required onkeyup="saltar_input(event,2)" autocomplete="current-password">
+              <a class="forgot-password" href="<?php echo base_url("website/recuperarclave/".$idioma_id); ?>">¿Olvidaste tu contraseña?</a>
+            </div>
+          </div>
 
-                           <div class="col-md-12" style="text-align: justify; line-height: 12px; font-family: Arial;">
-                               <p >
-                                   <small>
-                                    Al identificarte aceptas nuestras Condiciones de uso y venta. Consulta nuestro Aviso de privacidad y nuestras Aviso de Cookies y Aviso sobre publicidad basada en los intereses del usuario.                                       
-                                   </small>
-                               </p>
-                                   
-                               <center>
-                                   <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 100px;"><fa class="fa fa-times"></fa> Cerrar</button>                
-                                   <button class="btn btn-success" type="button" onclick="sesion()" style="width: 100px;" id="boton_login"><fa class="fa fa-inbox"></fa> Ingresar</button>                
-                               </center>
-                           </div>
-                        </div>
+          <div class="login-legal">
+            Al identificarte aceptas nuestras Condiciones de uso y venta. Consulta nuestro Aviso de privacidad, Aviso de Cookies y Aviso sobre publicidad basada en intereses.
+          </div>
 
-                    </div>        
-        
-        
-                    <div style="display:none" id="registrarcli">
-                        
-                     <div class="col-md-6">
-                         <b><fa class="fa fa-list-ul"></fa> Nombre (*): <small style="color:red;"><span id="mensaje_lognombre"> </span></small></b><input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end); enfocar(event,1)">
-                    </div>
-                        
-                        
-                     <div class="col-md-6">
-                         <b><fa class="fa fa-mobile-phone"></fa> Celular (*): <small style="color:red;"><span id="mensaje_logcelular"> </span></small></b><input type="number" class="form-control" value="" id="cliente_celular" name="cliente_celular" required="true" onkeyup="enfocar(event,2)">
-                    </div>
-                        
-                    <div class="col-md-6">
-                        <b><fa class="fa fa-map-marker"></fa> Dirección (*): <small style="color:red;"><span id="mensaje_logdireccion"> </span></small></b><input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end); enfocar(event,3)">
-                    </div>                       
-                        
-                        
-                    <div class="col-md-6">
-                        <b><fa class="fa fa-user"></fa> Usuario/Email (*): <small style="color:red;"><span id="mensaje_logemail"> </span></small></b><input type="text" class="form-control" value="" id="cliente_email" name="cliente_email" required="true" onkeyup="enfocar(event,4);">
-                    </div>                       
-                        
-                    <div class="col-md-6">
-                        <b><fa class="fa fa-key"></fa> Contraseña (*): <small style="color:red;"><span id="mensaje_logclave"> </span></small></b><input type="password" class="form-control" value="" id="cliente_clavereg" name="cliente_clavereg" required="true" onkeyup="enfocar(event,5);" autocomplete="off">
-                    </div>
-                        
-                        
-                    <div class="col-md-6">
-                        <b><fa class="fa fa-key"></fa> Repetir contraseña (*): <small style="color:red;"><span id="mensaje_logrepetir"> </span></small></b><input type="password" class="form-control" value="" id="cliente_repeticion" name="cliente_repeticion" required="true" onkeyup="enfocar(event,6);" autocomplete="off">
-                        
-                    </div>
-                        
-                    <div class="col-md-12" style="color:red;">
-                        
-                        <small><span id="mensaje_log"> </span></small>
-                    
-                    </div>
-                        
-                        
-                    <div class="col-md-6" hidden="true">
-                        C.I.: <input type="text" class="form-control" value="0" id="cliente_ci" name="cliente_ci" required="true">        
-                    </div>
-                        
-                    <div class="col-md-6" hidden="true">
-                        NIT: <input type="text" class="form-control" value="0" id="cliente_nit" name="cliente_nit" required="true">
-                    </div>
-                        
-                    <div class="col-md-6" hidden="true">
-                        RAZON SOCIAL: <input type="text" class="form-control" value="SIN NOMBRE" id="cliente_razon" name="cliente_razon" required="true">
-                    </div>
-                        
-                    <div class="col-md-6" hidden="true">
-                        TELF: <input type="text" class="form-control" value="0" id="cliente_telefono" name="cliente_telefono" required="true">
-                    </div>
-                        
-                    <div class="col-md-6">
-                    </div>
-                    
-                    <div class="col-md-12">
-                        <center>
-                            <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 120px;"><fa class="fa fa-times"></fa> Cerrar</button>   
-                            <button class="btn btn-success" type="button" onclick="registrarcliente()"  style="width: 120px;" id="boton_registrar_datos"><fa class="fa fa-floppy-o"></fa> Registrarse</button>                            
-                        </center>                            
-                    </div>
-                        
-                    </div>
-        
-        
-                    
-        
-        
-                </td>
-            </tr>
-        
-        </table>
-        
+          <div class="login-footer-actions">
+            <button class="btn btn-danger modal-bottom-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+            <button class="btn btn-success modal-bottom-btn" type="button" onclick="sesion()" id="boton_login"><i class="fa fa-sign-in"></i> Ingresar</button>
+          </div>
+        </div>
+
+        <div id="registrarcli" class="login-panel" style="display:none;">
+          <div class="row">
+            <div class="col-md-6 login-field">
+              <label for="cliente_nombre"><i class="fa fa-list-ul"></i> Nombre (*) <small class="text-danger"><span id="mensaje_lognombre"></span></small></label>
+              <input type="text" class="form-control" id="cliente_nombre" name="cliente_nombre" required onkeyup="var start=this.selectionStart;var end=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(start,end);enfocar(event,1)">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_celular"><i class="fa fa-mobile-phone"></i> Celular (*) <small class="text-danger"><span id="mensaje_logcelular"></span></small></label>
+              <input type="number" class="form-control" id="cliente_celular" name="cliente_celular" required onkeyup="enfocar(event,2)">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_direccion"><i class="fa fa-map-marker"></i> Dirección (*) <small class="text-danger"><span id="mensaje_logdireccion"></span></small></label>
+              <input type="text" class="form-control" id="cliente_direccion" name="cliente_direccion" required onkeyup="var start=this.selectionStart;var end=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(start,end);enfocar(event,3)">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_email"><i class="fa fa-user"></i> Usuario / Email (*) <small class="text-danger"><span id="mensaje_logemail"></span></small></label>
+              <input type="email" class="form-control" id="cliente_email" name="cliente_email" required onkeyup="enfocar(event,4);" autocomplete="email">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_clavereg"><i class="fa fa-key"></i> Contraseña (*) <small class="text-danger"><span id="mensaje_logclave"></span></small></label>
+              <input type="password" class="form-control" id="cliente_clavereg" name="cliente_clavereg" required onkeyup="enfocar(event,5);" autocomplete="new-password">
+            </div>
+            <div class="col-md-6 login-field">
+              <label for="cliente_repeticion"><i class="fa fa-key"></i> Repetir contraseña (*) <small class="text-danger"><span id="mensaje_logrepetir"></span></small></label>
+              <input type="password" class="form-control" id="cliente_repeticion" name="cliente_repeticion" required onkeyup="enfocar(event,6);" autocomplete="new-password">
+            </div>
+          </div>
+
+          <div class="col-md-12 text-danger"><small><span id="mensaje_log"></span></small></div>
+
+          <div hidden>
+            <input type="text" value="0" id="cliente_ci" name="cliente_ci">
+            <input type="text" value="0" id="cliente_nit" name="cliente_nit">
+            <input type="text" value="SIN NOMBRE" id="cliente_razon" name="cliente_razon">
+            <input type="text" value="0" id="cliente_telefono" name="cliente_telefono">
+          </div>
+
+          <div class="login-footer-actions">
+            <button class="btn btn-danger modal-bottom-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+            <button class="btn btn-success modal-bottom-btn" type="button" onclick="registrarcliente()" id="boton_registrar_datos"><i class="fa fa-floppy-o"></i> Registrarse</button>
+          </div>
+        </div>
       </div>
-     
     </div>
   </div>
 </div>

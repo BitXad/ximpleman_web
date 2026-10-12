@@ -220,9 +220,24 @@
                 </center>
                 
                 
-              <div class="col-md-12"><span class="text-danger">*</span> Finalizará el conteo, y se igualará a CERO los items faltantes</div>  
-              <div class="col-md-12"><span class="text-danger">*</span>Al Finalizar, esta aceptando que ya se realizó el conteo de todo el producto existente </div>  
-              <!--<div class="col-md-12"><label for="elcorreo" class="control-label"><span class="text-danger">*</span>Correo</label> </div>-->  
+              <div class="col-md-12">
+                  <p><b>¿Qué desea hacer con los productos que NO fueron contabilizados?</b></p>
+                  <div class="radio">
+                      <label>
+                          <input type="radio" name="politica_no_contados" value="SIN_CAMBIO" checked>
+                          <b>Dejar sin cambios</b> — solo se ajustarán los productos que tengan conteo físico registrado.
+                      </label>
+                  </div>
+                  <div class="radio">
+                      <label>
+                          <input type="radio" name="politica_no_contados" value="CERO">
+                          <b>Considerarlos en CERO</b> — los productos no contabilizados se tomarán como existencia física 0 y se generará el faltante correspondiente.
+                      </label>
+                  </div>
+                  <div class="alert alert-warning" style="margin-top:10px;">
+                      Esta decisión afecta el ajuste final. Un producto contado con cantidad <b>0</b> sí se considera contabilizado.
+                  </div>
+              </div>
                 
             </div>
             
@@ -230,7 +245,7 @@
                 <br>
                 <br>
                 <div class="modal-footer" style="text-align: center">
-                    <a class="btn btn-success" onclick="finalizar_ajuste()"><span class="fa fa-envelope"></span> Finalizar</a>
+                    <a class="btn btn-success" onclick="finalizar_ajuste()"><span class="fa fa-check"></span> Finalizar conteo</a>
                     <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
                 </div>
                 

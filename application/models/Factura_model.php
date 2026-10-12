@@ -291,7 +291,7 @@ class Factura_model extends CI_Model
     }
     
 
-    function get_factura_ventas($inicio, $fin, $tipo)
+    function get_factura_ventas($inicio, $fin, $tipo, $cliente_id = 0)
     {
         $condicion = "";
         if ($tipo == 1) $condicion="";
@@ -300,6 +300,13 @@ class Factura_model extends CI_Model
         if ($tipo == 4) $condicion=" and estado_id = 3";
         if ($tipo == 5) $condicion=" and factura_codigodescripcion <> 'VALIDADA' ";
             
+        $filtro_cliente = "";
+        if ((int)$cliente_id > 0) {
+            // No se cambia el SELECT ni se hace JOIN: se conserva intacta la estructura
+            // del Registro de Ventas/SIAT y sólo se restringe por la venta asociada.
+            $filtro_cliente = " and EXISTS (SELECT 1 FROM venta v WHERE v.venta_id = factura.venta_id AND v.cliente_id = ".(int)$cliente_id.") ";
+        }
+
         $sql = "
             SELECT
                 *
@@ -309,7 +316,7 @@ class Factura_model extends CI_Model
 
             WHERE
                 factura_fechaventa >= '".$inicio."'
-                and factura_fechaventa <= '".$fin."'".$condicion."
+                and factura_fechaventa <= '".$fin."'".$condicion.$filtro_cliente."
                 ORDER BY `factura_id` DESC";
         
         $factura = $this->db->query($sql)->result_array();

@@ -43,9 +43,8 @@ function buscar_ingresos()
         mostrar_ocultar_buscador("ocultar");
         fechadeingreso(filtro);
     }else if(opcion == 4){
-        filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-        fechadeingreso(filtro);
+        mostrar_ocultar_buscador("mostrar");
+        return;
     }else if(opcion == 5){
         mostrar_ocultar_buscador("mostrar");
     }
@@ -57,6 +56,10 @@ function buscar_por_fechas()
     var controlador = base_url+"ingreso";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+
+    if (!validar_rango_reporte(fecha_desde, fecha_hasta, 366)) {
+        return;
+    }
    
     filtro = " and date(ingreso_fecha) >= '"+fecha_desde+"'  and  date(ingreso_fecha) <='"+fecha_hasta+"' ";
     

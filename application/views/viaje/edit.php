@@ -8,6 +8,12 @@
             <?php echo form_open('viaje/edit/'.$viaje['viaje_id']); ?>
 
             <div class="box-body">
+                <?php if (validation_errors() || !empty($error_guardado)) { ?>
+                    <div class="alert alert-danger">
+                        <strong><i class="fa fa-warning"></i> No se pudieron guardar los cambios.</strong>
+                        <div style="margin-top:5px;"><?php echo validation_errors(); ?><?php if (!empty($error_guardado)) echo html_escape($error_guardado); ?></div>
+                    </div>
+                <?php } ?>
                 <div class="row clearfix">
 
                     <div class="col-md-2">
@@ -49,38 +55,24 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label for="conductor_id" class="control-label">Conductor</label>
-                        <div class="form-group">
-                            <select name="conductor_id" class="form-control" id="conductor_id">
-                                <option value="">- SELECCIONAR CONDUCTOR -</option>
-                                <?php foreach($all_conductor as $conductor){ ?>
-                                    <option value="<?php echo $conductor['conductor_id']; ?>"
-                                        <?php echo set_select('conductor_id', $conductor['conductor_id'], ($conductor['conductor_id'] == $viaje['conductor_id'])); ?>>
-                                        <?php echo $conductor['conductor_apellidos']." ".$conductor['conductor_nombres']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <span class="text-danger"><?php echo form_error('conductor_id'); ?></span>
+                    <div class="col-md-12">
+                        <div class="box box-default">
+                            <div class="box-header"><b>Tripulación / Conductores</b> <button type="button" class="btn btn-xs btn-success pull-right" id="agregar-tripulante"><i class="fa fa-plus"></i> Agregar</button></div>
+                            <?php if (form_error('conductor_id')) { ?><div class="alert alert-danger" style="margin:8px 10px 0 10px;padding:7px 10px;"><?php echo form_error('conductor_id'); ?></div><?php } ?>
+                            <div class="box-body" id="tripulacion-contenedor">
+                                <?php $tripulacion = isset($viaje_conductores) && $viaje_conductores ? $viaje_conductores : array(array('conductor_id'=>$viaje['conductor_id'],'viaje_conductor_rol'=>'PRINCIPAL','viaje_conductor_hora_inicio'=>'','viaje_conductor_hora_fin'=>'','viaje_conductor_observacion'=>''), array('conductor_id'=>$viaje['conductor_id2'],'viaje_conductor_rol'=>'SEGUNDO','viaje_conductor_hora_inicio'=>'','viaje_conductor_hora_fin'=>'','viaje_conductor_observacion'=>'')); ?>
+                                <?php foreach($tripulacion as $t){ if(empty($t['conductor_id']) && $t['viaje_conductor_rol']!='PRINCIPAL') continue; ?>
+                                <div class="row tripulacion-fila" style="margin-bottom:8px">
+                                    <div class="col-md-3"><select name="tripulacion_conductor_id[]" class="form-control trip-conductor"><option value="">- PERSONA -</option><?php foreach($all_conductor as $c){ ?><option value="<?php echo $c['conductor_id']; ?>" <?php echo ((string)$c['conductor_id']==(string)$t['conductor_id'])?'selected':''; ?>><?php echo $c['conductor_apellidos'].' '.$c['conductor_nombres']; ?></option><?php } ?></select></div>
+                                    <div class="col-md-2"><select name="tripulacion_rol[]" class="form-control trip-rol"><?php foreach(array('PRINCIPAL'=>'Conductor principal','SEGUNDO'=>'Segundo conductor','RELEVO'=>'Relevo','AYUDANTE'=>'Ayudante') as $k=>$v){ ?><option value="<?php echo $k; ?>" <?php echo $t['viaje_conductor_rol']==$k?'selected':''; ?>><?php echo $v; ?></option><?php } ?></select></div>
+                                    <div class="col-md-2"><input type="time" name="tripulacion_hora_inicio[]" class="form-control" value="<?php echo isset($t['viaje_conductor_hora_inicio'])?$t['viaje_conductor_hora_inicio']:''; ?>" title="Desde"></div>
+                                    <div class="col-md-2"><input type="time" name="tripulacion_hora_fin[]" class="form-control" value="<?php echo isset($t['viaje_conductor_hora_fin'])?$t['viaje_conductor_hora_fin']:''; ?>" title="Hasta"></div>
+                                    <div class="col-md-2"><input type="text" name="tripulacion_observacion[]" class="form-control" value="<?php echo isset($t['viaje_conductor_observacion'])?html_escape($t['viaje_conductor_observacion']):''; ?>" placeholder="Observación"></div>
+                                    <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm quitar-tripulante"><i class="fa fa-trash"></i></button></div>
+                                </div><?php } ?>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <label for="conductor_id2" class="control-label">Conductor de relevo</label>
-                        <div class="form-group">
-                            <select name="conductor_id2" class="form-control" id="conductor_id2">
-                                <option value="">- SELECCIONAR CONDUCTOR DE RELEVO -</option>
-                                <?php foreach($all_conductor as $conductor){ ?>
-                                    <option value="<?php echo $conductor['conductor_id']; ?>"
-                                        <?php echo set_select('conductor_id2', $conductor['conductor_id'], ($conductor['conductor_id'] == $viaje['conductor_id2'])); ?>>
-                                        <?php echo $conductor['conductor_apellidos']." ".$conductor['conductor_nombres']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <span class="text-danger"><?php echo form_error('conductor_id2'); ?></span>
-                        </div>
-                    </div>
-
                     <div class="col-md-4">
                         <label for="ayudante_id" class="control-label">Ayudante</label>
                         <div class="form-group">
@@ -193,3 +185,10 @@
         </div>
     </div>
 </div>
+<script>
+(function(){
+ var c=document.getElementById('tripulacion-contenedor'), b=document.getElementById('agregar-tripulante'); if(!c||!b)return;
+ b.onclick=function(){var f=c.querySelector('.tripulacion-fila'); if(!f)return; var n=f.cloneNode(true); n.querySelectorAll('input').forEach(function(x){x.value='';}); n.querySelector('.trip-conductor').value=''; n.querySelector('.trip-rol').value='RELEVO'; c.appendChild(n);};
+ c.addEventListener('click',function(e){var q=e.target.closest('.quitar-tripulante'); if(!q)return; var filas=c.querySelectorAll('.tripulacion-fila'); if(filas.length>1) q.closest('.tripulacion-fila').remove();});
+})();
+</script>

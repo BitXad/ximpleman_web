@@ -61,7 +61,8 @@ function mostrar_facturas() {
     var desde = document.getElementById('fecha_desde').value;
     var hasta = document.getElementById('fecha_hasta').value; 
     var formato = document.getElementById('select_formato').value; 
-    var tipo = document.getElementById('select_tipo').value; 
+    var tipo = document.getElementById('select_tipo').value;
+    var cliente_id = document.getElementById('cliente_id_filtro') ? document.getElementById('cliente_id_filtro').value : 0;
     
     //alert("formato: "+formato+" * Tipo: "+tipo);
     
@@ -71,7 +72,7 @@ function mostrar_facturas() {
     
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{desde:desde, hasta:hasta ,opcion:opcion, tipo:tipo},
+                    data:{desde:desde, hasta:hasta ,opcion:opcion, tipo:tipo, cliente_id:cliente_id},
                     success:function(result){
                         var factura = JSON.parse(result);
                         var tam = factura.length;
@@ -485,6 +486,8 @@ function mostrar_facturas() {
 }
 
 function generarexcel(){
+    var tipo = document.getElementById('select_tipo') ? document.getElementById('select_tipo').value : 1;
+    var cliente_id = document.getElementById('cliente_id_filtro') ? document.getElementById('cliente_id_filtro').value : 0;
     
     var base_url = document.getElementById('base_url').value;
     var opcion = document.getElementById('opcion').value;
@@ -502,7 +505,7 @@ function generarexcel(){
 
     $.ajax({url: controlador,
            type:"POST",
-           data:{desde:desde, hasta:hasta ,opcion:opcion},
+           data:{desde:desde, hasta:hasta ,opcion:opcion, tipo:tipo, cliente_id:cliente_id},
            success:function(result){
                 var factura = JSON.parse(result);
                 var tam = factura.length;
@@ -1526,4 +1529,37 @@ function revertir_falsonegativo()
             document.getElementById('loaderforz').style.display = 'none';
         }
 
+}
+
+function buscar_clientes_factura(){
+    var base_url=document.getElementById('base_url').value;
+    var q=$('#buscar_cliente_factura').val();
+    $.post(base_url+'factura/buscar_clientes_factura',{q:q},function(result){
+        var datos=JSON.parse(result), html='';
+        for(var i=0;i<datos.length;i++){
+            var c=datos[i];
+            html+='<tr><td>'+(c.cliente_nombre||'')+'</td><td>'+(c.cliente_ci||'')+'</td><td>'+(c.cliente_nit||'')+'</td><td>'+(c.cliente_nombrenegocio||'')+'</td><td><button type="button" class="btn btn-success btn-xs seleccionar-cliente-factura" data-id="'+c.cliente_id+'"><i class="fa fa-check"></i> Seleccionar</button></td></tr>';
+        }
+        $('#resultado_clientes_factura').html(html);
+        $('#resultado_clientes_factura .seleccionar-cliente-factura').each(function(i){ $(this).data('nombre',datos[i].cliente_nombre||''); });
+    });
+}
+function seleccionar_cliente_factura(id,nombre){
+    $('#cliente_id_filtro').val(id); $('#cliente_nombre_filtro').val(nombre); $('#modal_cliente_factura').modal('hide');
+}
+$(document).on('click','.seleccionar-cliente-factura',function(){ seleccionar_cliente_factura($(this).data('id'),$(this).data('nombre')); });
+$(document).on('keypress','#buscar_cliente_factura',function(e){ if(e.which===13){e.preventDefault();buscar_clientes_factura();} });
+
+
+function obtener_facturas_filtradas_lote(callback){
+ var base_url=$('#base_url').val(), desde=$('#fecha_desde').val(), hasta=$('#fecha_hasta').val(), opcion=$('#opcion').val(), tipo=$('#select_tipo').val(), cliente_id=$('#cliente_id_filtro').val()||0;
+ if(String(opcion)!=='1'){ alert('Las acciones masivas están disponibles para el Libro de Ventas.'); return; }
+ $.ajax({url:base_url+'factura/mostrar_facturas',type:'POST',data:{desde:desde,hasta:hasta,opcion:opcion,tipo:tipo,cliente_id:cliente_id},success:function(r){try{var d=JSON.parse(r);callback(d);}catch(e){alert('No se pudo obtener la lista filtrada.');}}});
+}
+function abrir_acciones_facturas(){obtener_facturas_filtradas_lote(function(d){$('#cantidad_facturas_lote').text(d.length);$('#modal_acciones_facturas').data('facturas',d).modal('show');});}
+function accion_facturas_lote(tipo){
+ var d=$('#modal_acciones_facturas').data('facturas')||[], ids=[]; for(var i=0;i<d.length;i++){if(d[i].factura_id)ids.push(parseInt(d[i].factura_id,10));}
+ if(!ids.length){alert('No existen facturas en el resultado filtrado.');return;}
+ var base=$('#base_url').val(), url= tipo==='imprimir'?'factura/imprimir_facturas_lote':(tipo==='zip'?'venta/pdf_facturas_zip':'venta/pdf_facturas_unico');
+ var f=$('<form method="post" target="_blank" style="display:none"></form>').attr('action',base+url); f.append($('<input type="hidden" name="factura_ids">').val(JSON.stringify(ids))); $('body').append(f); f.submit(); f.remove();
 }

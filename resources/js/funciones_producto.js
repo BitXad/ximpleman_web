@@ -45,6 +45,7 @@ function formatofecha_hora_ampm(string){
 
 //Tabla resultados de la busqueda en el index de producto
 function tablaresultadosproducto(limite){
+    window.ultimoFiltroProductos = limite;
     $("#listaprecios").prop("checked", false);
     $("#escatalogo").prop("checked", false);
     $("#listcodigobarras").prop("checked", false);
@@ -149,6 +150,10 @@ function tablaresultadosproducto(limite){
                         html += mimagen;
                         html += "</div>";
                         html += "<div style='padding-left: 4px'>";
+                        var ordenProducto = registros[i]["producto_orden"];
+                        ordenProducto = ordenProducto == null ? "" : parseInt(ordenProducto, 10);
+                        html += "<div class='no-print'><label>Orden: <input type='number' step='1' class='form-control input-sm' style='width:90px;display:inline-block' id='orden_producto_"+registros[i]["producto_id"]+"' value='"+ordenProducto+"' placeholder='Sin orden'></label> <button type='button' class='btn btn-default btn-xs' onclick='guardarOrdenProducto("+registros[i]["producto_id"]+", this)' title='Guardar orden'><span class='fa fa-save'></span></button></div>";
+
                         var tamaniofont = 3;
                         if(registros[i]["producto_nombre"].length >50){
                             tamaniofont = 1;

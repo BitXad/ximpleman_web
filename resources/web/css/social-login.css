@@ -1,0 +1,31 @@
+/* Modal de acceso - Ximpleman */
+#modalCliente .modal-login-dialog{max-width:720px;width:calc(100% - 30px);margin:40px auto}
+#modalCliente .modal-login-content{border:0;border-radius:10px;overflow:hidden;box-shadow:0 16px 45px rgba(0,0,0,.22)}
+#modalCliente .modal-login-header{background:#111;border:0;min-height:84px;padding:18px 24px;display:flex;align-items:center;justify-content:center;position:relative}
+#modalCliente .modal-login-logo{display:block;max-width:190px;max-height:50px;width:auto;height:auto}
+#modalCliente .modal-login-close{position:absolute;right:18px;top:14px;color:#fff;opacity:.78;font-size:28px;text-shadow:none}
+#modalCliente .modal-login-close:hover{opacity:1}
+#modalCliente .modal-login-body{padding:24px 28px 28px}
+#modalCliente .login-mode-actions,#modalCliente .social-login-actions{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+#modalCliente .login-action-btn,#modalCliente .social-login-btn,#modalCliente .google-login-wrap{width:260px;min-width:260px;height:42px}
+#modalCliente .login-action-btn{font-size:14px;font-weight:500;border-radius:5px;padding:9px 14px}
+#modalCliente .social-login-title{display:flex;align-items:center;gap:12px;color:#8b8b8b;font-size:12px;margin:18px 0 14px;text-transform:uppercase;letter-spacing:.04em}
+#modalCliente .social-login-title:before,#modalCliente .social-login-title:after{content:"";height:1px;background:#e5e5e5;flex:1}
+#modalCliente .facebook-login-btn{border:1px solid #1877f2;background:#1877f2;color:#fff;border-radius:4px;font-size:14px;font-weight:500;padding:0 14px;display:flex;align-items:center;justify-content:center;gap:10px}
+#modalCliente .facebook-login-btn:hover,#modalCliente .facebook-login-btn:focus{background:#166fe5;color:#fff}
+#modalCliente .facebook-login-btn .fa{font-size:18px}
+#modalCliente .google-login-wrap{display:flex;justify-content:center;align-items:center;overflow:hidden}
+#modalCliente #google_login_button{width:260px;display:flex;justify-content:center}
+#modalCliente .social-login-message{min-height:18px;text-align:center;font-size:12px;margin-top:8px;color:#777}
+#modalCliente .social-login-message.error{color:#c9302c}
+#modalCliente .social-login-message.success{color:#3c763d}
+#modalCliente .login-panel{margin-top:18px;border-top:1px solid #eee;padding-top:18px}
+#modalCliente .login-field{margin-bottom:14px}
+#modalCliente .login-field label{font-weight:500;font-size:13px;color:#333;margin-bottom:6px;display:block}
+#modalCliente .login-field .form-control{height:38px;border-radius:4px;box-shadow:none;border-color:#d8d8d8;font-size:14px}
+#modalCliente .login-field .form-control:focus{border-color:#999;box-shadow:0 0 0 2px rgba(0,0,0,.04)}
+#modalCliente .forgot-password{display:inline-block;margin-top:6px;font-size:12px}
+#modalCliente .login-legal{font-size:11px;line-height:1.45;color:#777;margin:4px 0 18px}
+#modalCliente .login-footer-actions{display:flex;gap:10px;justify-content:center;clear:both;padding-top:8px}
+#modalCliente .modal-bottom-btn{width:130px;height:38px;font-size:13px;font-weight:500}
+@media(max-width:600px){#modalCliente .modal-login-body{padding:20px 16px 22px}#modalCliente .login-action-btn,#modalCliente .social-login-btn,#modalCliente .google-login-wrap,#modalCliente #google_login_button{width:100%;min-width:100%}#modalCliente .social-login-actions,#modalCliente .login-mode-actions{display:block}#modalCliente .login-action-btn,#modalCliente .social-login-btn,#modalCliente .google-login-wrap{margin-bottom:9px}}

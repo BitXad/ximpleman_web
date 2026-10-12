@@ -896,16 +896,18 @@ class Inventario_model extends CI_Model
      */
     function actualizar_inventario()
     {
-        //Truncar la tabla inventario
+        // Truncar la tabla inventario
         $sql = "truncate inventario";
         $this->db->query($sql);
-        
+
+        // consinventario es la unica fuente de verdad para reconstruir existencias.
+        // La vista ya incluye compras, ventas, pedidos y ajustes de inventario activos.
         $sql = "insert into inventario (select * from consinventario where estado_id = 1)";
-        
         $this->db->query($sql);
+
         return true;
     }
-    
+
     /*
      * actualizar inventario
      */
@@ -917,10 +919,19 @@ class Inventario_model extends CI_Model
         
         $sql = "insert into inventario
                 (select p.*
-                 from consinventario p  
+                 from consinventario p
                 where p.producto_id = ".$producto_id.")";
-        
         $this->db->query($sql);
+        if ($this->db->table_exists('detalle_ajuste_inventario')) {
+            $sql = "UPDATE inventario i SET i.existencia = i.existencia + COALESCE((
+                        SELECT SUM(d.ajustedet_diferencia)
+                        FROM detalle_ajuste_inventario d
+                        INNER JOIN ajuste_inventario a ON a.ajuste_id = d.ajuste_id
+                        WHERE d.producto_id = i.producto_id AND a.estado_id = 1
+                    ),0)
+                    WHERE i.producto_id = ".(int)$producto_id;
+            $this->db->query($sql);
+        }
         return true;
     }
     
@@ -930,8 +941,16 @@ class Inventario_model extends CI_Model
      */
     function actualizar_cantidad_producto($producto_id)
     {
-        $sql = "update inventario set existencia = 
-                (select c.existencia from consinventario c where c.producto_id = ".$producto_id.")";        
+        $ajuste = "0";
+        if ($this->db->table_exists('detalle_ajuste_inventario')) {
+            $ajuste = "COALESCE((SELECT SUM(d.ajustedet_diferencia)
+                       FROM detalle_ajuste_inventario d
+                       INNER JOIN ajuste_inventario a ON a.ajuste_id=d.ajuste_id
+                       WHERE d.producto_id=".(int)$producto_id." AND a.estado_id=1),0)";
+        }
+        $sql = "update inventario set existencia =
+                (select c.existencia from consinventario c where c.producto_id = ".$producto_id.") + ".$ajuste.
+               " where producto_id = ".(int)$producto_id;
         $this->db->query($sql);
         return true;
     }
@@ -1313,6 +1332,58 @@ class Inventario_model extends CI_Model
                   ds.detalleserv_id = t.detalleserv_id and 
                   ds.detalleserv_fechaterminado >= '".$desde."' and 
                   ds.detalleserv_fechaterminado <= '".$hasta."'
+
+                union
+
+                select
+                  a.ajuste_fecha as fecha,
+                  if(d.ajustedet_tipo='ENTRADA', a.ajuste_id, 0) as num_ingreso,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_cantidad, 0) as unidad_comp,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_costo, 0) as costoc_unit,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_total, 0) as importe_ingreso,
+                  if(d.ajustedet_tipo='SALIDA', a.ajuste_id, 0) as num_salida,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_cantidad, 0) as unidad_vend,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_costo, 0) as costov_unit,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_total, 0) as importe_salida,
+                  a.ajuste_hora as hora,
+                  concat('AJUSTE INVENTARIO N° ', a.ajuste_id, ' / CONTROL N° ', a.controli_id,
+                         if(a.ajuste_anulado=1,' [ANULADO]','')) as detalleobs,
+                  1 as tipo_cambio,
+                  a.controli_id as id,
+                  1 as estado,
+                  7 as tipo
+                from ajuste_inventario a
+                inner join detalle_ajuste_inventario d on d.ajuste_id = a.ajuste_id
+                where d.producto_id = ".$producto_id."
+                  and d.ajustedet_tipo in ('ENTRADA','SALIDA')
+                  and a.ajuste_fecha >= '".$desde."'
+                  and a.ajuste_fecha <= '".$hasta."'
+
+                union
+
+                select
+                  a.ajuste_fecha_anulacion as fecha,
+                  if(d.ajustedet_tipo='SALIDA', a.ajuste_id, 0) as num_ingreso,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_cantidad, 0) as unidad_comp,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_costo, 0) as costoc_unit,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_total, 0) as importe_ingreso,
+                  if(d.ajustedet_tipo='ENTRADA', a.ajuste_id, 0) as num_salida,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_cantidad, 0) as unidad_vend,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_costo, 0) as costov_unit,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_total, 0) as importe_salida,
+                  a.ajuste_hora_anulacion as hora,
+                  concat('ANULACION AJUSTE INVENTARIO N° ', a.ajuste_id, ' / CONTROL N° ', a.controli_id) as detalleobs,
+                  1 as tipo_cambio,
+                  a.controli_id as id,
+                  1 as estado,
+                  8 as tipo
+                from ajuste_inventario a
+                inner join detalle_ajuste_inventario d on d.ajuste_id = a.ajuste_id
+                where d.producto_id = ".$producto_id."
+                  and a.ajuste_anulado = 1
+                  and d.ajustedet_tipo in ('ENTRADA','SALIDA')
+                  and a.ajuste_fecha_anulacion >= '".$desde."'
+                  and a.ajuste_fecha_anulacion <= '".$hasta."'
                   ) as tx
 
                   order by fecha, hora";
@@ -1490,6 +1561,58 @@ class Inventario_model extends CI_Model
                   ds.detalleserv_id = t.detalleserv_id and 
                   ds.detalleserv_fechaterminado >= '".$desde."' and 
                   ds.detalleserv_fechaterminado <= '".$hasta."'
+
+                union
+
+                select
+                  a.ajuste_fecha as fecha,
+                  if(d.ajustedet_tipo='ENTRADA', a.ajuste_id, 0) as num_ingreso,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_cantidad, 0) as unidad_comp,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_costo, 0) as costoc_unit,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_total, 0) as importe_ingreso,
+                  if(d.ajustedet_tipo='SALIDA', a.ajuste_id, 0) as num_salida,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_cantidad, 0) as unidad_vend,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_costo, 0) as costov_unit,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_total, 0) as importe_salida,
+                  a.ajuste_hora as hora,
+                  concat('AJUSTE INVENTARIO N° ', a.ajuste_id, ' / CONTROL N° ', a.controli_id,
+                         if(a.ajuste_anulado=1,' [ANULADO]','')) as detalleobs,
+                  1 as tipo_cambio,
+                  a.controli_id as id,
+                  1 as estado,
+                  7 as tipo
+                from ajuste_inventario a
+                inner join detalle_ajuste_inventario d on d.ajuste_id = a.ajuste_id
+                where d.producto_id = ".$producto_id."
+                  and d.ajustedet_tipo in ('ENTRADA','SALIDA')
+                  and a.ajuste_fecha >= '".$desde."'
+                  and a.ajuste_fecha <= '".$hasta."'
+
+                union
+
+                select
+                  a.ajuste_fecha_anulacion as fecha,
+                  if(d.ajustedet_tipo='SALIDA', a.ajuste_id, 0) as num_ingreso,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_cantidad, 0) as unidad_comp,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_costo, 0) as costoc_unit,
+                  if(d.ajustedet_tipo='SALIDA', d.ajustedet_total, 0) as importe_ingreso,
+                  if(d.ajustedet_tipo='ENTRADA', a.ajuste_id, 0) as num_salida,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_cantidad, 0) as unidad_vend,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_costo, 0) as costov_unit,
+                  if(d.ajustedet_tipo='ENTRADA', d.ajustedet_total, 0) as importe_salida,
+                  a.ajuste_hora_anulacion as hora,
+                  concat('ANULACION AJUSTE INVENTARIO N° ', a.ajuste_id, ' / CONTROL N° ', a.controli_id) as detalleobs,
+                  1 as tipo_cambio,
+                  a.controli_id as id,
+                  1 as estado,
+                  8 as tipo
+                from ajuste_inventario a
+                inner join detalle_ajuste_inventario d on d.ajuste_id = a.ajuste_id
+                where d.producto_id = ".$producto_id."
+                  and a.ajuste_anulado = 1
+                  and d.ajustedet_tipo in ('ENTRADA','SALIDA')
+                  and a.ajuste_fecha_anulacion >= '".$desde."'
+                  and a.ajuste_fecha_anulacion <= '".$hasta."'
                   ) as tx
 
                   order by fecha, hora";

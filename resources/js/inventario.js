@@ -2135,13 +2135,21 @@ function mostrar_kardex(producto_id){
                     html += "            <td style='padding:0'>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
                     html += "            <td style='padding:0'>";
                     
-                    //Nº de ingreso
+                    //Nº de ingreso / documento origen
                     if (k[i]['num_ingreso']!=0){  
                         html += k[i]['num_ingreso'];
-                        if (k[i]['estado']==1){
-                            html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print' title='RECIBO DE COMPRA'><fa class='fa fa-print'></fa> </a>";
-                        }else{    
-                            html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='COMPRA ANULADA' style='background: gray;'><fa class='fa fa-print'></fa> </a>";
+                        if (k[i]['tipo']==1){ // compra
+                            if (k[i]['estado']==1){
+                                html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print' title='RECIBO DE COMPRA'><fa class='fa fa-print'></fa> </a>";
+                            }else{    
+                                html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='COMPRA ANULADA' style='background: gray;'><fa class='fa fa-print'></fa> </a>";
+                            }
+                        }
+                        if (k[i]['tipo']==7){ // ajuste de inventario - entrada
+                            html += "<a href='"+base_url+"control_inventario/reporte/"+k[i]['id']+"' target='_blank' class='btn btn-xs btn-info no-print' title='VER REPORTE DEL AJUSTE DE INVENTARIO'><fa class='fa fa-print'></fa> </a>";
+                        }
+                        if (k[i]['tipo']==8){ // anulación de ajuste - entrada de reversión
+                            html += "<a href='"+base_url+"control_inventario/reporte/"+k[i]['id']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='VER REPORTE DEL AJUSTE ANULADO' style='background: gray;'><fa class='fa fa-print'></fa> </a>";
                         }
                     }
                     
@@ -2189,6 +2197,16 @@ function mostrar_kardex(producto_id){
                             html += k[i]['num_salida'];
                             html += "<button  class='btn btn-xs btn-danger no-print' title='OPERACION DE VENTA FALLIDA' onclick='eliminar_registrohuerfano("+k[i]['id']+")'><fa class='fa fa-trash'></fa> </button>";
                         }
+
+                        if (k[i]['tipo']==7 && k[i]['num_salida']!=0){ // ajuste de inventario - salida
+                            html += k[i]['num_salida'];
+                            html += "<a href='"+base_url+"control_inventario/reporte/"+k[i]['id']+"' target='_blank' class='btn btn-xs btn-info no-print' title='VER REPORTE DEL AJUSTE DE INVENTARIO'><fa class='fa fa-print'></fa> </a>";
+                        }
+
+                        if (k[i]['tipo']==8 && k[i]['num_salida']!=0){ // anulación de ajuste - salida de reversión
+                            html += k[i]['num_salida'];
+                            html += "<a href='"+base_url+"control_inventario/reporte/"+k[i]['id']+"' target='_blank' class='btn btn-xs btn-facebook no-print' title='VER REPORTE DEL AJUSTE ANULADO' style='background: gray;'><fa class='fa fa-print'></fa> </a>";
+                        }
                         
                         
                     html += "</td>";
@@ -2202,7 +2220,7 @@ function mostrar_kardex(producto_id){
                             
                     //Costo Unitario
                     html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";
-                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(decimales);
+                                if (k[i]['costov_unit'] != 0) html += numberFormat(Number(k[i]['costov_unit']).toFixed(decimales));
                     html +="</td>";
                     
                     //Importe total x venta

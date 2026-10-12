@@ -92,7 +92,8 @@
                             <th>Características</th>
                             <th>Capacidad</th>
                             <th>Dimensiones / Peso</th>
-                            <th>Documentación</th>
+                            <th>Documentación / Vencimientos</th>
+                            <th>Estado / Km</th>
                             <th class="no-print">Acciones</th>
                         </tr>
                     </thead>
@@ -194,8 +195,19 @@
                                     <b>Tarj. circ.:</b> <?php echo $v['vehiculo_tarjetacirculacion']; ?><br>
                                 <?php } ?>
                                 <?php if (!empty($fecha_tarjeta)) { ?>
-                                    <b>Lím. tarjeta:</b> <?php echo $fecha_tarjeta; ?>
+                                    <b>Lím. tarjeta:</b> <?php echo $fecha_tarjeta; ?><br>
                                 <?php } ?>
+                                <?php if (!empty($v['vehiculo_numeroautorizacion'])) { ?><b>Autorización:</b> <?php echo html_escape($v['vehiculo_numeroautorizacion']); ?><br><?php } ?>
+                                <?php if (!empty($v['vehiculo_soat_numero'])) { ?><b>SOAT:</b> <?php echo html_escape($v['vehiculo_soat_numero']); ?><br><?php } ?>
+                                <?php if (!empty($v['vehiculo_soat_vencimiento'])) { $d=(strtotime($v['vehiculo_soat_vencimiento'])-strtotime(date('Y-m-d')))/86400; $c=$d<0?'text-danger':($d<=30?'text-warning':'text-success'); ?><b>Vence SOAT:</b> <span class="<?php echo $c; ?>"><b><?php echo date('d/m/Y',strtotime($v['vehiculo_soat_vencimiento'])); ?></b></span><br><?php } ?>
+                                <?php if (!empty($v['vehiculo_inspeccion_numero'])) { ?><b>Inspección:</b> <?php echo html_escape($v['vehiculo_inspeccion_numero']); ?><br><?php } ?>
+                                <?php if (!empty($v['vehiculo_inspeccion_vencimiento'])) { $d=(strtotime($v['vehiculo_inspeccion_vencimiento'])-strtotime(date('Y-m-d')))/86400; $c=$d<0?'text-danger':($d<=30?'text-warning':'text-success'); ?><b>Vence inspección:</b> <span class="<?php echo $c; ?>"><b><?php echo date('d/m/Y',strtotime($v['vehiculo_inspeccion_vencimiento'])); ?></b></span><?php } ?>
+                            </td>
+
+                            <td class="vehiculo-bloque">
+                                <?php $eo=isset($v['vehiculo_estado_operativo'])?$v['vehiculo_estado_operativo']:'DISPONIBLE'; $lbl=array('DISPONIBLE'=>'success','VIAJANDO'=>'primary','MANTENIMIENTO'=>'warning','INACTIVO'=>'default'); ?>
+                                <span class="label label-<?php echo isset($lbl[$eo])?$lbl[$eo]:'default'; ?>"><?php echo html_escape($eo); ?></span><br><br>
+                                <b>Kilometraje:</b><br><?php echo number_format(isset($v['vehiculo_kilometraje'])?$v['vehiculo_kilometraje']:0, 0, ',', '.'); ?> km
                             </td>
 
                             <td class="no-print acciones-btns">

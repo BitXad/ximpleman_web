@@ -1,0 +1,14 @@
+<?php
+class Reporte_vehiculo_model extends CI_Model{
+ public function usuario_tiene_rol($u,$r){return !empty($this->db->query("SELECT 1 x FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id WHERE u.usuario_id=? AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1",array((int)$u,(int)$r))->row_array());}
+ public function vehiculos(){return $this->db->query("SELECT vehiculo_id,vehiculo_placa,vehiculo_marca,vehiculo_modelo FROM vehiculo ORDER BY vehiculo_placa")->result_array();}
+ public function tiene_km(){return $this->db->field_exists('viaje_km_salida','viaje')&&$this->db->field_exists('viaje_km_llegada','viaje');}
+ private function capacidades(){return "SELECT a.vehiculo_id,COUNT(*) capacidad FROM asientos a WHERE COALESCE(a.asiento_mostrar,1)=1 AND COALESCE(a.asiento_es_vendible,1)=1 GROUP BY a.vehiculo_id";}
+ public function reporte($f){
+  $km=$this->tiene_km()?"SUM(CASE WHEN v.estado_id=60 AND v.viaje_km_llegada>=v.viaje_km_salida THEN v.viaje_km_llegada-v.viaje_km_salida ELSE 0 END)":"0";
+  $where="v.viaje_fechasalida BETWEEN ? AND ?";$p=array($f['desde'],$f['hasta']);if($f['vehiculo_id']>0){$where.=" AND v.vehiculo_id=?";$p[]=$f['vehiculo_id'];}
+  /* Agregamos primero por viaje para que pasajeros e ingresos no multipliquen la capacidad. Realizado=FINALIZADO(60), cancelado=63, vendido=54. */
+  $sql="SELECT q.vehiculo_id,q.vehiculo,SUM(q.realizado) viajes_realizados,SUM(q.pasajeros) pasajeros,SUM(q.kilometros) kilometros,SUM(q.ingresos) ingresos,CASE WHEN SUM(q.capacidad_realizada)>0 THEN SUM(q.pasajeros)*100/SUM(q.capacidad_realizada) ELSE 0 END ocupacion,SUM(q.cancelado) cancelaciones FROM (SELECT v.viaje_id,v.vehiculo_id,CONCAT_WS(' - ',COALESCE(ve.vehiculo_placa,''),COALESCE(ve.vehiculo_marca,''),COALESCE(ve.vehiculo_modelo,'')) vehiculo,CASE WHEN v.estado_id=60 THEN 1 ELSE 0 END realizado,CASE WHEN v.estado_id=63 THEN 1 ELSE 0 END cancelado,CASE WHEN v.estado_id=60 THEN COALESCE(pax.pasajeros,0) ELSE 0 END pasajeros,CASE WHEN v.estado_id=60 THEN COALESCE(pax.ingresos,0) ELSE 0 END ingresos,CASE WHEN v.estado_id=60 THEN COALESCE(cap.capacidad,NULLIF(ve.vehiculo_asientos,0),NULLIF(ve.vehiculo_pasajeros,0),0) ELSE 0 END capacidad_realizada,CASE WHEN v.estado_id=60 ".($this->tiene_km()?"AND v.viaje_km_llegada>=v.viaje_km_salida THEN v.viaje_km_llegada-v.viaje_km_salida":"THEN 0")." ELSE 0 END kilometros FROM viaje v INNER JOIN vehiculo ve ON ve.vehiculo_id=v.vehiculo_id LEFT JOIN (SELECT viaje_id,COUNT(*) pasajeros,COALESCE(SUM(pasaje_precio),0) ingresos FROM pasaje WHERE estado_id=54 GROUP BY viaje_id) pax ON pax.viaje_id=v.viaje_id LEFT JOIN (".$this->capacidades().") cap ON cap.vehiculo_id=v.vehiculo_id WHERE $where) q GROUP BY q.vehiculo_id,q.vehiculo ORDER BY ingresos DESC,pasajeros DESC";
+  return $this->db->query($sql,$p)->result_array();
+ }
+}

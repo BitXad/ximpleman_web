@@ -3,6 +3,89 @@ class Encomienda_model extends CI_Model
 {
     function __construct(){ parent::__construct(); }
 
+    /**
+     * Devuelve un cliente por CI normalizado.
+     * Se ignoran espacios y guiones para reducir duplicados accidentales.
+     */
+    function buscar_cliente_ci($ci){
+        $ci=$this->normalizar_ci($ci);
+        if($ci===''){ return null; }
+
+        $this->db->select('cliente_id, cliente_nombre, cliente_ci, cliente_telefono, cliente_celular, cliente_direccion');
+        $this->db->from('cliente');
+        $this->db->where("REPLACE(REPLACE(TRIM(cliente_ci), ' ', ''), '-', '') = ".$this->db->escape($ci),null,false);
+        $this->db->order_by('cliente_id','ASC');
+        $this->db->limit(1);
+        return $this->db->get()->row_array();
+    }
+
+    /**
+     * Reutiliza un cliente existente por CI o lo crea automáticamente.
+     * Los datos históricos continúan guardándose también en encomienda.
+     */
+    function obtener_o_crear_cliente($ci,$nombre,$telefono,$direccion,$usuario_id=0){
+        $ci=$this->normalizar_ci($ci);
+        $nombre=trim((string)$nombre);
+        $telefono=trim((string)$telefono);
+        $direccion=trim((string)$direccion);
+
+        // Sin CI no intentamos deduplicar. Evita unir personas distintas por nombre.
+        if($ci===''){ return 0; }
+
+        $cliente=$this->buscar_cliente_ci($ci);
+        if($cliente){
+            $actualizar=array();
+            // Solo completamos campos vacíos; no pisamos datos maestros ya registrados.
+            if(trim((string)$cliente['cliente_nombre'])==='' && $nombre!==''){
+                $actualizar['cliente_nombre']=$nombre;
+            }
+            $telefonoActual=trim((string)(!empty($cliente['cliente_celular'])?$cliente['cliente_celular']:$cliente['cliente_telefono']));
+            if($telefonoActual==='' && $telefono!==''){
+                if($this->db->field_exists('cliente_celular','cliente')){ $actualizar['cliente_celular']=$telefono; }
+                else{ $actualizar['cliente_telefono']=$telefono; }
+            }
+            if(trim((string)$cliente['cliente_direccion'])==='' && $direccion!==''){
+                $actualizar['cliente_direccion']=$direccion;
+            }
+            if(!empty($actualizar)){
+                $this->db->where('cliente_id',$cliente['cliente_id']);
+                $this->db->update('cliente',$actualizar);
+            }
+            return (int)$cliente['cliente_id'];
+        }
+
+        $datos=array(
+            'cliente_nombre'=>$nombre,
+            'cliente_ci'=>$ci,
+            'cliente_direccion'=>$direccion,
+            'cliente_telefono'=>$telefono
+        );
+
+        // Valores habituales del módulo cliente; se agregan solo si existen las columnas.
+        $opcionales=array(
+            'estado_id'=>1,
+            'tipocliente_id'=>1,
+            'categoriaclie_id'=>1,
+            'usuario_id'=>(int)$usuario_id,
+            'cliente_codigo'=>'ENC-'.date('YmdHis').'-'.mt_rand(100,999)
+        );
+        foreach($opcionales as $campo=>$valor){
+            if($this->db->field_exists($campo,'cliente')){ $datos[$campo]=$valor; }
+        }
+        if($this->db->field_exists('cliente_celular','cliente') && $telefono!==''){
+            $datos['cliente_celular']=$telefono;
+        }
+
+        $this->db->insert('cliente',$datos);
+        return (int)$this->db->insert_id();
+    }
+
+    private function normalizar_ci($ci){
+        $ci=trim((string)$ci);
+        $ci=str_replace(array(' ','-'),'',strtoupper($ci));
+        return $ci;
+    }
+
     function get_all_encomiendas($limit=500){
         $this->db->select('e.*, o.origen_nombre, d.destino_nombre, r.ruta_nombre, v.viaje_fechasalida, v.viaje_horasalida, ee.encomiendaestado_nombre, ee.encomiendaestado_color, fp.forma_nombre, u.usuario_nombre');
         $this->db->from('encomienda e');

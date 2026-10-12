@@ -877,10 +877,10 @@ function busqueda_cotizacion()
             }
 
     
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-
+    if (opcion == 4)
+    {
+        mostrar_ocultar_buscador("mostrar");
+        return;
     }
     
     if (opcion == 5) {
@@ -1025,6 +1025,10 @@ function buscar_por_fecha()
     
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+
+    if (!validar_rango_reporte(fecha_desde, fecha_hasta, 366)) {
+        return;
+    }
   
 
    var fecha1 = "Desde: "+moment(fecha_desde).format('DD/MM/YYYY');

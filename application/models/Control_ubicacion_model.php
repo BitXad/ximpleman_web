@@ -107,4 +107,37 @@ class Control_ubicacion_model extends CI_Model
         
         return $this->db->query($sql)->result_array();
     }
+
+    /**
+     * Productos consolidados para el ajuste formal.
+     * CERO: los no contabilizados se consideran existencia física 0.
+     * SIN_CAMBIO: productos nunca contabilizados quedan fuera del ajuste.
+     */
+    function get_productos_para_ajuste($controli_id, $politica = 'SIN_CAMBIO'){
+        $controli_id = (int)$controli_id;
+        $politica = strtoupper($politica) === 'CERO' ? 'CERO' : 'SIN_CAMBIO';
+        $having = ($politica === 'SIN_CAMBIO') ? ' HAVING SUM(CASE WHEN up.ubiprod_lecturado = 1 THEN 1 ELSE 0 END) > 0 ' : '';
+
+        $sql = "SELECT
+                    up.producto_id,
+                    MAX(p.producto_nombre) AS producto_nombre,
+                    MAX(p.producto_codigo) AS producto_codigo,
+                    MAX(p.producto_codigobarra) AS producto_codigobarra,
+                    MAX(p.producto_unidad) AS producto_unidad,
+                    MAX(p.producto_costo) AS producto_costo,
+                    MAX(p.producto_precio) AS producto_precio,
+                    MAX(up.ubiprod_existencia) AS existencia_sistema,
+                    CASE WHEN ? = 'CERO'
+                         THEN SUM(CASE WHEN up.ubiprod_lecturado = 1 THEN up.ubiprod_existenciafisico ELSE 0 END)
+                         ELSE SUM(CASE WHEN up.ubiprod_lecturado = 1 THEN up.ubiprod_existenciafisico ELSE 0 END)
+                    END AS existencia_fisica,
+                    SUM(CASE WHEN up.ubiprod_lecturado = 1 THEN 1 ELSE 0 END) AS veces_contado,
+                    COUNT(*) AS registros_control
+                FROM control_ubicacion cu
+                INNER JOIN ubicacion_producto up ON up.controlu_id = cu.controlu_id
+                INNER JOIN producto p ON p.producto_id = up.producto_id
+                WHERE cu.controli_id = ?
+                GROUP BY up.producto_id".$having." ORDER BY MAX(p.producto_nombre)";
+        return $this->db->query($sql, array($politica, $controli_id))->result_array();
+    }
 }

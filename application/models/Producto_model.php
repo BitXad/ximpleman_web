@@ -209,10 +209,10 @@ class Producto_model extends CI_Model
                            or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
                            ".$categoriaestado."
                       GROUP By p.producto_id
-                      ORDER By p.producto_nombre
-                ) as x, consinventario i
+                      ORDER By p.producto_orden IS NULL, p.producto_orden, p.producto_nombre, p.producto_id
+                ) as x, inventario i
                 where x.producto_id = i.producto_id
-                order by x.producto_nombre";
+                order by x.producto_orden IS NULL, x.producto_orden, x.producto_nombre, x.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -244,7 +244,7 @@ class Producto_model extends CI_Model
                            ".$categoriaestado."
                       GROUP By p.producto_id
                       ORDER By p.categoria_id, p.producto_nombre
-                ) as x, consinventario i
+                ) as x, inventario i
                 where x.producto_id = i.producto_id
                 /*order by x.producto_id, x.producto_nombre*/";
         $producto = $this->db->query($sql)->result_array();
@@ -299,10 +299,10 @@ class Producto_model extends CI_Model
                         $categoria 
                         $estado
 
-                    ORDER By p.producto_nombre LIMIT 50
-                    ) as x, consinventario i
+                    ORDER By p.producto_orden IS NULL, p.producto_orden, p.producto_nombre, p.producto_id LIMIT 50
+                    ) as x, inventario i
                 where x.producto_id = i.producto_id
-                order by x.producto_nombre";
+                order by x.producto_orden IS NULL, x.producto_orden, x.producto_nombre, x.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -327,9 +327,9 @@ class Producto_model extends CI_Model
                       LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
                       WHERE 
                            p.estado_id = e.estado_id
-                      ) as x, consinventario i
+                      ) as x, inventario i
                 where x.producto_id = i.producto_id
-                order by x.producto_nombre asc";
+                order by x.producto_orden IS NULL, x.producto_orden, x.producto_nombre, x.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;

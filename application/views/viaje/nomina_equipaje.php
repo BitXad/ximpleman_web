@@ -1,16 +1,3 @@
-
-
-<script type="text/javascript">
-    $(document).ready(function()
-    {
-        window.onload = window.print();
-                                            /*function imprimir()
-                                            {
-                                                /*$('#paraboucher').css('max-width','7cm !important');*/
-                                                /* window.print(); 
-                                            }*/
-    });
-</script>
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -190,3 +177,13 @@ border-bottom : 1px solid #aaa;
 </td>    
 </tr>    
 </table>
+
+<style type="text/css">
+/* Transporte: permitir anchos térmicos reducidos (5, 4.5, 4 cm) sin desbordar. */
+#paraboucher, #paraboucher *, #paraboucher *:before, #paraboucher *:after{box-sizing:border-box;max-width:100%;}
+#paraboucher table{width:100%!important;max-width:100%!important;}
+#paraboucher td,#paraboucher th{overflow-wrap:anywhere;word-break:normal;}
+#paraboucher img,#paraboucher svg,#paraboucher canvas{max-width:100%!important;height:auto;}
+</style>
+
+<?php include(APPPATH.'views/viaje/_impresion_automatica.php'); ?>

@@ -291,6 +291,56 @@
                         </div>
                     </div>
 
+
+                    <div class="clearfix"></div>
+                    <div class="col-md-12"><hr><h4><i class="fa fa-file-text-o"></i> Operación y documentación de transporte</h4></div>
+
+                    <div class="col-md-3">
+                        <label for="vehiculo_numeroautorizacion" class="control-label">Nro. autorización</label>
+                        <div class="form-group">
+                            <input type="text" name="vehiculo_numeroautorizacion" value="<?php echo set_value('vehiculo_numeroautorizacion'); ?>" class="form-control" id="vehiculo_numeroautorizacion" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_soat_numero" class="control-label">SOAT / Póliza</label>
+                        <div class="form-group">
+                            <input type="text" name="vehiculo_soat_numero" value="<?php echo set_value('vehiculo_soat_numero'); ?>" class="form-control" id="vehiculo_soat_numero" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_soat_vencimiento" class="control-label">Vencimiento SOAT</label>
+                        <div class="form-group"><input type="date" name="vehiculo_soat_vencimiento" value="<?php echo set_value('vehiculo_soat_vencimiento'); ?>" class="form-control" id="vehiculo_soat_vencimiento" /></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_kilometraje" class="control-label">Kilometraje actual</label>
+                        <div class="form-group"><input type="number" step="0.01" min="0" name="vehiculo_kilometraje" value="<?php echo set_value('vehiculo_kilometraje', 0); ?>" class="form-control" id="vehiculo_kilometraje" /></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_inspeccion_numero" class="control-label">Inspección técnica / Certificado</label>
+                        <div class="form-group"><input type="text" name="vehiculo_inspeccion_numero" value="<?php echo set_value('vehiculo_inspeccion_numero'); ?>" class="form-control" id="vehiculo_inspeccion_numero" maxlength="100" /></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_inspeccion_vencimiento" class="control-label">Vencimiento inspección</label>
+                        <div class="form-group"><input type="date" name="vehiculo_inspeccion_vencimiento" value="<?php echo set_value('vehiculo_inspeccion_vencimiento'); ?>" class="form-control" id="vehiculo_inspeccion_vencimiento" /></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="vehiculo_estado_operativo" class="control-label">Estado operativo *</label>
+                        <div class="form-group">
+                            <select name="vehiculo_estado_operativo" id="vehiculo_estado_operativo" class="form-control" required>
+                                <?php $eo=set_value('vehiculo_estado_operativo','DISPONIBLE'); ?>
+                                <option value="DISPONIBLE" <?php echo $eo=='DISPONIBLE'?'selected':''; ?>>DISPONIBLE</option>
+                                <option value="VIAJANDO" <?php echo $eo=='VIAJANDO'?'selected':''; ?>>VIAJANDO</option>
+                                <option value="MANTENIMIENTO" <?php echo $eo=='MANTENIMIENTO'?'selected':''; ?>>MANTENIMIENTO</option>
+                                <option value="INACTIVO" <?php echo $eo=='INACTIVO'?'selected':''; ?>>INACTIVO</option>
+                            </select>
+                            <span class="text-danger"><?php echo form_error('vehiculo_estado_operativo'); ?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Configuración de asientos</label>
+                        <div class="form-group"><p class="form-control-static text-muted">Se configura desde el Diseñador de Asientos después de guardar el vehículo.</p></div>
+                    </div>
+
                     <div class="col-md-6">
                         <label for="vehiculo_imagen_file" class="control-label">Imagen</label>
                         <div class="form-group">

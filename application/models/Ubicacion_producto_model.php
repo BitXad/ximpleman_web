@@ -93,23 +93,25 @@ class Ubicacion_producto_model extends CI_Model
     * obtener diferencia total de productos sobrantes y faltantes
     */
     function get_productos_inventario($controli_id){
-        
-        $sql = "select 
-                p.producto_nombre as producto,
-                p.producto_codigobarra as codigo,
-                u.ubiprod_existencia as existencia_sistema,
-                u.ubiprod_existenciafisico as existencia_fisica,
-                u.ubiprod_faltante as faltante,
-                u.ubiprod_sobrante as sobrante,
-                p.producto_costo as costo,
-                (p.producto_costo * u.ubiprod_faltante) as total_faltante,
-                (p.producto_costo * u.ubiprod_sobrante) as total_sobrante
-              from
-                producto p,
-                ubicacion_producto u
-              where
-               u.ubiprod_lecturado = 1 and
-                u.producto_id = p.producto_id ";
+        $controli_id = (int)$controli_id;
+        $sql = "SELECT
+                    p.producto_nombre as producto,
+                    p.producto_codigobarra as codigo,
+                    MAX(u.ubiprod_existencia) as existencia_sistema,
+                    SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN u.ubiprod_existenciafisico ELSE 0 END) as existencia_fisica,
+                    GREATEST(MAX(u.ubiprod_existencia) - SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN u.ubiprod_existenciafisico ELSE 0 END),0) as faltante,
+                    GREATEST(SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN u.ubiprod_existenciafisico ELSE 0 END) - MAX(u.ubiprod_existencia),0) as sobrante,
+                    p.producto_costo as costo,
+                    p.producto_costo * GREATEST(MAX(u.ubiprod_existencia) - SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN u.ubiprod_existenciafisico ELSE 0 END),0) as total_faltante,
+                    p.producto_costo * GREATEST(SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN u.ubiprod_existenciafisico ELSE 0 END) - MAX(u.ubiprod_existencia),0) as total_sobrante,
+                    SUM(CASE WHEN u.ubiprod_lecturado = 1 THEN 1 ELSE 0 END) as contado
+                FROM control_ubicacion cu
+                INNER JOIN ubicacion_producto u ON u.controlu_id = cu.controlu_id
+                INNER JOIN producto p ON u.producto_id = p.producto_id
+                WHERE cu.controli_id = {$controli_id}
+                GROUP BY u.producto_id, p.producto_nombre, p.producto_codigobarra, p.producto_costo
+                HAVING contado > 0
+                ORDER BY p.producto_nombre";
         return $this->db->query($sql)->result_array();
     }
 }

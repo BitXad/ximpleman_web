@@ -331,7 +331,7 @@ function buscar_producto(e,opcion) {
                 $.ajax({
                     url: controlador,
                     type:"POST",
-                    data:{parametro:parametro},
+                    data:{parametro:parametro, controlu_id:document.getElementById("controlu").value},
                     success:function(result){
 
                         var ubi_productos = JSON.parse(result);
@@ -461,25 +461,27 @@ function buscar_producto(e,opcion) {
 
 
 function finalizar_ajuste(){
-    
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url + 'ubicacion_producto/finalizar_conteo';
-    
+    var controlu_id = document.getElementById("controlu").value;
+    var controli_id = document.getElementById("controli").value;
+    var politica = $('input[name="politica_no_contados"]:checked').val() || 'SIN_CAMBIO';
+
     $.ajax({
         url: controlador,
         type: "POST",
-        data: {},
-        success: function(result){   
-
+        data: {controlu_id: controlu_id, politica_no_contados: politica},
+        success: function(result){
             result = JSON.parse(result);
-
-            if(result){
-                alert("Se finalizó el conteo..!");
-                window.location.href = base_url + 'control_inventario';
+            if(result && result.ok){
+                alert("Conteo finalizado. El ajuste todavía NO fue aplicado al inventario.");
+                window.location.href = base_url + 'control_ubicacion/index/' + controli_id;
+            }else{
+                alert((result && result.mensaje) ? result.mensaje : "No se pudo finalizar el conteo.");
             }
         },
         error: function(){
-            alert("Algo salió mal");
+            alert("Algo salió mal al finalizar el conteo");
         }
     });
 }

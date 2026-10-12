@@ -267,9 +267,9 @@ class Pedido_model extends CI_Model
                 c.cliente_aniversario,c.cliente_latitud,c.cliente_longitud,c.cliente_nit,
                 c.cliente_razon,c.cliente_departamento,c.zona_id,
                 e.estado_color,e.estado_descripcion, e.estado_tipo,
-                u.usuario_nombre, u.usuario_email, t.tipotrans_nombre,
+                u.usuario_nombre, u.usuario_email, t.tipotrans_nombre, u.usuario_turno,
                 i.ingreso_monto, i.ingreso_id, i.ingreso_moneda,
-                p.mesa_id, m.mesa_nombre, m.mesa_descripcion
+                p.mesa_id, m.mesa_nombre, m.mesa_descripcion,z.zona_nombre
 
                 from pedido p
                 left join cliente c on c.cliente_id = p.cliente_id
@@ -278,10 +278,11 @@ class Pedido_model extends CI_Model
                 left join tipo_transaccion t on t.tipotrans_id = p.tipotrans_id
                 left join ingresos i on p.ingreso_id = i.ingreso_id
                 left join mesa m on p.mesa_id = m.mesa_id
+                left join zona z on z.zona_id = c.zona_id
                 where 1=1 
                 $condicion 
                 order by pedido_id desc";
-
+        //echo $sql;
         $pedido = $this->db->query($sql)->result_array();
         return $pedido;
         

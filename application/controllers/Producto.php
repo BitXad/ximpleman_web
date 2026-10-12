@@ -112,6 +112,7 @@ class Producto extends CI_Controller{
             $this->load->library('form_validation');
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
+            $this->form_validation->set_rules('producto_orden', 'Orden', 'trim|numeric');
             if($this->form_validation->run())     
             {
                 $producto_nombre = $this->input->post('producto_nombre');
@@ -208,6 +209,7 @@ class Producto extends CI_Controller{
                         'producto_codigo' => $this->input->post('producto_codigo'),
                         'producto_codigobarra' => $this->input->post('producto_codigobarra'),
                         'producto_nombre' => $this->input->post('producto_nombre'),
+                        'producto_orden' => $this->input->post('producto_orden') === null || trim($this->input->post('producto_orden')) === '' ? null : (float)$this->input->post('producto_orden'),
                         'producto_unidad' => $this->input->post('producto_unidad'),
                         'producto_marca' => $this->input->post('producto_marca'),
                         'producto_industria' => $this->input->post('producto_industria'),
@@ -312,6 +314,7 @@ class Producto extends CI_Controller{
 
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
+            $this->form_validation->set_rules('producto_orden', 'Orden', 'trim|numeric');
             $data['unidades'] = $this->Producto_model->get_all_unidad();
             if($this->form_validation->run())     
             {
@@ -403,6 +406,7 @@ class Producto extends CI_Controller{
                     'producto_codigo' => $this->input->post('producto_codigo'),
                     'producto_codigobarra' => $this->input->post('producto_codigobarra'),
                     'producto_nombre' => $this->input->post('producto_nombre'),
+                        'producto_orden' => $this->input->post('producto_orden') === null || trim($this->input->post('producto_orden')) === '' ? null : (float)$this->input->post('producto_orden'),
                     'producto_unidad' => $this->input->post('producto_unidad'),
                     'producto_marca' => $this->input->post('producto_marca'),
                     'producto_industria' => $this->input->post('producto_industria'),
@@ -1890,6 +1894,25 @@ class Producto extends CI_Controller{
         }else{                 
             show_404();
         }
+    }
+
+    public function actualizar_orden()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        if (!$this->acceso(107)) { show_error('Sin permiso para editar productos.', 403); return; }
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('producto_id', 'Producto', 'required|integer|greater_than[0]');
+        $this->form_validation->set_rules('producto_orden', 'Orden', 'trim|numeric');
+        $producto_id = (int)$this->input->post('producto_id');
+        $producto = $this->Producto_model->get_esteproducto($producto_id);
+        $ok = $this->form_validation->run() && isset($producto['producto_id']);
+        if ($ok) {
+            $orden = trim((string)$this->input->post('producto_orden'));
+            $ok = $this->Producto_model->update_producto($producto_id, array('producto_orden' => $orden === '' ? null : (float)$orden));
+        }
+        $this->output->set_content_type('application/json')->set_output(json_encode(array(
+            'ok' => (bool)$ok, 'mensaje' => $ok ? 'Orden guardado.' : 'No se pudo guardar. Ingrese un número válido o deje el campo vacío.'
+        )));
     }
 
     public function validar_duplicados_ajax()

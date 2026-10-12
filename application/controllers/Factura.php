@@ -8,6 +8,8 @@
         use Mike42\Escpos\Printer;
         use Mike42\Escpos\PrintConnectors\FilePrintConnector;
         use Mike42\Escpos\CapabilityProfile;
+        use Dompdf\Dompdf;
+        use Dompdf\Options;
     
 class Factura extends CI_Controller{
     private $session_data = "";
@@ -1335,6 +1337,20 @@ class Factura extends CI_Controller{
     }
   }
   
+    function buscar_clientes_factura()
+    {
+        if(!$this->acceso(152)) return;
+        if(!$this->input->is_ajax_request()) show_404();
+        $q = trim((string)$this->input->post('q', true));
+        $like = '%'.$this->db->escape_like_str($q).'%';
+        $sql = "SELECT cliente_id, cliente_nombre, cliente_ci, cliente_nit, cliente_nombrenegocio
+                FROM cliente
+                WHERE estado_id = 1
+                  AND (cliente_nombre LIKE ? OR cliente_ci LIKE ? OR cliente_nit LIKE ? OR cliente_nombrenegocio LIKE ?)
+                ORDER BY cliente_nombre LIMIT 100";
+        echo json_encode($this->db->query($sql,array($like,$like,$like,$like))->result_array());
+    }
+
     function mostrar_facturas()
     {
         $data['sistema'] = $this->sistema;
@@ -1345,10 +1361,11 @@ class Factura extends CI_Controller{
             $desde = $this->input->post("desde");
             $hasta = $this->input->post("hasta");            
             $opcion = $this->input->post('opcion');   
-            $tipo = $this->input->post('tipo');   
+            $tipo = $this->input->post('tipo');
+            $cliente_id = (int)$this->input->post('cliente_id');
             
             if ($opcion==1){
-                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta,$tipo);
+                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta,$tipo,$cliente_id);
             }
             else{
                 $datos = $this->Factura_model->get_factura_compras($desde,$hasta);
@@ -3696,4 +3713,189 @@ class Factura extends CI_Controller{
         ]);
     }
     
+
+    /* ===== Acciones masivas sobre el resultado filtrado de /factura ===== */
+    private function ids_facturas_lote()
+    {
+        $raw = (string)$this->input->post('factura_ids');
+        $ids = json_decode($raw, true);
+        if (!is_array($ids)) $ids = array();
+        $limpios = array();
+        foreach ($ids as $id) { $id=(int)$id; if ($id>0) $limpios[$id]=$id; }
+        return array_values($limpios);
+    }
+
+    private function cargar_dompdf_lote()
+    {
+        $rutas = array(APPPATH.'libraries/vendor/autoload.php', APPPATH.'vendor/autoload.php', FCPATH.'vendor/autoload.php');
+        foreach ($rutas as $ruta) { if (file_exists($ruta)) { require_once($ruta); break; } }
+        if (!class_exists('Dompdf\\Dompdf')) show_error('No se encontró Dompdf en la instalación actual.',500,'PDF no disponible');
+    }
+
+    private function capturar_factura_lote($factura_id)
+    {
+        /* Render masivo SIN layouts/main.php.
+           imprimir_factura_id() es correcto para una factura, pero factura_boucher_id() /
+           factura_carta_id() cargan layouts/main.php. En un lote eso intenta declarar
+           tx_menu_activo() varias veces dentro de la misma petición PHP. */
+        $factura_id=(int)$factura_id;
+        $usuario_id=(int)$this->session_data['usuario_id'];
+        $parametros=$this->parametros;
+        $factura=$this->Factura_model->get_factura_id($factura_id);
+        if(empty($factura)) return '';
+
+        $data=array();
+        $data['sistema']=$this->sistema;
+        $data['tipousuario_id']=$this->session_data['tipousuario_id'];
+        $data['detalle_factura']=$this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $data['empresa']=$this->Empresa_model->get_empresa(1);
+        $data['page_title']='Factura';
+        $data['factura']=$factura;
+        $data['tipo']=1;
+        $data['parametro']=$parametros;
+        $data['venta']=$this->Detalle_venta_model->get_venta($factura[0]['venta_id']);
+        $data['decimales']=$parametros['parametro_decimales'];
+        $data['dos_decimales']=2;
+        if(isset($factura[0]['datos_id'])) $data['datos_factura']=$this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+
+        $nit_emisor=$factura[0]['factura_nitemisor']; $num_fact=$factura[0]['factura_numero'];
+        $autorizacion=$factura[0]['factura_autorizacion']; $fecha_factura=$factura[0]['factura_fechaventa'];
+        $total=$factura[0]['factura_total']; $codcontrol=$factura[0]['factura_codigocontrol']; $nit=$factura[0]['factura_nit'];
+        if($parametros['parametro_tiposistema']==1){
+            $cadenaQR=$nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            $cadenaQR=$factura[0]['factura_ruta'].'nit='.$nit_emisor.'&cuf='.$factura[0]['factura_cuf'].'&numero='.$num_fact.'&t='.$factura[0]['factura_tamanio'];
+        }
+        $this->load->helper('numeros_helper');
+        $this->load->library('ciqrcode');
+        $qrfile=FCPATH.'resources/images/qrcode'.$usuario_id.'.png';
+        $qp=array('data'=>$cadenaQR,'level'=>'H','size'=>5,'savename'=>$qrfile);
+        $this->ciqrcode->generate($qp);
+        $data['codigoqr']=is_file($qrfile)?'data:image/png;base64,'.base64_encode(file_get_contents($qrfile)):'';
+        $data['cadenaqr']=$cadenaQR;
+
+        $vista='';
+        if($parametros['parametro_tipoimpresora']=='FACTURADORA'){
+            if($parametros['parametro_tiposistema']==1) $vista='factura/factura_boucher';
+            else{
+                $dosificacion=$this->Dosificacion_model->get_dosificacion(1); $data['motivos']=$this->Factura_model->get_all_motivos();
+                $clas=(int)$dosificacion['docsec_codigoclasificador'];
+                if(in_array($clas,array(1,8,11,13))) $vista='factura/factura_bouchern';
+                elseif($clas==23) $vista='factura/factura_boucher_prev';
+            }
+        }else{
+            if($parametros['parametro_tiposistema']==1) $vista='factura/factura_carta';
+            else{
+                $dosificacion=$this->Dosificacion_model->get_dosificacion(1); $data['motivos']=$this->Factura_model->get_all_motivos();
+                $clas=(int)$dosificacion['docsec_codigoclasificador'];
+                if(in_array($clas,array(1,8,11,22))) $vista='factura/factura_carta_new';
+                elseif($clas==23) $vista='factura/factura_carta_prev';
+                elseif($clas==13) $vista='factura/factura_carta_servicios';
+            }
+        }
+        if($vista==='') return '<p>No se pudo determinar el formato de la factura '.$factura_id.'.</p>';
+        /* Tercer parámetro TRUE: devuelve HTML; NO carga layouts/main.php. */
+        $html=$this->load->view($vista,$data,TRUE);
+        return $this->limpiar_html_factura_fiscal_lote($html);
+    }
+
+    private function limpiar_html_factura_fiscal_lote($html)
+    {
+        /* imprimir_factura_id() se ve bien porque layouts/main.php carga Bootstrap + AdminLTE
+           ANTES de la vista factura. En el generador masivo habíamos renderizado sólo la vista;
+           por eso clases como col-md-12, text-center, table, etc. perdían exactamente el formato
+           que se ve al imprimir desde Ximpleman.
+
+           Aquí incorporamos las MISMAS hojas locales del layout al HTML que recibe Dompdf. */
+        $css='';
+        $archivos_css=array(
+            FCPATH.'resources/css/bootstrap.min.css',
+            FCPATH.'resources/css/font-awesome.min.css',
+            FCPATH.'resources/css/AdminLTE.min.css',
+            FCPATH.'resources/css/_all-skins.min.css'
+        );
+        foreach($archivos_css as $archivo){
+            if(is_file($archivo)) $css.="\n".file_get_contents($archivo);
+        }
+
+        /* Reglas equivalentes a la salida impresa del navegador. No tocamos la factura. */
+        $css.='\n.no-print,.modal,.modal-backdrop,button,.btn,.btn-group,form,'
+             .'input[type=button],input[type=submit],input[type=hidden],.alert,.tooltip,.popover,'
+             .'.main-header,.main-sidebar,.control-sidebar,.content-header,.main-footer{display:none !important;}'
+             .'html,body{margin:0 !important;padding:0 !important;background:#fff !important;}'
+             .'.content-wrapper,.content{margin:0 !important;padding:0 !important;background:#fff !important;min-height:0 !important;}'
+             .'@media print{.no-print{display:none !important;}}';
+
+        $bloque='<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style type="text/css">'.$css.'</style>';
+        if(stripos($html,'</head>')!==FALSE) $html=str_ireplace('</head>',$bloque.'</head>',$html);
+        else $html='<!doctype html><html><head>'.$bloque.'</head><body>'.$html.'</body></html>';
+
+        /* JavaScript y modales son herramientas administrativas, nunca parte de la factura fiscal. */
+        $html=preg_replace('#<script\\b[^>]*>.*?</script>#is','',$html);
+        $html=preg_replace('#<div[^>]+class=["\\\'][^"\\\']*modal\\s+fade[^"\\\']*["\\\'][^>]*>.*?</div>\\s*</div>\\s*</div>#is','',$html);
+        return $html;
+    }
+
+    private function dompdf_desde_html_lote($html)
+    {
+        $this->cargar_dompdf_lote();
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', false);
+        $options->set('defaultFont', 'Arial');
+        $options->set('dpi', 96);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html,'UTF-8');
+        if ($this->parametros['parametro_tipoimpresora']=='FACTURADORA') $dompdf->setPaper(array(0,0,226.77,900),'portrait');
+        else $dompdf->setPaper('letter','portrait');
+        $dompdf->render();
+        return $dompdf->output();
+    }
+
+    function imprimir_facturas_lote()
+    {
+        if(!$this->acceso(17)) return;
+        $ids=$this->ids_facturas_lote();
+        if(empty($ids)) show_error('No existen facturas filtradas para imprimir.',400);
+        $data['factura_ids']=$ids;
+        $this->load->view('factura/imprimir_lote',$data);
+    }
+
+    function descargar_facturas_zip()
+    {
+        if(!$this->acceso(17)) return;
+        $ids=$this->ids_facturas_lote();
+        if(empty($ids)) show_error('No existen facturas filtradas para generar.',400);
+        if(!class_exists('ZipArchive')) show_error('La extensión ZIP de PHP no está habilitada.',500);
+        $tmp=tempnam(sys_get_temp_dir(),'facturas_'); @unlink($tmp); $tmp.='.zip';
+        $zip=new ZipArchive(); if($zip->open($tmp,ZipArchive::CREATE|ZipArchive::OVERWRITE)!==TRUE) show_error('No se pudo crear el ZIP.',500);
+        foreach($ids as $id){
+            $f=$this->Factura_model->get_factura_id($id); if(empty($f)) continue;
+            $html=$this->capturar_factura_lote($id); $pdf=$this->dompdf_desde_html_lote($html);
+            $numero=isset($f[0]['factura_numero'])?$f[0]['factura_numero']:$id;
+            $zip->addFromString('Factura_'.$numero.'_ID_'.$id.'.pdf',$pdf);
+        }
+        $zip->close();
+        header('Content-Type: application/zip'); header('Content-Disposition: attachment; filename="Facturas_'.date('Ymd_His').'.zip"'); header('Content-Length: '.filesize($tmp));
+        readfile($tmp); @unlink($tmp); exit;
+    }
+
+    function descargar_facturas_pdf_unico()
+    {
+        if(!$this->acceso(17)) return;
+        $ids=$this->ids_facturas_lote();
+        if(empty($ids)) show_error('No existen facturas filtradas para generar.',400);
+        $partes=array(); $head='';
+        foreach($ids as $id){
+            $html=$this->capturar_factura_lote($id);
+            if($head==='' && preg_match('#<head[^>]*>(.*?)</head>#is',$html,$m)) $head=$m[1];
+            if(preg_match('#<body[^>]*>(.*?)</body>#is',$html,$m)) $cuerpo=$m[1]; else $cuerpo=$html;
+            $partes[]='<div class="factura-lote-pagina">'.$cuerpo.'</div>';
+        }
+        $html='<!doctype html><html><head><meta charset="utf-8">'.$head.'<style>.factura-lote-pagina{page-break-after:always}.factura-lote-pagina:last-child{page-break-after:auto}</style></head><body>'.implode('', $partes).'</body></html>';
+        $pdf=$this->dompdf_desde_html_lote($html);
+        header('Content-Type: application/pdf'); header('Content-Disposition: attachment; filename="Facturas_'.date('Ymd_His').'.pdf"'); header('Content-Length: '.strlen($pdf)); echo $pdf; exit;
+    }
+
 }

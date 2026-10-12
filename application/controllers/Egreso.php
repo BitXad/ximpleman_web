@@ -73,11 +73,11 @@ class Egreso extends CI_Controller{
                 if($categ == 1){
                     $parametro = "and (e.egreso_categoria like '%$categoria%' or e.egreso_especificacion like '%$categoria%')";
                 }
-                if ($filtro == null){
-                    $result = $this->Egreso_model->get_all_egreso();
-                }else{
-                    $result = $this->Egreso_model->fechaegreso($filtro,$parametro);
+                $filtro = trim((string)$filtro);
+                if ($filtro === '' || preg_match('/^and\s+1$/i', $filtro)){
+                    $filtro = " and date(e.egreso_fecha) = CURDATE()";
                 }
+                $result = $this->Egreso_model->fechaegreso($filtro,$parametro);
                 echo json_encode($result);
             }else{                 
                 show_404();

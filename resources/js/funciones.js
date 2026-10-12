@@ -2428,13 +2428,14 @@ function ingresardetallejs(producto_id)
    /* ********************INICIO para redondeo a dos decimales ***************
     * Por norma de impuestos; controla si es electronico o computarizado en linea y si es facturado
     * si fuese el caso la cantidad lo redondea a 2 digitos decimales */
-   if(tipo_sistema != 1){
-       if(es_facturado){
-           
-           cantidad = Number(cantidad).toFixed(decimales);
-           
-       }
+   // Normalizar siempre la cantidad conforme a parametros.parametro_decimales,
+   // independientemente del tipo de sistema y de si se emite factura.
+   if (!Number.isFinite(cantidad) || cantidad <= 0 || !Number.isInteger(decimales) || decimales < 0 || decimales > 10) {
+       alert('ADVERTENCIA: Cantidad o configuración de decimales no válida.');
+       return;
    }
+   cantidad = Number(cantidad.toFixed(decimales));
+   document.getElementById('cantidad'+producto_id).value = cantidad.toFixed(decimales);
    /* ********************F I N  para redondeo a dos decimales ****************/
    ingresorapidojs(cantidad,producto_id,0);
  
@@ -2702,6 +2703,124 @@ function actualizar_portotal(detalleven_id)
     });
 
 }
+
+
+/* Calculadora del modal CALCULAR POR TOTAL.
+ * Mantiene intacta la funcionalidad de registrar_calculos().
+ */
+function calcular_digitos(event)
+{
+    var pantalla = document.getElementById("sumatoria_total");
+    if (!pantalla) return;
+
+    // Solo números, punto decimal, suma y resta.
+    pantalla.value = pantalla.value.replace(/[^0-9+\-.]/g, '');
+
+    if (event && event.key === "Enter") {
+        calculadora_resultado();
+        return;
+    }
+
+    calculadora_actualizar_total();
+}
+
+function calculadora_agregar(valor)
+{
+    var pantalla = document.getElementById("sumatoria_total");
+    if (!pantalla) return;
+
+    var expresion = pantalla.value || "";
+    if (expresion === "0.00" || expresion === "0") {
+        if (valor !== "+" && valor !== "-") expresion = "";
+    }
+
+    // Evita dos operadores consecutivos; el último reemplaza al anterior.
+    if ((valor === "+" || valor === "-") && /[+\-]$/.test(expresion)) {
+        expresion = expresion.slice(0, -1);
+    }
+
+    pantalla.value = expresion + valor;
+    calculadora_actualizar_total();
+    pantalla.focus();
+}
+
+function calculadora_borrar()
+{
+    var pantalla = document.getElementById("sumatoria_total");
+    if (!pantalla) return;
+
+    pantalla.value = (pantalla.value || "").slice(0, -1);
+    if (pantalla.value === "") pantalla.value = "0";
+    calculadora_actualizar_total();
+    pantalla.focus();
+}
+
+function calculadora_limpiar()
+{
+    var pantalla = document.getElementById("sumatoria_total");
+    var total = document.getElementById("calcular_total");
+
+    if (pantalla) pantalla.value = "0";
+    if (total) total.value = "0.00";
+
+    calcular_portotal();
+    if (pantalla) pantalla.focus();
+}
+
+function calculadora_evaluar(expresion)
+{
+    expresion = String(expresion || "").replace(/\s+/g, "");
+
+    if (expresion === "" || !/^[0-9+\-.]+$/.test(expresion)) return null;
+    if (/[+\-]$/.test(expresion)) expresion = expresion.slice(0, -1);
+    if (expresion === "") return null;
+
+    // Separa términos conservando el signo. No usa eval().
+    var terminos = expresion.match(/[+\-]?(?:\d+(?:\.\d*)?|\.\d+)/g);
+    if (!terminos || terminos.join("") !== expresion) return null;
+
+    var resultado = 0;
+    for (var i = 0; i < terminos.length; i++) {
+        resultado += Number(terminos[i]);
+    }
+
+    return isFinite(resultado) ? resultado : null;
+}
+
+function calculadora_actualizar_total()
+{
+    var pantalla = document.getElementById("sumatoria_total");
+    var total = document.getElementById("calcular_total");
+    if (!pantalla || !total) return;
+
+    var resultado = calculadora_evaluar(pantalla.value);
+    if (resultado !== null) {
+        total.value = Number(resultado.toFixed(10));
+        calcular_portotal();
+    }
+}
+
+function calculadora_resultado()
+{
+    calculadora_actualizar_total();
+    var total = document.getElementById("calcular_total");
+    if (total) total.focus();
+}
+
+function alternar_teclado_calculadora()
+{
+    var teclado = $("#teclado_calculadora");
+    var boton = $("#btn_ocultar_calculadora");
+
+    teclado.slideToggle(150, function () {
+        if (teclado.is(":visible")) {
+            boton.html('<i class="fa fa-keyboard-o"></i> Ocultar teclas');
+        } else {
+            boton.html('<i class="fa fa-keyboard-o"></i> Mostrar teclas');
+        }
+    });
+}
+
 
 function calcular_porcantidad()
 {
@@ -3203,7 +3322,14 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
             }    
 
 
-    var cantidad = cantidad * factor; // * factor;
+    var cantidad = Number(cantidad) * Number(factor); // cantidad en unidad de venta
+    // Redondear antes de verificar existencia, calcular importe y enviar al servidor.
+    var precision_cantidad = Number(decimales);
+    if (!Number.isFinite(cantidad) || cantidad <= 0 || !Number.isInteger(precision_cantidad) || precision_cantidad < 0 || precision_cantidad > 10) {
+        alert('ADVERTENCIA: Cantidad o configuración de decimales no válida.');
+        return;
+    }
+    cantidad = Number(cantidad.toFixed(precision_cantidad));
 
     
     var base_url = document.getElementById('base_url').value;   
@@ -4872,7 +4998,8 @@ function registrarventa(cliente_id){
                 datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
                 datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
                 datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional,
-                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo
+                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo,
+                qr_cobro_id: $('#atc_qr_cobro_id').val() || 0
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4996,7 +5123,8 @@ function registrarventa(cliente_id){
                 datos_codigomoneda : datos_codigomoneda,datos_tipocambio : datos_tipocambio,datos_descripcionpaquetes : datos_descripcionpaquetes,
                 datos_informacionadicional : datos_informacionadicional,datos_descuentoadicional : datos_descuentoadicional,
                 datos_lugardestino: datos_lugardestino, datos_direccioncomprador:datos_direccioncomprador, datos_puertodestino:datos_puertodestino, datos_monedatransaccional:datos_monedatransaccional,
-                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo
+                pago_alternativo:pago_alternativo, pago_efectivo: pago_efectivo,
+                qr_cobro_id: $('#atc_qr_cobro_id').val() || 0
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -5151,6 +5279,43 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
+
+/**
+ * Proteccion para reportes/listados transaccionales.
+ * Evita rangos accidentales excesivos.
+ */
+function validar_rango_reporte(fecha_desde, fecha_hasta, max_dias)
+{
+    max_dias = max_dias || 366;
+
+    if (!fecha_desde || !fecha_hasta) {
+        alert("Debe seleccionar fecha desde y fecha hasta.");
+        return false;
+    }
+
+    var desde = new Date(fecha_desde + "T00:00:00");
+    var hasta = new Date(fecha_hasta + "T00:00:00");
+
+    if (isNaN(desde.getTime()) || isNaN(hasta.getTime())) {
+        alert("El rango de fechas no es valido.");
+        return false;
+    }
+
+    if (desde > hasta) {
+        alert("La fecha DESDE no puede ser mayor que la fecha HASTA.");
+        return false;
+    }
+
+    var dias = Math.floor((hasta.getTime() - desde.getTime()) / 86400000) + 1;
+    if (dias > max_dias) {
+        alert("Por seguridad, el rango maximo por consulta es de " + max_dias +
+              " dias. Consulte gestiones o periodos mas pequenos.");
+        return false;
+    }
+
+    return true;
+}
+
 function buscar_ventas()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -5178,9 +5343,11 @@ function buscar_ventas()
         mostrar_ocultar_buscador("ocultar");
     }
     
-    if (opcion == 4) 
-    {   filtro = " ";//todos los pedidos
-        mostrar_ocultar_buscador("ocultar");
+    if (opcion == 4)
+    {
+        // Compatibilidad con pestañas antiguas: no cargar todas las ventas.
+        mostrar_ocultar_buscador("mostrar");
+        return;
     }
     
     if (opcion == 5) {
@@ -5231,6 +5398,10 @@ function ventas_por_fecha()
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var estado_id = document.getElementById('estado_id').value;
     var usuario_id = document.getElementById('usuario_id').value;
+
+    if (!validar_rango_reporte(fecha_desde, fecha_hasta, 366)) {
+        return;
+    }
     
    // document.getElementById('oculto2').style.display = 'block'; //ocultar el bloque del loader
     
@@ -7263,13 +7434,114 @@ function pedidos_pendientes()
                         html += "<tr>";
                         html += "     <td>"+cont+"</td>";
                         html += "     ";
-                        html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
-                        if ((p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!="") || (p[i]['pedido_glosa']!=null && p[i]['pedido_glosa']!="")){                       
+                        
+                        html += "<td style='white-space: nowrap'>";
+
+                        if (p[i]['cliente_foto'] != null && p[i]['cliente_foto'] != "") {
+
+                            var foto_cliente = base_url+"resources/images/clientes/"+p[i]['cliente_foto'];
+
+                            html += "<img src='"+foto_cliente+"' ";
+                            html += "width='45' height='45' ";
+                            html += "style='object-fit:cover; border-radius:5px; margin-right:8px; vertical-align:middle; cursor:pointer;' ";
+                            html += "title='Clic para ampliar' ";
+                            html += "onclick=\"ampliar_foto_cliente('"+foto_cliente+"')\">";
+                        }
+                                                
+
+                        html += "<font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
+                        
+                        
+                        if ((p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!="" && p[i]['cliente_nombrenegocio']!="-") || (p[i]['pedido_glosa']!=null && p[i]['pedido_glosa']!="" && p[i]['pedido_glosa']!="-")){                       
                             html += "     <br>"+p[i]['cliente_nombrenegocio']+"  <b style='color:red'>"+p[i]["pedido_glosa"]+"</b>";
                         }
-                        html += "     <br><b style='color: red;'>COD. CLIENTE: "+p[i]['cliente_codigo']+'</b>';
+                                                
+                        if ((p[i]['zona_nombre']!=null && p[i]['zona_nombre']!="" && p[i]['zona_nombre']!="-")){                       
+                            html += "     <br>ZONA:  <b style='color:red'>"+p[i]["zona_nombre"]+"</b>";
+                        }
+                        
+                        
+                        if ((p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!="" && p[i]['cliente_nombrenegocio']!="-") || (p[i]['pedido_glosa']!=null && p[i]['pedido_glosa']!="" && p[i]['pedido_glosa']!="-")){                       
+                            html += "     <br>"+p[i]['cliente_nombrenegocio']+"  <b style='color:red'>"+p[i]["pedido_glosa"]+"</b>";
+                        }
+                        
+                        
+                        html += "<br><b style='color: red;'>COD. CLIENTE: "+p[i]['cliente_codigo']+"</b>";
+
+
+                        /* ============================================
+                         * WHATSAPP DEL CLIENTE
+                         * ============================================ */
+
+                        var telefono_cliente = "";
+
+                        if (p[i]['cliente_celular'] != null && p[i]['cliente_celular'] != "" && p[i]['cliente_celular'] != "-") {
+                            telefono_cliente = p[i]['cliente_celular'];
+                        }
+                        else if (p[i]['cliente_telefono'] != null && p[i]['cliente_telefono'] != "" && p[i]['cliente_telefono'] != "-") {
+                            telefono_cliente = p[i]['cliente_telefono'];
+                        }
+
+                        if (telefono_cliente != "") {
+
+                            // Quitar espacios, guiones, paréntesis, +, etc.
+                            telefono_cliente = telefono_cliente.replace(/\D/g, '');
+
+                            // Si tiene 8 dígitos, agregar código de Bolivia
+                            if (telefono_cliente.length == 8) {
+                                telefono_cliente = "591"+telefono_cliente;
+                            }
+
+                            html += " <a href='https://wa.me/"+telefono_cliente+"' class='btn btn-success btn-xs' ";
+                            html += "target='_blank' ";
+                            html += "title='WhatsApp: "+telefono_cliente+"'>";
+
+                            html += "<fa class='fa fa-whatsapp'></fa>";
+
+                            html += "</a>";
+                        }
+
+
+                        /* ============================================
+                         * GEOREFERENCIA DEL CLIENTE
+                         * ============================================ */
+
+                        if (p[i]['cliente_latitud'] != null && p[i]['cliente_latitud'] != "" &&
+                            p[i]['cliente_longitud'] != null && p[i]['cliente_longitud'] != "") {
+
+                            html += " <a href='https://www.google.com/maps/dir/?api=1&destination="+
+                                    p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+
+                                    "' target='_blank' "+
+                                    "title='lat:"+p[i]['cliente_latitud']+
+                                    ", long:"+p[i]['cliente_longitud']+"'>";
+
+                            html += "<img src='"+base_url+"resources/images/blue.png' "+
+                                    "width='30' height='30'>";
+
+                            html += "</a>";
+                        }
+                        
+
                         html += "     <br>"+p[i]['pedido_fecha'];
-                        html += "     <br><small><b>PREV./RESPONSABLE:</b> "+p[i]['usuario_nombre']+"</small>";
+                        
+                        html += "     <br><span class='btn btn-"+p[i]['usuario_turno']+"' btn-xs style='padding: 0;'><small><b>PREV./RESPONSABLE:</b> "+p[i]['usuario_nombre']+"</small></span>";
+                        
+                                                var hoy = new Date();
+                        var fechaHoy = hoy.getFullYear() + "-" +
+                                       String(hoy.getMonth() + 1).padStart(2, '0') + "-" +
+                                       String(hoy.getDate()).padStart(2, '0');
+
+                        var iconoEntrega = "";
+                        //alert(p[i]['pedido_fechaentrega'].substring(0,10)+" ** "+fechaHoy);
+                        if (p[i]['pedido_fechaentrega'].substring(0,10) === fechaHoy) {
+                          
+  //                          iconoEntrega = "<span class='btn btn-danger btn-xs' style='padding:0px;' title='Entrega hoy'><fa class='fa fa-truck'></fa> </span>";
+                            html += "<span class='btn btn-danger btn-xs' style='padding:2px;' title='Entrega hoy'><fa class='fa fa-truck'></fa> </span>";
+                        }
+
+//                        html += "         <b><br>"+iconoEntrega+formato_fecha(p[i]['pedido_fechaentrega'])+"</b> <br>"+p[i]['pedido_horaentrega'];
+                        
+                        
                         html += "     </td>";
                         html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
                         //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
@@ -7277,6 +7549,10 @@ function pedidos_pendientes()
                         html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font>";
                         html += "         </a>";
                         html += "         <b><br>"+formato_fecha(p[i]['pedido_fechaentrega'])+"</b> <br>"+p[i]['pedido_horaentrega'];
+
+
+
+
                         html += "     </td>";
                         html += "      ";
                         html += "     ";
@@ -7304,6 +7580,12 @@ function pedidos_pendientes()
 
     });
     
+}
+
+function ampliar_foto_cliente(imagen)
+{
+    $('#imagen_cliente_ampliada').attr('src', imagen);
+    $('#modal_foto_cliente').modal('show');
 }
 
 function ordenes_pendientes()
@@ -8247,7 +8529,7 @@ function enviarfactura_porcorreo(){
     
     var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
     
-    alert(venta_id+" *** "+factura_id+" *** "+elcorreo);
+   // alert(venta_id+" *** "+factura_id+" *** "+elcorreo);
     
     let res = pattern.test(elcorreo);
     if(!res){
@@ -11108,4 +11390,3 @@ function borrar_datos_cliente(){
     $("#boton_presionado").val(0);
 
 }
-

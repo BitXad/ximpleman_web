@@ -132,6 +132,15 @@
                             </div>
                         </div>
                     
+                        <div class="col-md-2">
+                            <label class="control-label">Cliente:</label>
+                            <div class="input-group">
+                                <input type="hidden" id="cliente_id_filtro" value="0">
+                                <input type="text" id="cliente_nombre_filtro" class="form-control input-sm" value="TODOS" readonly>
+                                <span class="input-group-btn"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal_cliente_factura"><i class="fa fa-search"></i></button></span>
+                            </div>
+                        </div>
+
                         <div class="col-md-2" hidden>
                             <label for="tipo" class="control-label">Tipo:</label>
                             <div class="form-group">
@@ -171,16 +180,7 @@
       
                             </div>
                         </div>
-                    
-<!--                        <div class="col-md-2">
-                           <label for="desde" class="control-label"> Buscar: </label>
-                           <div class="form-group">
-              
-                                     <button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>
-      
-                            </div>
-                        </div>-->
-                    
+
                     
 
                 </div>
@@ -188,6 +188,7 @@
         </div>
     </div>
 </div>
+
 <div class="box-body table-responsive" id="tabla_factura" >
 
         <!------------ aqui va la tabla JS con las facturas ----------------------->
@@ -604,3 +605,136 @@
     </div>
 </div>
 <!------------------------ F I N  REVERTIR ANULACION ------------------->
+<div class="modal fade" id="modal_cliente_factura" tabindex="-1" role="dialog">
+ <div class="modal-dialog modal-lg"><div class="modal-content">
+  <div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title"><i class="fa fa-users"></i> Seleccionar cliente</h4></div>
+  <div class="modal-body">
+   <div class="input-group"><input type="text" id="buscar_cliente_factura" class="form-control" placeholder="Buscar por nombre, CI, NIT o negocio" autocomplete="off"><span class="input-group-btn"><button type="button" class="btn btn-primary" onclick="buscar_clientes_factura()"><i class="fa fa-search"></i> Buscar</button></span></div><br>
+   <button type="button" class="btn btn-default btn-sm" onclick="seleccionar_cliente_factura(0,'TODOS')"><i class="fa fa-users"></i> TODOS LOS CLIENTES</button><br><br>
+   <div class="table-responsive"><table class="table table-striped table-condensed"><thead><tr><th>Cliente</th><th>CI</th><th>NIT</th><th>Negocio</th><th></th></tr></thead><tbody id="resultado_clientes_factura"></tbody></table></div>
+  </div>
+ </div></div>
+</div>
+
+<style>
+/* Presentación exclusiva de filtros /factura */
+#panel_filtros_factura_mejorado{background:#fff;border:1px solid #dfe5ec;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:18px;padding:18px 18px 12px}
+#panel_filtros_factura_mejorado:before{content:"FILTROS DEL LIBRO DE VENTAS";display:block;font-size:12px;font-weight:700;letter-spacing:.4px;color:#52606d;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid #edf0f3}
+#panel_filtros_factura_mejorado .col-md-2{margin-bottom:10px}
+#panel_filtros_factura_mejorado label{font-size:12px;font-weight:700;color:#3f4d5a;margin-bottom:6px}
+#panel_filtros_factura_mejorado .form-control{height:36px;border:1px solid #ccd5df;border-radius:5px;background:#fff;box-shadow:none;font-size:12px}
+#panel_filtros_factura_mejorado .form-control:focus{border-color:#3c8dbc;box-shadow:0 0 0 2px rgba(60,141,188,.10)}
+#panel_filtros_factura_mejorado #cliente_nombre_filtro{font-weight:600;background:#f8fafc;color:#34495e}
+#panel_filtros_factura_mejorado .input-group-btn .btn{height:36px;border-radius:0 5px 5px 0}
+#panel_filtros_factura_mejorado .btn{font-weight:600;border-radius:5px;height:36px}
+#panel_filtros_factura_mejorado .btn-ver-factura{min-width:115px;background:#3c8dbc;border-color:#367fa9;color:#fff}
+#panel_filtros_factura_mejorado .btn-ver-factura:hover{background:#367fa9;color:#fff}
+#panel_filtros_factura_mejorado .btn-exportar-factura{background:#3f5f9f;border-color:#36558f;color:#fff}
+#modal_cliente_factura .modal-content{border-radius:8px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+#modal_cliente_factura .modal-header{background:#f7f9fb;border-bottom:1px solid #e3e8ee}
+#modal_cliente_factura .modal-title{font-weight:700;color:#34495e}
+#modal_cliente_factura .table thead th{background:#34495e;color:#fff;border-color:#34495e;font-size:12px}
+#modal_cliente_factura .table tbody tr:hover{background:#f3f8fc}
+@media(max-width:991px){#panel_filtros_factura_mejorado .col-md-2{width:50%;float:left}}
+@media(max-width:600px){#panel_filtros_factura_mejorado .col-md-2{width:100%;float:none}#panel_filtros_factura_mejorado{padding:14px 12px}}
+</style>
+<script>
+$(function(){
+ var $desde=$('input[type="date"]').first(), $row=$desde.closest('.row');
+ if($row.length && !$('#panel_filtros_factura_mejorado').length) $row.wrap('<div id="panel_filtros_factura_mejorado"></div>');
+ var $p=$('#panel_filtros_factura_mejorado');
+ $p.find('button').each(function(){var t=$.trim($(this).text()).toLowerCase();if(t==='ver'||t.indexOf(' ver')>=0)$(this).addClass('btn-ver-factura').html('<i class="fa fa-search"></i> Consultar');if(t.indexOf('excel')>=0||t.indexOf('export')>=0)$(this).addClass('btn-exportar-factura');});
+});
+</script>
+
+<style>
+/* Reorden visual. No altera IDs, valores ni eventos. */
+#panel_filtros_factura_mejorado .row{display:flex;flex-wrap:wrap;align-items:flex-end}
+#panel_filtros_factura_mejorado .filtro-desde{order:10}
+#panel_filtros_factura_mejorado .filtro-hasta{order:20}
+#panel_filtros_factura_mejorado .filtro-cliente{order:30;min-width:250px}
+#panel_filtros_factura_mejorado .filtro-formato{order:40}
+#panel_filtros_factura_mejorado .filtro-tipo{order:50}
+#panel_filtros_factura_mejorado .filtro-consultar{order:60}
+#panel_filtros_factura_mejorado .filtro-exportar{order:70}
+#panel_filtros_factura_mejorado .filtro-consultar .btn,#panel_filtros_factura_mejorado .filtro-exportar .btn{width:100%;margin-bottom:0}
+@media(min-width:992px){#panel_filtros_factura_mejorado .filtro-cliente{width:25%}#panel_filtros_factura_mejorado .filtro-consultar{width:12.5%}#panel_filtros_factura_mejorado .filtro-exportar{width:16.66666667%}}
+@media(max-width:991px){#panel_filtros_factura_mejorado .row{display:block}#panel_filtros_factura_mejorado .filtro-cliente{min-width:0}}
+</style>
+<script>
+$(function(){
+ var $p=$('#panel_filtros_factura_mejorado'); if(!$p.length)return;
+ $p.find('.col-md-2').each(function(){
+   var $c=$(this), label=$.trim($c.find('label').first().text()).toLowerCase(), txt=$.trim($c.text()).toLowerCase();
+   if(label.indexOf('desde')===0)$c.addClass('filtro-desde');
+   else if(label.indexOf('hasta')===0)$c.addClass('filtro-hasta');
+   else if(label.indexOf('cliente')===0)$c.addClass('filtro-cliente');
+   else if(label.indexOf('formato')===0)$c.addClass('filtro-formato');
+   else if(label.indexOf('tipo')===0)$c.addClass('filtro-tipo');
+   else if(label.indexOf('buscar')===0||txt.indexOf('consultar')>=0||txt.indexOf('ver')>=0)$c.addClass('filtro-consultar');
+   else if(label.indexOf('export')===0||txt.indexOf('exportar')>=0)$c.addClass('filtro-exportar');
+ });
+});
+</script>
+<div class="modal fade" id="modal_acciones_facturas" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    <i class="fa fa-files-o"></i> Acciones sobre facturas filtradas
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    Se procesarán <b id="cantidad_facturas_lote">0</b> facturas exactamente
+                    en el orden del resultado filtrado.
+                </p>
+
+                <button type="button" class="btn btn-primary btn-block" onclick="accion_facturas_lote('imprimir')">
+                    <i class="fa fa-print"></i> Imprimir todas consecutivamente
+                </button>
+
+                <button type="button" class="btn btn-success btn-block" onclick="accion_facturas_lote('zip')">
+                    <i class="fa fa-file-archive-o"></i> Descargar PDFs individuales en ZIP
+                </button>
+
+                <button type="button" class="btn btn-danger btn-block" onclick="accion_facturas_lote('pdf')">
+                    <i class="fa fa-file-pdf-o"></i> Descargar todas en un solo PDF
+                </button>
+
+                <hr>
+                <small class="text-muted">
+                    Las acciones utilizan el mismo filtro actual: fechas, tipo y cliente.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var $p = $('#panel_filtros_factura_mejorado');
+
+        if (!$p.length) {
+            $p = $('input[type="date"]').first().closest('.row');
+        }
+
+        if ($p.length && !$('#btn_acciones_facturas').length) {
+            var b = '<div class="col-md-2 filtro-acciones" style="margin-bottom:10px">' +
+                    '<label>Facturas filtradas:</label>' +
+                    '<button id="btn_acciones_facturas" type="button" class="btn btn-warning" ' +
+                    'onclick="abrir_acciones_facturas()">' +
+                    '<i class="fa fa-cogs"></i> Acciones masivas' +
+                    '</button>' +
+                    '</div>';
+
+            if ($p.find('.row').length) {
+                $p.find('.row').first().append(b);
+            } else {
+                $p.append(b);
+            }
+        }
+    });
+</script>

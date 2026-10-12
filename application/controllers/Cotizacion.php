@@ -95,7 +95,10 @@ class Cotizacion extends CI_Controller{
     {
         //$data['parametro'] = $this->parametros;
         if ($this->input->is_ajax_request()) {
-            $parametro = $this->input->post('parametro');
+            $parametro = trim((string)$this->input->post('parametro'));
+            if ($parametro === '' || preg_match('/^and\s+1$/i', $parametro)){
+                $parametro = " and date(c.cotizacion_fecha) = CURDATE()";
+            }
             $datos = $this->Cotizacion_model->get_fechas_cotizacion($parametro);
             if(isset($datos)){
                 echo json_encode($datos);

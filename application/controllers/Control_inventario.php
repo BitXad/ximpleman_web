@@ -1,6 +1,7 @@
 <?php
 class Control_inventario extends CI_Controller{
 
+    private $caja_id = 0;
     private $sistema;
     private $parametros;
 
@@ -15,8 +16,9 @@ class Control_inventario extends CI_Controller{
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
         $this->load->model('Ubicacion_producto_model');
-        $this->load->model('Compra_model');
-        $this->load->model('Venta_model');
+        $this->load->model('Ajuste_inventario_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Caja_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -24,6 +26,70 @@ class Control_inventario extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+
+        // Misma configuracion de decimales utilizada por Factura.
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = !empty($parametro) ? $parametro[0] : array('parametro_decimales' => 2);
+
+        // Misma lógica de caja activa utilizada por Venta.php.
+        $usuario_id = (int)$this->session_data['usuario_id'];
+        $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+        if(!empty($caja)){
+            $this->caja_id = (int)$caja[0]['caja_id'];
+        }
+    }
+
+    /**
+     * Registra en bitacora_caja los eventos de ajuste de inventario.
+     * No afecta montos de caja; se utiliza la bitácora existente como auditoría operativa.
+     */
+    private function registrar_bitacora_ajuste($evento)
+    {
+        $params = array(
+            'bitacoracaja_fecha'    => date('Y-m-d'),
+            'bitacoracaja_hora'     => date('H:i:s'),
+            'bitacoracaja_evento'   => (string)$evento,
+            'usuario_id'            => (int)$this->session_data['usuario_id'],
+            'bitacoracaja_montoreg' => 0,
+            'bitacoracaja_montocaja'=> 0,
+            'bitacoracaja_tipo'     => 3,
+            'caja_id'               => (int)$this->caja_id
+        );
+
+        return $this->db->insert('bitacora_caja', $params);
+    }
+
+    /**
+     * Construye el resumen auditable de un ajuste ya registrado.
+     */
+    private function resumen_bitacora_ajuste($ajuste_id)
+    {
+        $ajuste_id = (int)$ajuste_id;
+        if($ajuste_id <= 0){
+            return '';
+        }
+
+        $ajuste = $this->db->where('ajuste_id', $ajuste_id)
+                           ->get('ajuste_inventario')
+                           ->row_array();
+
+        if(empty($ajuste)){
+            return '';
+        }
+
+        $decimales = isset($this->parametros['parametro_decimales'])
+            ? (int)$this->parametros['parametro_decimales']
+            : 2;
+
+        return
+            'AJUSTE Nº '.$ajuste_id.
+            ' | CONTROL Nº '.(int)$ajuste['controli_id'].
+            ' | POLITICA: '.$ajuste['ajuste_politica_no_contados'].
+            ' | ITEMS: '.(int)$ajuste['ajuste_items'].
+            ' | ENTRADAS: '.number_format((float)$ajuste['ajuste_total_entradas'], $decimales, '.', '').
+            ' | SALIDAS: '.number_format((float)$ajuste['ajuste_total_salidas'], $decimales, '.', '').
+            ' | VALOR ENTRADAS: '.number_format((float)$ajuste['ajuste_valor_entradas'], $decimales, '.', '').
+            ' | VALOR SALIDAS: '.number_format((float)$ajuste['ajuste_valor_salidas'], $decimales, '.', '');
     }
     private function acceso($id_rol){
         $data['sistema'] = $this->sistema;
@@ -167,12 +233,8 @@ class Control_inventario extends CI_Controller{
             $control_id = $this->input->post("control_inventario_id");            
             if(true){
                 $estado = 26; //cambiar a estado terminado
-                $fecha = date('Y-m-d');
-                $hora = date('H:i:s');
                 $params = array(
                         'estado_id' => $estado,
-                        'controli_fecha_fin' => $fecha,
-                        'controli_hora_fin' => $hora,
                     );  
                 $this->Control_inventario_model->update_control_inventario($control_id, $params);
                 
@@ -192,153 +254,109 @@ class Control_inventario extends CI_Controller{
     }
 
     function cuadrar_inventario(){
-        
         $data['sistema'] = $this->sistema;
-        if($this->input->is_ajax_request()){
-            
-            $sobrante = [];
-            $faltante = [];
-            $controli_id = $this->input->post("controli_id");
-            $cuadrar_inventario = $this->input->post("cuadrar_inventario");
-            $inventarios = $this->Control_ubicacion_model->get_productos_inventario($controli_id);
-            
-            foreach ($inventarios as $inventario) {
-                if($inventario['sobrante'] > 0){
-                    array_push($sobrante, $inventario);
-                }else if($inventario['faltante'] > 0){
-                    array_push($faltante, $inventario);
-                }
-            }
-
-            //var_dump($faltante);
-            
-            if ($cuadrar_inventario == 2) {
-                // SOBRA va a COMPRAS
-                $this->cuadrar_inventario_compra($sobrante);
-                $params = array(
-                    'controli_cuadrcompras' => 1,
-                );  
-            }else{
-                //FALTA va a VENTAS
-                $this->cuadrar_inventario_venta($faltante);
-                $params = array(
-                    'controli_cuadrventas' => 1,
-                );
-            }
-            $this->Control_inventario_model->update_control_inventario($controli_id, $params);
-            $controli = $this->Control_inventario_model->get_control_inventario($controli_id);
-            if ($controli['controli_cuadrcompras'] == $controli['controli_cuadrventas'] && $controli['controli_cuadrcompras'] != NULL && $controli['controli_cuadrventas'] != NULL) {
-                $params = array(
-                    'estado_id' => 26,
-                );
-                $this->Control_inventario_model->update_control_inventario($controli_id, $params);
-            }
-        }
-    }
-
-    function cuadrar_inventario_compra($sobrante){
-        $data['sistema'] = $this->sistema;
-        /*****************************COMPRA***************************** */
-        $total = 0;
-        foreach($sobrante as $sob){
-            $total += ($sob['sobrante']*$sob['producto_costo']);
+        if(!$this->input->is_ajax_request()){
+            show_404();
+            return;
         }
 
-        $params = array(
-            'estado_id' => 1,
-            'tipotrans_id' => 1,
-            'usuario_id' => $this->session_data['usuario_id'],
-            'moneda_id' => 1,
-            'proveedor_id' => 0,
-            'forma_id' => 1,
-            'compra_fecha' => date("Y-m-d"),
-            'compra_hora' => date("H:i:s"),
-            'compra_subtotal' => $total,
-            'compra_descuento' => 0,
-            'compra_descglobal' => "De cuadrar el inventario {$sobrante[0]['controli_descripcion']}",
-            'compra_total' => $total,
-            'compra_placamovil' => 1,
-            'compra_numdoc' => 0,
-            'documento_respaldo_id' => 0,
+        $controli_id = (int)$this->input->post('controli_id');
+        $politica = strtoupper(trim((string)$this->input->post('politica_no_contados')));
+        if(!in_array($politica, array('CERO','SIN_CAMBIO'))){
+            $politica = 'SIN_CAMBIO';
+        }
+
+        $control = $this->Control_inventario_model->get_control_inventario($controli_id);
+        if(empty($control)){
+            echo json_encode(array('ok'=>false,'mensaje'=>'El control de inventario no existe.'));
+            return;
+        }
+
+        $ya_ajustado = $this->Ajuste_inventario_model->get_por_control($controli_id);
+        if(!empty($ya_ajustado)){
+            echo json_encode(array('ok'=>false,'mensaje'=>'Este control ya tiene un ajuste aplicado.','ajuste_id'=>$ya_ajustado['ajuste_id']));
+            return;
+        }
+
+        $inventarios = $this->Control_ubicacion_model->get_productos_para_ajuste($controli_id, $politica);
+        if(empty($inventarios)){
+            echo json_encode(array('ok'=>false,'mensaje'=>'No existen productos contabilizados para aplicar el ajuste.'));
+            return;
+        }
+
+        $resultado = $this->Ajuste_inventario_model->registrar_ajuste(
+            $controli_id,
+            $this->session_data['usuario_id'],
+            $politica,
+            $inventarios
         );
-        $compra_id = $this->Compra_model->add_compra($params);
-        /*****************************COMPRA***************************** */
-        /*****************************ADD DETALLE COMPRA AUX***************************** */
-        foreach ($sobrante as $sob) {
-            $total_producto = $sob['sobrante'] * $sob['producto_costo'];
-            $params2 = array(
-                'compra_id' => $compra_id,
-                'moneda_id' => 0,
-                'producto_id' => $sob['producto_id'],
-                'detallecomp_codigo'=>$sob['producto_codigo'],
-                'detallecomp_cantidad'=> $sob['sobrante'],
-                'detallecomp_unidad'=> $sob['producto_unidad'],
-                'detallecomp_costo'=> $sob['producto_costo'],
-                'detallecomp_precio'=> $sob['producto_precio'],
-                'detallecomp_subtotal'=> $total_producto,
-                'detallecomp_descuento'=> 0,
-                'detallecomp_total'=> $total_producto,
-                'detallecomp_fechavencimiento'=>"0000-00-00",
-                'detallecomp_tc'=> 6.96,
+
+        if(!empty($resultado['ok'])){
+            $this->Control_inventario_model->update_control_inventario($controli_id, array(
+                'controli_cuadrcompras' => 1,
+                'controli_cuadrventas' => 1,
+                'estado_id' => 26
+            ));
+
+            $resumen = $this->resumen_bitacora_ajuste($resultado['ajuste_id']);
+            $this->registrar_bitacora_ajuste(
+                'APLIQUE CONTEO AL INVENTARIO | '.$resumen
             );
-            $this->Compra_model->add_detalle_compra_aux($params2);
-            // var_dump($params2);
         }
-        /*****************************ADD DETALLE COMPRA AUX***************************** */
+        echo json_encode($resultado);
     }
-    function cuadrar_inventario_venta($faltante){
-        $data['sistema'] = $this->sistema;
-        /*****************************ADD DETALLE VENTA AUX***************************** */
-        
-        foreach ($faltante as $falt) {
-            
-            $total_producto = $falt['faltante']*$falt['producto_precio'];
-            
-            $params = array(
-                'producto_id' => $falt['producto_id'],
-                'venta_id' => 0,
-                'moneda_id'=> 1,
-                'detalleven_codigo'=> $falt['producto_codigo'],
-                'detalleven_cantidad'=> $falt['faltante'],
-                'detalleven_unidad'=> 0,
-                'detalleven_costo'=> $falt['producto_costo'],
-                'detalleven_precio'=> $falt['producto_precio'],
-                'detalleven_subtotal'=> $total_producto,
-                'detalleven_descuento'=> 0,
-                'detalleven_total'=> $total_producto,
-                'detalleven_comision'=> 0,
-                'detalleven_tipocambio'=> 1,
-                'usuario_id'=> $this->session_data['usuario_id'],
-                'existencia'=> $falt['ubiprod_existencia'],
-                'producto_nombre'=> $falt['producto_nombre'],
-                'producto_unidad'=> $falt['producto_unidad'],
-                'producto_marca'=> $falt['producto_marca'],
-                'categoria_id'=> $falt['categoria_id'],
-                'producto_codigobarra'=> $falt['producto_codigobarra'],
-                'detalleven_envase'=> 0,
-                'detalleven_nombreenvase'=> " ",
-                'detalleven_costoenvase'=> 0,
-                'detalleven_precioenvase'=> 0,
-                'detalleven_cantidadenvase'=> 1,
-                'detalleven_garantiaenvase'=> 0,
-                'detalleven_devueltoenvase'=> 1,
-                'detalleven_montodevolucion'=> 0,
-                'detalleven_prestamoenvase'=> 0,
-                'detalleven_fechavenc'=> "",
-                'clasificador_id'=> 0,
-                'detalleven_unidadfactor'=> "-",
-                'preferencia_id'=> 0,
-                'detalleven_tc'=> 6.96,
-            );
-            
-//            var_dump($params);
-//            echo "<br><br><br>";
-            
-            $this->Venta_model->add_detalle_venta_aux($params);
-        }
-        /*****************************ADD DETALLE VENTA AUX***************************** */
-    }
+
         /**
+     * Anula la aplicación de un conteo al inventario.
+     * Mantiene el histórico y revierte únicamente el movimiento del ajuste.
+     */
+    function anular_ajuste_inventario(){
+        if(!$this->input->is_ajax_request()){
+            show_404();
+            return;
+        }
+
+        $controli_id = (int)$this->input->post('controli_id');
+        $motivo = trim((string)$this->input->post('motivo'));
+
+        if($controli_id <= 0){
+            echo json_encode(array('ok'=>false,'mensaje'=>'Control de inventario inválido.'));
+            return;
+        }
+        if($motivo === ''){
+            echo json_encode(array('ok'=>false,'mensaje'=>'Debe indicar el motivo de la anulación.'));
+            return;
+        }
+
+        $ajuste_activo = $this->Ajuste_inventario_model->get_activo_por_control($controli_id);
+        $resumen_anulacion = !empty($ajuste_activo)
+            ? $this->resumen_bitacora_ajuste($ajuste_activo['ajuste_id'])
+            : 'CONTROL Nº '.$controli_id;
+
+        $resultado = $this->Ajuste_inventario_model->anular_ajuste(
+            $controli_id,
+            $this->session_data['usuario_id'],
+            $motivo
+        );
+
+        if(!empty($resultado['ok'])){
+            // El conteo permanece TERMINADO; solo se desmarca que esté aplicado al inventario.
+            $this->Control_inventario_model->update_control_inventario($controli_id, array(
+                'controli_cuadrcompras' => 0,
+                'controli_cuadrventas' => 0
+            ));
+
+            $this->registrar_bitacora_ajuste(
+                'ANULE APLICACION DEL CONTEO AL INVENTARIO | '.
+                $resumen_anulacion.
+                ' | MOTIVO: '.$motivo
+            );
+        }
+
+        echo json_encode($resultado);
+    }
+
+    /**
      * control ubicacion
      */
     function reporte($controli_id){
@@ -351,9 +369,12 @@ class Control_inventario extends CI_Controller{
             
             $empresa = $this->Empresa_model->get_empresa(1);
             $data["empresa"] = $empresa;
+            $data['parametro'] = $this->parametros;
             
             $data['control_inventarios'] = $this->Control_inventario_model->get_control_inventario($controli_id);
-            $data['productos'] = $this->Ubicacion_producto_model->get_productos_inventario($controli_id);
+            $data['ajuste'] = $this->Ajuste_inventario_model->get_ultimo_por_control($controli_id);
+            $detalle_ajuste = !empty($data['ajuste']) ? $this->Ajuste_inventario_model->get_detalle_por_ajuste($data['ajuste']['ajuste_id']) : array();
+            $data['productos'] = !empty($detalle_ajuste) ? $detalle_ajuste : $this->Ubicacion_producto_model->get_productos_inventario($controli_id);
 //            $data['ubicaciones'] = $this->Ubicacion_model->get_all_ubicacion();
 //            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Control inventario";

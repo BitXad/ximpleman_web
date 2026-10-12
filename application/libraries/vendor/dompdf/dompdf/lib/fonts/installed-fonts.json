@@ -4,5 +4,11 @@
     },
     "arial": {
         "normal": "arial_normal_eafe282bc8ca136c9c475cebf3f78d48"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_c7bd096b3343d2ef939c1b6fdedf2cfa"
+    },
+    "ionicons": {
+        "normal": "ionicons_normal_19e1ae2e3c657016f5b01ae282daa900"
     }
 }

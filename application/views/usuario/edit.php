@@ -104,7 +104,7 @@
                     <div class="col-md-3">
                             <label for="usuario_turno" class="control-label">Turno</label>
                             <div class="form-group">
-                                    <input type="text" name="usuario_turno" value="<?php echo $usuario['usuario_turno'] ?>" class="form-control" id="usuario_turno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <input type="text" name="usuario_turno" value="<?php echo $usuario['usuario_turno'] ?>" class="form-control" id="usuario_turno" required /> <!-- onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  -->
                                     <span class="text-danger"><?php echo form_error('usuario_turno');?></span>
                             </div>
                     </div>

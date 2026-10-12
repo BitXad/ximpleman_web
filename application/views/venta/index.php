@@ -108,7 +108,6 @@
                 <option value="1"><?php echo $sistema["sistema_moduloventas"]; ?> de Hoy</option>
                 <option value="2"><?php echo $sistema["sistema_moduloventas"]; ?> de Ayer</option>
                 <option value="3"><?php echo $sistema["sistema_moduloventas"]; ?> de la semana</option>
-                <option value="4">Todos(as) las <?php echo $sistema["sistema_moduloventas"]; ?> </option>
                 <option value="5"><?php echo $sistema["sistema_moduloventas"]; ?> por fecha</option>
                 <option value="6"><?php echo $sistema["sistema_moduloventas"]; ?> Perdidas/Sin Detalle</option>
             </select>

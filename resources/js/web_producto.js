@@ -30,8 +30,8 @@ function inicio(){
 
 function darip(){
     
-    var seip = document.getElementById('seip').value;
-    var myip = document.getElementById('myip').value; 
+    var seip = document.getElementById('seip')?.value ?? 0;
+    var myip = document.getElementById('myip')?.value ?? 0;
     var losip = myip+seip;
 
     ///$('#miip').val(losip);
@@ -83,8 +83,8 @@ function buscarpro(e){
 
 function buscar_producto()
 {
-    var base_url = document.getElementById('base_url').value;
-    var idioma_id = document.getElementById('idioma_id').value;
+    var base_url = document.getElementById('base_url')?.value || 0;
+    var idioma_id = document.getElementById('idioma_id')?.value || 0;
     controlador = base_url+'website/webbuscar_productos/';
     parametro = document.getElementById('parabuscar').value;
     if(parametro != ""){
@@ -123,11 +123,13 @@ function buscar_producto()
 
 function buscar_por_categoria(categoria_id)
 {
-    var base_url = document.getElementById('base_url').value;
-    var idioma_id = document.getElementById('idioma_id').value;
+    var base_url = document.getElementById('base_url')?.value || 0;
+    var idioma_id = document.getElementById('idioma_id')?.value || 0;
     var controlador = base_url+'website/webbuscar_categoria/'+categoria_id;
     
-        document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    if (document.getElementById('loader')) {
+        document.getElementById('loader').style.display = 'block';
+    }
     
         //Realiza la busqueda por categoria y la dibuja
         $.ajax({url: controlador,
@@ -146,7 +148,7 @@ function buscar_por_categoria(categoria_id)
                         $("#tablaresultados").html(html);
                     }
                     
-                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('loader')?.style.setProperty('display', 'none');
                 
                 
             },
@@ -156,7 +158,7 @@ function buscar_por_categoria(categoria_id)
                $("#tablaresultados").html(html);
             },
             complete: function (jqXHR, textStatus) {
-                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                document.getElementById('loader')?.style.setProperty('display', 'none'); //ocultar el bloque del loader 
                 //tabla_inventario();
             }
         
@@ -248,10 +250,10 @@ function mostrar_tabla_resultados(respuesta,pag){
         var n = registros.length; //tamaño del arreglo de la consulta
         var ancho_imagen = 120;  
         var alto_imagen = 120; 
-        var idioma_id = document.getElementById('idioma_id').value;
+        var idioma_id = document.getElementById('idioma_id')?.value || 0;
         
         var bloque = 12; 
-        var imagenes_fila = Number(document.getElementById('imagenes_fila').value) ; 
+        var imagenes_fila = Number(document.getElementById('imagenes_fila')?.value || 0); 
     
         var cadena = "";
         var nombre = "";
@@ -561,7 +563,6 @@ function cantimas(e,producto_id){
 
 function cantidar(producto_id){
        
-   
         var cantidad = document.getElementById('carrito_cantidad'+producto_id).value; 
         var descuento = 0; //document.getElementById('carrito_descuento'+producto_id).value;
         //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
@@ -708,7 +709,7 @@ function tablacarrito(){
                         step = "step = '"+registros[i]["producto_unidadentera"]+"'";
                         //alert(step);
 
-                        html += "<td "+estilo+"><input  type='number' "+step+" min='"+registros[i]["producto_unidadentera"]+"' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' onchange='cantidar("+registros[i]["producto_id"]+")' id='carrito_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' class='btn btn-warning' value='"+registros[i]["carrito_cantidad"]+"' style='padding:0; width:60px;' required>";
+                        html += "<td "+estilo+"><input  type='number' "+step+" min='"+registros[i]["producto_unidadentera"]+"' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' onchange='cantidar("+registros[i]["producto_id"]+")' id='carrito_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' class='btn btn-warning' value='"+Number(registros[i]["carrito_cantidad"]).toFixed(2)+"' style='padding:0; width:60px;' required>";
                        
                         html += "<input id='carrito_id'  name='carrito_id' type='hidden' class='form-control' value='"+registros[i]["carrito_id"]+"'></td>";
 //                        html += "<td align='right' "+estilo+">"+Number(registros[i]["carrito_descuento"]).toFixed(2)+" <input type='hidden' id='carrito_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["carrito_descuento"]+"' ></td>";

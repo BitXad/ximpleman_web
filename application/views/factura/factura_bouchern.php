@@ -571,21 +571,27 @@
 
                         $opcion = $parametro["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
                     
-                        if ($opcion==1){ ?>
-                                    00<?php echo $venta[0]['venta_numeroventa']; ?>
+                        // Compatibilidad: las facturas de transporte no tienen una fila en `venta`.
+                        // Para ventas normales se conserva exactamente la informacion historica.
+                        $tiene_venta = (isset($venta) && is_array($venta) && isset($venta[0]) && is_array($venta[0]));
+                        $ventapasaje_id = (isset($factura[0]['ventapasaje_id'])) ? (int)$factura[0]['ventapasaje_id'] : 0;
+                        ?>
+
+                        <?php if ($opcion==1){ ?>
+                                    00<?php echo $tiene_venta ? $venta[0]['venta_numeroventa'] : $ventapasaje_id; ?>
                         <?php } ?>
 
-                        <?php   if ($opcion==2){ ?>
-                                    00<?php echo $venta[0]['venta_id']; ?>
-                        <?php   } ?>
+                        <?php if ($opcion==2){ ?>
+                                    00<?php echo $tiene_venta ? $venta[0]['venta_id'] : $ventapasaje_id; ?>
+                        <?php } ?>
 
-                        <?php   if ($opcion==3){ ?>
-                                    00<?php echo $venta[0]['factura_numero']; ?>
-                        <?php   } ?>
+                        <?php if ($opcion==3){ ?>
+                                    00<?php echo $tiene_venta ? $venta[0]['factura_numero'] : $factura[0]['factura_numero']; ?>
+                        <?php } ?>
 
-                        <?php   if ($opcion==4){ ?>
-                                    00<?php echo $venta[0]['venta_numerotransmes']; ?>
-                        <?php   } ?>
+                        <?php if ($opcion==4){ ?>
+                                    00<?php echo $tiene_venta ? $venta[0]['venta_numerotransmes'] : $ventapasaje_id; ?>
+                        <?php } ?>
                     </td>
                 </tr>
                 <tr><td></td></tr>

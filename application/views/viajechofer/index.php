@@ -299,7 +299,7 @@
             $finalizados = 0;
 
             foreach($viajes as $vv){
-                if($vv['estado_id'] >= 55 && $vv['estado_id'] < 60){
+                if(in_array((int)$vv['estado_id'], array(55,61,56,62,58), true)){
                     $pendientes++;
                 }
                 if($vv['estado_id'] == 60){
@@ -338,24 +338,24 @@
                     $btn_class = "btn btn-default";
                     switch($v['estado_id']){
                         case 55:
-                            $siguiente_texto = "Pasar a ABORDANDO";
+                            $siguiente_texto = "Habilitar para venta";
+                            $btn_class = "btn btn-warning";
+                            break;
+                        case 61:
+                            $siguiente_texto = "Pasar a EMBARQUE";
                             $btn_class = "btn btn-warning";
                             break;
                         case 56:
-                            $siguiente_texto = "Pasar a PARTIDO";
+                            $siguiente_texto = "Cerrar viaje";
                             $btn_class = "btn btn-primary";
                             break;
-                        case 57:
-                            $siguiente_texto = "Pasar a EN VIAJE";
+                        case 62:
+                            $siguiente_texto = "Iniciar viaje";
                             $btn_class = "btn btn-info";
                             break;
                         case 58:
-                            $siguiente_texto = "Pasar a LLEGADO";
+                            $siguiente_texto = "Finalizar viaje";
                             $btn_class = "btn btn-success";
-                            break;
-                        case 59:
-                            $siguiente_texto = "Pasar a FINALIZADO";
-                            $btn_class = "btn btn-danger";
                             break;
                         default:
                             $siguiente_texto = "";
@@ -472,7 +472,7 @@
                     </div>
 
                     <div class="viaje-card-footer no-print">
-                        <?php if($v['estado_id'] >= 55 && $v['estado_id'] < 60){ ?>
+                        <?php if(in_array((int)$v['estado_id'], array(55,61,56,62,58), true)){ ?>
                             <a href="<?php echo site_url('viajechofer/cambiarestado/'.$v['viaje_id']); ?>"
                                class="<?php echo $btn_class; ?> btn-accion-viaje"
                                onclick="return confirm('¿Está seguro de cambiar el estado del viaje #<?php echo $v['viaje_id']; ?>?');">

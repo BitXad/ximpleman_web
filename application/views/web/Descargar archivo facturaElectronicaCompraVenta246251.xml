@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
+      <cabecera>
+          <nitEmisor>12464626012</nitEmisor>
+          <razonSocialEmisor>ZARATE ALMENDRAS GROVER ALEJANDRO</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>4507922</telefono>
+          <numeroFactura>10029</numeroFactura>
+          <cuf>354DD44202E2D028C6820EA26C68F49FA6FDD738A286916AFDF3C1BF74</cuf>
+          <cufd>VBQUJVQmF1dU1BVCMTM2RDBCNkY=QsKhZGk2SlhJYVMzUxN0JBNEJDNT</cufd>
+          <codigoSucursal>1</codigoSucursal>
+          <direccion>AVENIDA AROMA Nº 357</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2026-08-22T11:36:50.987</fechaEmision>
+          <nombreRazonSocial>NEIDY</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>8761944</numeroDocumento>
+          <complemento xsi:nil="true"/>
+          <codigoCliente>NE62916</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta xsi:nil="true"/>
+          <montoTotal>50.00</montoTotal>
+          <montoTotalSujetoIva>50.00</montoTotalSujetoIva>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>50.00</montoTotalMoneda>
+          <montoGiftCard>0.00</montoGiftCard>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: El proveedor debe brindar atención sin discriminación, con respeto, calidez y cordialidad a los usuarios y consumidores.</leyenda>
+          <usuario>LUIS MIRANDA</usuario>
+          <codigoDocumentoSector>1</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>5610100</actividadEconomica>
+           <codigoProductoSin>1003800</codigoProductoSin>
+           <codigoProducto>1PL000001</codigoProducto>
+           <descripcion>BROASTER PERSONAL </descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>25.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>25.00</subTotal>
+           <numeroSerie/>
+           <numeroImei/>
+      </detalle>
+      <detalle>
+           <actividadEconomica>5610100</actividadEconomica>
+           <codigoProductoSin>1003800</codigoProductoSin>
+           <codigoProducto>1PL000004</codigoProducto>
+           <descripcion>PORCIÓN SPIEDO </descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>25.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>25.00</subTotal>
+           <numeroSerie/>
+           <numeroImei/>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>xunSJmIjDk/6zzX43elEFq2L8Wascig3pWIo/ZC+iE8=</DigestValue></Reference></SignedInfo><SignatureValue>B1k/pn/O1g4geBHEc5lfEDaulrwFpOYSSKksjxM2dlt9oEDE10qwdWvkWBPlHl3slEwdy5Mo4HgSxZfbASJddBkkHfouYjMb+oYOBD7iyesDxArpPWDlVAssTIU1TTPGQ7I9LZiz/EeIJ4cqR7YoTByx8Zvu6gn7qrhnCxNk8PAye874rda37yEl3JOl8I24J3c1RcpzZSORme8F7Wh6oz1lbQVvs5SbBUNdo24jKtWF1AyCJyHMSC4QrdjSfob7AJ92lf1PpDRXBkSeXmjMuleaTwOCR92/HPK02gfO4dS2BXUHZeOS8gu2abP0SQ+fhhQZUQfvyYSNrSEAqysleg==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaCompraVenta>

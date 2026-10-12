@@ -11,6 +11,7 @@ class Control_ubicacion extends CI_Controller{
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
         $this->load->model('Ubicacion_producto_model');
+        $this->load->model('Ajuste_inventario_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -38,6 +39,8 @@ class Control_ubicacion extends CI_Controller{
         if($this->acceso(136)){
             $estado_tipo = 7;
             $data['controli'] = $this->Control_inventario_model->get_control_inventario($controli_id);
+            $data['ajuste_activo'] = $this->Ajuste_inventario_model->get_activo_por_control($controli_id);
+            $data['ultimo_ajuste'] = $this->Ajuste_inventario_model->get_ultimo_por_control($controli_id);
             $data['estados'] = $this->Estado_model->get_tipo_estado($estado_tipo);
             $data['control_ubicaciones'] = $this->Control_ubicacion_model->get_all_control_ubicacion($controli_id);
             $data['ubicacion_productos'] = $this->Ubicacion_producto_model->get_diferencia();

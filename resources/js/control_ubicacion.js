@@ -142,58 +142,41 @@
             }
         });
     }
-    /** 
-     * Confirmar para empezar a cuadrar inventario
-     * cuadrar, 1 = ventas , 2 = compras 
-    */
-    function confirmar_cuadrar_inventario(controli_id, cuadrar){
-        var terminado = 26; //estado terminado
-        var confirmar = false
-        var mensaje = `Se encontraró pasillo(s) que no han terminado su inventario, ¿Desea continuar con la operación?`
-        control_ubicaciones.forEach(result => {
-            if(result['estado_id'] != 26){
-                confirmar = true
+    /**
+     * Consolida el conteo como AJUSTE DE INVENTARIO.
+     * No crea compras ni ventas.
+     */
+    function aplicar_ajuste_inventario(controli_id){
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url + "control_inventario/cuadrar_inventario";
+        var politica = $('input[name="politica_ajuste"]:checked').val() || 'SIN_CAMBIO';
+        var btn = document.getElementById('btn_aplicar_ajuste');
+
+        if(!confirm('¿Confirma aplicar definitivamente el ajuste de inventario? Esta operación modificará las existencias actuales.')){
+            return;
+        }
+
+        if(btn){ btn.disabled = true; }
+        $.ajax({
+            url: controlador,
+            type: "POST",
+            data: {controli_id: controli_id, politica_no_contados: politica},
+            success: function(result){
+                var res;
+                try { res = JSON.parse(result); } catch(e) { res = {ok:false,mensaje:'Respuesta inválida del servidor.'}; }
+                if(res.ok){
+                    alert('Ajuste aplicado correctamente. Se registraron ' + res.items + ' productos.');
+                    window.location.href = base_url + 'control_inventario/reporte/' + controli_id;
+                }else{
+                    alert(res.mensaje || 'No se pudo aplicar el ajuste.');
+                    if(btn){ btn.disabled = false; }
+                }
+            },
+            error: function(){
+                alert('Ocurrió un error al aplicar el ajuste de inventario.');
+                if(btn){ btn.disabled = false; }
             }
         });
-        if(confirmar){
-            if(confirm(mensaje)){
-                cudrar_inventario(controli_id, cuadrar);
-            }
-        }else{
-            cudrar_inventario(controli_id, cuadrar);
-        }
-    }
-
-    function cudrar_inventario(controli_id, cuadrar_inventario){
-        
-        var base_url = document.getElementById("base_url").value
-        var controlador= `${base_url}control_inventario/cuadrar_inventario`
-        $.ajax({
-            url:controlador,
-            type:"POST",
-            data:{controli_id:controli_id, cuadrar_inventario:cuadrar_inventario},
-            success:function(){
-                var url = `${base_url}`
-                var mensaje = "Tiene una "
-                if (cuadrar_inventario === 2) {
-                    // compra
-                    mensaje += "compra" 
-                    url += `compra`
-                    document.getElementById("cuadrar_compras").disabled = true
-                } else {
-                    // venta
-                    mensaje += "venta" 
-                    url += `venta/ventas`
-                    document.getElementById("cuadrar_ventas").disabled = true
-                }
-                mensaje += " que tiene que finalizar."
-                alert(mensaje)
-                window.open(url, '_blank');
-            },
-            error:function(){
-                alert("algo salio mal al cuadrar")
-            }
-        })
     }
 
     function delete_inventario(controli_id){
@@ -214,3 +197,44 @@
             })
         }
     }
+/**
+ * Anula un ajuste ya aplicado al inventario, conservando el histórico.
+ */
+function anular_ajuste_inventario(controli_id){
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url + "control_inventario/anular_ajuste_inventario";
+    var motivo = $.trim($('#motivo_anulacion_ajuste').val() || '');
+    var btn = document.getElementById('btn_anular_ajuste');
+
+    if(motivo === ''){
+        alert('Debe indicar el motivo de la anulación.');
+        $('#motivo_anulacion_ajuste').focus();
+        return;
+    }
+
+    if(!confirm('¿Confirma ANULAR la aplicación del conteo al inventario? Se revertirán los movimientos generados por este ajuste.')){
+        return;
+    }
+
+    if(btn){ btn.disabled = true; }
+    $.ajax({
+        url: controlador,
+        type: "POST",
+        data: {controli_id: controli_id, motivo: motivo},
+        success: function(result){
+            var res;
+            try { res = JSON.parse(result); } catch(e) { res = {ok:false,mensaje:'Respuesta inválida del servidor.'}; }
+            if(res.ok){
+                alert('La aplicación del conteo fue anulada correctamente. El histórico se conserva.');
+                window.location.reload();
+            }else{
+                alert(res.mensaje || 'No se pudo anular el ajuste.');
+                if(btn){ btn.disabled = false; }
+            }
+        },
+        error: function(){
+            alert('Ocurrió un error al anular el ajuste de inventario.');
+            if(btn){ btn.disabled = false; }
+        }
+    });
+}

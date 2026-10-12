@@ -185,17 +185,17 @@ class Vehiculo_model extends CI_Model
     }
 
     public function get_viajes_hoy() {
-        
-        $sql = "select v.*, r.*,h.* from viaje v
-                left join ruta r on r.ruta_id = v.ruta_id
-                left join vehiculo h on h.vehiculo_id = v.vehiculo_id
-                where 
-                v.viaje_fechasalida = date(now())";
-        //echo $sql;
-        $res = $this->db->query($sql)->result_array();
-        //var_dump($res);
-        return $res;
-        
+        // En Venta de Pasajes solo se muestran viajes que admiten venta/reserva.
+        // PROGRAMADO aún no vende; CERRADO y posteriores quedan fuera del punto de venta.
+        $sql = "SELECT v.*, r.*, h.*, e.estado_descripcion AS viaje_estado_descripcion, e.estado_color AS viaje_estado_color
+                FROM viaje v
+                LEFT JOIN ruta r ON r.ruta_id = v.ruta_id
+                LEFT JOIN vehiculo h ON h.vehiculo_id = v.vehiculo_id
+                LEFT JOIN estado e ON e.estado_id = v.estado_id AND e.estado_tipo = 13
+                WHERE v.viaje_fechasalida >= CURDATE()
+                  AND v.estado_id IN (61,56)
+                ORDER BY v.viaje_fechasalida, v.viaje_horasalida, v.viaje_id";
+        return $this->db->query($sql)->result_array();
     }
 
     public function get_pasajes_vendidos($viaje_id) {

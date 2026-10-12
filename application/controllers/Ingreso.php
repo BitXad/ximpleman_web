@@ -74,14 +74,13 @@ class Ingreso extends CI_Controller{
         $data['sistema'] = $this->sistema;
         //$usuario_id = 1;
         if ($this->input->is_ajax_request()) {
-            $filtro = $this->input->post('filtro');
+            $filtro = trim((string)$this->input->post('filtro'));
             $categoria = $this->input->post('categ');
-            if ($filtro == null){
-                $result = $this->Ingreso_model->get_all_ingresos();
+
+            if ($filtro === '' || preg_match('/^and\s+1$/i', $filtro)){
+                $filtro = " and date(i.ingreso_fecha) = CURDATE()";
             }
-            else{
-                $result = $this->Ingreso_model->fechaingreso($filtro,$categoria);            
-            }
+            $result = $this->Ingreso_model->fechaingreso($filtro,$categoria);
             echo json_encode($result);
         }else{                 
             show_404();

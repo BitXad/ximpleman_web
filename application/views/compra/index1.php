@@ -126,7 +126,6 @@
                     <option value="1"><?php echo $sistema["sistema_modulocompras"]; ?> de Hoy</option>
                     <option value="2"><?php echo $sistema["sistema_modulocompras"]; ?> de Ayer</option>
                     <option value="3"><?php echo $sistema["sistema_modulocompras"]; ?> de la semana</option>
-                    <option value="4"><?php echo $sistema["sistema_modulocompras"]; ?> todas las compras</option>
                     <option value="5"><?php echo $sistema["sistema_modulocompras"]; ?> por fecha</option>
                     <option value="6"><?php echo $sistema["sistema_modulocompras"]; ?> Perdidas/Sin Detalle</option>
                     <option value="7"><?php echo $sistema["sistema_modulocompras"]; ?> Por codigo producto</option>
@@ -153,9 +152,8 @@
 
             <?php }else{ ?>    
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small><?php echo $sistema["sistema_modulocompras"]; ?></small></a>
-            <?php } ?>           
-                <button style="width: 78px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-                <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
+            <?php } ?>
+<?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
                 <?php } ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0" onclick="llevar_invacero()"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>

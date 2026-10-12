@@ -127,16 +127,29 @@
                             </td>                        
                         </tr>
                         <?php $i++; } ?>
-                        <tr>
-                            <td class="no-print"></td>
-                            <td class="no-print"></td>
-                            <td class="no-print"></td>
-                            <td class="no-print"></td>
-                            <td class="no-print text-center"><button id="cuadrar_compras" class="btn btn-success btn-sm" onclick="confirmar_cuadrar_inventario(<?= $controli['controli_id'] ?>, 2)" <?= ($controli['controli_cuadrcompras'] == 1) ? 'disabled': '' ?>>Cuadrar con compras</button></td>
-                            <td class="no-print text-center"><button id="cuadrar_ventas" class="btn btn-success btn-sm" onclick="confirmar_cuadrar_inventario(<?= $controli['controli_id'] ?>, 1)" <?= ($controli['controli_cuadrventas'] == 1) ? 'disabled': '' ?>>Cuadrar con ventas</button></td>
-                            <td class="no-print"></td>
-                            <td class="no-print"></td>
-                            <td class="no-print"></td>
+                        <tr class="no-print">
+                            <td colspan="9">
+                                <div class="alert alert-info" style="margin-bottom:0;">
+                                    <b>Ajuste formal de inventario:</b> la consolidación registrará entradas y salidas de ajuste sin generar compras ni ventas.
+                                    <?php if(empty($ajuste_activo)){ ?>
+                                        <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal_aplicar_ajuste">
+                                            <i class="fa fa-check-circle"></i> Aplicar conteo al inventario
+                                        </button>
+                                        <?php if(!empty($ultimo_ajuste) && !empty($ultimo_ajuste['ajuste_anulado'])){ ?>
+                                            <span class="label label-danger pull-right" style="margin:7px 10px 0 0;">Último ajuste anulado</span>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <button type="button" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modal_anular_ajuste">
+                                            <i class="fa fa-undo"></i> Anular aplicación del conteo
+                                        </button>
+                                        <a href="<?= site_url('control_inventario/reporte/'.$controli['controli_id']) ?>" target="_blank" class="btn btn-primary btn-sm pull-right" style="margin-right:8px;">
+                                            <i class="fa fa-print"></i> Ver reporte histórico
+                                        </a>
+                                        <span class="label label-success pull-right" style="margin:7px 10px 0 0;">APLICADO AL INVENTARIO</span>
+                                    <?php } ?>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -145,6 +158,54 @@
                 <a href="<?= base_url("control_inventario") ?>" class="btn btn-danger btn-sm">Volver</a>
             </div>
         </div>
+        <div class="modal fade" id="modal_aplicar_ajuste" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#f5f5f5;">
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h4 class="modal-title"><b>APLICAR CONTEO AL INVENTARIO</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Este proceso actualizará las existencias y dejará un movimiento histórico por cada producto. <b>No generará compras ni ventas.</b></p>
+                        <p><b>Productos no contabilizados:</b></p>
+                        <div class="radio"><label><input type="radio" name="politica_ajuste" value="SIN_CAMBIO" checked> Dejar sin cambios</label></div>
+                        <div class="radio"><label><input type="radio" name="politica_ajuste" value="CERO"> Considerar existencia física 0</label></div>
+                        <div class="alert alert-warning">Revise que todos los pasillos/ubicaciones necesarios estén finalizados. Una vez aplicado podrá anularse desde esta misma pantalla, dejando registro histórico de la anulación.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btn_aplicar_ajuste" class="btn btn-success" onclick="aplicar_ajuste_inventario(<?= $controli['controli_id'] ?>)"><i class="fa fa-check"></i> Aplicar conteo al inventario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_anular_ajuste" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#f5f5f5;">
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h4 class="modal-title"><b>ANULAR APLICACIÓN DEL CONTEO</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            <b>Atención:</b> se revertirán las entradas y salidas generadas por este ajuste. No se eliminará el histórico.
+                        </div>
+                        <div class="form-group">
+                            <label for="motivo_anulacion_ajuste">Motivo de anulación <span class="text-danger">*</span></label>
+                            <textarea id="motivo_anulacion_ajuste" class="form-control" rows="3" maxlength="500" placeholder="Indique por qué se anula la aplicación del conteo"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btn_anular_ajuste" class="btn btn-danger" onclick="anular_ajuste_inventario(<?= $controli['controli_id'] ?>)">
+                            <i class="fa fa-undo"></i> Confirmar anulación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="modal_ubicacion" tabindex="-1" role="dialog" aria-labelledby="modal_ubicacion" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

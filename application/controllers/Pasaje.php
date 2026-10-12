@@ -29,6 +29,15 @@ class Pasaje extends CI_Controller{
  /*
 * Listing of pasaje
  */
+    private function permiso_transporte($rol_id){
+        $uid=isset($this->session_data['usuario_id'])?(int)$this->session_data['usuario_id']:0;
+        if($uid<=0) return false;
+        $r=$this->db->query("SELECT 1 ok FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id WHERE u.usuario_id=? AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1",array($uid,(int)$rol_id))->row_array();
+        return !empty($r);
+    }
+    private function negar_permiso($mensaje){ show_error($mensaje,403,'Acceso denegado'); return false; }
+
+
 public function index()
 {
      $data['sistema'] = $this->sistema;
@@ -45,7 +54,8 @@ public function index()
   * Adding a new pasaje
   */
  function add()
- {  
+ {
+      if(!$this->permiso_transporte(219)){ $this->negar_permiso('No tiene permiso para modificar precios/datos manuales de pasajes.'); return; }  
      $data['sistema'] = $this->sistema;
 try{
       $params = array(
@@ -92,7 +102,8 @@ try{
   * Editing a pasaje
  */
  public function edit($pasaje_id)
- {   
+ {
+      if(!$this->permiso_transporte(219)){ $this->negar_permiso('No tiene permiso para modificar precios/datos manuales de pasajes.'); return; }   
      $data['sistema'] = $this->sistema;
   try{
    $data['pasaje'] = $this->Pasaje_model->get_pasaje($pasaje_id);
@@ -146,6 +157,7 @@ try{
   */
   function remove($pasaje_id)
    {
+      if(!$this->permiso_transporte(219)){ $this->negar_permiso('No tiene permiso para modificar precios/datos manuales de pasajes.'); return; }
     try{
       $pasaje = $this->Pasaje_model->get_pasaje($pasaje_id);
   // check if the pasaje exists before trying to delete it

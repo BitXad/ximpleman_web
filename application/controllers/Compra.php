@@ -340,14 +340,12 @@ class Compra extends CI_Controller{
     {
         if ($this->input->is_ajax_request()) {
             
-            $filtro = $this->input->post('filtro');
-            
-            if ($filtro == null){
-                $result = $this->Compra_model->get_all_compra();
+            $filtro = trim((string)$this->input->post('filtro'));
+
+            if ($filtro === '' || preg_match('/^and\s+1$/i', $filtro)){
+                $filtro = " and date(c.compra_fecha) = CURDATE()";
             }
-            else{
-                $result = $this->Compra_model->fechacompras($filtro);            
-            }
+            $result = $this->Compra_model->fechacompras($filtro);
             echo json_encode($result);
             
         }
@@ -633,7 +631,16 @@ class Compra extends CI_Controller{
         
         
         
-                ///////////1.  BORRAR AUX DE LA COMPRA//////////
+                $compra_id = (int)$compra_id;
+        // Proteger el auxiliar antes de cualquier borrado.
+        $conteo_origen = (int)$this->db->where('compra_id', $compra_id)->count_all_results('detalle_compra');
+        if ($conteo_origen === 0) {
+            show_error('No se puede reconstruir el detalle auxiliar: la compra no tiene detalle original. Se conservaron los datos actuales.', 409);
+            return;
+        }
+        $this->db->trans_begin();
+
+        ///////////1.  BORRAR AUX DE LA COMPRA//////////
         $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
         $this->db->query($eliminar_aux);
                  ////////////////  2. COPIAR DE DETALLE A AUX//////////////////////
@@ -679,6 +686,13 @@ class Compra extends CI_Controller{
         WHERE 
         detalle_compra.compra_id = ".$compra_id.")"; 
         $this->db->query($cargar_aux);
+        $conteo_destino = (int)$this->db->where('compra_id', $compra_id)->count_all_results('detalle_compra_aux');
+        if ($this->db->trans_status() === FALSE || $conteo_destino !== $conteo_origen) {
+            $this->db->trans_rollback();
+            show_error('No fue posible reconstruir el detalle auxiliar. Se conservaron los registros anteriores.', 500);
+            return;
+        }
+        $this->db->trans_commit();
 
         redirect('compra/edit/'.$compra_id.'/'.$bandera);
 
@@ -1088,6 +1102,31 @@ class Compra extends CI_Controller{
     
     
     function finalizarcompra($compra_id){
+        // FASE 4A: un único procesamiento simultáneo por compra y conexión MySQL.
+        // GET_LOCK es independiente de las transacciones internas existentes.
+        $compra_id_bloqueo = (int) $compra_id;
+        if ($compra_id_bloqueo <= 0) {
+            show_error('Identificador de compra inválido.', 409);
+            return;
+        }
+        $nombre_bloqueo = 'ximpleman_compra_finalizar_' . $compra_id_bloqueo;
+        $bloqueo = $this->db->query('SELECT GET_LOCK(?, 0) AS adquirido', array($nombre_bloqueo));
+        if (!$bloqueo || (int) $bloqueo->row()->adquirido !== 1) {
+            log_message('error', 'Compra finalizarcompra: intento concurrente compra_id=' . $compra_id_bloqueo);
+            show_error('Esta compra se está procesando en otra solicitud. Espere y vuelva a consultar su estado antes de reintentar.', 409);
+            return;
+        }
+        // Se libera también cuando hay return, redirect, show_error o excepción.
+        // El cierre de conexión MySQL libera cualquier GET_LOCK restante.
+        register_shutdown_function(function () use ($nombre_bloqueo) {
+            try {
+                if (isset($this->db) && $this->db->conn_id) {
+                    $this->db->query('SELECT RELEASE_LOCK(?)', array($nombre_bloqueo));
+                }
+            } catch (Throwable $e) {
+                log_message('error', 'Compra: no se pudo liberar bloqueo ' . $nombre_bloqueo . ': ' . $e->getMessage());
+            }
+        });
         
         if($this->acceso(1)){
            
@@ -1115,6 +1154,39 @@ class Compra extends CI_Controller{
             $nueva_hora = date("H:i:s"); 
             $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
             
+            // FASE 2: validación previa a cualquier escritura de finalizarcompra().
+            // Nunca reemplazar el detalle definitivo con un auxiliar vacío.
+            $compra_id = (int) $compra_id;
+            if ($compra_id <= 0 || $this->db->where('compra_id', $compra_id)->count_all_results('detalle_compra_aux') <= 0) {
+                log_message('error', 'Compra finalizarcompra: auxiliar vacío o ID inválido, compra_id=' . $compra_id);
+                show_error('No se puede finalizar la compra: no existen productos en el detalle temporal. No se modificó el detalle definitivo.', 409);
+                return;
+            }
+
+            // FASE 3: validaciones de consistencia ANTES de modificar cabecera,
+            // inventario o detalle. No cambian las reglas comerciales existentes.
+            $compra_id_formulario = (int) $this->input->post('compra_id');
+            if ($compra_id_formulario !== $compra_id) {
+                log_message('error', 'Compra finalizarcompra: ID de URL y formulario no coinciden. URL=' . $compra_id . ' POST=' . $compra_id_formulario);
+                show_error('No se procesó la compra: el identificador del formulario no coincide con la compra abierta.', 409);
+                return;
+            }
+            $compra_existe = (int) $this->db->where('compra_id', $compra_id)->count_all_results('compra');
+            if ($compra_existe !== 1) {
+                log_message('error', 'Compra finalizarcompra: compra inexistente, ID=' . $compra_id);
+                show_error('No se procesó la compra: no existe la cabecera correspondiente.', 409);
+                return;
+            }
+            $detalle_invalido = $this->db->query(
+                'SELECT COUNT(*) AS cantidad FROM detalle_compra_aux WHERE compra_id = ? AND (producto_id IS NULL OR producto_id <= 0 OR detallecomp_cantidad IS NULL OR detallecomp_cantidad <= 0)',
+                array($compra_id)
+            )->row_array();
+            if (!empty($detalle_invalido['cantidad'])) {
+                log_message('error', 'Compra finalizarcompra: detalle con producto o cantidad inválidos, ID=' . $compra_id);
+                show_error('No se procesó la compra: hay productos sin identificador o con cantidad no positiva.', 409);
+                return;
+            }
+
             if ($descglobal>0) {
                 $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
                 $this->db->query($descontar);
@@ -1269,7 +1341,15 @@ class Compra extends CI_Controller{
            ///////////4. ELIMINAR DETALLE COMPRA////////////
 
             $this->guardar_detalle_bitacora($compra_id);
-            
+
+            // Sustitución atómica: DELETE e INSERT deben confirmarse juntos.
+            $this->db->trans_begin();
+            $cantidad_aux_antes = (int) $this->db->where('compra_id', $compra_id)->count_all_results('detalle_compra_aux');
+            if ($cantidad_aux_antes <= 0) {
+                $this->db->trans_rollback();
+                show_error('Compra sin detalle auxiliar: se canceló la sustitución.', 409);
+                return;
+            }
            $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id; 
            $this->db->query($borrar_detalle); 
            
@@ -1317,7 +1397,15 @@ class Compra extends CI_Controller{
            detalle_compra_aux
            WHERE
            compra_id=".$compra_id.")";
-           $this->db->query($vaciar_detalle);
+           $copia_detalle_ok = $this->db->query($vaciar_detalle);
+           $cantidad_detalle_despues = (int) $this->db->where('compra_id', $compra_id)->count_all_results('detalle_compra');
+           if (!$copia_detalle_ok || $this->db->trans_status() === FALSE || $cantidad_detalle_despues !== $cantidad_aux_antes) {
+               $this->db->trans_rollback();
+               log_message('error', 'Compra finalizarcompra: error copiando detalle de compra_id=' . $compra_id);
+               show_error('No se pudo copiar el detalle de compra. Se conservó el detalle anterior.', 500);
+               return;
+           }
+           $this->db->trans_commit();
            
             //////////////////////////// insertar clasificador //////////////
            $sql_clasificador = "insert into detalle_clasificador(detallecomp_id,producto_id,clasificador_id,detalleclas_cantidad)

@@ -1,0 +1,5 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Impresión masiva de facturas</title><style>body{font-family:Arial,sans-serif;padding:25px;color:#333}.estado{padding:15px;background:#f4f7f9;border:1px solid #dbe3e8;border-radius:6px}iframe{position:absolute;width:1px;height:1px;border:0;left:-9999px}</style></head><body><div class="estado"><b>Impresión masiva</b><div id="estado">Preparando <?php echo count($factura_ids); ?> factura(s)...</div></div><iframe id="impresion"></iframe><script>
+var ids=<?php echo json_encode(array_values($factura_ids)); ?>, i=0, frame=document.getElementById('impresion'), estado=document.getElementById('estado');
+function siguiente(){if(i>=ids.length){estado.innerHTML='Proceso enviado: '+ids.length+' factura(s). Puede cerrar esta ventana.';return;}var id=ids[i++];estado.innerHTML='Enviando factura '+i+' de '+ids.length+'...';frame.onload=function(){setTimeout(function(){try{frame.contentWindow.focus();frame.contentWindow.print();}catch(e){} setTimeout(siguiente,900);},500);};frame.src='<?php echo site_url('factura/imprimir_factura_id'); ?>/'+id+'/1';}
+siguiente();
+</script></body></html>

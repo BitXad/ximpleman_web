@@ -259,7 +259,9 @@ class Viaje_model extends CI_Model
                     p.pasaje_controlabordaje
                 FROM pasaje p
                 INNER JOIN asientos a ON a.asiento_id = p.asiento_id
-                WHERE p.viaje_id = ?";
+                WHERE p.viaje_id = ?
+                  AND p.estado_id = 54
+                ORDER BY COALESCE(a.asiento_orden,999999), CAST(a.asiento_numero AS UNSIGNED), a.asiento_numero";
 
         return $this->db->query($sql, array($viaje_id))->result_array();
     }
@@ -338,16 +340,79 @@ class Viaje_model extends CI_Model
      */
     public function get_pasaje($venta_id)
     {
+        $venta_id = (int)$venta_id;
+
+        // 1) Estructura normal: la cabecera existe en venta_pasaje.
         $sql = "SELECT
                     t.*,
+                    t.facturacion_razon_social AS cliente_facturacion_razon_social,
+                    t.facturacion_documento AS cliente_facturacion_documento,
+                    t.facturacion_email AS cliente_facturacion_email,
+                    t.facturacion_diferente_pasajero AS cliente_facturacion_diferente_pasajero,
                     v.*,
                     r.*,
-                    c.*
+                    c.*,
+                    COALESCE(
+                        NULLIF(t.facturacion_razon_social, ''),
+                        NULLIF(c.cliente_razon, ''),
+                        NULLIF(c.cliente_nombre, ''),
+                        (SELECT NULLIF(p1.pasaje_nombre, '')
+                         FROM pasaje p1
+                         WHERE p1.venta_id = t.venta_id
+                         ORDER BY p1.pasaje_id ASC
+                         LIMIT 1),
+                        '-'
+                    ) AS cliente_nombre,
+                    COALESCE(
+                        NULLIF(t.facturacion_documento, ''),
+                        NULLIF(c.cliente_nit, ''),
+                        NULLIF(c.cliente_ci, ''),
+                        (SELECT NULLIF(p2.pasaje_documento, '')
+                         FROM pasaje p2
+                         WHERE p2.venta_id = t.venta_id
+                         ORDER BY p2.pasaje_id ASC
+                         LIMIT 1),
+                        '-'
+                    ) AS cliente_nit
                 FROM venta_pasaje t
                 LEFT JOIN viaje v ON v.viaje_id = t.viaje_id
                 LEFT JOIN ruta r ON r.ruta_id = v.ruta_id
                 LEFT JOIN cliente c ON c.cliente_id = t.cliente_id
-                WHERE t.venta_id = ?";
+                WHERE t.venta_id = ?
+                LIMIT 1";
+
+        $pasaje = $this->db->query($sql, array($venta_id))->row_array();
+
+        if (!empty($pasaje)) {
+            return $pasaje;
+        }
+
+        // 2) Compatibilidad con ventas antiguas/incompletas.
+        // Hay registros donde pasaje.venta_id esta asignado pero la cabecera
+        // de venta_pasaje ya no existe. En ese caso reconstruimos los datos
+        // minimos del ticket desde pasaje + viaje + ruta + cliente.
+        $sql = "SELECT
+                    p.venta_id,
+                    p.viaje_id,
+                    p.cliente_id,
+                    p.pasaje_fecha AS venta_fecha,
+                    p.pasaje_hora AS venta_hora,
+                    '' AS venta_codigoreserva,
+                    v.viaje_fechasalida,
+                    v.viaje_horasalida,
+                    v.ruta_id,
+                    r.ruta_nombre,
+                    r.inicio_ruta,
+                    r.fin_ruta,
+                    COALESCE(NULLIF(c.cliente_nombre, ''), NULLIF(p.pasaje_nombre, ''), '-') AS cliente_nombre,
+                    COALESCE(NULLIF(c.cliente_nit, ''), NULLIF(p.pasaje_documento, ''), '-') AS cliente_nit
+                FROM pasaje p
+                LEFT JOIN viaje v ON v.viaje_id = p.viaje_id
+                LEFT JOIN ruta r ON r.ruta_id = v.ruta_id
+                LEFT JOIN cliente c ON c.cliente_id = p.cliente_id
+                WHERE p.venta_id = ?
+                ORDER BY p.pasaje_id ASC
+                LIMIT 1";
 
         return $this->db->query($sql, array($venta_id))->row_array();
     }
@@ -445,6 +510,8 @@ class Viaje_model extends CI_Model
                         a.ayudante_apellidos,
                         c2.conductor_nombres AS conductor2_nombres,
                         c2.conductor_apellidos AS conductor2_apellidos,
+                        ev.estado_descripcion AS viaje_estado_descripcion,
+                        ev.estado_color AS viaje_estado_color,
                         IFNULL((SELECT COUNT(*) FROM pasaje p WHERE p.viaje_id = v.viaje_id), 0) AS cantidad_pasajes,
                         CASE
                             WHEN EXISTS (SELECT 1 FROM pasaje p2 WHERE p2.viaje_id = v.viaje_id)
@@ -458,6 +525,7 @@ class Viaje_model extends CI_Model
                     LEFT JOIN conductor c2 ON c2.conductor_id = v.conductor_id2
                     LEFT JOIN ayudante a ON a.ayudante_id = v.ayudante_id
                     LEFT JOIN usuario u ON u.usuario_id = v.usuario_id
+                    LEFT JOIN estado ev ON ev.estado_id = v.estado_id AND ev.estado_tipo = 13
                     ORDER BY v.viaje_id DESC";
 
             if (isset($params['limit']) && isset($params['offset'])) {
@@ -502,7 +570,7 @@ class Viaje_model extends CI_Model
             LEFT JOIN usuario u1 ON u1.usuario_id = v.conductor_id
             LEFT JOIN usuario u2 ON u2.usuario_id = v.conductor_id2
             WHERE e.estado_tipo = 13
-                AND v.estado_id BETWEEN 55 AND 60
+                AND v.estado_id IN (55,61,56,62,58,60,63,64,65)
                 AND (v.conductor_id = ".$this->db->escape($usuario_id)." 
                     OR v.conductor_id2 = ".$this->db->escape($usuario_id).")
             ORDER BY v.viaje_fechasalida DESC, v.viaje_horasalida DESC, v.viaje_id DESC
@@ -525,7 +593,7 @@ class Viaje_model extends CI_Model
             WHERE v.viaje_id = ".$this->db->escape($viaje_id)."
                 AND (v.conductor_id = ".$this->db->escape($usuario_id)."
                     OR v.conductor_id2 = ".$this->db->escape($usuario_id).")
-                AND v.estado_id BETWEEN 55 AND 60
+                AND v.estado_id IN (55,61,56,62,58,60,63,64,65)
             LIMIT 1
         ";
 
@@ -535,17 +603,78 @@ class Viaje_model extends CI_Model
     /*
      * Devuelve el siguiente estado permitido
      */
+    /** Estados formales del ciclo de vida del viaje. */
+    public function get_catalogo_estados_viaje()
+    {
+        return array(
+            55 => 'PROGRAMADO',
+            61 => 'HABILITADO PARA VENTA',
+            56 => 'EMBARQUE',
+            62 => 'CERRADO',
+            58 => 'EN VIAJE',
+            60 => 'FINALIZADO',
+            63 => 'CANCELADO',
+            64 => 'REPROGRAMADO',
+            65 => 'SUSPENDIDO'
+        );
+    }
+
+    /** Matriz central de transiciones autorizadas. */
+    public function get_matriz_transiciones()
+    {
+        return array(
+            55 => array(61, 64, 65, 63),
+            61 => array(56, 64, 65, 63),
+            56 => array(62, 65, 63),
+            62 => array(58),
+            58 => array(60, 65),
+            64 => array(55, 65, 63),
+            65 => array(55, 61, 63),
+            60 => array(),
+            63 => array()
+        );
+    }
+
+    public function get_transiciones_permitidas($estado_actual)
+    {
+        $matriz = $this->get_matriz_transiciones();
+        return isset($matriz[(int)$estado_actual]) ? $matriz[(int)$estado_actual] : array();
+    }
+
+    public function puede_transicionar($estado_actual, $estado_nuevo)
+    {
+        return in_array((int)$estado_nuevo, $this->get_transiciones_permitidas((int)$estado_actual), true);
+    }
+
+    /** Compatibilidad con la pantalla del conductor: devuelve el siguiente estado normal. */
     function get_siguiente_estado($estado_actual)
     {
-        $flujo = array(
-            55 => 56,
-            56 => 57,
-            57 => 58,
-            58 => 59,
-            59 => 60
-        );
+        $flujo = array(55 => 61, 61 => 56, 56 => 62, 62 => 58, 58 => 60);
+        return isset($flujo[(int)$estado_actual]) ? $flujo[(int)$estado_actual] : false;
+    }
 
-        return isset($flujo[$estado_actual]) ? $flujo[$estado_actual] : false;
+    public function estado_permite_venta($estado_id)
+    {
+        return in_array((int)$estado_id, array(61, 56), true);
+    }
+
+    public function estado_permite_cambio_asiento($estado_id)
+    {
+        return in_array((int)$estado_id, array(61, 56, 62), true);
+    }
+
+    public function registrar_historial_estado($viaje_id, $estado_anterior, $estado_nuevo, $usuario_id, $motivo = '')
+    {
+        return $this->db->insert('viaje_estado_historial', array(
+            'viaje_id' => (int)$viaje_id,
+            'estado_anterior_id' => (int)$estado_anterior,
+            'estado_nuevo_id' => (int)$estado_nuevo,
+            'usuario_id' => (int)$usuario_id,
+            'viajeestadohistorial_fecha' => date('Y-m-d'),
+            'viajeestadohistorial_hora' => date('H:i:s'),
+            'viajeestadohistorial_fechahora' => date('Y-m-d H:i:s'),
+            'viajeestadohistorial_motivo' => trim((string)$motivo)
+        ));
     }
 
 //    /*
@@ -563,4 +692,352 @@ class Viaje_model extends CI_Model
     }
     
     
+
+    /**
+     * Resumen operativo/financiero previo al cierre del viaje.
+     * Las formas de pago combinadas se agrupan en OTROS/MIXTOS porque
+     * venta_pasaje no almacena el desglose monetario de cada componente.
+     */
+    public function get_resumen_cierre($viaje_id)
+    {
+        $viaje_id = (int)$viaje_id;
+        $base = $this->db->query("SELECT v.viaje_id,v.estado_id,v.vehiculo_id,ve.vehiculo_pasajeros,ve.vehiculo_placa,r.ruta_nombre,v.viaje_fechasalida,v.viaje_horasalida FROM viaje v LEFT JOIN vehiculo ve ON ve.vehiculo_id=v.vehiculo_id LEFT JOIN ruta r ON r.ruta_id=v.ruta_id WHERE v.viaje_id=? LIMIT 1", array($viaje_id))->row_array();
+        if (!$base) return false;
+
+        $pas = $this->db->query("SELECT
+            COUNT(*) total_asientos,
+            SUM(CASE WHEN estado_id=50 THEN 1 ELSE 0 END) disponibles,
+            SUM(CASE WHEN estado_id=54 THEN 1 ELSE 0 END) vendidos,
+            SUM(CASE WHEN estado_id=52 THEN 1 ELSE 0 END) reservados,
+            SUM(CASE WHEN estado_id=54 AND IFNULL(pasaje_precio,0)<=0 THEN 1 ELSE 0 END) cortesias,
+            SUM(CASE WHEN estado_id=54 AND UPPER(IFNULL(pasaje_controlabordaje,''))='A BORDO' THEN 1 ELSE 0 END) embarcados,
+            SUM(CASE WHEN estado_id=54 AND UPPER(IFNULL(pasaje_controlabordaje,''))='NO PRESENTE' THEN 1 ELSE 0 END) no_abordaron,
+            SUM(CASE WHEN estado_id=54 AND UPPER(IFNULL(pasaje_controlabordaje,'')) NOT IN ('A BORDO','NO PRESENTE') THEN 1 ELSE 0 END) abordaje_pendiente,
+            SUM(CASE WHEN pasaje_tieneequipaje=1 THEN 1 ELSE 0 END) equipajes_legacy
+            FROM pasaje WHERE viaje_id=?", array($viaje_id))->row_array();
+
+        $anulados = $this->db->query("SELECT COUNT(DISTINCT d.pasaje_id) cantidad FROM venta_pasaje_anulacion_detalle d WHERE d.viaje_id=?", array($viaje_id))->row_array();
+
+        $fin = $this->db->query("SELECT
+            COALESCE(SUM(vp.venta_total),0) monto_vendido,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre))='EFECTIVO' THEN vp.venta_total ELSE 0 END),0) efectivo,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre))='TARJETA' THEN vp.venta_total ELSE 0 END),0) tarjeta,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre)) IN ('TRANSFERENCIA BANCARIA','DEPOSITO EN CUENTA','TRANSFERENCIA SWIFT') THEN vp.venta_total ELSE 0 END),0) transferencia,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre)) IN ('CANAL DE PAGO','BILLETERA MOVIL','PAGO ONLINE') THEN vp.venta_total ELSE 0 END),0) qr,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre)) NOT IN ('EFECTIVO','TARJETA','TRANSFERENCIA BANCARIA','DEPOSITO EN CUENTA','TRANSFERENCIA SWIFT','CANAL DE PAGO','BILLETERA MOVIL','PAGO ONLINE') THEN vp.venta_total ELSE 0 END),0) otros
+            FROM venta_pasaje vp LEFT JOIN forma_pago fp ON fp.forma_id=vp.forma_id
+            WHERE vp.viaje_id=? AND vp.estado_id=1", array($viaje_id))->row_array();
+
+        $formas = $this->db->query("SELECT COALESCE(fp.forma_nombre,'SIN FORMA') forma,COUNT(*) operaciones,COALESCE(SUM(vp.venta_total),0) total FROM venta_pasaje vp LEFT JOIN forma_pago fp ON fp.forma_id=vp.forma_id WHERE vp.viaje_id=? AND vp.estado_id=1 GROUP BY vp.forma_id,fp.forma_nombre ORDER BY total DESC", array($viaje_id))->result_array();
+        $eq = $this->db->query("SELECT COUNT(*) registros,COALESCE(SUM(equipaje_cantidad_piezas),0) piezas,COALESCE(SUM(CASE WHEN equipaje_tipo='EXTRA' THEN equipaje_importe ELSE 0 END),0) ingreso_extra FROM pasaje_equipaje WHERE viaje_id=? AND equipaje_estado<>'ANULADO'", array($viaje_id))->row_array();
+        $eqfin = $this->db->query("SELECT
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre))='EFECTIVO' THEN pe.equipaje_importe ELSE 0 END),0) efectivo,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre))='TARJETA' THEN pe.equipaje_importe ELSE 0 END),0) tarjeta,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre)) IN ('TRANSFERENCIA BANCARIA','DEPOSITO EN CUENTA','TRANSFERENCIA SWIFT') THEN pe.equipaje_importe ELSE 0 END),0) transferencia,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(fp.forma_nombre)) IN ('CANAL DE PAGO','BILLETERA MOVIL','PAGO ONLINE') THEN pe.equipaje_importe ELSE 0 END),0) qr,
+            COALESCE(SUM(CASE WHEN pe.equipaje_tipo='EXTRA' AND (fp.forma_nombre IS NULL OR UPPER(TRIM(fp.forma_nombre)) NOT IN ('EFECTIVO','TARJETA','TRANSFERENCIA BANCARIA','DEPOSITO EN CUENTA','TRANSFERENCIA SWIFT','CANAL DE PAGO','BILLETERA MOVIL','PAGO ONLINE')) THEN pe.equipaje_importe ELSE 0 END),0) otros
+            FROM pasaje_equipaje pe LEFT JOIN forma_pago fp ON fp.forma_id=pe.forma_id WHERE pe.viaje_id=? AND pe.equipaje_tipo='EXTRA' AND pe.equipaje_estado<>'ANULADO'", array($viaje_id))->row_array();
+
+        return array_merge($base, array(
+            'capacidad_vehiculo'=>(int)$base['vehiculo_pasajeros'],
+            'asientos_disponibles'=>(int)$pas['disponibles'],
+            'vendidos'=>(int)$pas['vendidos'],
+            'reservados'=>(int)$pas['reservados'],
+            'cortesias'=>(int)$pas['cortesias'],
+            'anulados'=>(int)$anulados['cantidad'],
+            'embarcados'=>(int)$pas['embarcados'],
+            'no_abordaron'=>(int)$pas['no_abordaron'],
+            'abordaje_pendiente'=>(int)$pas['abordaje_pendiente'],
+            'equipaje_registrado'=>(int)(isset($eq['piezas'])?$eq['piezas']:$pas['equipajes_legacy']),
+            'monto_equipaje_extra'=>(float)(isset($eq['ingreso_extra'])?$eq['ingreso_extra']:0),
+            'monto_total_transporte'=>(float)$fin['monto_vendido']+(float)(isset($eq['ingreso_extra'])?$eq['ingreso_extra']:0),
+            'monto_vendido'=>(float)$fin['monto_vendido'],
+            'efectivo'=>(float)$fin['efectivo']+(float)$eqfin['efectivo'],
+            'qr'=>(float)$fin['qr']+(float)$eqfin['qr'],
+            'transferencia'=>(float)$fin['transferencia']+(float)$eqfin['transferencia'],
+            'tarjeta'=>(float)$fin['tarjeta']+(float)$eqfin['tarjeta'],
+            'otros_pagos'=>(float)$fin['otros']+(float)$eqfin['otros'],
+            'formas_pago'=>$formas
+        ));
+    }
+
+    public function usuario_tiene_rol($usuario_id, $rol_id)
+    {
+        $row=$this->db->query("SELECT 1 ok FROM usuario u INNER JOIN rol_usuario ru ON ru.tipousuario_id=u.tipousuario_id WHERE u.usuario_id=? AND ru.rol_id=? AND ru.rolusuario_asignado=1 LIMIT 1", array((int)$usuario_id,(int)$rol_id))->row_array();
+        return !empty($row);
+    }
+
+
+    /* ================= PUNTO 10: CONTROL DE ABORDAJE ================= */
+    /**
+     * Viajes visibles desde la entrada general de Control de Abordaje.
+     * HABILITADO PARA VENTA (61): consulta previa.
+     * EMBARQUE (56): control operativo habilitado.
+     * CERRADO (62): consulta posterior.
+     */
+    public function get_viajes_para_abordaje($fecha)
+    {
+        $sql = "SELECT
+                    v.viaje_id, v.viaje_fechasalida, v.viaje_horasalida, v.estado_id,
+                    r.ruta_nombre, ve.vehiculo_placa,
+                    COALESCE(e.estado_descripcion, 'SIN ESTADO') AS estado_descripcion,
+                    (SELECT COUNT(*) FROM pasaje p
+                        WHERE p.viaje_id=v.viaje_id AND p.estado_id=54) AS vendidos,
+                    (SELECT COUNT(*) FROM pasaje p
+                        WHERE p.viaje_id=v.viaje_id AND p.estado_id=54
+                          AND UPPER(IFNULL(p.pasaje_controlabordaje,''))='A BORDO') AS abordaron,
+                    (SELECT COUNT(*) FROM pasaje p
+                        WHERE p.viaje_id=v.viaje_id AND p.estado_id=54
+                          AND IFNULL(p.pasaje_controlabordaje,'')='') AS pendientes,
+                    (SELECT COUNT(*) FROM pasaje p
+                        WHERE p.viaje_id=v.viaje_id AND p.estado_id=54
+                          AND UPPER(IFNULL(p.pasaje_controlabordaje,''))='NO PRESENTE') AS no_presentes
+                FROM viaje v
+                LEFT JOIN ruta r ON r.ruta_id=v.ruta_id
+                LEFT JOIN vehiculo ve ON ve.vehiculo_id=v.vehiculo_id
+                LEFT JOIN estado e ON e.estado_id=v.estado_id
+                WHERE v.viaje_fechasalida=?
+                  AND v.estado_id IN (61,56,62)
+                ORDER BY v.viaje_horasalida ASC, v.viaje_id ASC";
+        return $this->db->query($sql, array($fecha))->result_array();
+    }
+
+    /**
+     * Punto 29: genera un token QR no secuencial y firmado.
+     * Formato: 32 hex aleatorios + "." + 31 hex HMAC = 64 caracteres.
+     *
+     * IMPORTANTE: no reemplaza tokens existentes. Así los pasajes ya impresos
+     * continúan siendo válidos y no se rompe el control de abordaje anterior.
+     */
+    private function generar_token_abordaje_seguro($pasaje_id, $viaje_id)
+    {
+        try {
+            $aleatorio = bin2hex(random_bytes(16)); // 128 bits
+        } catch (Exception $e) {
+            // Compatibilidad con instalaciones PHP antiguas: sigue siendo no secuencial.
+            $aleatorio = substr(hash('sha256', uniqid((string)mt_rand(), true).microtime(true)), 0, 32);
+        }
+
+        $clave = (string)$this->config->item('encryption_key');
+        if ($clave === '') {
+            // No exponer ni guardar la clave; este fallback mantiene instalaciones antiguas operativas.
+            $clave = (string)base_url();
+        }
+
+        $firma = substr(hash_hmac('sha256', $aleatorio.'|'.(int)$pasaje_id.'|'.(int)$viaje_id, $clave), 0, 31);
+        return strtolower($aleatorio.'.'.$firma);
+    }
+
+    private function asegurar_tokens_abordaje_where($where_sql, $args)
+    {
+        $sql = "SELECT pasaje_id,viaje_id FROM pasaje WHERE ".$where_sql." AND (pasaje_qr_token IS NULL OR pasaje_qr_token='')";
+        $pendientes = $this->db->query($sql, $args)->result_array();
+
+        foreach ($pendientes as $p) {
+            $token = $this->generar_token_abordaje_seguro((int)$p['pasaje_id'], (int)$p['viaje_id']);
+            // La condición vacía evita sobrescribir un token generado concurrentemente.
+            $this->db->where('pasaje_id', (int)$p['pasaje_id']);
+            $this->db->group_start();
+            $this->db->where('pasaje_qr_token IS NULL', null, false);
+            $this->db->or_where('pasaje_qr_token', '');
+            $this->db->group_end();
+            $this->db->update('pasaje', array('pasaje_qr_token'=>$token));
+        }
+        return true;
+    }
+
+    public function asegurar_tokens_abordaje_viaje($viaje_id)
+    {
+        return $this->asegurar_tokens_abordaje_where(
+            "viaje_id=? AND estado_id IN (52,54)",
+            array((int)$viaje_id)
+        );
+    }
+
+    public function asegurar_tokens_abordaje_venta($venta_id)
+    {
+        return $this->asegurar_tokens_abordaje_where(
+            "venta_id=?",
+            array((int)$venta_id)
+        );
+    }
+
+    /**
+     * Verifica la firma de los tokens nuevos. Los tokens históricos (sin punto)
+     * se conservan válidos para no inutilizar pasajes ya emitidos.
+     */
+    private function token_abordaje_firma_valida($token, $pasaje_id, $viaje_id)
+    {
+        $token = trim((string)$token);
+        if (strpos($token, '.') === false) return true; // compatibilidad histórica
+
+        $partes = explode('.', strtolower($token), 2);
+        if (count($partes)!==2 || !preg_match('/^[a-f0-9]{32}$/', $partes[0]) || !preg_match('/^[a-f0-9]{31}$/', $partes[1])) {
+            return false;
+        }
+        $clave = (string)$this->config->item('encryption_key');
+        if ($clave === '') $clave = (string)base_url();
+        $esperada = substr(hash_hmac('sha256', $partes[0].'|'.(int)$pasaje_id.'|'.(int)$viaje_id, $clave), 0, 31);
+        return hash_equals($esperada, $partes[1]);
+    }
+
+    public function get_terminal_usuario($usuario_id)
+    {
+        $r=$this->db->query("SELECT usuario_id, usuario_nombre, puntoventa_codigo FROM usuario WHERE usuario_id=? LIMIT 1", array((int)$usuario_id))->row_array();
+        if (!$r) return array('terminal'=>'TERMINAL','usuario_nombre'=>'');
+        $pv=isset($r['puntoventa_codigo'])?(int)$r['puntoventa_codigo']:0;
+        return array('terminal'=>$pv>0?('PUNTO DE VENTA '.$pv):'TERMINAL','usuario_nombre'=>isset($r['usuario_nombre'])?$r['usuario_nombre']:'');
+    }
+
+    public function buscar_pasajeros_abordaje($viaje_id, $tipo, $criterio)
+    {
+        $viaje_id=(int)$viaje_id; $tipo=strtoupper(trim((string)$tipo)); $criterio=trim((string)$criterio);
+        $where="p.viaje_id=? AND p.estado_id=54"; $args=array($viaje_id);
+        if ($criterio!=='') {
+            switch($tipo){
+                case 'QR':
+                    $where.=" AND UPPER(p.pasaje_qr_token)=UPPER(?)";
+                    $args[]=$criterio;
+                    break;
+                case 'PASAJE': $where.=" AND (p.pasaje_id=? OR p.pasaje_numero=?)"; $args[]=(int)$criterio; $args[]=$criterio; break;
+                case 'CI': $where.=" AND UPPER(p.pasaje_documento)=UPPER(?)"; $args[]=$criterio; break;
+                case 'ASIENTO': $where.=" AND UPPER(a.asiento_numero)=UPPER(?)"; $args[]=$criterio; break;
+                case 'APELLIDO':
+                default: $where.=" AND UPPER(p.pasaje_nombre) LIKE UPPER(?)"; $args[]='%'.$criterio.'%'; break;
+            }
+        }
+        $sql="SELECT p.pasaje_id,p.pasaje_numero,p.pasaje_nombre,p.pasaje_documento,p.pasaje_telefono,p.pasaje_controlabordaje,p.pasaje_qr_token,p.venta_id,
+                     a.asiento_numero,v.viaje_id,v.viaje_fechasalida,v.viaje_horasalida,r.ruta_nombre,
+                     ab.abordaje_id,ab.abordaje_fecha,ab.abordaje_hora,ab.abordaje_terminal,ab.usuario_id AS controlador_id,u.usuario_nombre AS controlador_nombre
+              FROM pasaje p INNER JOIN asientos a ON a.asiento_id=p.asiento_id INNER JOIN viaje v ON v.viaje_id=p.viaje_id LEFT JOIN ruta r ON r.ruta_id=v.ruta_id
+              LEFT JOIN pasaje_abordaje ab ON ab.pasaje_id=p.pasaje_id AND ab.abordaje_estado='A BORDO'
+              LEFT JOIN usuario u ON u.usuario_id=ab.usuario_id WHERE $where ORDER BY a.asiento_numero LIMIT 50";
+        $rows = $this->db->query($sql,$args)->result_array();
+
+        // Para QR nuevo, además de existir en BD debe tener firma válida.
+        if ($tipo==='QR' && $criterio!=='') {
+            $validos=array();
+            foreach($rows as $row){
+                if ($this->token_abordaje_firma_valida($criterio, (int)$row['pasaje_id'], (int)$row['viaje_id'])) {
+                    $validos[]=$row;
+                }
+            }
+            return $validos;
+        }
+        return $rows;
+    }
+
+    public function get_resumen_abordaje($viaje_id)
+    {
+        $r=$this->db->query("SELECT COUNT(*) vendidos,
+            SUM(CASE WHEN UPPER(IFNULL(pasaje_controlabordaje,''))='A BORDO' THEN 1 ELSE 0 END) abordaron,
+            SUM(CASE WHEN UPPER(IFNULL(pasaje_controlabordaje,''))='NO PRESENTE' THEN 1 ELSE 0 END) no_presentes,
+            SUM(CASE WHEN IFNULL(pasaje_controlabordaje,'')='' THEN 1 ELSE 0 END) pendientes
+            FROM pasaje WHERE viaje_id=? AND estado_id=54",array((int)$viaje_id))->row_array();
+        return $r?:array('vendidos'=>0,'abordaron'=>0,'no_presentes'=>0,'pendientes'=>0);
+    }
+
+
+    /** Cabecera del manifiesto de pasajeros. */
+    public function get_manifiesto_cabecera($viaje_id)
+    {
+        $sql = "SELECT v.viaje_id,v.viaje_fechasalida,v.viaje_horasalida,v.viaje_fechallegada,v.viaje_horallegada,v.estado_id,
+                       r.ruta_nombre,r.inicio_ruta,r.fin_ruta,
+                       COALESCE(NULLIF(o.origen_nombre,''),NULLIF(r.inicio_ruta,''),'') AS origen_nombre,
+                       COALESCE(NULLIF(d.destino_nombre,''),NULLIF(r.fin_ruta,''),'') AS destino_nombre,
+                       ve.vehiculo_placa,ve.vehiculo_modelo,ve.vehiculo_clase,ve.vehiculo_pasajeros,
+                       c.conductor_nombres,c.conductor_apellidos,
+                       ay.ayudante_nombres,ay.ayudante_apellidos,
+                       ev.estado_descripcion,
+                       (SELECT COUNT(*) FROM pasaje p WHERE p.viaje_id=v.viaje_id AND p.estado_id=54) AS cantidad_pasajeros
+                FROM viaje v
+                LEFT JOIN ruta r ON r.ruta_id=v.ruta_id
+                LEFT JOIN origen o ON o.origen_id=r.origen_id
+                LEFT JOIN destino d ON d.destino_id=r.destino_id
+                LEFT JOIN vehiculo ve ON ve.vehiculo_id=v.vehiculo_id
+                LEFT JOIN conductor c ON c.conductor_id=v.conductor_id
+                LEFT JOIN ayudante ay ON ay.ayudante_id=v.ayudante_id
+                LEFT JOIN estado ev ON ev.estado_id=v.estado_id AND ev.estado_tipo=13
+                WHERE v.viaje_id=? LIMIT 1";
+        return $this->db->query($sql, array((int)$viaje_id))->row_array();
+    }
+
+    /** Pasajeros activos vendidos que forman parte del manifiesto. */
+    public function get_manifiesto_pasajeros($viaje_id)
+    {
+        // Compatibilidad con instalaciones que todavía no tienen todos los campos de transporte.
+        $edad       = $this->db->field_exists('pasaje_edad','pasaje') ? 'p.pasaje_edad' : 'NULL AS pasaje_edad';
+        $sexo       = $this->db->field_exists('pasaje_sexo','pasaje') ? 'p.pasaje_sexo' : "'' AS pasaje_sexo";
+        $origen     = $this->db->field_exists('pasaje_origen','pasaje') ? 'p.pasaje_origen' : "COALESCE(NULLIF(o.origen_nombre,''),NULLIF(r.inicio_ruta,''),'') AS pasaje_origen";
+        $destino    = $this->db->field_exists('pasaje_destino','pasaje') ? 'p.pasaje_destino' : "COALESCE(NULLIF(d.destino_nombre,''),NULLIF(r.fin_ruta,''),'') AS pasaje_destino";
+        $cortesia   = $this->db->field_exists('pasaje_es_cortesia','pasaje') ? 'p.pasaje_es_cortesia' : '0 AS pasaje_es_cortesia';
+        $motivo     = $this->db->field_exists('pasaje_cortesia_motivo','pasaje') ? 'p.pasaje_cortesia_motivo' : "'' AS pasaje_cortesia_motivo";
+
+        $sql = "SELECT p.pasaje_id,p.pasaje_numero,p.pasaje_nombre,p.pasaje_documento,p.pasaje_telefono,
+                       p.pasaje_tieneequipaje,p.pasaje_detalleequipaje,p.pasaje_controlabordaje,p.pasaje_precio,
+                       {$edad},{$sexo},{$origen},{$destino},
+                       {$cortesia},{$motivo},
+                       a.asiento_numero,a.asiento_orden,
+                       COALESCE(NULLIF(o.origen_nombre,''),NULLIF(r.inicio_ruta,''),'') AS origen_nombre,
+                       COALESCE(NULLIF(d.destino_nombre,''),NULLIF(r.fin_ruta,''),'') AS destino_nombre,
+                       CASE
+                         WHEN UPPER(IFNULL(p.pasaje_controlabordaje,''))='A BORDO' THEN 'SI'
+                         WHEN UPPER(IFNULL(p.pasaje_controlabordaje,''))='NO PRESENTE' THEN 'NO PRESENTE'
+                         ELSE 'PENDIENTE'
+                       END AS abordo,
+                       COALESCE(
+                         NULLIF((SELECT GROUP_CONCAT(CONCAT(pe.equipaje_cantidad_piezas,' PZ ',pe.equipaje_descripcion) ORDER BY pe.equipaje_id SEPARATOR ' + ') FROM pasaje_equipaje pe WHERE pe.pasaje_id=p.pasaje_id AND pe.equipaje_estado<>'ANULADO'),''),
+                         CASE
+                           WHEN IFNULL(p.pasaje_tieneequipaje,0)=1 AND TRIM(IFNULL(p.pasaje_detalleequipaje,''))<>'' THEN p.pasaje_detalleequipaje
+                           WHEN IFNULL(p.pasaje_tieneequipaje,0)=1 THEN 'SI'
+                           ELSE '-'
+                         END
+                       ) AS equipaje
+                FROM pasaje p
+                INNER JOIN viaje v ON v.viaje_id=p.viaje_id
+                LEFT JOIN ruta r ON r.ruta_id=v.ruta_id
+                LEFT JOIN origen o ON o.origen_id=r.origen_id
+                LEFT JOIN destino d ON d.destino_id=r.destino_id
+                LEFT JOIN asientos a ON a.asiento_id=p.asiento_id
+                WHERE p.viaje_id=? AND p.estado_id=54
+                ORDER BY IFNULL(a.asiento_orden,999999), a.asiento_numero, p.pasaje_nombre";
+        return $this->db->query($sql, array((int)$viaje_id))->result_array();
+    }
+
+
+    /**
+     * Reporte completo de asientos del bus para un viaje.
+     * Devuelve todos los asientos visibles/vendibles, estén libres u ocupados,
+     * manteniendo el orden físico configurado en el vehículo.
+     */
+    public function get_reporte_asientos_viaje($viaje_id)
+    {
+        $tramo = ($this->db->field_exists('pasaje_origen','pasaje') && $this->db->field_exists('pasaje_destino','pasaje'))
+            ? "GROUP_CONCAT(CASE WHEN p.estado_id IN(51,52,54) THEN CONCAT(IFNULL(p.pasaje_origen,''),' - ',IFNULL(p.pasaje_destino,'')) END ORDER BY p.pasaje_id SEPARATOR ' / ') AS tramo"
+            : "'' AS tramo";
+
+        $sql = "SELECT a.asiento_id,a.asiento_numero,a.asiento_orden,a.nivel_id,
+                       COALESCE(n.nivel_nombre, CONCAT('PISO ',a.nivel_id)) AS nivel_nombre,
+                       GROUP_CONCAT(CASE WHEN p.estado_id IN(51,52,54) THEN p.pasaje_nombre END ORDER BY p.pasaje_id SEPARATOR ' / ') AS pasajero,
+                       GROUP_CONCAT(CASE WHEN p.estado_id IN(51,52,54) THEN p.pasaje_documento END ORDER BY p.pasaje_id SEPARATOR ' / ') AS documento,
+                       GROUP_CONCAT(CASE WHEN p.estado_id IN(51,52,54) THEN p.pasaje_numero END ORDER BY p.pasaje_id SEPARATOR ' / ') AS pasaje_numero,
+                       {$tramo},
+                       MAX(CASE WHEN p.estado_id=54 THEN 3 WHEN p.estado_id=52 THEN 2 WHEN p.estado_id=51 THEN 1 ELSE 0 END) AS prioridad_estado
+                FROM viaje v
+                INNER JOIN asientos a ON a.vehiculo_id=v.vehiculo_id
+                LEFT JOIN nivel_vehiculo n ON n.nivel_id=a.nivel_id
+                LEFT JOIN pasaje p ON p.viaje_id=v.viaje_id AND p.asiento_id=a.asiento_id AND p.estado_id IN(51,52,54)
+                WHERE v.viaje_id=?
+                  AND COALESCE(a.asiento_mostrar,1)=1
+                  AND COALESCE(a.asiento_es_vendible,1)=1
+                GROUP BY a.asiento_id,a.asiento_numero,a.asiento_orden,a.nivel_id,n.nivel_nombre
+                ORDER BY COALESCE(a.asiento_orden,999999), CAST(a.asiento_numero AS UNSIGNED), a.asiento_numero";
+        $rows=$this->db->query($sql,array((int)$viaje_id))->result_array();
+        foreach($rows as &$r){
+            $r['estado_asiento']=((int)$r['prioridad_estado']===3)?'VENDIDO':(((int)$r['prioridad_estado']===2)?'RESERVADO':(((int)$r['prioridad_estado']===1)?'TEMPORAL':'LIBRE'));
+        }
+        unset($r);
+        return $rows;
+    }
+
 }

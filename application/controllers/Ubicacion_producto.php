@@ -47,8 +47,8 @@ class Ubicacion_producto extends CI_Controller{
             $data['controlu_id'] = $controlu_id;
             $data['control_ubicacion'] = $this->Control_ubicacion_model->get_control_ubicacion($controlu_id);
             $data['ubicacion'] = $this->Control_ubicacion_model->get_ubicacion($controlu_id);
-//            $data['ubi_productos'] = $this->Ubicacion_producto_model->get_all_producto_ubicacion($controlu_id);
-            $sql = "SELECT count(*) as cantidad_productos from ubicacion_producto up ";
+$data['ubi_productos'] = $this->Ubicacion_producto_model->get_all_producto_ubicacion($controlu_id);
+            $sql = "SELECT count(*) as cantidad_productos from ubicacion_producto up WHERE up.controlu_id = ".(int)$controlu_id;
             $resultado =  $this->Venta_model->consultar($sql);
             $data['cantidad_productos'] = $resultado;
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
@@ -186,7 +186,7 @@ class Ubicacion_producto extends CI_Controller{
             $controli_id = $this->input->post("controli_id");
             //primero aliminamos la lista de items
 
-            $sql ="truncate ubicacion_producto";
+            $sql ="DELETE FROM ubicacion_producto WHERE controlu_id = ".(int)$controlu_id;
             $this->Venta_model->ejecutar($sql);
 
             //Cargamos los productos en la tabla ubicacion_producto
@@ -211,10 +211,12 @@ class Ubicacion_producto extends CI_Controller{
     function buscar_productos(){
         
         
-        $parametro = $this->input->post("parametro");
-        
+        $parametro = $this->db->escape_like_str($this->input->post("parametro"));
+        $controlu_id = (int)$this->input->post("controlu_id");
+        $filtro_control = $controlu_id > 0 ? " and u.controlu_id = {$controlu_id}" : "";
         $sql ="select * from ubicacion_producto u, inventario i
-                where u.producto_id = i.producto_id and (i.producto_codigobarra like '%{$parametro}%' or i.producto_nombre like '%{$parametro}%' )";
+                where u.producto_id = i.producto_id {$filtro_control}
+                and (i.producto_codigobarra like '%{$parametro}%' or i.producto_nombre like '%{$parametro}%')";
             
         $res = $this->Venta_model->consultar($sql);
         echo json_encode($res);
@@ -246,22 +248,33 @@ class Ubicacion_producto extends CI_Controller{
     */
     function finalizar_conteo()
     {
-        $sql = "UPDATE ubicacion_producto
-                SET
-                    ubiprod_faltante = CASE
-                        WHEN ubiprod_existencia >= 0 THEN ubiprod_existencia
-                        ELSE 0
-                    END,
-                    ubiprod_sobrante = CASE
-                        WHEN ubiprod_existencia < 0 THEN ubiprod_existencia * -1
-                        ELSE 0
-                    END,
-                    ubiprod_lecturado = 1
-                WHERE ubiprod_lecturado = 0";
+        if(!$this->input->is_ajax_request()){
+            show_404();
+            return;
+        }
+        $controlu_id = (int)$this->input->post('controlu_id');
+        $politica = strtoupper(trim((string)$this->input->post('politica_no_contados')));
+        if(!in_array($politica, array('CERO','SIN_CAMBIO'))){
+            $politica = 'SIN_CAMBIO';
+        }
 
-        $this->Venta_model->ejecutar($sql);
+        if($politica === 'CERO'){
+            $sql = "UPDATE ubicacion_producto
+                    SET ubiprod_existenciafisico = 0,
+                        ubiprod_faltante = CASE WHEN ubiprod_existencia > 0 THEN ubiprod_existencia ELSE 0 END,
+                        ubiprod_sobrante = CASE WHEN ubiprod_existencia < 0 THEN ABS(ubiprod_existencia) ELSE 0 END,
+                        ubiprod_lecturado = 1
+                    WHERE controlu_id = {$controlu_id} AND ubiprod_lecturado = 0";
+            $this->Venta_model->ejecutar($sql);
+        }
 
-        echo json_encode(true);
+        $this->db->where('controlu_id', $controlu_id)->update('control_ubicacion', array(
+            'estado_id' => 26,
+            'controlu_fecha_fin' => date('Y-m-d'),
+            'controlu_hora_fin' => date('H:i:s')
+        ));
+
+        echo json_encode(array('ok'=>true,'politica'=>$politica));
     }
     
 }

@@ -944,3 +944,23 @@ function obtener_texto_excel(celda) {
     return copia.textContent.replace(/\s+/g, ' ').trim();
 }
 </script>
+
+<script>
+function guardarOrdenProducto(productoId, boton) {
+    var campo = document.getElementById('orden_producto_' + productoId);
+    if (!campo.checkValidity()) { campo.reportValidity(); return; }
+    $(boton).prop('disabled', true);
+    $.ajax({
+        url: document.getElementById('base_url').value + 'producto/actualizar_orden',
+        type: 'POST', dataType: 'json',
+        data: {producto_id: productoId, producto_orden: campo.value},
+        success: function(respuesta) {
+            if (respuesta.ok) {
+                tablaresultadosproducto(window.ultimoFiltroProductos || 1);
+            } else { alert(respuesta.mensaje); }
+        },
+        error: function() { alert('No se pudo guardar el orden. Verifique su permiso de edición y vuelva a intentar.'); },
+        complete: function() { $(boton).prop('disabled', false); }
+    });
+}
+</script>

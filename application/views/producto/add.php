@@ -186,6 +186,14 @@
                             </div>
                     </div>
                     <div class="col-md-2">
+                        <label for="producto_orden" class="control-label">Orden</label>
+                        <div class="form-group">
+                            <input type="number" step="any" name="producto_orden" id="producto_orden" class="form-control" value="<?php echo html_escape($this->input->post('producto_orden')); ?>" placeholder="Sin orden" />
+                            <span class="text-danger"><?php echo form_error('producto_orden'); ?></span>
+                            <small class="text-muted">Vacío: sin orden definido.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
                             <select name="producto_unidad" class="form-control">

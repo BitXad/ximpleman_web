@@ -21,6 +21,7 @@ class Website extends CI_Controller{
         $this->load->helper('cookie');
         $this->load->model('Red_social_model');
         $this->load->model('Sistema_model');
+        $this->config->load('social_login', TRUE);
     }            
 
     function index($idioma_id)
@@ -29,6 +30,12 @@ class Website extends CI_Controller{
         //$idioma_id = 1; //1 - español
         $data['idioma_id'] = $idioma_id;
         $data['sistema'] = $this->Sistema_model->get_sistema();
+        //$data['google_client_id'] = $this->config->item('google_client_id', 'social_login');
+        
+        $data['facebook_app_id'] = $this->config->item('facebook_app_id', 'social_login');
+        $data['google_client_id'] = $this->config->item('google_client_id', 'social_login');
+        
+        
         $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
         $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
         $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
@@ -379,6 +386,124 @@ class Website extends CI_Controller{
     }
 
     // ------------------------------------------------------------------------------------------
+
+    /** Login Facebook validando el access token en Meta. */
+    function social_login_facebook()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        $token = trim((string)$this->input->post('access_token'));
+        $ipe = (string)$this->input->post('ipe');
+        if ($token === '') { return $this->social_json(false, 'Token de Facebook no recibido.', 400); }
+
+        $appId = (string)$this->config->item('facebook_app_id', 'social_login');
+        $secret = (string)$this->config->item('facebook_app_secret', 'social_login');
+        $version = (string)$this->config->item('facebook_graph_version', 'social_login');
+        if ($appId === '' || $secret === '' || strpos($secret, 'COLOCA_AQUI') === 0) {
+            return $this->social_json(false, 'Facebook Login no está configurado en el servidor.', 500);
+        }
+
+        $debugUrl = 'https://graph.facebook.com/'.$version.'/debug_token?input_token='.rawurlencode($token).'&access_token='.rawurlencode($appId.'|'.$secret);
+        $debug = $this->social_http_json($debugUrl);
+        if (!$debug || empty($debug['data']['is_valid']) || (string)$debug['data']['app_id'] !== $appId) {
+            return $this->social_json(false, 'La credencial de Facebook no es válida.', 401);
+        }
+
+        $profile = $this->social_http_json('https://graph.facebook.com/'.$version.'/me?fields=id,name,email&access_token='.rawurlencode($token));
+        if (!$profile || empty($profile['id'])) { return $this->social_json(false, 'No se pudo obtener el perfil de Facebook.', 401); }
+
+        $facebookId = (string)$profile['id'];
+        $name = !empty($profile['name']) ? $profile['name'] : 'CLIENTE FACEBOOK';
+        $email = !empty($profile['email']) ? $profile['email'] : '';
+        $cliente = $this->db->get_where('cliente', array('id_facebook' => $facebookId))->row_array();
+        if (!$cliente) {
+            $id = $this->social_create_cliente($name, $email, $facebookId, null);
+            $cliente = $this->db->get_where('cliente', array('cliente_id' => $id))->row_array();
+        }
+        if (!$cliente) { return $this->social_json(false, 'No fue posible crear la cuenta de Facebook.', 500); }
+        $this->social_finish_login($cliente, $ipe);
+        return $this->social_json(true, 'Acceso correcto.');
+    }
+
+    /** Login Google Identity Services; valida el ID token y su audience. */
+    function social_login_google()
+    {
+        if (!$this->input->is_ajax_request()) { show_404(); return; }
+        $credential = trim((string)$this->input->post('credential'));
+        $ipe = (string)$this->input->post('ipe');
+        $clientId = (string)$this->config->item('google_client_id', 'social_login');
+        if ($credential === '') { return $this->social_json(false, 'Credencial de Google no recibida.', 400); }
+        if ($clientId === '' || strpos($clientId, 'COLOCA_AQUI') === 0) { return $this->social_json(false, 'Google Login no está configurado en el servidor.', 500); }
+
+        $payload = $this->social_http_json('https://oauth2.googleapis.com/tokeninfo?id_token='.rawurlencode($credential));
+        if (!$payload || empty($payload['sub']) || empty($payload['aud']) || (string)$payload['aud'] !== $clientId) {
+            return $this->social_json(false, 'La credencial de Google no es válida para esta aplicación.', 401);
+        }
+        if (isset($payload['email_verified']) && !in_array($payload['email_verified'], array(true, 'true', '1', 1), true)) {
+            return $this->social_json(false, 'El correo de Google no está verificado.', 401);
+        }
+
+        $googleId = (string)$payload['sub'];
+        $email = isset($payload['email']) ? (string)$payload['email'] : '';
+        $name = isset($payload['name']) ? (string)$payload['name'] : 'CLIENTE GOOGLE';
+        $cliente = $this->db->get_where('cliente', array('id_google' => $googleId))->row_array();
+        if (!$cliente && $email !== '') {
+            $cliente = $this->db->get_where('cliente', array('cliente_email' => $email))->row_array();
+            if ($cliente) {
+                $this->db->where('cliente_id', $cliente['cliente_id'])->update('cliente', array('id_google' => $googleId, 'estado_id' => 1));
+                $cliente['id_google'] = $googleId;
+                $cliente['estado_id'] = 1;
+            }
+        }
+        if (!$cliente) {
+            $id = $this->social_create_cliente($name, $email, 0, $googleId);
+            $cliente = $this->db->get_where('cliente', array('cliente_id' => $id))->row_array();
+        }
+        if (!$cliente) { return $this->social_json(false, 'No fue posible crear la cuenta de Google.', 500); }
+        $this->social_finish_login($cliente, $ipe);
+        return $this->social_json(true, 'Acceso correcto.');
+    }
+
+    private function social_create_cliente($name, $email, $facebookId = 0, $googleId = null)
+    {
+        $codigo = (string)mt_rand(100000000, 999999999);
+        $data = array(
+            'tipocliente_id' => 1, 'categoriaclie_id' => 1, 'cliente_nombre' => strtoupper($name),
+            'cliente_ci' => '0', 'cliente_nit' => 0, 'cliente_razon' => 'SIN NOMBRE', 'cliente_telefono' => '0',
+            'estado_id' => 1, 'usuario_id' => 0, 'cliente_nombrenegocio' => '-', 'cliente_codigo' => $codigo,
+            'cliente_direccion' => '-', 'cliente_departamento' => '-', 'cliente_celular' => '', 'zona_id' => 1,
+            'cliente_email' => $email, 'cliente_clave' => md5(bin2hex(random_bytes(16))),
+            'cliente_codactivacion' => mt_rand(100000, 1250000), 'id_facebook' => $facebookId
+        );
+        if ($googleId !== null) $data['id_google'] = $googleId;
+        $this->db->insert('cliente', $data);
+        return (int)$this->db->insert_id();
+    }
+
+    private function social_finish_login($cliente, $ipe)
+    {
+        if ($ipe !== '') $this->db->where('cliente_id', $ipe)->update('carrito', array('cliente_id' => $cliente['cliente_id']));
+        setcookie('cliente_id', $cliente['cliente_id'], time() + (3600 * 24), '/');
+        setcookie('cliente_nombre', $cliente['cliente_nombre'], time() + (3600 * 24), '/');
+    }
+
+    private function social_http_json($url)
+    {
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, array(CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 12, CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_SSL_VERIFYPEER => true));
+            $body = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+            if ($body === false || $code < 200 || $code >= 300) return null;
+        } else {
+            $ctx = stream_context_create(array('http' => array('timeout' => 12), 'ssl' => array('verify_peer' => true, 'verify_peer_name' => true)));
+            $body = @file_get_contents($url, false, $ctx); if ($body === false) return null;
+        }
+        $json = json_decode($body, true); return is_array($json) ? $json : null;
+    }
+
+    private function social_json($ok, $message, $status = 200)
+    {
+        $this->output->set_status_header($status)->set_content_type('application/json')->set_output(json_encode(array('ok' => (bool)$ok, 'message' => $message)));
+    }
 
     function getcliente(){
             $cliente = $this->input->post('cliente');

@@ -79,16 +79,25 @@ class Viajechofer extends CI_Controller{
             redirect('viajechofer/index');
         }
 
-        $params = array(
-            'estado_id' => $siguiente_estado
-        );
-
-        if($this->Viaje_model->update_viaje($viaje_id, $params)){
-            $this->session->set_flashdata('mensaje', 'El estado del viaje fue actualizado correctamente.');
-            $this->session->set_flashdata('tipomensaje', 'success');
-        }else{
+        $this->db->trans_begin();
+        $actual = $this->db->query("SELECT estado_id FROM viaje WHERE viaje_id = ? FOR UPDATE", array((int)$viaje_id))->row_array();
+        if (!$actual || (int)$actual['estado_id'] !== (int)$viaje['estado_id'] || !$this->Viaje_model->puede_transicionar((int)$actual['estado_id'], (int)$siguiente_estado)) {
+            $this->db->trans_rollback();
+            $this->session->set_flashdata('mensaje', 'El estado del viaje cambió o la transición ya no está permitida.');
+            $this->session->set_flashdata('tipomensaje', 'warning');
+            redirect('viajechofer/index');
+            return;
+        }
+        $this->db->where('viaje_id', (int)$viaje_id)->update('viaje', array('estado_id'=>(int)$siguiente_estado));
+        $this->Viaje_model->registrar_historial_estado((int)$viaje_id, (int)$actual['estado_id'], (int)$siguiente_estado, (int)$usuario_id, 'Cambio secuencial desde portal de conductor');
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
             $this->session->set_flashdata('mensaje', 'No se pudo actualizar el estado del viaje.');
             $this->session->set_flashdata('tipomensaje', 'danger');
+        } else {
+            $this->db->trans_commit();
+            $this->session->set_flashdata('mensaje', 'El estado del viaje fue actualizado correctamente.');
+            $this->session->set_flashdata('tipomensaje', 'success');
         }
 
         redirect('viajechofer/index');

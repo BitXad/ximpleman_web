@@ -2,6 +2,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/atc_qr_venta.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
@@ -1222,14 +1223,17 @@ window.onkeydown = compruebaTecla;
 
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
-        <div class="box"  style="border-color: black;">
-            <div class="box-body  table-responsive scrollable-div" id="tablaresultados" >
+            <div class="box" style="border-color: black;">
 
-                <!------------------ aqui van los resultados de la busqueda --------------->
-                
+                <!--<div class="box-body table-responsive <?php echo $es_movil ? '' : 'scrollable-div'; ?>"--> 
+                <div class="box-body table-responsive <?php echo $es_movil ? '' : 'scrollable-div'; ?>" 
+                     id="tablaresultados">
+
+                    <!------------------ aqui van los resultados de la busqueda --------------->
+
+                </div>
+
             </div>
-               
-        </div>
 
 
             </div> <!-------- FIN BOX-BODY---------->
@@ -1253,8 +1257,18 @@ window.onkeydown = compruebaTecla;
             
             
         </div> <!-------- FIN BOX---------->
+  
         
-       <div class="col-md-12">
+        <style>
+        @media screen and (max-width: 768px) {
+            #ocultar_en_mobiles {
+                display: none !important;
+            }
+        }
+        </style>
+
+        
+       <div class="col-md-12" id="ocultar_en_mobiles">
         
     <?php if ($parametro['parametro_factura']!=3){ ?>
         
@@ -1328,7 +1342,7 @@ window.onkeydown = compruebaTecla;
 
 <!---  VENTAS CON FALLAS  -->
 
-<div class="col-md-12">
+<div class="col-md-12" id="ocultar_en_mobiles">
         
 
         
@@ -1421,6 +1435,19 @@ window.onkeydown = compruebaTecla;
             <?php //if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="<?php echo $sistema["sistema_modulopedidos"]; ?> Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> <?php echo $sistema["sistema_modulopedidos"]; ?></b></a> 
+<!--           Este metodo convierte el boton pedido 
+               <a href="#"
+               data-toggle="modal"
+               data-target="#modalpedidos"
+               class="btn <?php echo $es_movil ? 'btn-danger btn-block' : 'btn-default btn-xs'; ?>"
+               onclick="pedidos_pendientes()"
+               title="<?php echo $sistema["sistema_modulopedidos"]; ?> Pendientes"
+               style="<?php echo ($parametro["parametro_herramientassuperior"]!=1) ? "display:none" : "" ?>">
+
+                <span class="fa fa-cubes"></span>
+                <b><?php echo $sistema["sistema_modulopedidos"]; ?></b>
+
+            </a>-->
             <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 //} ?>
@@ -2551,6 +2578,13 @@ window.onkeydown = compruebaTecla;
             </button>
             -->
             <!--<button class="btn btn-lg btn-default btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
+<!--            <div class="col-md-12" id="atc_qr_panel" style="padding: 5px 0; text-align: center;">
+                <input type="hidden" id="atc_qr_cobro_id" value="">
+                <button type="button" class="btn btn-info btn-block" id="atc_qr_generar" onclick="atcQrGenerar()">QR</button>
+                <img id="atc_qr_imagen" alt="Código QR para pagar" style="display:none; max-width:240px; margin:10px auto;">
+                <div id="atc_qr_referencia"></div>
+                <div id="atc_qr_estado" role="status" aria-live="polite"></div>
+            </div>-->
             <button class="btn btn-lg btn-success btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
                 <h4>
                 <span class="fa fa-save"></span>   Finalizar <?php echo $sistema["sistema_moduloventas"]; ?>   
@@ -4555,12 +4589,46 @@ Gasto de Seguro:2000
 
 
                                 <div class="col-md-12 form-group">
-                                  <label for="sumatoria_total">Total Final</label>
-                                  <input type="text" class="form-control" value="0.00" name="sumatoria_total" id="sumatoria_total" onkeyup="calcular_digitos()">
+                                  <label for="sumatoria_total">Calculadora</label>
+                                  <input type="text" class="form-control" value="0.00" name="sumatoria_total" id="sumatoria_total"
+                                         onkeyup="calcular_digitos(event)"
+                                         style="font-size:26px; font-weight:bold; text-align:right; height:48px;"
+                                         autocomplete="off">
                                 </div>
 
+                                <div class="col-md-12 form-group" style="text-align:right; margin-top:-8px;">
+                                    <button type="button" class="btn btn-default btn-sm" id="btn_ocultar_calculadora"
+                                            onclick="alternar_teclado_calculadora()">
+                                        <i class="fa fa-keyboard-o"></i> Ocultar teclas
+                                    </button>
+                                </div>
 
-
+                                <div class="col-md-12" id="teclado_calculadora" style="margin-bottom:15px;">
+                                    <div class="row" style="margin-bottom:5px;">
+                                        <div class="col-xs-3"><button type="button" class="btn btn-danger btn-block" onclick="calculadora_limpiar()">C</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_borrar()"><i class="fa fa-long-arrow-left"></i></button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-warning btn-block" onclick="calculadora_agregar('-')">-</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-warning btn-block" onclick="calculadora_agregar('+')">+</button></div>
+                                    </div>
+                                    <div class="row" style="margin-bottom:5px;">
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('7')">7</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('8')">8</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('9')">9</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-primary btn-block" onclick="calculadora_resultado()">=</button></div>
+                                    </div>
+                                    <div class="row" style="margin-bottom:5px;">
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('4')">4</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('5')">5</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('6')">6</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('.')">.</button></div>
+                                    </div>
+                                    <div class="row" style="margin-bottom:5px;">
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('1')">1</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('2')">2</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('3')">3</button></div>
+                                        <div class="col-xs-3"><button type="button" class="btn btn-default btn-block" onclick="calculadora_agregar('0')">0</button></div>
+                                    </div>
+                                </div>
 
                                 </center>
                             </div>
@@ -4855,3 +4923,28 @@ function calcularPagoEfectivo() {
     inputEfectivo.value = efectivo.toFixed(2);
 }
 </script>
+
+
+<div class="modal fade" id="modal_foto_cliente" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                    Fotografía del cliente
+                </h4>
+            </div>
+
+            <div class="modal-body" style="text-align:center;">
+                <img id="imagen_cliente_ampliada"
+                     src=""
+                     style="max-width:100%; max-height:70vh;">
+            </div>
+
+        </div>
+    </div>
+</div>

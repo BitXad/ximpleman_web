@@ -413,7 +413,7 @@ function mostrar() {
                                                         <div class="quantity"> 
 								<div class="quantity-select">                           
 									<div class="entry value-minus" onclick="reducir_cantidad(<?php echo $p["producto_id"]; ?>)">&nbsp;</div>
-									<div class="entry value"><span><?php echo $p["carrito_cantidad"] ?></span></div>
+                                                                        <div class="entry value"><span><?php echo number_format($p["carrito_cantidad"],2,".",","); ?></span></div>
 									<div class="entry value-plus active" onclick="incrementar_cantidad(<?php echo $p["producto_id"]; ?>)">&nbsp;</div>
 								</div>
 							</div>
